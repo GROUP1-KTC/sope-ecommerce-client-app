@@ -1,5 +1,11 @@
-import SellerFaxForm from "~/components/seller/register/SellerFaxForm";
-import MerchantSidebar from "~/components/seller/side-bar/MerchantSidebar";
-export default function ShippingPage() {
-  return;
-}
+import Banner from "../components/customer/Home/Banner";
+import CategoryGrid from "../components/customer/Home/CategoryGrid";
+
+const HomeCustomer = () => (
+  <div>
+    <Banner />
+    <CategoryGrid />
+  </div>
+);
+
+export default HomeCustomer;
