@@ -1,0 +1,40 @@
+import React from "react";
+
+interface FormNavigationButtonsProps {
+  // Nếu sau này bạn muốn các nút có hành động hoặc nhãn tùy chỉnh, bạn có thể thêm props ở đây
+  // Ví dụ: onBackClick?: () => void;
+  //          onSaveClick?: () => void;
+  //          onNextClick?: () => void;
+  //          backButtonLabel?: string;
+  //          saveButtonLabel?: string;
+  //          nextButtonLabel?: string;
+}
+
+const FormNavigationButtons: React.FC<FormNavigationButtonsProps> = () => {
+  return (
+    <div className="flex justify-between items-center mt-8 pt-4 border-t border-gray-200">
+      <button
+        type="button"
+        className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+      >
+        Back
+      </button>
+      <div className="space-x-4">
+        <button
+          type="button"
+          className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default FormNavigationButtons;
