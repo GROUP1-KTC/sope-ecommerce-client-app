@@ -3,6 +3,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import QuickMenu from "~/components/common/QuickMenu";
 
+
 export default function Header() {
   return (
     <header className="flex justify-between items-center p-4 bg-white shadow">
