@@ -17,6 +17,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Setup pnpm
               uses: pnpm/action-setup@v4
@@ -39,6 +41,18 @@ jobs:
 
             - name: Lint with ESLint
               run: pnpm run lint:fix
+
+            - name: Commit and push if code changed
+              run: |
+                  git config --global user.name "github-actions[bot]"
+                  git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  if [[ `git status --porcelain` ]]; then
+                    git add .
+                    git commit -m "chore: auto format and lint fix via GitHub Actions"
+                    git push
+                  else
+                    echo "No changes to commit."
+                  fi
 
 env:
     CI: true
