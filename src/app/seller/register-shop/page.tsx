@@ -1,5 +1,5 @@
-import SellerRegisterForm from "~/components/seller/register/SellerRegisterForm";
+import SellerRegisterForm from '~/components/seller/register/SellerRegisterForm';
 
 export default function RegisterPage() {
-  return <SellerRegisterForm />;
+    return <SellerRegisterForm />;
 }

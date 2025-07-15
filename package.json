@@ -4,9 +4,11 @@
     "private": true,
     "scripts": {
         "dev": "next dev --turbopack",
+        "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
+        "lint:fix": "next lint --fix",
         "preinstall": "node check-pm.js",
         "postinstall": "node check-pm.js"
     },
@@ -36,8 +38,15 @@
         "@types/node": "^20",
         "@types/react": "^19",
         "@types/react-dom": "^19",
-        "eslint": "^9",
+        "@typescript-eslint/eslint-plugin": "^8.36.0",
+        "@typescript-eslint/parser": "^8.36.0",
+        "eslint": "^9.31.0",
         "eslint-config-next": "15.3.5",
+        "eslint-config-prettier": "^10.1.5",
+        "eslint-plugin-prettier": "^5.5.1",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^5.2.0",
+        "prettier": "^3.6.2",
         "typescript": "^5"
     }
 }
