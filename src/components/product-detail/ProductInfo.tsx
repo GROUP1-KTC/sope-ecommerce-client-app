@@ -11,9 +11,43 @@ interface ProductInfoProps {
         rating: number;
         sold: string;
     };
+
+    priceDetail: {
+        originalPrice: number;
+        discounts: { type: string; value: number; description: string }[];
+        finalPrice: number;
+    };
+
+    productOptions: {
+        sizes: string[];
+        colors: string[];
+    };
+
+    shopVouchers?: {
+        description: string;
+        discount: number;
+        validUntil: string;
+    }[];
+
+    promotionCombo?: {
+        description: string;
+        discount: number;
+        requiredQuantity: number;
+    };
+
+    shipInformation?: {
+        time: string;
+        fee: string;
+        policy: string;
+    };
+
+    policy: {
+        sopePolicy: string;
+        procurementPolicy: string[];
+    };
 }
 
-const ProductInfo = ({ product }: ProductInfoProps) => {
+const ProductInfo = ({ product, priceDetail, productOptions, shopVouchers, promotionCombo, shipInformation, policy }: ProductInfoProps) => {
     const [showVoucherModal, setShowVoucherModal] = useState(false);
     const [showPolicyModal, setShowPolicyModal] = useState(false);
 
@@ -115,117 +149,130 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
                                 <p className="text-gray-800 font-medium mb-2">Chi tiết giá</p>
                                 <div className="flex justify-between">
                                     <span className="text-gray-700">Giá gốc:</span>
-                                    <span className="text-red-600">₫{product.price.toLocaleString('vi-VN')}</span>
+                                    <span className="text-red-600">₫{priceDetail.originalPrice.toLocaleString('vi-VN')}</span>
                                 </div>
-                                <div className="flex justify-between mt-1">
-                                    <span className="text-gray-700">Giảm giá sản phẩm:</span>
-                                    <span className="text-red-600">-₫95,000</span>
-                                </div>
-                                <hr className="border-t border-gray-200 my-2" />
-
-                                <div className="flex justify-between mt-1">
-                                    <span className="text-gray-700">Voucher Shopee:</span>
-                                    <span className="text-red-600">-₫44,550</span>
-                                </div>
-                                <div className="text-gray-500 text-xs mt-1">
-                                    Mua từ ₫100,000 giảm giá 15%. Sử dụng Voucher có hạn.
-                                </div>
-                                <hr className="border-t border-gray-200 my-2" />
-
-                                <div className="flex justify-between mt-1">
-
-                                    <span className="text-gray-700">Voucher cửa Shop:</span>
-                                    <span className="text-red-600">-₫8,000</span>
-                                </div>
-                                <div className="text-gray-500 text-xs mt-1">
-                                    Mua từ ₫0 giảm giá 50%. Sử dụng Voucher có hạn.
-                                </div>
-                                <hr className="border-t border-gray-200 my-2" />
-
+                                {priceDetail.discounts.map((discount, index) => (
+                                    <div key={index}>
+                                        <div className="flex justify-between mt-1">
+                                            <span className="text-gray-700">{discount.description.split('.')[0]}:</span>
+                                            <span className="text-red-600">-₫{discount.value.toLocaleString('vi-VN')}</span>
+                                        </div>
+                                        {discount.description.includes('.') && (
+                                            <div className="text-gray-500 text-xs mt-1">
+                                                {discount.description.split('.')[1].trim()}
+                                            </div>
+                                        )}
+                                        <hr className="border-t border-gray-200 my-2" />
+                                    </div>
+                                ))}
                                 <div className="flex justify-between mt-3">
                                     <span className="text-gray-900 font-bold">Giá tạm tính:</span>
-                                    <span className="text-red-600 font-bold">₫252,450</span>
+                                    <span className="text-red-600 font-bold">₫{priceDetail.finalPrice.toLocaleString('vi-VN')}</span>
                                 </div>
                                 <p className="text-xs text-gray-500 mt-1 italic">
                                     *Vui lòng kiểm tra Voucher đã dùng hoặc nhận toast để đổi giá ưu đãi
                                 </p>
                             </div>
-
                         </div>
                     )}
                 </div>
                 <div className="flex flex-col gap-4 mb-4 text-sm text-gray-500">
                     <div className="flex items-start mt-2">
                         <span className="w-32 font-semibold">Voucher của shop</span>
-                        <div className="flex-1">
-                            <span className="bg-red-200 text-red-700 font-medium px-2 py-1 rounded-xs shadow-md break-words mr-3">
-                                Giảm 3%
-                            </span>
+                        <div className="flex-1 flex flex-wrap gap-2">
+                            {shopVouchers?.map((voucher, index) => (
+                                <span
+                                    key={index}
+                                    className="bg-red-200 text-red-700 font-medium px-2 py-1 rounded shadow-md"
+                                >
+                                    {voucher.description}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
 
-                            <span className="bg-red-200 text-red-700 font-medium px-2 py-1 rounded-xs shadow-md break-words">
-                                Giảm 6%
-                            </span>
+                    {promotionCombo && (
+                        <div className="flex items-start mt-4">
+                            <span className="w-32 font-semibold">Combo Khuyến Mãi</span>
+                            <div className="flex-1">
+                                <span className="text-red-700 font-medium px-2 py-1 rounded shadow-md border border-red-500">
+                                    {promotionCombo.description}
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex items-start mt-4">
-                        <span className="w-32 font-semibold">Combo Khuyến Mãi</span>
-                        <div className="flex-1">
-                            <span className="text-red-700 font-medium px-2 py-1 rounded-xs shadow-md break-words mr-3 border border-red-500">
-                                Mua 3 & giảm ₫10.000
-                            </span>
-                        </div>
-                    </div>
+                    )}
+
                     <div className="flex items-start mt-4">
                         <span className="w-32 font-semibold">Vận chuyển</span>
                         <div className="flex-1 flex flex-col gap-1 break-words">
-                            <span className='text-black'>Nhận hàng 12 Th07 - 17 Th07</span>
-                            <span className='text-black'>Phí ship: ₫15,000 (miễn phí với đơn từ ₫50,000)</span>
-                            <span className="text-grey-500">
-                                Tặng voucher ₫10,000 nếu giao sau 17 Th07
+                            <span className='text-black'>
+                                {shipInformation?.time || 'Thông tin vận chuyển chưa có'}
                             </span>
+                            <span className='text-black'>
+                                {shipInformation?.fee ? `Phí ship: ${shipInformation.fee}` : ''}
+                            </span>
+                            {shipInformation?.policy && (
+                                <span className="text-gray-500">
+                                    {shipInformation.policy}
+                                </span>
+                            )}
                         </div>
                     </div>
                     <div className="flex items-center relative">
-                        <span className="w-32 font-semibold">An tâm mua sắm cùng Sope</span>
-                        <span className="flex-1 break-words text-black">
-                            Trả hàng miễn phí 15 ngày · Chính hãng 100% · Miễn phí vận chuyển
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-6 w-6 text-blue-500 ml-2 cursor-pointer"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                onMouseEnter={() => setShowPolicyModal(true)}
-                                onMouseLeave={() => setShowPolicyModal(false)}
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </span>
-                        {showPolicyModal && (
-                            <div className="absolute left-0 top-full mt-2 w-112 bg-white border border-gray-400 rounded shadow-lg p-4 z-10">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-2">Chính sách mua sắm</h3>
-                                <p className="text-gray-600">Trả hàng miễn phí trong vòng 15 ngày nếu sản phẩm không đúng mô tả.</p>
-                                <p className="text-gray-600 mt-2">Cam kết 100% hàng chính hãng, có hóa đơn rõ ràng.</p>
-                                <p className="text-gray-600 mt-2">Miễn phí vận chuyển cho đơn hàng từ 50,000 VNĐ.</p>
+      <span className="w-32 font-semibold">An tâm mua sắm cùng Sope</span>
+      <span className="flex-1 break-words text-black">
+        {policy.sopePolicy}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 text-blue-500 ml-2 cursor-pointer"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          onMouseEnter={() => setShowPolicyModal(true)}
+          onMouseLeave={() => setShowPolicyModal(false)}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </span>
 
-                            </div>
-                        )}
-                    </div>
+      {showPolicyModal && (
+        <div className="absolute left-0 top-full mt-2 w-112 bg-white border border-gray-400 rounded shadow-lg p-4 z-10">
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">Chính sách mua sắm</h3>
+          {policy.procurementPolicy.map((item, idx) => (
+            <p key={idx} className={`text-gray-600 ${idx > 0 ? 'mt-2' : ''}`}>
+              {item}
+            </p>
+          ))}
+        </div>
+      )}
+    </div>
                     <div className="flex items-center mt-4">
                         <span className="w-32 font-semibold">Chọn Size</span>
                         <div className="flex gap-2">
-                            <button className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 active:bg-gray-400 text-sm font-medium">
-                                S
-                            </button>
-                            <button className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 active:bg-gray-400 text-sm font-medium">
-                                M
-                            </button>
-                            <button className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 active:bg-gray-400 text-sm font-medium">
-                                L
-                            </button>
-                            <button className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 active:bg-gray-400 text-sm font-medium">
-                                XL
-                            </button>
+                            {productOptions.sizes.map((size) => (
+                                <button
+                                    key={size}
+                                    className={'px-3 py-1 rounded text-sm font-medium transition-colors bg-gray-200 hover:bg-gray-300 active:bg-gray-400'}
+
+                                //   onClick={() => handleSizeSelect(size)}
+                                >
+                                    {size}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="flex items-center mt-4">
+                        <span className="w-32 font-semibold">Chọn Màu</span>
+                        <div className="flex gap-2">
+                            {productOptions.colors.map((color) => (
+                                <button
+                                    key={color}
+                                    className={'px-3 py-1 rounded text-sm font-medium transition-colors bg-gray-200 hover:bg-gray-300 active:bg-gray-400'}
+                                //   onClick={() => handleColorSelect(color)}
+                                >
+                                    {color}
+                                </button>
+                            ))}
                         </div>
                     </div>
                     <div className="flex items-center mt-4 mb-2">

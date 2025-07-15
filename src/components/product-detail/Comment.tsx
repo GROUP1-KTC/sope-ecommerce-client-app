@@ -13,7 +13,6 @@ const Comment: React.FC<CommentProps> = ({ avatar, name, rating, date, comment, 
     return (
         <div>
             <div className="flex items-start space-x-4">
-                {/* Avatar của người dùng */}
                 <img
                     src={avatar}
                     alt={`${name}'s avatar`}

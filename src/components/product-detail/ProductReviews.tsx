@@ -1,33 +1,18 @@
 import React from 'react';
 import Comment from './Comment';
 
-const ProductReviews = () => {
-  const reviews = [
-    {
-      id: 1,
-      avatar: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png',
-      name: 'Nguyen Van A',
-      rating: 4,
-      date: '13/07/2025',
-      comment: 'Sản phẩm rất tốt, chất lượng ổn, giao hàng nhanh chóng!',
-    },
-    {
-      id: 2,
-      avatar: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png',
-      name: 'Tran Thi B',
-      rating: 5,
-      date: '12/07/2025',
-      comment: 'Tuyệt vời, màu sắc đẹp, đáng đồng tiền!',
-    },
-    {
-      id: 3,
-      avatar: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png',
-      name: 'Le Van C',
-      rating: 3,
-      date: '11/07/2025',
-      comment: 'Sản phẩm trung bình, hy vọng cải thiện hơn.',
-    },
-  ];
+interface ProductReviewsProps {
+  reviews: {
+    id: number;
+    avatar: string;
+    name: string;
+    rating: number;
+    date: string;
+    comment: string;
+  }[];
+}
+
+const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
 
   const averageRating = reviews.length > 0
     ? Math.round(reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length)
@@ -92,8 +77,6 @@ const ProductReviews = () => {
       <div className="flex justify-center items-center mt-6 space-x-6">
         <button className="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-100">Trước</button>
         <button className="px-3 py-1 bg-red-500 rounded-md text-white">1</button>
-        <button className="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-100">2</button>
-        <button className="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-100">3</button>
         <button className="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-100">Tiếp</button>
       </div>
     </div>
