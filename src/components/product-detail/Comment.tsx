@@ -9,7 +9,14 @@ interface CommentProps {
     productImage?: string;
 }
 
-const Comment: React.FC<CommentProps> = ({ avatar, name, rating, date, comment, productImage = 'https://miro.medium.com/v2/resize:fit:1400/1*fDdHpj6wZIfFsfU8sRJ_RA.png' }) => {
+const Comment: React.FC<CommentProps> = ({
+    avatar,
+    name,
+    rating,
+    date,
+    comment,
+    productImage = 'https://miro.medium.com/v2/resize:fit:1400/1*fDdHpj6wZIfFsfU8sRJ_RA.png',
+}) => {
     return (
         <div>
             <div className="flex items-start space-x-4">
@@ -37,14 +44,14 @@ const Comment: React.FC<CommentProps> = ({ avatar, name, rating, date, comment, 
                         ))}
                     </div>
                     <p className="text-gray-600 mt-2">{comment}</p>
-                    <div className='mt-2'>
+                    <div className="mt-2">
                         <img
-                        src={productImage}
-                        alt={`${name}'s product`}
-                        width={128}
-                        height={128}
-                        className="rounded-lg object-cover border"
-                    />
+                            src={productImage}
+                            alt={`${name}'s product`}
+                            width={128}
+                            height={128}
+                            className="rounded-lg object-cover border"
+                        />
                     </div>
                 </div>
             </div>
