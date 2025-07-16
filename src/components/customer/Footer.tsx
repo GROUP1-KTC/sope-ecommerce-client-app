@@ -322,19 +322,40 @@ const Footer = () => {
                 <div>
                     <h3 className="font-bold mb-2">FOLLOW US</h3>
                     <ul className="space-y-1">
-                        <li className='mb-2'>
-                            <a href="https://facebook.com" className="flex items-center gap-2 hover:underline">
-                                <FacebookIcon fontSize="small" sx={{ fontSize: 20 }} /> Facebook
+                        <li className="mb-2">
+                            <a
+                                href="https://facebook.com"
+                                className="flex items-center gap-2 hover:underline"
+                            >
+                                <FacebookIcon
+                                    fontSize="small"
+                                    sx={{ fontSize: 20 }}
+                                />{' '}
+                                Facebook
                             </a>
                         </li>
-                        <li className='mb-2'>
-                            <a href="https://instagram.com" className="flex items-center gap-2 hover:underline">
-                                <InstagramIcon fontSize="small" sx={{ fontSize: 20 }} /> Instagram
+                        <li className="mb-2">
+                            <a
+                                href="https://instagram.com"
+                                className="flex items-center gap-2 hover:underline"
+                            >
+                                <InstagramIcon
+                                    fontSize="small"
+                                    sx={{ fontSize: 20 }}
+                                />{' '}
+                                Instagram
                             </a>
                         </li>
-                        <li className='mb-2'>
-                            <a href="https://linkedin.com" className="flex items-center gap-2 hover:underline">
-                                <LinkedInIcon fontSize="small" sx={{ fontSize: 20 }} /> LinkedIn
+                        <li className="mb-2">
+                            <a
+                                href="https://linkedin.com"
+                                className="flex items-center gap-2 hover:underline"
+                            >
+                                <LinkedInIcon
+                                    fontSize="small"
+                                    sx={{ fontSize: 20 }}
+                                />{' '}
+                                LinkedIn
                             </a>
                         </li>
                     </ul>

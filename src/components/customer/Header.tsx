@@ -32,7 +32,7 @@ const Header = () => {
                         <FacebookIcon style={{ fontSize: 20 }} />
                     </Link>
                     <Link href="#" className="">
-                        <InstagramIcon style={{ fontSize: 20 }}/> 
+                        <InstagramIcon style={{ fontSize: 20 }} />
                     </Link>
                 </div>
                 <div className="flex gap-2 sm:gap-3 items-center">
@@ -57,7 +57,10 @@ const Header = () => {
             <div className="flex items-center px-2 sm:px-8 py-2 sm:py-2 gap-2 sm:gap-8 flex-col sm:flex-row">
                 <div className="flex items-center gap-2 w-full sm:w-auto justify-between">
                     <div className="flex items-center gap-2">
-                        <StorefrontIcon style={{ fontSize: 40 }} className="text-white" />
+                        <StorefrontIcon
+                            style={{ fontSize: 40 }}
+                            className="text-white"
+                        />
                         <span className="h-8 w-px bg-white mx-2" />
                         <Link href="/">
                             <Image
@@ -93,8 +96,14 @@ const Header = () => {
                     </button>
                 </div>
                 {/* Cart icon */}
-                <Link href="/cart" className="ml-0 sm:ml-4 mt-2 sm:mt-0 flex items-center">
-                    <ShoppingCartOutlinedIcon style={{ fontSize: 36 }} className="text-white" />
+                <Link
+                    href="/cart"
+                    className="ml-0 sm:ml-4 mt-2 sm:mt-0 flex items-center"
+                >
+                    <ShoppingCartOutlinedIcon
+                        style={{ fontSize: 36 }}
+                        className="text-white"
+                    />
                 </Link>
             </div>
             {/* Mobile menu placeholder */}
