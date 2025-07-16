@@ -5,12 +5,12 @@ on:
         branches:
             - main
             - dev
-            - feature/implement-product-detail-page
+            - fearture/implement-product-detail-page
     pull_request:
         branches:
             - main
             - dev
-            - feature/implement-product-detail-page
+            - fearture/implement-product-detail-page
 
 jobs:
     lint-and-format:
