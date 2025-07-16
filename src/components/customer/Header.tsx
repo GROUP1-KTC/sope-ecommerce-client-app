@@ -22,7 +22,10 @@ const Header = () => {
                 </div>
                 <div className="flex gap-2 sm:gap-3 items-center">
                     <span className="flex items-center gap-1 sm:flex">
-                        <span>🔔</span> Thông Báo
+                        <span>🔔</span>
+                        <Link href="/notification" className="">
+                            Thông báo
+                        </Link>
                     </span>
                     <span className="flex items-center gap-1 sm:flex">
                         <span>❓</span> Hỗ Trợ
