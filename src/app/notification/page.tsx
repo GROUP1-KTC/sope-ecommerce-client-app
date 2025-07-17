@@ -1,163 +1,165 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
+import Link from 'next/link';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import WalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import InfoIcon from '@mui/icons-material/InfoOutlined';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import PersonIcon from '@mui/icons-material/Person';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
-// 1. Định nghĩa kiểu dữ liệu
-type NotificationItem = {
-    id: number;
-    title: string;
-    time: string;
-    image?: string;
-};
 
-// 2. Dữ liệu giả lập (const + readonly)
-const mockNotifications = {
-    'Cập Nhật Đơn Hàng': [
-        {
-            id: 1,
-            title: 'Đơn hàng đã được giao thành công',
-            time: '2 giờ trước',
-        },
-        {
-            id: 2,
-            title: 'Đơn hàng đang được giao đến bạn',
-            time: 'Hôm qua',
-        },
-    ],
-    'Khuyến Mãi': [
-        {
-            id: 3,
-            title: 'Giảm giá 50% cho sản phẩm yêu thích!',
-            time: '1 ngày trước',
-            image: 'https://down-vn.img.susercontent.com/file/vn-11134401-7ras8-m3khi0az4c2p81_tn',
-        },
-    ],
-    'Tài Khoản Của Tôi': [],
-} as const;
-
-// 3. Lấy kiểu tên tab
-type NotificationType = keyof typeof mockNotifications;
-
-// 4. Cấu trúc menu sidebar
-const menuGroups = [
+const notifications = [
     {
-        title: 'Thông Báo',
-        items: [
-            { label: 'Thông Báo', icon: '🔔' },
-            { label: 'Cập Nhật Đơn Hàng', icon: '📦' },
-            { label: 'Khuyến Mãi', icon: '🎁' },
-            { label: 'Cập Nhật Ví', icon: '💰' },
-            { label: 'Cập Nhật Naver', icon: '📣' },
-        ],
+        id: 1,
+        title: 'CƠ HỘI CUỐI CHỐT DEAL GIẢM 50%',
+        content:
+            'Tại Ngày hội Thương hiệu LIXIBOX. Cùng mã giảm độc quyền đến 600K. Mở bán độc quyền: bàn chải điện...',
+        time: '13:46 16-07-2025',
     },
     {
-        title: 'Tài Khoản',
-        items: [
-            { label: 'Tài Khoản Của Tôi', icon: '👤' },
-            { label: 'Đơn Mua', icon: '📄' },
-            { label: 'Kho Voucher', icon: '🎫' },
-            { label: 'Shopee Xu', icon: '🪙' },
-        ],
+        id: 2,
+        title: 'Giảm đậm hơn 20%',
+        content:
+            '8479_phmthinc ơi! Đừng bỏ lỡ khuyến mãi của sản phẩm bạn yêu thích!',
+        time: '12:03 16-07-2025',
+    },
+    {
+        id: 3,
+        title: 'Giỏ hàng đang chờ bạn chốt đơn',
+        content:
+            'Hàng còn trong giỏ, nhớ nhấn chốt đơn nhé! Miễn phí ship 0Đ đã nằm sẵn trong ví.',
+        time: '14:16 15-07-2025',
     },
 ];
 
-const NotificationPage = () => {
-    const [activeType, setActiveType] =
-        useState<NotificationType>('Cập Nhật Đơn Hàng');
+export default function NotificationPage() {
+    const [isGroupOpen, setIsGroupOpen] = useState(true);
 
-    // ✅ An toàn với mọi trạng thái
-    const currentData =
-        activeType in mockNotifications
-            ? mockNotifications[activeType as NotificationType]
-            : [];
+    const toggleGroup = () => {
+        setIsGroupOpen((prev) => !prev);
+    };
 
     return (
-        <div className="flex flex-col sm:flex-row min-h-[500px] bg-white shadow-md rounded-md overflow-hidden">
-            {/* Sidebar */}
-            <aside className="w-full sm:w-64 bg-white border-r p-4 space-y-6">
-                {/* Avatar */}
-                <div className="flex flex-col items-center text-center space-y-1">
-                    <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center text-2xl">
-                        👤
+        <div className="min-h-screen bg-gray-100">
+            <main className="max-w-6xl mx-auto mt-6 px-4 flex gap-6">
+                {/* Sidebar */}
+                <aside className="w-60 bg-white rounded shadow-sm p-4 text-sm">
+                    <p className="font-semibold mb-2 flex items-center gap-1 text-gray-800">
+                        <NotificationsIcon fontSize="small" />
+                        Thông Báo
+                    </p>
+
+                    {/* Group Toggle */}
+                    <div
+                        className="flex items-center justify-between cursor-pointer hover:bg-gray-100 p-1 rounded"
+                        onClick={toggleGroup}
+                    >
+                        <span className="font-semibold text-orange-600 flex items-center gap-2">
+                            <LocalOfferIcon fontSize="small" />
+                            Nhóm Thông Báo
+                        </span>
+                        {isGroupOpen ? (
+                            <ExpandLessIcon fontSize="small" />
+                        ) : (
+                            <ExpandMoreIcon fontSize="small" />
+                        )}
                     </div>
-                    <p className="font-semibold text-sm">User</p>
-                    <button className="text-gray-500 text-xs hover:underline">
-                        ✏️ Sửa Hồ Sơ
-                    </button>
-                </div>
 
-                <hr />
-
-                {/* Menu nhóm */}
-                {menuGroups.map((group, groupIndex) => (
-                    <ul key={groupIndex} className="space-y-2">
-                        {group.items.map((item) => (
-                            <li
-                                key={item.label}
-                                className={`flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer ${
-                                    activeType === item.label
-                                        ? 'text-red-500 font-semibold'
-                                        : 'text-gray-700 hover:bg-gray-100'
-                                }`}
-                                onClick={() => {
-                                    if (
-                                        (item.label as NotificationType) in
-                                        mockNotifications
-                                    ) {
-                                        setActiveType(
-                                            item.label as NotificationType,
-                                        );
-                                    }
-                                }}
-                            >
-                                <span>{item.icon}</span>
-                                <span>{item.label}</span>
+                    {/* Group Items */}
+                    {isGroupOpen && (
+                        <ul className="space-y-2 text-gray-700 mt-2">
+                            <li className="text-orange-600 flex items-center gap-2 font-medium">
+                                <LocalOfferIcon fontSize="small" />
+                                Khuyến Mãi
                             </li>
-                        ))}
-                    </ul>
-                ))}
-            </aside>
+                            <li className="flex items-center gap-2 hover:text-black">
+                                <ListAltIcon fontSize="small" />
+                                Cập Nhật Đơn Hàng
+                            </li>
+                            <li className="flex items-center gap-2 hover:text-black">
+                                <WalletIcon fontSize="small" />
+                                Cập Nhật Ví
+                            </li>
+                            <li className="flex items-center gap-2 hover:text-black">
+                                <InfoIcon fontSize="small" />
+                                Cập Nhật Naver
+                            </li>
+                        </ul>
+                    )}
 
-            {/* Nội dung */}
-            <div className="flex-1 p-6">
-                {currentData.length > 0 ? (
-                    <div className="space-y-4">
-                        {currentData.map((item) => (
-                            <div
-                                key={item.id}
-                                className="border border-gray-200 p-4 rounded-md shadow-sm hover:bg-gray-50 flex items-start gap-4"
-                            >
-                                {item.image && (
-                                    <img
-                                        src={item.image}
-                                        alt={item.title}
-                                        className="w-20 h-20 object-cover rounded"
+                    <div className="mt-6 border-t pt-4 space-y-2 text-gray-700">
+                        <div className="flex items-center gap-2 hover:text-black cursor-pointer">
+                            <PersonIcon fontSize="small" color="primary" />
+                            Tài Khoản Của Tôi
+                        </div>
+                        <div className="flex items-center gap-2 hover:text-black cursor-pointer text-red-500">
+                            <InventoryIcon fontSize="small" />
+                            Đơn Mua
+                        </div>
+                        <div className="flex items-center gap-2 hover:text-black cursor-pointer">
+                            <Link href="/VoucherPage">
+                                <ConfirmationNumberIcon
+                                    fontSize="small"
+                                    color="error"
+                                />
+                                Kho Voucher
+                            </Link>
+                        </div>
+                        <div className="flex items-center gap-2 hover:text-black cursor-pointer text-yellow-600">
+                            <MonetizationOnIcon fontSize="small" />
+                            Naver Xu
+                        </div>
+                    </div>
+                </aside>
+
+                {/* Main content */}
+                <section className="flex-1 space-y-4">
+                    <div className="flex justify-between items-center">
+                        <h1 className="text-lg font-bold text-gray-700 flex items-center gap-2">
+                            <LocalOfferIcon fontSize="medium" />
+                            Khuyến Mãi
+                        </h1>
+                        <button className="text-sm text-blue-600 hover:underline">
+                            Đánh dấu Đã đọc tất cả
+                        </button>
+                    </div>
+
+                    {notifications.map((item) => (
+                        <div
+                            key={item.id}
+                            className="bg-white p-3 rounded border border-gray-200 flex justify-between items-start hover:shadow-sm transition"
+                        >
+                            <div>
+                                <h3 className="font-semibold">{item.title}</h3>
+                                <p className="text-sm text-gray-700">
+                                    {item.content}
+                                </p>
+                                <div className="flex items-center text-xs text-gray-500 mt-1">
+                                    <AccessTimeIcon
+                                        fontSize="small"
+                                        className="mr-1"
                                     />
-                                )}
-                                <div>
-                                    <p className="font-medium">{item.title}</p>
-                                    <p className="text-sm text-gray-500">
-                                        {item.time}
-                                    </p>
+                                    {item.time}
                                 </div>
                             </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="flex flex-col items-center justify-center mt-20 text-center">
-                        <img
-                            src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/f2641127a1ad2410.png"
-                            alt="No Notification"
-                            className="w-28 h-auto mb-4"
-                        />
-                        <p className="text-gray-500 text-lg">
-                            Chưa có cập nhật nào
-                        </p>
-                    </div>
-                )}
-            </div>
+                            <Link
+                                href="#"
+                                className="text-sm text-blue-600 border border-blue-500 px-2 py-1 rounded hover:bg-blue-50"
+                            >
+                                Xem Chi Tiết
+                            </Link>
+                        </div>
+                    ))}
+                </section>
+            </main>
         </div>
     );
-};
-
-export default NotificationPage;
+}
