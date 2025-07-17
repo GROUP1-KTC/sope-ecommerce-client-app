@@ -165,7 +165,7 @@ const Login = () => {
                                     <div className="!mt-6">
                                         <button
                                             type="submit"
-                                            className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none cursor-pointer"
+                                            className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer"
                                         >
                                             Đăng nhập
                                         </button>
