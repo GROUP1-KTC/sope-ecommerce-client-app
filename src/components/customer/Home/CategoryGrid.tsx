@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const categories = [
     {
@@ -135,6 +135,8 @@ const CategoryGrid = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [categoryAtStart, setCategoryAtStart] = useState(true);
     const [categoryAtEnd, setCategoryAtEnd] = useState(false);
+    const [flashAtStart, setFlashAtStart] = useState(true);
+    const [flashAtEnd, setFlashAtEnd] = useState(false);
 
     const handleScroll = (side: 'left' | 'right') => {
         if (!containerRef.current) return;
@@ -163,13 +165,23 @@ const CategoryGrid = () => {
             setCategoryAtEnd(scrollLeft + clientWidth >= scrollWidth - 1);
         };
 
+        const handleFlashScrollEvent = () => {
+            if (!flashContainer) return;
+            const { scrollLeft, scrollWidth, clientWidth } = flashContainer;
+            setFlashAtStart(scrollLeft === 0);
+            setFlashAtEnd(scrollLeft + clientWidth >= scrollWidth - 1);
+        };
+
 
         handleCategoryScroll();
+        handleFlashScrollEvent();
 
         categoryContainer?.addEventListener('scroll', handleCategoryScroll);
+        flashContainer?.addEventListener('scroll', handleFlashScrollEvent);
 
         return () => {
             categoryContainer?.removeEventListener('scroll', handleCategoryScroll);
+            flashContainer?.removeEventListener('scroll', handleFlashScrollEvent);
         };
     }, []);
 
@@ -190,15 +202,15 @@ const CategoryGrid = () => {
                     <h2 className="text-xl font-bold mb-4 pb-2 border-b">
                         DANH MỤC
                     </h2>
-                    <div className="relative">
+                    <div className="relative group">
                         {!categoryAtStart && (
                             <button
-                                className="absolute -left-6 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow p-2 hover:bg-orange-100 transition-transform duration-150 hover:scale-110 flex items-center justify-center cursor-pointer"
+                                className="absolute -left-11 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow p-2 group-hover:bg-orange-100 group-hover:scale-110 transition-transform duration-150 flex items-center justify-center cursor-pointer opacity-50 group-hover:opacity-100"
                                 onClick={() => handleScroll('left')}
                                 aria-label="Scroll left"
                                 type="button"
                             >
-                                <ArrowBackIosIcon className="text-2xl text-orange-500" />
+                                <ArrowBackIosNewIcon className="text-lg text-orange-500" />
                             </button>
                         )}
                         <div
@@ -215,22 +227,22 @@ const CategoryGrid = () => {
                                 {rows.map((row, rowIndex) => (
                                     <div
                                         key={rowIndex}
-                                        className="flex flex-row mb-2"
+                                        className="flex flex-row mb-2 hover"
                                     >
                                         {row.map((cat, index) => (
                                             <a
                                                 href="/product"
                                                 key={cat.name}
-                                                className="flex flex-col items-center mx-2 group cursor-pointer w-24"
+                                                className="flex flex-col items-center mx-2 cursor-pointer w-24"
                                             >
-                                                <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gray-100 group-hover:bg-orange-100 mb-2 border border-gray-200 overflow-hidden">
+                                                <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gray-100 hover:bg-orange-100 mb-2 border border-gray-200 overflow-hidden">
                                                     <img
                                                         src={cat.img}
                                                         alt={cat.name}
                                                         className="w-18 h-18 object-contain"
                                                     />
                                                 </div>
-                                                <span className="text-xs text-center text-gray-700 group-hover:text-orange-600 font-medium leading-tight">
+                                                <span className="text-xs text-center text-gray-700 font-medium leading-tight">
                                                     {cat.name}
                                                 </span>
                                             </a>
@@ -240,18 +252,18 @@ const CategoryGrid = () => {
                             </div>
                         </div>
                         <style jsx>{`
-                            [ref="${containerRef.current}"]::-webkit-scrollbar {
-                                display: none;
-                            }
-                        `}</style>
+                [ref="${containerRef.current}"]::-webkit-scrollbar {
+                    display: none;
+                }
+            `}</style>
                         {!categoryAtEnd && (
                             <button
-                                className="absolute -right-6 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow p-2 hover:bg-orange-100 transition-transform duration-150 hover:scale-110 flex items-center justify-center cursor-pointer"
+                                className="absolute -right-11 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow p-2 group-hover:bg-orange-100 group-hover:scale-110 transition-transform duration-150 flex items-center justify-center cursor-pointer opacity-50 group-hover:opacity-100"
                                 onClick={() => handleScroll('right')}
                                 aria-label="Scroll right"
                                 type="button"
                             >
-                                <ArrowForwardIosIcon className="text-2xl text-orange-500" />
+                                <ArrowForwardIosIcon className="text-lg text-orange-500" />
                             </button>
                         )}
                     </div>
@@ -264,7 +276,7 @@ const CategoryGrid = () => {
                     <div className="flex items-center justify-between mb-4 pb-2 border-b">
                         <h2 className="text-xl font-bold flex items-center text-red-500">
                             <span className="mr-2">⚡</span>FLASH SALES siêu hot
-                            <span className="ml-4 text-black text-base font-medium bg-yellow-200 rounded px-2 py-1">
+                            <span className="ml-4 text-black text-base font-medium rounded px-2 py-1">
                                 <Countdown />
                             </span>
                         </h2>
@@ -272,41 +284,52 @@ const CategoryGrid = () => {
                             href="#"
                             className="text-sm text-orange-500 hover:underline"
                         >
-                            Xem tất cả &gt;
+                            Xem tất cả {'>'}
                         </a>
                     </div>
-                    <div className="">
-                        <button
-                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white border rounded-full shadow p-2 hover:bg-gray-100"
-                            onClick={() => handleFlashScroll('left')}
-                            aria-label="Scroll left"
-                        >
-                            &#8592;
-                        </button>
+                    <div className="relative group">
+                        {!flashAtStart && (
+                            <button
+                                className="absolute -left-11 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow p-2 group-hover:bg-orange-100 group-hover:scale-110 transition-transform duration-150 flex items-center justify-center cursor-pointer opacity-50 group-hover:opacity-100"
+                                onClick={() => handleFlashScroll('left')}
+                                aria-label="Scroll left"
+                                type="button"
+                            >
+                                <ArrowBackIosNewIcon className="text-lg text-orange-500" />
+                            </button>
+                        )}
                         <div
-                            ref={flashRef} // LEFT RIGHT
-                            className="overflow-x-auto scrollbar-hide px-8"
-                            style={{ scrollBehavior: 'smooth' }}
+                            ref={flashRef}
+                            className="px-8"
+                            style={{
+                                scrollBehavior: 'smooth',
+                                overflowX: 'auto',
+                                scrollbarWidth: 'none',
+                                msOverflowStyle: 'none',
+                            }}
                         >
                             <div className="flex min-w-max">
                                 {flashSales.map((item, index) => (
                                     <div
                                         key={item.name + index}
-                                        className="flex flex-col items-center bg-orange-50 border border-orange-200 rounded-lg mx-2 p-2 w-48 min-w-[12rem]"
+                                        className="flex flex-col items-center shadow-xl rounded-lg m-2 p-2 w-48 min-w-[12rem]"
                                     >
                                         <div className="absolute left-2 top-2 bg-pink-500 text-white text-xs px-2 py-0.5 rounded font-bold shadow">
                                             Mall
                                         </div>
-                                        <img
-                                            src={item.img}
-                                            alt={item.name}
-                                            className="w-32 h-32 object-contain mb-2 rounded"
-                                        />
+                                        <div className="w-36 h-36 flex items-center justify-center bg-white mb-2 rounded overflow-hidden ">
+                                            <img
+                                                src={item.img}
+                                                alt={item.name}
+                                                className="w-full h-full object-contain"
+                                            />
+                                        </div>
+
                                         <div className="text-sm font-semibold text-gray-800 text-center mb-1 line-clamp-2 min-h-[2.5rem]">
                                             {item.name}
                                         </div>
                                         <div className="text-lg font-bold text-red-500 mb-1">
-                                            ₫{formatPrice(item.price)}
+                                            {formatPrice(item.price)}
                                         </div>
                                         <div className="flex items-center justify-center mb-1">
                                             <span className="bg-gradient-to-r from-orange-400 to-pink-400 text-white text-xs font-bold px-3 py-1 rounded-full">
@@ -325,13 +348,21 @@ const CategoryGrid = () => {
                                 ))}
                             </div>
                         </div>
-                        <button
-                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white border rounded-full shadow p-2 hover:bg-gray-100"
-                            onClick={() => handleFlashScroll('right')}
-                            aria-label="Scroll right"
-                        >
-                            &#8594;
-                        </button>
+                        <style jsx>{`
+                            [ref="${flashRef.current}"]::-webkit-scrollbar {
+                                display: none;
+                            }
+                        `}</style>
+                        {!flashAtEnd && (
+                            <button
+                                className="absolute -right-11 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow p-2 group-hover:bg-orange-100 group-hover:scale-110 transition-transform duration-150 flex items-center justify-center cursor-pointer opacity-50 group-hover:opacity-100"
+                                onClick={() => handleFlashScroll('right')}
+                                aria-label="Scroll right"
+                                type="button"
+                            >
+                                <ArrowForwardIosIcon className="text-lg text-orange-500" />
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -340,8 +371,6 @@ const CategoryGrid = () => {
 };
 
 export default CategoryGrid;
-
-// Dữ liệu mẫu cho Flash Sale
 
 // Countdown component
 function Countdown() {
@@ -372,7 +401,7 @@ function Countdown() {
     );
 }
 
-// Flash sale scroll LEFT -> RFIHT
+// Flash sale scroll LEFT -> RIGHT
 const flashRef = React.createRef<HTMLDivElement>();
 function handleFlashScroll(dir: 'left' | 'right') {
     if (!flashRef.current) return;
