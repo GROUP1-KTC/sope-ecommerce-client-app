@@ -84,7 +84,10 @@ const Signup = () => {
     const handleCodeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const codeError = validateField('verificationCode', input.verificationCode);
+        const codeError = validateField(
+            'verificationCode',
+            input.verificationCode,
+        );
         setErrors((prev) => ({ ...prev, verificationCode: codeError }));
 
         if (codeError) return;
@@ -103,7 +106,10 @@ const Signup = () => {
 
         const newErrors = {
             password: validateField('password', input.password),
-            confirmPassword: validateField('confirmPassword', input.confirmPassword),
+            confirmPassword: validateField(
+                'confirmPassword',
+                input.confirmPassword,
+            ),
         };
 
         setErrors((prev) => ({ ...prev, ...newErrors }));
@@ -136,11 +142,18 @@ const Signup = () => {
                     <div className="min-h-[85vh] bg-[#d0001a] flex flex-col items-center justify-center px-4">
                         <div className="max-w-[600px] w-full">
                             <div className="p-6 sm:p-8 rounded-2xl bg-white border border-gray-200 shadow-sm">
-                                <h1 className="text-slate-900 text-center text-3xl font-semibold">Đăng ký</h1>
+                                <h1 className="text-slate-900 text-center text-3xl font-semibold">
+                                    Đăng ký
+                                </h1>
                                 {step === 1 && (
-                                    <form onSubmit={handleEmailSubmit} className="mt-6 space-y-6">
+                                    <form
+                                        onSubmit={handleEmailSubmit}
+                                        className="mt-6 space-y-6"
+                                    >
                                         <div>
-                                            <label className="text-slate-900 text-sm font-medium mb-2 block">Email</label>
+                                            <label className="text-slate-900 text-sm font-medium mb-2 block">
+                                                Email
+                                            </label>
                                             <div className="relative flex items-center">
                                                 <input
                                                     name="email"
@@ -149,7 +162,9 @@ const Signup = () => {
                                                     className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
                                                     placeholder="Nhập email"
                                                     value={input.email}
-                                                    onChange={changeEventHandler}
+                                                    onChange={
+                                                        changeEventHandler
+                                                    }
                                                     onBlur={handleBlur}
                                                 />
                                                 <svg
@@ -159,12 +174,22 @@ const Signup = () => {
                                                     className="w-4 h-4 absolute right-4"
                                                     viewBox="0 0 24 24"
                                                 >
-                                                    <circle cx="10" cy="7" r="6" data-original="#000000"></circle>
-                                                    <path d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z" data-original="#000000"></path>
+                                                    <circle
+                                                        cx="10"
+                                                        cy="7"
+                                                        r="6"
+                                                        data-original="#000000"
+                                                    ></circle>
+                                                    <path
+                                                        d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z"
+                                                        data-original="#000000"
+                                                    ></path>
                                                 </svg>
                                             </div>
                                             {errors.email && (
-                                                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                                                <p className="text-red-500 text-sm mt-1">
+                                                    {errors.email}
+                                                </p>
                                             )}
                                         </div>
                                         <div className="!mt-6">
@@ -177,7 +202,9 @@ const Signup = () => {
                                         </div>
                                         <div className="flex items-center my-4">
                                             <div className="flex-grow h-px bg-gray-200"></div>
-                                            <span className="mx-4 text-gray-400 text-sm font-medium">HOẶC</span>
+                                            <span className="mx-4 text-gray-400 text-sm font-medium">
+                                                HOẶC
+                                            </span>
                                             <div className="flex-grow h-px bg-gray-200"></div>
                                         </div>
                                         <div>
@@ -187,7 +214,9 @@ const Signup = () => {
                                                     className="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-md bg-white hover:bg-gray-100 text-slate-900 font-medium shadow-sm transition cursor-pointer"
                                                     onClick={() => {
                                                         // Google signup logic
-                                                        console.log('Google signup initiated');
+                                                        console.log(
+                                                            'Google signup initiated',
+                                                        );
                                                     }}
                                                 >
                                                     <Image
@@ -203,16 +232,24 @@ const Signup = () => {
                                         </div>
                                         <p className="text-slate-900 text-sm !mt-6 text-center">
                                             Đã có tài khoản?{' '}
-                                            <Link href="/login" className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold">
+                                            <Link
+                                                href="/login"
+                                                className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
+                                            >
                                                 Đăng nhập ở đây
                                             </Link>
                                         </p>
                                     </form>
                                 )}
                                 {step === 2 && (
-                                    <form onSubmit={handleCodeSubmit} className="mt-6 space-y-6">
+                                    <form
+                                        onSubmit={handleCodeSubmit}
+                                        className="mt-6 space-y-6"
+                                    >
                                         <div>
-                                            <label className="text-slate-900 text-sm font-medium mb-2 block">Mã xác nhận</label>
+                                            <label className="text-slate-900 text-sm font-medium mb-2 block">
+                                                Mã xác nhận
+                                            </label>
                                             <div className="relative flex items-center">
                                                 <input
                                                     name="verificationCode"
@@ -220,8 +257,12 @@ const Signup = () => {
                                                     required
                                                     className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
                                                     placeholder="Nhập mã xác nhận (6 chữ số)"
-                                                    value={input.verificationCode}
-                                                    onChange={changeEventHandler}
+                                                    value={
+                                                        input.verificationCode
+                                                    }
+                                                    onChange={
+                                                        changeEventHandler
+                                                    }
                                                     onBlur={handleBlur}
                                                 />
                                                 <svg
@@ -235,7 +276,9 @@ const Signup = () => {
                                                 </svg>
                                             </div>
                                             {errors.verificationCode && (
-                                                <p className="text-red-500 text-sm mt-1">{errors.verificationCode}</p>
+                                                <p className="text-red-500 text-sm mt-1">
+                                                    {errors.verificationCode}
+                                                </p>
                                             )}
                                         </div>
                                         <div className="!mt-6">
@@ -258,61 +301,106 @@ const Signup = () => {
                                     </form>
                                 )}
                                 {step === 3 && (
-                                    <form onSubmit={handleSignupSubmit} className="mt-6 space-y-6">
+                                    <form
+                                        onSubmit={handleSignupSubmit}
+                                        className="mt-6 space-y-6"
+                                    >
                                         <div>
-                                            <label className="text-slate-900 text-sm font-medium mb-2 block">Mật khẩu</label>
+                                            <label className="text-slate-900 text-sm font-medium mb-2 block">
+                                                Mật khẩu
+                                            </label>
                                             <div className="relative flex items-center">
                                                 <input
                                                     name="password"
-                                                    type={showPassword ? 'text' : 'password'}
+                                                    type={
+                                                        showPassword
+                                                            ? 'text'
+                                                            : 'password'
+                                                    }
                                                     required
                                                     className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
                                                     placeholder="Nhập mật khẩu"
                                                     value={input.password}
-                                                    onChange={changeEventHandler}
+                                                    onChange={
+                                                        changeEventHandler
+                                                    }
                                                     onBlur={handleBlur}
                                                 />
                                                 <span
                                                     className="absolute right-4 cursor-pointer"
-                                                    onClick={() => setShowPassword((prev) => !prev)}
+                                                    onClick={() =>
+                                                        setShowPassword(
+                                                            (prev) => !prev,
+                                                        )
+                                                    }
                                                 >
                                                     {showPassword ? (
-                                                        <EyeOff size={16} color="#bbb" />
+                                                        <EyeOff
+                                                            size={16}
+                                                            color="#bbb"
+                                                        />
                                                     ) : (
-                                                        <Eye size={16} color="#bbb" />
+                                                        <Eye
+                                                            size={16}
+                                                            color="#bbb"
+                                                        />
                                                     )}
                                                 </span>
                                             </div>
                                             {errors.password && (
-                                                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                                                <p className="text-red-500 text-sm mt-1">
+                                                    {errors.password}
+                                                </p>
                                             )}
                                         </div>
                                         <div>
-                                            <label className="text-slate-900 text-sm font-medium mb-2 block">Xác nhận mật khẩu</label>
+                                            <label className="text-slate-900 text-sm font-medium mb-2 block">
+                                                Xác nhận mật khẩu
+                                            </label>
                                             <div className="relative flex items-center">
                                                 <input
                                                     name="confirmPassword"
-                                                    type={showConfirmPassword ? 'text' : 'password'}
+                                                    type={
+                                                        showConfirmPassword
+                                                            ? 'text'
+                                                            : 'password'
+                                                    }
                                                     required
                                                     className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
                                                     placeholder="Xác nhận mật khẩu"
-                                                    value={input.confirmPassword}
-                                                    onChange={changeEventHandler}
+                                                    value={
+                                                        input.confirmPassword
+                                                    }
+                                                    onChange={
+                                                        changeEventHandler
+                                                    }
                                                     onBlur={handleBlur}
                                                 />
                                                 <span
                                                     className="absolute right-4 cursor-pointer"
-                                                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                                                    onClick={() =>
+                                                        setShowConfirmPassword(
+                                                            (prev) => !prev,
+                                                        )
+                                                    }
                                                 >
                                                     {showConfirmPassword ? (
-                                                        <EyeOff size={16} color="#bbb" />
+                                                        <EyeOff
+                                                            size={16}
+                                                            color="#bbb"
+                                                        />
                                                     ) : (
-                                                        <Eye size={16} color="#bbb" />
+                                                        <Eye
+                                                            size={16}
+                                                            color="#bbb"
+                                                        />
                                                     )}
                                                 </span>
                                             </div>
                                             {errors.confirmPassword && (
-                                                <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+                                                <p className="text-red-500 text-sm mt-1">
+                                                    {errors.confirmPassword}
+                                                </p>
                                             )}
                                         </div>
 
