@@ -15,7 +15,6 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
-
 const notifications = [
     {
         id: 1,
