@@ -14,7 +14,7 @@ export default function SupportButton({ active, onClick }: Props) {
         active ? "bg-orange-100" : ""
       }`}
     >
-      <SupportAgentOutlinedIcon className="text-blue-500" />
+      <SupportAgentOutlinedIcon className="text-red-500" />
     </button>
   );
 }

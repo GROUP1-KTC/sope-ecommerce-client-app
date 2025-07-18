@@ -5,7 +5,7 @@ export default function ShopRatingSummary() {
     <Card className="space-y-4 p-4">
       <div className="flex justify-between items-center">
         <h2 className="text-base font-semibold text-gray-800">
-          Đánh Giá Shop <span className="text-blue-600">0.0</span>/5
+          Đánh Giá Shop <span className="text-red-600">0.0</span>/5
         </h2>
         <div className="text-sm text-gray-500">
           Từ 17-06-2025 đến 16-07-2025

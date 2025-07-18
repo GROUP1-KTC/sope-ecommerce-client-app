@@ -2,7 +2,7 @@ export default function PayoutSummary() {
   return (
     <div className="space-y-4">
       <div className="text-lg font-semibold">Tổng Quan</div>
-      <div className="p-3 bg-blue-100 text-sm rounded text-blue-700 border border-blue-300">
+      <div className="p-3 bg-blue-100 text-sm rounded text-red-700 border border-red-300">
         Các số dưới đây chưa bao gồm điều chỉnh. Vui lòng tải xuống Báo cáo thu
         nhập để kiểm tra chi tiết các điều chỉnh liên quan.
       </div>
@@ -26,7 +26,7 @@ export default function PayoutSummary() {
         </div>
       </div>
 
-      <div className="text-right text-sm text-blue-600 underline cursor-pointer">
+      <div className="text-right text-sm text-red-600 underline cursor-pointer">
         Số dư TK Shopee
       </div>
     </div>

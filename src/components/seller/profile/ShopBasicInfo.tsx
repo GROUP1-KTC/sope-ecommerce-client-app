@@ -11,7 +11,7 @@ export default function ShopBasicInfo() {
           <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-100">
             Xem Shop của tôi
           </button>
-          <button className="px-4 py-2 border border-blue-600 text-white bg-blue-600 rounded hover:bg-blue-700">
+          <button className="px-4 py-2 border border-red-600 text-white bg-red-600 rounded hover:bg-red-700">
             Chỉnh sửa
           </button>
         </div>

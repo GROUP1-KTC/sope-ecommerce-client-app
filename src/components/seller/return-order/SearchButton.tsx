@@ -3,7 +3,7 @@ export default function SearchButton({ onSearch }: { onSearch: () => void }) {
     <div className="flex space-x-2">
       <button
         onClick={onSearch}
-        className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+        className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
       >
         Tìm kiếm
       </button>

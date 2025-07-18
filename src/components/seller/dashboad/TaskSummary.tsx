@@ -18,7 +18,7 @@ export default function TaskSummary() {
             key={task.label}
             className="flex flex-col items-center justify-center border border-gray-200 rounded-xl py-6 hover:shadow-lg transition duration-300"
           >
-            <p className="text-2xl font-bold text-blue-600">{task.count}</p>
+            <p className="text-2xl font-bold text-red-600">{task.count}</p>
             <p className="text-sm text-gray-500 mt-2">{task.label}</p>
           </div>
         ))}

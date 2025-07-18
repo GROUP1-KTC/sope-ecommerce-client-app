@@ -7,21 +7,23 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 export default function QuickMenu() {
-  const [open, setOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+    const [open, setOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
 
-  // Click outside to close
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
+    useEffect(() => {
+        const handler = (e: MouseEvent) => {
+            if (
+                menuRef.current &&
+                !menuRef.current.contains(e.target as Node)
+            ) {
+                setOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handler);
+        return () => document.removeEventListener('mousedown', handler);
+    }, []);
 
-  const items = [
+const items = [
     {
       label: "All",
       icon: (
@@ -47,14 +49,14 @@ export default function QuickMenu() {
     },
   ];
 
-  return (
-    <div className="relative" ref={menuRef}>
-      <button
-        onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded hover:bg-gray-200"
-      >
-        <GridViewIcon />
-      </button>
+    return (
+        <div className="relative" ref={menuRef}>
+            <button
+                onClick={() => setOpen((prev) => !prev)}
+                className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded hover:bg-gray-200"
+            >
+                <GridViewIcon />
+            </button>
 
       {open && (
         <div className="absolute top-12 right-0 w-72 bg-white shadow-xl rounded-lg p-4 z-50">
@@ -62,7 +64,7 @@ export default function QuickMenu() {
             {items.map((item, idx) => (
               <button
                 key={idx}
-                className="flex flex-col items-center text-sm text-gray-700 hover:text-blue-500"
+                className="flex flex-col items-center text-sm text-gray-700 hover:text-red-500"
               >
                 <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 mb-1">
                   {item.icon}

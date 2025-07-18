@@ -14,7 +14,6 @@ import { Line } from "react-chartjs-2";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
-// Register ChartJS components
 ChartJS.register(
   LineElement,
   CategoryScale,
@@ -25,7 +24,6 @@ ChartJS.register(
   Filler
 );
 
-// Constants
 const metrics = [
   { label: "Doanh số", value: "₫0", change: "0,00%" },
   { label: "Đơn hàng", value: "0", change: "0,00%" },
@@ -127,7 +125,6 @@ export default function DynamicMetricChart() {
 
   return (
     <div className="bg-white rounded shadow p-6 space-y-6">
-      {/* Title */}
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-xl font-semibold">Tùy Chọn Chỉ Số</h2>
@@ -137,7 +134,6 @@ export default function DynamicMetricChart() {
         </div>
       </div>
 
-      {/* Toggle Metrics */}
       <div className="relative">
         <button
           onClick={() => handleScroll("left")}
@@ -174,7 +170,6 @@ export default function DynamicMetricChart() {
         </button>
       </div>
 
-      {/* Chart */}
       <div className="mt-4">
         <Line data={data} options={options} />
         {selectedMetrics.length === 0 && (

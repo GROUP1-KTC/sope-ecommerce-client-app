@@ -13,13 +13,13 @@ export default function ShopIdentityInfo() {
           <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-100">
             Chỉnh sửa thông tin
           </button>
-          <button className="px-4 py-2 border border-blue-600 text-white bg-blue-600 rounded hover:bg-blue-700">
+          <button className="px-4 py-2 border border-red-600 text-white bg-red-600 rounded hover:bg-red-700">
             Lịch sử chỉnh sửa
           </button>
         </div>
       </div>
 
-      <div className="p-4 bg-blue-50 text-sm text-blue-800 border border-blue-200 rounded">
+      <div className="p-4 bg-blue-50 text-sm text-red-800 border border-blue-200 rounded">
         Thông tin định danh chỉ được cập nhật một lần trong tháng.
       </div>
 

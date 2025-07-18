@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
@@ -13,7 +13,7 @@ export default function MerchantSidebar() {
   const [openItems, setOpenItems] = useState<Record<number, boolean>>({});
   const [activePath, setActivePath] = useState<string>("");
 
-  const pathname = usePathname();
+    const pathname = usePathname();
 
   useEffect(() => {
     setActivePath(pathname);
@@ -28,44 +28,48 @@ export default function MerchantSidebar() {
     });
   }, [pathname]);
 
-  const toggleItem = (index: number) => {
-    setOpenItems((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
-  };
+    const toggleItem = (index: number) => {
+        setOpenItems((prev) => ({
+            ...prev,
+            [index]: !prev[index],
+        }));
+    };
 
   const navItems = [
     {
       label: "Order Management",
       icon: <ShoppingCartOutlinedIcon className="h-5 w-5 mr-3" />,
       children: [
-        { label: "All", href: "/seller/all-order" },
-        {
-          label: "Return/Refund or Cancellation Order",
-          href: "/seller/return-order",
-        },
+                { label: 'All Order', href: '/seller/all-order' },
+                {
+                    label: 'Return/Refund or Cancellation Order',
+                    href: '/seller/return-order',
+                },
       ],
     },
     {
       label: "Product Management",
       icon: <Inventory2OutlinedIcon className="h-5 w-5 mr-3" />,
       children: [
-        { label: "All Products", href: "#products" },
-        { label: "Add Product", href: "#add-product" },
-      ],
+                { label: 'All Products', href: '/seller/all-products' },
+                { label: 'Add Product', href: '/seller/add-product' },
+            ],
     },
     {
       label: "Marketing Channel",
       icon: <LocalOfferIcon className="h-5 w-5 mr-3" />,
-      children: [
-        { label: "Marketing Channel", href: "#marketing" },
-        { label: "Live & Video", href: "#live" },
-        { label: "Shop Promotions", href: "#promotions" },
-        { label: "Shop Flash Sale", href: "#flash-sale" },
-        { label: "Shop Discount Code", href: "#discount" },
-        { label: "Sope Program", href: "#program" },
-      ],
+            children: [
+                {
+                    label: 'Marketing Channel',
+                    href: '/seller/marketing-channel',
+                },
+                { label: 'Sope Advertising', href: '#ads' },
+                { label: 'Live & Video', href: '#live' },
+                { label: 'Shop Promotions', href: '#promotions' },
+                { label: 'Shop Flash Sale', href: '#flash-sale' },
+                { label: 'Shop Discount Code', href: '#discount' },
+                { label: 'Sope Program', href: '#program' },
+            ],
     },
     {
       label: "Customer Service",
@@ -79,11 +83,12 @@ export default function MerchantSidebar() {
       label: "Financial",
       icon: <PaymentsOutlinedIcon className="h-5 w-5 mr-3" />,
       children: [
-        { label: "Revenue", href: "/seller/turnover" },
+        { label: "Revenue", href: "/seller/revenue" },
         { label: "Sope Account Balance", href: "/seller/account-balance" },
         { label: "Bank Account", href: "/seller/bank" },
       ],
     },
+
     {
       label: "Shop Management",
       icon: <StoreOutlinedIcon className="h-5 w-5 mr-3" />,
@@ -100,10 +105,9 @@ export default function MerchantSidebar() {
         <ul>
           {navItems.map((item, index) => (
             <li key={index} className="mb-2">
-              {/* Toggle group */}
               <button
                 onClick={() => toggleItem(index)}
-                className="w-full flex items-center justify-between py-2 px-3 rounded-md text-gray-700 hover:bg-gray-100 hover:text-blue-500"
+                className="w-full flex items-center justify-between py-2 px-3 rounded-md text-gray-700 hover:bg-gray-100 hover:text-red-500"
               >
                 <span className="flex items-center">
                   {item.icon}
@@ -112,7 +116,6 @@ export default function MerchantSidebar() {
                 <span>{openItems[index] ? "▾" : "▸"}</span>
               </button>
 
-              {/* Children */}
               {item.children && openItems[index] && (
                 <ul className="ml-8 mt-1">
                   {item.children.map((sub, subIndex) => (
@@ -121,8 +124,8 @@ export default function MerchantSidebar() {
                         href={sub.href}
                         className={`block py-1 px-2 text-sm rounded-md ${
                           activePath === sub.href
-                            ? "text-blue-500 bg-orange-100"
-                            : "text-gray-600 hover:text-blue-500 hover:bg-gray-50"
+                            ? "text-red-500 bg-orange-100"
+                            : "text-gray-600 hover:text-red-500 hover:bg-gray-50"
                         }`}
                       >
                         {sub.label}

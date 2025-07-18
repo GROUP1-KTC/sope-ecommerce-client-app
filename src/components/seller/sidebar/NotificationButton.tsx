@@ -14,7 +14,7 @@ export default function NotificationButton({ active, onClick }: Props) {
         active ? "bg-orange-100" : ""
       }`}
     >
-      <NotificationsNoneOutlinedIcon className="text-blue-500" />
+      <NotificationsNoneOutlinedIcon className="text-red-500" />
     </button>
   );
 }

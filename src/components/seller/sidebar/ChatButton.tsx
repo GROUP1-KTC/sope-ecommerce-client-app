@@ -14,7 +14,7 @@ export default function ChatButton({ active, onClick }: Props) {
         active ? "bg-orange-100" : ""
       }`}
     >
-      <ChatIcon className="text-blue-500" />
+      <ChatIcon className="text-red-500" />
     </button>
   );
 }

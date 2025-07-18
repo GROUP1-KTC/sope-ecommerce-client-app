@@ -74,7 +74,7 @@ export default function FilterBar({ onShippingUnitChange }: FilterBarProps) {
           </select>
         </label>
 
-        <button className="border px-4 py-1 bg-gray-100 rounded hover:bg-gray-200 text-blue-500 border-blue-500">
+        <button className="border px-4 py-1 bg-gray-100 rounded hover:bg-gray-200 text-red-500 border-red-500">
           Apply
         </button>
         <button className="border px-4 py-1 bg-gray-100 rounded hover:bg-gray-200 text-gray-600">

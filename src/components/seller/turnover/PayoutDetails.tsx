@@ -54,7 +54,6 @@ export default function PayoutDetails() {
         </div>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto border rounded">{renderTable()}</div>
     </div>
   );

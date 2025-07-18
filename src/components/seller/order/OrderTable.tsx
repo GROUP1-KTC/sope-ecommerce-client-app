@@ -95,7 +95,7 @@ export default function OrderTable({
             <div>{order.countdown}</div>
             <div className="truncate">{order.shippingUnit}</div>
             <div>
-              <button className="text-blue-600 hover:underline flex items-center gap-1">
+              <button className="text-red-600 hover:underline flex items-center gap-1">
                 Xem
               </button>
             </div>

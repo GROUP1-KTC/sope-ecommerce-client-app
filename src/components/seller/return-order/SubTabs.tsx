@@ -20,7 +20,7 @@ export default function SubTabs({ active, onChange }: Props) {
           key={tab}
           onChange={() => onChange(tab)}
           className={`text-sm ${
-            active === tab ? "text-blue-500 font-medium" : "text-gray-600"
+            active === tab ? "text-red-500 font-medium" : "text-gray-600"
           }`}
         >
           {tab}
