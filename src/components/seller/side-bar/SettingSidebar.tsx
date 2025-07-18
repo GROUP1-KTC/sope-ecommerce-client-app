@@ -4,7 +4,7 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
 import ChatIcon from '@mui/icons-material/Chat';
 
-export default function Sidebar() {
+export default function SettingSidebar() {
     return (
         <div className="fixed right-4 top-20 flex flex-col gap-4 z-50">
             <button

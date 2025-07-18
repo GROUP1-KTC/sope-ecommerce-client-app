@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import ExpandableItem from './ExpandableItem';
-import StepIndicator from '../register/StepIndicator';
-import FormNavigationButtons from '../../common/FormNavigationButtons';
 
 // Reusable content component
 function ShippingToggle({
@@ -46,19 +44,8 @@ export default function ShippingSettingsForm() {
 
     const shippingOptions = ['Super Fast - Urgent', 'Fast', 'Savings'];
 
-    const [step, setStep] = useState(1);
-
-    const steps = [
-        'Shop Infomation',
-        'Shipping Settings',
-        'Tax Information',
-        'Identification Information',
-        'Complete',
-    ];
-
     return (
         <div className="max-w-4xl mx-auto bg-white shadow rounded-lg p-6 mt-10">
-            <StepIndicator steps={steps} currentStep={step} />
             {shippingOptions.map((title) => (
                 <ExpandableItem key={title} title={title}>
                     <ShippingToggle
@@ -77,8 +64,6 @@ export default function ShippingSettingsForm() {
                 </p>
             </ExpandableItem>
 
-            {/* Nút điều hướng */}
-            <FormNavigationButtons />
         </div>
     );
 }
