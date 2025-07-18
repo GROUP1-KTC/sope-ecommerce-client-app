@@ -14,9 +14,9 @@ export default function SellerHeaderHome({
     return (
         <header className="flex justify-between items-center p-2 px-10 bg-white shadow">
             <div className="flex items-center justify-between gap-2 text-lg font-semibold">
-                <Link href="/seller" className="bg-red-600 red transition">
+                <Link href="/seller" className=" red transition">
                     <Image
-                        src="/assets/logo/logo.svg"
+                        src="/assets/logo/logo_red.svg"
                         alt="Sope Logo"
                         width={150}
                         height={60}
