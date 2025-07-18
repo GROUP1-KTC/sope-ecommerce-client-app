@@ -1,3 +1,4 @@
+import Footer from '~/components/customer/Footer';
 import HeaderLogin from '~/components/customer/HeaderLogin';
 
 export default function LoginLayout({
@@ -6,11 +7,10 @@ export default function LoginLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
-            <body>
+        <>
                 <HeaderLogin />
                 <main>{children}</main>
-            </body>
-        </html>
+                <Footer />
+        </>
     );
 }

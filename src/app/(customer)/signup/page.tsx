@@ -129,7 +129,7 @@ const Signup = () => {
     return (
         <div className="min-h-[80vh] bg-[#d0001a] text-gray-900 flex justify-center">
             <div className="max-w-screen-lg mx-8 bg-white sm:rounded-lg flex justify-center flex-1">
-                <div className="w-4/7 bg-[#d0001a] text-center hidden lg:flex items-center justify-center">
+                <div className="w-4/7 bg-[#d0001a] text-center hidden lg:flex items-center justify-center flex-col">
                     <Image
                         src="/assets/logo/logo.svg"
                         alt="Sope Logo"
@@ -137,6 +137,9 @@ const Signup = () => {
                         height={130}
                         className="h-24 sm:h-48 w-auto"
                     />
+                    <p className="text-white text-xl font-semibold mt-4">
+                        Nền tảng thương mại điện tử hàng đầu quận 7
+                    </p>
                 </div>
                 <div className="bg-gray-50 flex-1">
                     <div className="min-h-[85vh] bg-[#d0001a] flex flex-col items-center justify-center px-4">
