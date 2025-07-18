@@ -1,5 +1,7 @@
 import React from 'react';
 
+
+
 const trendingStyles = [
     {
         name: 'SOFT BOY ÁO HOODIE',
@@ -29,6 +31,9 @@ const trendingStyles = [
 ];
 
 const TopTrending = () => {
+
+  
+    
     return (
         <div className="w-full flex justify-center bg-gray-50 py-8">
             <div className="bg-white rounded-xl shadow p-6 max-w-6xl w-full">
@@ -39,7 +44,7 @@ const TopTrending = () => {
                     {trendingStyles.map((item, idx) => (
                         <div
                             key={idx}
-                            className="border rounded-lg bg-white flex flex-col items-center p-2"
+                            className="shadow-xl cursor-pointer hover:bg-orange-100 rounded-lg bg-white flex flex-col items-center p-2"
                         >
                             <div className="w-full h-48 flex items-center justify-center mb-2 overflow-hidden">
                                 <img

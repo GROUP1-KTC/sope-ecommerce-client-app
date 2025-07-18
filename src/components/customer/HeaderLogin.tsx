@@ -1,29 +1,42 @@
+
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import Link from 'next/link';
 import Image from 'next/image';
 
-const HeaderLogin = () => {
+const Header = () => {
+
     return (
-        <header className="w-full flex items-center justify-between px-48 py-2 border-b border-orange-200 bg-white">
-            <div className="flex items-center gap-2">
-                {/* <Image src="/assets/logo/logo.svg" alt="Shopee Logo" width={32} height={32} /> */}
-                <div className=" bg-[#e5471b] currentColor">
-                    <Image
-                        src="/assets/logo/logo.svg"
-                        alt="Sope Logo"
-                        width={100}
-                        height={80}
-                        className=""
-                    />
+        <header className="bg-white text-[#d0001a] w-full px-4 sm:px-8 md:px-20 lg:px-40">
+            {/* Main bar */}
+            <div className="flex items-center justify-between py-2 sm:py-2 flex-wrap">
+                {/* Left side */}
+                <div className="flex items-center gap-3 sm:gap-6 w-full sm:w-auto">
+                    <Link href="/">
+                        <Image
+                            src="/assets/logo/logo_red.svg"
+                            alt="Sope Logo"
+                            width={220}
+                            height={94}
+                            className="h-12 sm:h-16 w-auto"
+                        />
+                    </Link>
+                    <p className="text-black font-normal text-xs sm:text-2xl ">
+                        Đăng nhập
+                    </p>
                 </div>
-                {/* <span className="text-2xl font-semibold text-orange-500">Shopee</span> */}
-                <span className="ml-2 text-lg font-medium text-gray-800">
-                    Đăng nhập
-                </span>
+
+                {/* Right side */}
+                <div className="flex items-center gap-4 mt-2 sm:mt-0 ml-auto">
+                    <Link
+                        href="/help"
+                        className="text-[#d0001a] hover:text-gray-200 text-sm hidden sm:inline-block"
+                    >
+                        Bạn cần giúp đỡ?
+                    </Link>
+                </div>
             </div>
-            <a href="#" className="text-sm text-orange-500 hover:underline">
-                Bạn cần giúp đỡ?
-            </a>
         </header>
     );
 };
 
-export default HeaderLogin;
+export default Header;

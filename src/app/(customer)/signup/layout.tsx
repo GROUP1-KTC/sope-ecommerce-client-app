@@ -1,3 +1,4 @@
+import Footer from '~/components/customer/Footer';
 import HeaderSignup from '~/components/customer/HeaderSignup';
 
 export default function UserLayout({
@@ -6,11 +7,10 @@ export default function UserLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
-            <body>
+        <>
                 <HeaderSignup />
                 <main>{children}</main>
-            </body>
-        </html>
+                <Footer />
+        </>
     );
 }

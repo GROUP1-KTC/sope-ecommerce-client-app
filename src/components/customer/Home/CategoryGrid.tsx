@@ -317,11 +317,9 @@ const CategoryGrid = () => {
                                 {flashSales.map((item, index) => (
                                     <div
                                         key={item.name + index}
-                                        className="flex flex-col items-center shadow-xl rounded-lg m-2 p-2 w-48 min-w-[12rem]"
+                                        className="flex flex-col items-center shadow-xl rounded-lg m-2 p-2 w-48 min-w-[12rem] cursor-pointer hover:bg-orange-100 transition-colors duration-200"
                                     >
-                                        <div className="absolute left-2 top-2 bg-pink-500 text-white text-xs px-2 py-0.5 rounded font-bold shadow">
-                                            Mall
-                                        </div>
+                                      
                                         <div className="w-36 h-36 flex items-center justify-center bg-white mb-2 rounded overflow-hidden ">
                                             <img
                                                 src={item.img}
