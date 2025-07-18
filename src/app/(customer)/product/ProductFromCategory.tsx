@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const categories = [
     'Thời Trang Nam',
@@ -280,7 +282,7 @@ const ProductFromCategory = () => {
                                     className="border rounded px-2 py-1 w-24 text-xs"
                                 />
                             </div>
-                            <button className="w-full bg-orange-500 text-white rounded py-2 font-semibold">
+                            <button className="w-full bg-[#E44358] text-white rounded py-2 font-semibold cursor-pointer hover:bg-[#d0001a] transition-colors duration-200">
                                 ÁP DỤNG
                             </button>
                         </div>
@@ -369,7 +371,7 @@ const ProductFromCategory = () => {
                         {sortOptions.map((key, index) => (
                             <button
                                 key={key}
-                                className={`px-4 py-2 rounded border text-sm font-medium ${sort === key ? 'bg-red-500 text-white border-red-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}`}
+                                className={`px-4 py-2 rounded cursor-pointer border text-sm font-medium ${sort === key ? 'bg-red-500 text-white border-red-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}`}
                                 onClick={() => setSort(key)}
                             >
                                 {key}
@@ -379,18 +381,18 @@ const ProductFromCategory = () => {
                             {page}/8
                         </span>
                         <button
-                            className="p-1 border rounded mx-1"
+                            className="p-1 border rounded mx-1 cursor-pointer text-black hover:text-red-500 transition-colors duration-200 flex items-center justify-center disabled:opacity-50"
                             disabled={page === 1}
                             onClick={() => setPage((p) => Math.max(1, p - 1))}
                         >
-                            &lt;
+                           <ArrowBackIcon />
                         </button>
                         <button
-                            className="p-1 border rounded"
+                            className="p-1 border rounded mx-1 cursor-pointer text-gray-500 hover:text-red-500 transition-colors duration-200 flex items-center justify-center disabled:opacity-50"
                             disabled={page === 8}
                             onClick={() => setPage((p) => Math.min(8, p + 1))}
                         >
-                            &gt;
+                            <ArrowForwardIcon />
                         </button>
                     </div>
                     {/* Product grid */}
@@ -398,7 +400,7 @@ const ProductFromCategory = () => {
                         {productucts.map((product, index) => (
                             <div
                                 key={index}
-                                className="border rounded-lg bg-white flex flex-col p-2 relative"
+                                className="border rounded-lg bg-white flex flex-col p-2 relative cursor-pointer hover:shadow-lg transition-shadow duration-200 hover:scale-105 hover:bg-orange-100"
                             >
                                 {product.label && (
                                     <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
@@ -419,17 +421,17 @@ const ProductFromCategory = () => {
                                     </div>
                                     <div className="flex items-center gap-2 mb-1">
                                         <span className="text-red-500 font-bold">
-                                            ₫{product.price.toLocaleString()}
+                                            ₫{product.price.toLocaleString('vi-VN')}
                                         </span>
                                         <span className="text-gray-400 line-through text-xs">
-                                            ₫{product.oldPrice.toLocaleString()}
+                                            ₫{product.oldPrice.toLocaleString('vi-VN')}
                                         </span>
                                         <span className="bg-yellow-200 text-yellow-800 text-xs font-bold px-1 rounded">
                                             -{product.discount}%
                                         </span>
                                     </div>
                                     <div className="text-xs text-gray-500">
-                                        Đã bán {product.sold.toLocaleString()}
+                                        Đã bán {product.sold.toLocaleString('vi-VN')}
                                     </div>
                                 </div>
                             </div>
