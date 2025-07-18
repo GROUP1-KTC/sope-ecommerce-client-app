@@ -8,9 +8,9 @@ export default function UserLayout({
 }) {
     return (
         <>
-                <HeaderSignup />
-                <main>{children}</main>
-                <Footer />
+            <HeaderSignup />
+            <main>{children}</main>
+            <Footer />
         </>
     );
 }

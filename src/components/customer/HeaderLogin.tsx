@@ -1,10 +1,8 @@
-
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import Link from 'next/link';
 import Image from 'next/image';
 
 const Header = () => {
-
     return (
         <header className="bg-white text-[#d0001a] w-full px-4 sm:px-8 md:px-20 lg:px-40">
             {/* Main bar */}

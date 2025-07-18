@@ -1,7 +1,5 @@
 import React from 'react';
 
-
-
 const trendingStyles = [
     {
         name: 'SOFT BOY ÁO HOODIE',
@@ -31,9 +29,6 @@ const trendingStyles = [
 ];
 
 const TopTrending = () => {
-
-  
-    
     return (
         <div className="w-full flex justify-center bg-gray-50 py-8">
             <div className="bg-white rounded-xl shadow p-6 max-w-6xl w-full">

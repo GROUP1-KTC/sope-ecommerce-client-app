@@ -8,9 +8,9 @@ export default function LoginLayout({
 }) {
     return (
         <>
-                <HeaderLogin />
-                <main>{children}</main>
-                <Footer />
+            <HeaderLogin />
+            <main>{children}</main>
+            <Footer />
         </>
     );
 }

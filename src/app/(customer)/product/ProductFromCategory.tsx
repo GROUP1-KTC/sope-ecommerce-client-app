@@ -385,7 +385,7 @@ const ProductFromCategory = () => {
                             disabled={page === 1}
                             onClick={() => setPage((p) => Math.max(1, p - 1))}
                         >
-                           <ArrowBackIcon />
+                            <ArrowBackIcon />
                         </button>
                         <button
                             className="p-1 border rounded mx-1 cursor-pointer text-gray-500 hover:text-red-500 transition-colors duration-200 flex items-center justify-center disabled:opacity-50"
@@ -421,17 +421,24 @@ const ProductFromCategory = () => {
                                     </div>
                                     <div className="flex items-center gap-2 mb-1">
                                         <span className="text-red-500 font-bold">
-                                            ₫{product.price.toLocaleString('vi-VN')}
+                                            ₫
+                                            {product.price.toLocaleString(
+                                                'vi-VN',
+                                            )}
                                         </span>
                                         <span className="text-gray-400 line-through text-xs">
-                                            ₫{product.oldPrice.toLocaleString('vi-VN')}
+                                            ₫
+                                            {product.oldPrice.toLocaleString(
+                                                'vi-VN',
+                                            )}
                                         </span>
                                         <span className="bg-yellow-200 text-yellow-800 text-xs font-bold px-1 rounded">
                                             -{product.discount}%
                                         </span>
                                     </div>
                                     <div className="text-xs text-gray-500">
-                                        Đã bán {product.sold.toLocaleString('vi-VN')}
+                                        Đã bán{' '}
+                                        {product.sold.toLocaleString('vi-VN')}
                                     </div>
                                 </div>
                             </div>

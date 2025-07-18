@@ -87,7 +87,8 @@ const Mall = () => {
 
         handleScrollEvent();
         container?.addEventListener('scroll', handleScrollEvent);
-        return () => container?.removeEventListener('scroll', handleScrollEvent);
+        return () =>
+            container?.removeEventListener('scroll', handleScrollEvent);
     }, []);
 
     return (
@@ -118,15 +119,18 @@ const Mall = () => {
                     <div
                         ref={containerRef}
                         className="overflow-x-auto"
-                        style={{ 
+                        style={{
                             scrollBehavior: 'smooth',
                             scrollbarWidth: 'none',
-                            msOverflowStyle: 'none' 
+                            msOverflowStyle: 'none',
                         }}
                     >
                         <div className="flex">
                             {brands.map((brand, index) => (
-                                <div key={index} className="flex flex-col hover">
+                                <div
+                                    key={index}
+                                    className="flex flex-col hover"
+                                >
                                     <Link href="/mall-detail">
                                         <div className="w-40 h-40 flex items-center justify-center rounded mb-2 border border-gray-200 overflow-hidden hover:bg-orange-100 transition-colors duration-200   ">
                                             <img
@@ -138,8 +142,8 @@ const Mall = () => {
                                         </div>
                                         <div className="flex justify-center">
                                             <span className="text-sm text-center text-gray-800 font-semibold leading-tight">
-                                            {brand.name}
-                                        </span>
+                                                {brand.name}
+                                            </span>
                                         </div>
                                     </Link>
                                 </div>
