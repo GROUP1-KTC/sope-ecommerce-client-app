@@ -1,8 +1,3 @@
-import { time } from 'console';
-import { features } from 'process';
-import ProductDescription from '~/components/product-detail/ProductDescription';
-import SellerInfo from '~/components/product-detail/SellerInfo';
-
 export const productData = {
     breadcrumb:
         'Shopee / Mẹ & Bé / Tã & bô em bé / Tã dùng một lần / Tã Bỉm Quần/Dán MOONY Xanh Unicharm Nhập Khẩu Chính Hãng, Đầy Đủ Tem Phụ cho bé trai và bé gái',

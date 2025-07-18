@@ -13,14 +13,13 @@ export default function SellerLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const [headerTitle, setHeaderTitle] = useState('');
     const pathname = usePathname();
     const isAddProductPage = pathname?.includes('/seller/add-product');
 
     if (isAddProductPage) {
         return (
             <>
-                <SellerHeaderHome headerTitle={headerTitle} />
+                <SellerHeaderHome />
                 <main className="flex-1 bg-[#fafbfc] p-6 overflow-y-auto">
                     {children}
                 </main>
@@ -30,10 +29,10 @@ export default function SellerLayout({
 
     return (
         <>
-            <SellerHeaderHome headerTitle={headerTitle} />
+            <SellerHeaderHome />
             <div className="flex h-[calc(100vh-60px)]">
                 <aside className="w-60 min-w-[200px] bg-white border-r border-gray-200">
-                    <MerchantSidebar setHeaderTitle={setHeaderTitle} />
+                    <MerchantSidebar />
                 </aside>
                 <main className="flex-1 bg-[#fafbfc] p-6 overflow-y-auto">
                     {children}

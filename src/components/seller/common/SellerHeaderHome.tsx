@@ -1,16 +1,10 @@
 'use client';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import Image from 'next/image';
 import Link from 'next/link';
 import QuickMenu from './QuickMenu';
 
-
-export default function SellerHeaderHome({
-    headerTitle,
-}: {
-    headerTitle: string;
-}) {
+export default function SellerHeaderHome() {
     return (
         <header className="flex justify-between items-center p-2 px-10 bg-white shadow">
             <div className="flex items-center justify-between gap-2 text-lg font-semibold">
@@ -24,12 +18,6 @@ export default function SellerHeaderHome({
                     />
                 </Link>
                 Seller Channel
-                {headerTitle && (
-                    <>
-                        <span className="mx-2">→</span>
-                        <span>{headerTitle}</span>
-                    </>
-                )}
             </div>
 
             <div className="flex items-center gap-2">

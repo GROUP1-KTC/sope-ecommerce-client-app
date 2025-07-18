@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from "react";
-import StepIndicator from "../common/StepIndicator";
-import FormNavigationButtons from "../common/FormNavigationButtons";
+import { useState } from 'react';
+import StepIndicator from '../common/StepIndicator';
+import FormNavigationButtons from '../common/FormNavigationButtons';
 
 export default function SellerRegisterForm() {
     const [form, setForm] = useState({
@@ -10,16 +10,6 @@ export default function SellerRegisterForm() {
         email: '',
         phoneNumber: '',
     });
-
-      const [step, setStep] = useState(0);
-
-  const steps = [
-    "Shop Infomation",
-    "Shipping Settings",
-    "Tax Information",
-    "Identification Information",
-    "Complete",
-  ];
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -36,7 +26,7 @@ export default function SellerRegisterForm() {
 
     return (
         <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-8 mt-10">
-            <StepIndicator steps={steps} currentStep={step} />
+            <StepIndicator />
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                     <label className="block font-medium mb-1">
@@ -94,4 +84,3 @@ export default function SellerRegisterForm() {
         </div>
     );
 }
-

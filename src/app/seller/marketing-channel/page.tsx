@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 const MarketingChannel = () => {
     const notifications = [
         {
@@ -204,9 +206,11 @@ const MarketingChannel = () => {
                         >
                             <div className="relative h-28 bg-gray-100 flex items-center justify-center">
                                 {program.img ? (
-                                    <img
+                                    <Image
                                         src={program.img}
                                         alt={program.title}
+                                        width={40}
+                                        height={40}
                                         className="object-cover w-full h-full"
                                     />
                                 ) : (

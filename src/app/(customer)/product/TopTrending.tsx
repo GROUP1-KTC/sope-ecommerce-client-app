@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 const trendingStyles = [
@@ -42,9 +43,11 @@ const TopTrending = () => {
                             className="shadow-xl cursor-pointer hover:bg-orange-100 rounded-lg bg-white flex flex-col items-center p-2"
                         >
                             <div className="w-full h-48 flex items-center justify-center mb-2 overflow-hidden">
-                                <img
+                                <Image
                                     src={item.img}
                                     alt={item.name}
+                                    width={40}
+                                    height={40}
                                     className="object-cover w-full h-full rounded"
                                     loading="lazy"
                                 />

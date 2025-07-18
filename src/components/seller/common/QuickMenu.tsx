@@ -1,10 +1,10 @@
-"use client";
-import { useState, useRef, useEffect } from "react";
-import GridViewIcon from "@mui/icons-material/GridView";
-import EventNoteIcon from "@mui/icons-material/EventNote";
-import Inventory2Icon from "@mui/icons-material/Inventory2";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+'use client';
+import { useState, useRef, useEffect } from 'react';
+import GridViewIcon from '@mui/icons-material/GridView';
+import EventNoteIcon from '@mui/icons-material/EventNote';
+import Inventory2Icon from '@mui/icons-material/Inventory2';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 export default function QuickMenu() {
     const [open, setOpen] = useState(false);
@@ -23,31 +23,34 @@ export default function QuickMenu() {
         return () => document.removeEventListener('mousedown', handler);
     }, []);
 
-const items = [
-    {
-      label: "All",
-      icon: (
-        <EventNoteIcon className="text-orange-500" href="/seller/all-order" />
-      ),
-    },
-    {
-      label: "All Products",
-      icon: <Inventory2Icon className="text-purple-500" href="#" />,
-    },
-    {
-      label: "Marketing Channel",
-      icon: <LocalOfferIcon className="text-cyan-500" />,
-    },
-    {
-      label: "Shopee Account Balance",
-      icon: (
-        <AccountBalanceWalletIcon
-          className="text-blue-500"
-          href="/seller/account-balance"
-        />
-      ),
-    },
-  ];
+    const items = [
+        {
+            label: 'All',
+            icon: (
+                <EventNoteIcon
+                    className="text-orange-500"
+                    href="/seller/all-order"
+                />
+            ),
+        },
+        {
+            label: 'All Products',
+            icon: <Inventory2Icon className="text-purple-500" href="#" />,
+        },
+        {
+            label: 'Marketing Channel',
+            icon: <LocalOfferIcon className="text-cyan-500" />,
+        },
+        {
+            label: 'Shopee Account Balance',
+            icon: (
+                <AccountBalanceWalletIcon
+                    className="text-blue-500"
+                    href="/seller/account-balance"
+                />
+            ),
+        },
+    ];
 
     return (
         <div className="relative" ref={menuRef}>
@@ -58,23 +61,25 @@ const items = [
                 <GridViewIcon />
             </button>
 
-      {open && (
-        <div className="absolute top-12 right-0 w-72 bg-white shadow-xl rounded-lg p-4 z-50">
-          <div className="grid grid-cols-2 gap-4">
-            {items.map((item, idx) => (
-              <button
-                key={idx}
-                className="flex flex-col items-center text-sm text-gray-700 hover:text-red-500"
-              >
-                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 mb-1">
-                  {item.icon}
+            {open && (
+                <div className="absolute top-12 right-0 w-72 bg-white shadow-xl rounded-lg p-4 z-50">
+                    <div className="grid grid-cols-2 gap-4">
+                        {items.map((item, idx) => (
+                            <button
+                                key={idx}
+                                className="flex flex-col items-center text-sm text-gray-700 hover:text-red-500"
+                            >
+                                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 mb-1">
+                                    {item.icon}
+                                </div>
+                                <span className="text-center text-xs">
+                                    {item.label}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
                 </div>
-                <span className="text-center text-xs">{item.label}</span>
-              </button>
-            ))}
-          </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 }

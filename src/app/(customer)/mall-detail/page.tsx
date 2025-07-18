@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
 import ProductFromCategory from '../product/ProductFromCategory';
+import Image from 'next/image';
 
 // Mock Data
 const mall = {
@@ -220,9 +220,11 @@ const MallDetail = () => {
         <div className="ml-10 bg-gray-50 min-h-screen align-item justify-between pb-10">
             {/* Mall Header */}
             <div className="bg-white shadow p-6 flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
-                <img
+                <Image
                     src={mall.logo}
                     alt="Mall Logo"
+                    width={40}
+                    height={40}
                     className="w-24 h-24 rounded-full object-contain border"
                 />
                 <div className="flex-1">
@@ -317,11 +319,14 @@ const MallDetail = () => {
                             key={product.id}
                             className="bg-white rounded shadow p-4 flex flex-col hover:shadow-lg transition-shadow"
                         >
-                            <img
+                            <Image
                                 src={product.image}
                                 alt={product.name}
+                                width={40}
+                                height={40}
                                 className="w-full h-40 object-contain mb-3"
                             />
+
                             <div className="font-medium mb-1 line-clamp-2 min-h-[48px]">
                                 {product.name}
                             </div>
@@ -341,9 +346,11 @@ const MallDetail = () => {
                 <div className="text-4xl font-extrabold text-center bg-black text-white rounded-lg py-4 mb-6 tracking-wide">
                     TÌM SẢN PHẨM THEO BỘ MÔN THỂ THAO
                 </div>
-                <img
+                <Image
                     src="https://down-spe-vn.img.susercontent.com/vn-11134210-7ras8-malj5if2w0rb86.webp"
                     alt="Banner các bộ môn thể thao"
+                    width={40}
+                    height={40}
                     className="w-full rounded-xl shadow-lg object-cover"
                 />
             </div>

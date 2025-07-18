@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface Category {
@@ -170,9 +171,11 @@ const AllCategories = () => {
                                             className="flex flex-col items-center p-4 rounded-lg hover:bg-gray-100 transition group"
                                         >
                                             <div className="w-20 h-20 flex items-center justify-center mb-2">
-                                                <img
+                                                <Image
                                                     src={cat.img}
                                                     alt={cat.name}
+                                                    width={40}
+                                                    height={40}
                                                     className="w-16 h-16 object-contain rounded-full border border-gray-200 bg-white group-hover:scale-105 transition"
                                                 />
                                             </div>

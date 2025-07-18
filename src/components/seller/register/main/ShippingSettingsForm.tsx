@@ -1,10 +1,9 @@
 'use client';
 
-import { useState } from "react";
-import StepIndicator from "../common/StepIndicator";
-import ExpandableItem from "../../common/ExpandableItem";
-import FormNavigationButtons from "../common/FormNavigationButtons";
-
+import { useState } from 'react';
+import StepIndicator from '../common/StepIndicator';
+import ExpandableItem from '../../common/ExpandableItem';
+import FormNavigationButtons from '../common/FormNavigationButtons';
 
 function ShippingToggle({
     label,
@@ -46,19 +45,9 @@ export default function ShippingSettingsForm() {
 
     const shippingOptions = ['Super Fast - Urgent', 'Fast', 'Savings'];
 
-      const [step, setStep] = useState(1);
-
-  const steps = [
-    "Shop Infomation",
-    "Shipping Settings",
-    "Tax Information",
-    "Identification Information",
-    "Complete",
-  ];
-
     return (
         <div className="max-w-4xl mx-auto bg-white shadow rounded-lg p-6 mt-10">
-            <StepIndicator steps={steps} currentStep={step} />
+            <StepIndicator />
             {shippingOptions.map((title) => (
                 <ExpandableItem key={title} title={title}>
                     <ShippingToggle
@@ -69,15 +58,15 @@ export default function ShippingSettingsForm() {
                 </ExpandableItem>
             ))}
 
-      <ExpandableItem title="Add shipping unit">
-        <p className="text-sm text-gray-600">
-          Note: Sope does not support tracking for transportation methods that
-          are not integrated and will not be responsible for any missing or
-          damaged products.
-        </p>
-      </ExpandableItem>
+            <ExpandableItem title="Add shipping unit">
+                <p className="text-sm text-gray-600">
+                    Note: Sope does not support tracking for transportation
+                    methods that are not integrated and will not be responsible
+                    for any missing or damaged products.
+                </p>
+            </ExpandableItem>
 
-      <FormNavigationButtons />
-    </div>
-  );
+            <FormNavigationButtons />
+        </div>
+    );
 }
