@@ -11,7 +11,6 @@ export default function CustomerLayout({
     const pathname = usePathname();
     const hideHeaderFooter = pathname === '/login' || pathname === '/signup';
 
-    console.log('CUSTOMER LAYOUT');
     return (
         <>
             {!hideHeaderFooter && <Header />}

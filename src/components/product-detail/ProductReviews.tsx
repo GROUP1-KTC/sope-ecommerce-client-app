@@ -55,7 +55,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
                     <button className="px-3 py-1 bg-gray-200 text-sm rounded-md hover:bg-gray-300">
                         Tất cả ({reviews.length})
                     </button>
-                    {[5, 4, 3, 2, 1].map((star, index) => (
+                    {[5, 4, 3, 2, 1].map((star, _) => (
                         <button
                             key={star}
                             className="px-3 py-1 bg-gray-200 text-sm rounded-md hover:bg-gray-300"

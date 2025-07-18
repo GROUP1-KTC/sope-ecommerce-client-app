@@ -1,7 +1,7 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
-
 interface ProductInfoProps {
     product: {
         id: number;
@@ -62,28 +62,38 @@ const ProductInfo = ({
     return (
         <div className="bg-white shadow rounded p-4 flex flex-col md:flex-row gap-6">
             <div className="w-full md:w-[450px]">
-                <img
+                <Image
+                    width={40}
+                    height={40}
                     src={product.image}
                     alt={product.name}
                     className="w-full h-[450px] object-contain rounded"
                 />
                 <div className="flex overflow-x-auto gap-2 mt-4 pb-2">
-                    <img
+                    <Image
+                        width={40}
+                        height={40}
                         src={product.image}
                         alt={`${product.name} - View 1`}
                         className="w-20 h-20 object-cover rounded border-3 border-red-500"
                     />
-                    <img
+                    <Image
+                        width={40}
+                        height={40}
                         src={product.image}
                         alt={`${product.name} - View 2`}
                         className="w-20 h-20 object-cover rounded border-2 border-gray-300"
                     />
-                    <img
+                    <Image
+                        width={40}
+                        height={40}
                         src={product.image}
                         alt={`${product.name} - View 3`}
                         className="w-20 h-20 object-cover rounded border-2 border-gray-300"
                     />
-                    <img
+                    <Image
+                        width={40}
+                        height={40}
                         src={product.image}
                         alt={`${product.name} - View 4`}
                         className="w-20 h-20 object-cover rounded border-2 border-gray-300"

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Image from 'next/image';
 
 const categories = [
     'Thời Trang Nam',
@@ -228,7 +229,7 @@ const ProductFromCategory = () => {
                         Tất Cả Danh Mục
                     </h2>
                     <ul>
-                        {categories.map((cat, index) => (
+                        {categories.map((cat, _) => (
                             <li
                                 key={cat}
                                 className={`py-1 px-2 cursor-pointer rounded text-sm mb-1 ${selectedCategory === cat ? 'text-red-500 font-semibold bg-red-50' : 'hover:bg-gray-100'}`}
@@ -368,7 +369,7 @@ const ProductFromCategory = () => {
                 <div className="flex-1 pl-6">
                     {/* Sort/filter */}
                     <div className="flex items-center gap-2 mb-4">
-                        {sortOptions.map((key, index) => (
+                        {sortOptions.map((key, _) => (
                             <button
                                 key={key}
                                 className={`px-4 py-2 rounded cursor-pointer border text-sm font-medium ${sort === key ? 'bg-red-500 text-white border-red-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}`}
@@ -408,9 +409,11 @@ const ProductFromCategory = () => {
                                     </span>
                                 )}
                                 <div className="w-full h-36 flex items-center justify-center mb-2 overflow-hidden">
-                                    <img
+                                    <Image
                                         src={product.img}
                                         alt={product.name}
+                                        width={40}
+                                        height={40}
                                         className="object-cover w-full h-full rounded"
                                         loading="lazy"
                                     />

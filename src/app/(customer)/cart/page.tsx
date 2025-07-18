@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React, { useState } from 'react';
 import VoucherModal from '~/components/cart/VoucherModal';
 
@@ -187,9 +188,11 @@ const Cart = () => {
 
                                 {/* Ảnh và tên sản phẩm */}
                                 <td className="flex items-center gap-3 py-2">
-                                    <img
+                                    <Image
                                         src={item.image}
                                         alt={item.name}
+                                        width={40}
+                                        height={40}
                                         className="w-28 h-28 m-2 object-cover border rounded"
                                     />
                                     <div className="font-medium line-clamp-2 max-w-xs">
@@ -333,8 +336,10 @@ const Cart = () => {
                             key={item.id}
                             className="bg-white rounded shadow p-3 flex flex-col items-center hover:shadow-lg transition"
                         >
-                            <img
+                            <Image
                                 src={item.image}
+                                width={40}
+                                height={40}
                                 alt={item.name}
                                 className="w-28 h-28 object-cover mb-2 rounded"
                             />

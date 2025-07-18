@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from "react";
-import StepIndicator from "../common/StepIndicator";
-import FormNavigationButtons from "../common/FormNavigationButtons";
+import React, { useState } from 'react';
+import StepIndicator from '../common/StepIndicator';
+import FormNavigationButtons from '../common/FormNavigationButtons';
 
 const CITIES = [
     'Hà Nội',
@@ -69,16 +69,6 @@ const CITIES = [
     'Yên Bái',
 ];
 
-  const [step, setStep] = useState(0);
-
-  const steps = [
-    "Shop Infomation",
-    "Shipping Settings",
-    "Tax Information",
-    "Identification Information",
-    "Complete",
-  ];
-
 export default function SellerFaxForm() {
     const [formData, setFormData] = useState({
         businessType: 'personal',
@@ -140,7 +130,7 @@ export default function SellerFaxForm() {
 
     return (
         <div className="min-h-screen-90 flex justify-center items-start ">
-            <StepIndicator steps={steps} currentStep={step} />
+            <StepIndicator />
             <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-8">
                 <div className="mb-6">
                     <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -309,7 +299,7 @@ export default function SellerFaxForm() {
                     </p>
                 </div>
             </div>
-            <FormNavigationButtons/>
+            <FormNavigationButtons />
         </div>
     );
 }

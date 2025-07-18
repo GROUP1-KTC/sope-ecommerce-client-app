@@ -1,4 +1,3 @@
-import StorefrontIcon from '@mui/icons-material/Storefront';
 import Link from 'next/link';
 import Image from 'next/image';
 

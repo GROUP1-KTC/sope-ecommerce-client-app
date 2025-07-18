@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface Product {
@@ -13,7 +14,9 @@ const ProductCard = ({ product }: { product: Product }) => {
     return (
         <div className="bg-white shadow-sm rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300 w-full">
             <Link href={`/product/${product.id}`}>
-                <img
+                <Image
+                    width={40}
+                    height={40}
                     src={product.image}
                     alt={product.name}
                     className="w-full h-36 object-cover"

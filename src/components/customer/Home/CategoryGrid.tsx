@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import Image from 'next/image';
 
 const categories = [
     {
@@ -234,14 +235,16 @@ const CategoryGrid = () => {
                                         key={rowIndex}
                                         className="flex flex-row mb-2 hover"
                                     >
-                                        {row.map((cat, index) => (
+                                        {row.map((cat, _) => (
                                             <a
                                                 href="/product"
                                                 key={cat.name}
                                                 className="flex flex-col items-center mx-2 cursor-pointer w-24"
                                             >
                                                 <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gray-100 hover:bg-orange-100 mb-2 border border-gray-200 overflow-hidden">
-                                                    <img
+                                                    <Image
+                                                        width={40}
+                                                        height={40}
                                                         src={cat.img}
                                                         alt={cat.name}
                                                         className="w-18 h-18 object-contain"
@@ -320,7 +323,9 @@ const CategoryGrid = () => {
                                         className="flex flex-col items-center shadow-xl rounded-lg m-2 p-2 w-48 min-w-[12rem] cursor-pointer hover:bg-orange-100 transition-colors duration-200"
                                     >
                                         <div className="w-36 h-36 flex items-center justify-center bg-white mb-2 rounded overflow-hidden ">
-                                            <img
+                                            <Image
+                                                width={40}
+                                                height={40}
                                                 src={item.img}
                                                 alt={item.name}
                                                 className="w-full h-full object-contain"

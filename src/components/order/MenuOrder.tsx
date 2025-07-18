@@ -1,11 +1,16 @@
-import React from "react";
+import React from 'react';
 
 interface MenuOrderProps {
     selectedMenu: 'all' | 'delivered' | 'processing' | 'canceled';
-    setSelectedMenu: (menu: 'all' | 'delivered' | 'processing' | 'canceled') => void;
+    setSelectedMenu: (
+        menu: 'all' | 'delivered' | 'processing' | 'canceled',
+    ) => void;
 }
 
-const MenuOrder: React.FC<MenuOrderProps> = ({ selectedMenu, setSelectedMenu }) => {
+const MenuOrder: React.FC<MenuOrderProps> = ({
+    selectedMenu,
+    setSelectedMenu,
+}) => {
     return (
         <div className="flex space-x-4 mb-4 bg-white p-2 rounded-lg shadow-md">
             <button

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React, { useRef, useState, useEffect } from 'react';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Image from 'next/image';
 
 const brands = [
     {
@@ -133,9 +134,11 @@ const Mall = () => {
                                 >
                                     <Link href="/mall-detail">
                                         <div className="w-40 h-40 flex items-center justify-center rounded mb-2 border border-gray-200 overflow-hidden hover:bg-orange-100 transition-colors duration-200   ">
-                                            <img
+                                            <Image
                                                 src={brand.img}
                                                 alt={brand.name}
+                                                width={40}
+                                                height={40}
                                                 className="w-full h-full object-contain"
                                                 loading="lazy"
                                             />

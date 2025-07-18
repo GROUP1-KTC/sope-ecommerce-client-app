@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 interface CommentProps {
@@ -20,7 +21,7 @@ const Comment: React.FC<CommentProps> = ({
     return (
         <div>
             <div className="flex items-start space-x-4">
-                <img
+                <Image
                     src={avatar}
                     alt={`${name}'s avatar`}
                     width={36}
@@ -45,7 +46,7 @@ const Comment: React.FC<CommentProps> = ({
                     </div>
                     <p className="text-gray-600 mt-2">{comment}</p>
                     <div className="mt-2">
-                        <img
+                        <Image
                             src={productImage}
                             alt={`${name}'s product`}
                             width={128}

@@ -1,14 +1,9 @@
 'use client';
 
-type StepProps = {
-    steps: string[];
-    currentStep: number;
-};
-
-export default function StepIndicator({ steps, currentStep }: StepProps) {
+export default function StepIndicator() {
     return (
         <div className="flex items-center justify-between mb-8 text-sm text-gray-600 relative">
-            {steps.map((step, index) => (
+            {/* {steps.map((step, index) => (
                 <div
                     key={index}
                     className="flex-1 flex flex-col items-center relative"
@@ -40,7 +35,7 @@ export default function StepIndicator({ steps, currentStep }: StepProps) {
                         </div>
                     )}
                 </div>
-            ))}
+            ))} */}
         </div>
     );
 }

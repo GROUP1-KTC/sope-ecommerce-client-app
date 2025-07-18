@@ -16,6 +16,7 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import StoreIcon from '@mui/icons-material/Store';
+import Image from 'next/image';
 
 // Interfaces
 interface PromotionIconProps {
@@ -156,10 +157,12 @@ const NotificationCard = ({
                         }}
                     >
                         {images.map((src: string, index: number) => (
-                            <img
+                            <Image
                                 key={index}
                                 src={src}
                                 alt={`Product ${index + 1}`}
+                                width={40}
+                                height={40}
                                 style={{
                                     width: '80px',
                                     height: '80px',

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import Image from 'next/image';
 
 const banners = [
     {
@@ -115,9 +116,11 @@ const Banner = () => {
                                         className={`w-1/2 h-84 rounded-3xl shadow-xl flex relative overflow-hidden mx-6 justify-between ${banner.bg}`}
                                     >
                                         {banner.img && (
-                                            <img
+                                            <Image
                                                 src={banner.img}
                                                 alt="banner"
+                                                width={40}
+                                                height={40}
                                                 className="absolute inset-0 w-full h-full object-cover z-10"
                                             />
                                         )}

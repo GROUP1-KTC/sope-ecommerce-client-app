@@ -1,14 +1,15 @@
 'use client';
-import React, { useState } from "react";
-import MenuOrder from "~/components/order/MenuOrder";
-import OrderItem from "~/components/order/OrderItem";
-import SearchBar from "~/components/order/SearchBar";
-import Sidebar from "~/components/order/SideBar";
-
+import React, { useState } from 'react';
+import MenuOrder from '~/components/order/MenuOrder';
+import OrderItem from '~/components/order/OrderItem';
+import SearchBar from '~/components/order/SearchBar';
+import Sidebar from '~/components/order/SideBar';
 
 const OrderPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedMenu, setSelectedMenu] = useState<'all' | 'delivered' | 'processing' | 'canceled'>('all');
+    const [selectedMenu, setSelectedMenu] = useState<
+        'all' | 'delivered' | 'processing' | 'canceled'
+    >('all');
 
     const orders = [
         {
@@ -23,7 +24,12 @@ const OrderPage = () => {
             originalPrice: 900000,
             discountPrice: 750000,
             shop: { id: 101, name: 'Shop A', address: '123 Đường A, Quận 1' },
-            product: { name: 'Áo thun nam', quantity: 2, imageUrl: 'https://product.hstatic.net/200000404243/product/a3mn190r2-vnma004-2407-n__1__ab15bfa4aa9c411587cde37dd35ec659_grande.jpg' }
+            product: {
+                name: 'Áo thun nam',
+                quantity: 2,
+                imageUrl:
+                    'https://product.hstatic.net/200000404243/product/a3mn190r2-vnma004-2407-n__1__ab15bfa4aa9c411587cde37dd35ec659_grande.jpg',
+            },
         },
         {
             id: 2,
@@ -37,7 +43,12 @@ const OrderPage = () => {
             originalPrice: 2200000,
             discountPrice: 2000000,
             shop: { id: 102, name: 'Shop B', address: '456 Đường B, Quận 2' },
-            product: { name: 'Giày thể thao nữ', quantity: 1, imageUrl: 'https://product.hstatic.net/200000404243/product/a3mn190r2-vnma004-2407-n__1__ab15bfa4aa9c411587cde37dd35ec659_grande.jpg' }
+            product: {
+                name: 'Giày thể thao nữ',
+                quantity: 1,
+                imageUrl:
+                    'https://product.hstatic.net/200000404243/product/a3mn190r2-vnma004-2407-n__1__ab15bfa4aa9c411587cde37dd35ec659_grande.jpg',
+            },
         },
         {
             id: 3,
@@ -51,13 +62,19 @@ const OrderPage = () => {
             originalPrice: 900000,
             discountPrice: 800000,
             shop: { id: 103, name: 'Shop C', address: '789 Đường C, Quận 3' },
-            product: { name: 'Balo laptop', quantity: 1, imageUrl: 'https://product.hstatic.net/200000404243/product/a3mn190r2-vnma004-2407-n__1__ab15bfa4aa9c411587cde37dd35ec659_grande.jpg' }
+            product: {
+                name: 'Balo laptop',
+                quantity: 1,
+                imageUrl:
+                    'https://product.hstatic.net/200000404243/product/a3mn190r2-vnma004-2407-n__1__ab15bfa4aa9c411587cde37dd35ec659_grande.jpg',
+            },
         },
     ];
 
-    const filteredOrders = orders.filter(order =>
-        order.id.toString().includes(searchTerm) ||
-        order.customer.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredOrders = orders.filter(
+        (order) =>
+            order.id.toString().includes(searchTerm) ||
+            order.customer.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
     return (
@@ -68,11 +85,17 @@ const OrderPage = () => {
                     <div className="flex-1 p-6">
                         <div className="bg-gray-50 rounded-lg px-12">
                             <div className="mb-6">
-                                <MenuOrder selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
-                                <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                                <MenuOrder
+                                    selectedMenu={selectedMenu}
+                                    setSelectedMenu={setSelectedMenu}
+                                />
+                                <SearchBar
+                                    searchTerm={searchTerm}
+                                    setSearchTerm={setSearchTerm}
+                                />
                             </div>
                             <div>
-                                {filteredOrders.map(order => (
+                                {filteredOrders.map((order) => (
                                     <OrderItem key={order.id} order={order} />
                                 ))}
                             </div>
