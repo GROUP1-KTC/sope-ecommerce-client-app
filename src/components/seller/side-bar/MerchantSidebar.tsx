@@ -8,8 +8,13 @@ import StoreOutlinedIcon from '@mui/icons-material/StoreOutlined';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import RecommendOutlinedIcon from '@mui/icons-material/RecommendOutlined';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import Link from 'next/link';
 
-export default function MerchantSidebar() {
+export default function MerchantSidebar({
+    setHeaderTitle,
+}: {
+    setHeaderTitle: (title: string) => void;
+}) {
     const [openItems, setOpenItems] = useState<Record<number, boolean>>({});
     const [activePath, setActivePath] = useState<string>('');
 
@@ -25,28 +30,34 @@ export default function MerchantSidebar() {
             label: 'Order Management',
             icon: <ShoppingCartOutlinedIcon className="h-5 w-5 mr-3" />,
             children: [
-                { label: 'All', href: '#all-orders' },
-                { label: 'Order Delivery', href: '#delivery' },
+                { label: 'All Order', href: '/seller/all-order' },
+                { label: 'Order Delivery', href: '/seller/order-delivery' },
                 {
                     label: 'Return/Refund or Cancellation Order',
-                    href: '#return',
+                    href: '/seller/return-refund',
                 },
-                { label: 'Shipping Settings', href: '#shipping' },
+                {
+                    label: 'Shipping Settings',
+                    href: '/seller/shipping-settings',
+                },
             ],
         },
         {
             label: 'Product Management',
             icon: <Inventory2OutlinedIcon className="h-5 w-5 mr-3" />,
             children: [
-                { label: 'All Products', href: '#products' },
-                { label: 'Add Product', href: '#add-product' },
+                { label: 'All Products', href: '/seller/all-products' },
+                { label: 'Add Product', href: '/seller/add-product' },
             ],
         },
         {
             label: 'Marketing Channel',
             icon: <LocalOfferIcon className="h-5 w-5 mr-3" />,
             children: [
-                { label: 'Marketing Channel', href: '#marketing' },
+                {
+                    label: 'Marketing Channel',
+                    href: '/seller/marketing-channel',
+                },
                 { label: 'Sope Advertising', href: '#ads' },
                 { label: 'Live & Video', href: '#live' },
                 { label: 'Shop Promotions', href: '#promotions' },
@@ -106,7 +117,9 @@ export default function MerchantSidebar() {
                                     {item.icon}
                                     <span>{item.label}</span>
                                 </span>
-                                <span>{openItems[index] ? '▾' : '▸'}</span>
+                                <span className="text-2xl">
+                                    {openItems[index] ? '▾' : '▸'}
+                                </span>
                             </button>
 
                             {/* Children */}
@@ -114,19 +127,41 @@ export default function MerchantSidebar() {
                                 <ul className="ml-8 mt-1">
                                     {item.children.map((sub, subIndex) => (
                                         <li key={subIndex}>
-                                            <a
-                                                href={sub.href}
-                                                onClick={() =>
-                                                    setActivePath(sub.href)
-                                                }
-                                                className={`block py-1 px-2 text-sm rounded-md ${
-                                                    activePath === sub.href
-                                                        ? 'text-blue-500 bg-orange-100'
-                                                        : 'text-gray-600 hover:text-blue-500 hover:bg-gray-50'
-                                                }`}
-                                            >
-                                                {sub.label}
-                                            </a>
+                                            {sub.href.startsWith('/') ? (
+                                                <Link
+                                                    href={sub.href}
+                                                    onClick={() => {
+                                                        setActivePath(sub.href);
+                                                        setHeaderTitle(
+                                                            sub.label,
+                                                        );
+                                                    }}
+                                                    className={`block py-1 px-2 text-sm rounded-md ${
+                                                        activePath === sub.href
+                                                            ? 'text-blue-500 bg-orange-100'
+                                                            : 'text-gray-600 hover:text-blue-500 hover:bg-gray-50'
+                                                    }`}
+                                                >
+                                                    {sub.label}
+                                                </Link>
+                                            ) : (
+                                                <a
+                                                    href={sub.href}
+                                                    onClick={() => {
+                                                        setActivePath(sub.href);
+                                                        setHeaderTitle(
+                                                            sub.label,
+                                                        );
+                                                    }}
+                                                    className={`block py-1 px-2 text-sm rounded-md ${
+                                                        activePath === sub.href
+                                                            ? 'text-blue-500 bg-orange-100'
+                                                            : 'text-gray-600 hover:text-blue-500 hover:bg-gray-50'
+                                                    }`}
+                                                >
+                                                    {sub.label}
+                                                </a>
+                                            )}
                                         </li>
                                     ))}
                                 </ul>

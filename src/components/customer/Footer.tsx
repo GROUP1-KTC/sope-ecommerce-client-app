@@ -4,7 +4,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 
 const Footer = () => {
     return (
-        <footer className="bg-[#fafafa] border-t border-[#f5f5f5] text-[#222] text-xs sm:text-sm mt-10 border border-red-500">
+        <footer className="bg-[#fafafa] border-t  text-[#222] text-xs sm:text-sm mt-10 border border-red-500">
             <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-8 border-b-2 border-red-800">
                 {/* Customer Service */}
                 <div>

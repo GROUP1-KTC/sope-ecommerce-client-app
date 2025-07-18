@@ -16,29 +16,32 @@ const Header = () => {
             {/* Top bar */}
             <div className="flex flex-col md:flex-row justify-between items-center px-2 sm:px-8 py-2 text-xs sm:text-sm gap-2 md:gap-0">
                 <div className="flex gap-2 sm:gap-3 items-center">
-                    <Link href="#" className="">
+                    <Link href="#" className="hover:text-yellow-200 transition">
                         Trang chủ Sope
                     </Link>
-                    <Link href="#" className="">
+                    <Link href="#" className="hover:text-yellow-200 transition">
                         Trở thành Người bán Sope
                     </Link>
                     <span className="">|</span>
-                    <Link href="#" className="">
+                    <Link href="#" className="hover:text-yellow-200 transition">
                         Tải ứng dụng
                     </Link>
                     <span className="">|</span>
                     <span>Kết nối</span>
-                    <Link href="#" className="">
+                    <Link href="#" className="hover:text-yellow-200 transition">
                         <FacebookIcon style={{ fontSize: 20 }} />
                     </Link>
-                    <Link href="#" className="">
+                    <Link href="#" className="hover:text-yellow-200 transition">
                         <InstagramIcon style={{ fontSize: 20 }} />
                     </Link>
                 </div>
                 <div className="flex gap-2 sm:gap-3 items-center">
                     <span className="flex items-center gap-1 sm:flex">
                         <span>🔔</span>
-                        <Link href="/notification" className="">
+                        <Link
+                            href="/notification"
+                            className="hover:text-yellow-200 transition"
+                        >
                             Thông báo
                         </Link>
                     </span>
@@ -51,7 +54,10 @@ const Header = () => {
                         <span>🌐</span> Tiếng Việt
                     </span>
                     <span className="h-4 w-px bg-white" />
-                    <Link href="/login" className="">
+                    <Link
+                        href="/login"
+                        className="hover:text-yellow-200 transition"
+                    >
                         Đăng Nhập
                     </Link>
                 </div>
@@ -65,7 +71,10 @@ const Header = () => {
                             className="text-white"
                         />
                         <span className="h-8 w-px bg-white mx-2" />
-                        <Link href="/">
+                        <Link
+                            href="/"
+                            className="hover:text-yellow-200 transition"
+                        >
                             <Image
                                 src="/assets/logo/logo.svg"
                                 alt="Sope Logo"
@@ -77,7 +86,7 @@ const Header = () => {
                     </div>
                     {/* Hamburger menu for mobile */}
                     <button
-                        className="sm:hidden text-3xl"
+                        className="sm:hidden text-3xl hover:text-yellow-200 transition"
                         onClick={() => setMenuOpen(!menuOpen)}
                         aria-label="Open menu"
                     >
@@ -101,7 +110,7 @@ const Header = () => {
                 {/* Cart icon */}
                 <Link
                     href="/cart"
-                    className="ml-0 sm:ml-4 mt-2 sm:mt-0 flex items-center"
+                    className="ml-0 sm:ml-4 mt-2 sm:mt-0 flex items-center hover:text-yellow-200 transition"
                 >
                     <ShoppingCartOutlinedIcon
                         style={{ fontSize: 36 }}
@@ -112,16 +121,28 @@ const Header = () => {
             {/* Mobile menu placeholder */}
             {menuOpen && (
                 <div className="sm:hidden bg-[#ee4d2d] px-4 py-2 flex flex-col gap-2">
-                    <Link href="#" className="hover:underline">
+                    <Link
+                        href="#"
+                        className="hover:underline hover:text-yellow-200 transition"
+                    >
                         Trở thành Người bán Sope
                     </Link>
-                    <Link href="#" className="hover:underline">
+                    <Link
+                        href="#"
+                        className="hover:underline hover:text-yellow-200 transition"
+                    >
                         Tải ứng dụng
                     </Link>
-                    <Link href="/login" className="">
+                    <Link
+                        href="/login"
+                        className="hover:text-yellow-200 transition"
+                    >
                         Đăng Nhập
                     </Link>
-                    <Link href="/cart" className="">
+                    <Link
+                        href="/cart"
+                        className="hover:text-yellow-200 transition"
+                    >
                         Giỏ hàng
                     </Link>
                 </div>

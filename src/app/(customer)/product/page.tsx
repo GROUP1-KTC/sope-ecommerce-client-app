@@ -1,4 +1,4 @@
-import Banner from '../../components/customer/Home/Banner';
+import Banner from '~/components/customer/Home/Banner';
 import MallCategory from './MallCategory';
 import TopTrending from './TopTrending';
 import ProductFromCategory from './ProductFromCategory';

@@ -1,70 +1,137 @@
 'use client';
 
 import React, { useState } from 'react';
-import StepIndicator from '../register/StepIndicator';
-import FormNavigationButtons from '../../common/FormNavigationButtons';
+
+const CITIES = [
+    'Hà Nội',
+    'Hồ Chí Minh',
+    'Đà Nẵng',
+    'Hải Phòng',
+    'Cần Thơ',
+    'Lâm Đồng',
+    'Bà Rịa - Vũng Tàu',
+    'Bắc Giang',
+    'Bắc Kạn',
+    'Bạc Liêu',
+    'Bắc Ninh',
+    'Bến Tre',
+    'Bình Định',
+    'Bình Dương',
+    'Bình Phước',
+    'Bình Thuận',
+    'Cà Mau',
+    'Cao Bằng',
+    'Đắk Lắk',
+    'Đắk Nông',
+    'Điện Biên',
+    'Đồng Nai',
+    'Đồng Tháp',
+    'Gia Lai',
+    'Hà Giang',
+    'Hà Nam',
+    'Hà Tĩnh',
+    'Hải Dương',
+    'Hậu Giang',
+    'Hòa Bình',
+    'Hưng Yên',
+    'Khánh Hòa',
+    'Kiên Giang',
+    'Kon Tum',
+    'Lai Châu',
+    'Lạng Sơn',
+    'Lào Cai',
+    'Long An',
+    'Nam Định',
+    'Nghệ An',
+    'Ninh Bình',
+    'Ninh Thuận',
+    'Phú Thọ',
+    'Phú Yên',
+    'Quảng Bình',
+    'Quảng Nam',
+    'Quảng Ngãi',
+    'Quảng Ninh',
+    'Quảng Trị',
+    'Sóc Trăng',
+    'Sơn La',
+    'Tây Ninh',
+    'Thái Bình',
+    'Thái Nguyên',
+    'Thanh Hóa',
+    'Thừa Thiên Huế',
+    'Tiền Giang',
+    'Trà Vinh',
+    'Tuyên Quang',
+    'Vĩnh Long',
+    'Vĩnh Phúc',
+    'Yên Bái',
+];
 
 export default function SellerFaxForm() {
-    const [step, setStep] = useState(2);
-
-    const steps = [
-        'Shop Infomation',
-        'Shipping Settings',
-        'Tax Information',
-        'Identification Information',
-        'Complete',
-    ];
-
     const [formData, setFormData] = useState({
         businessType: 'personal',
         address: '',
-        selectedCity: '',
-        email: '',
+        city: '',
+        emails: [''],
         taxCode: '',
     });
-    const [emailCount, setEmailCount] = useState(1);
+    const [errors, setErrors] = useState({
+        address: '',
+        city: '',
+        emails: [''],
+        taxCode: '',
+    });
+
+    const businessOptions = [
+        { value: 'personal', label: 'Personal' },
+        { value: 'household', label: 'House hold' },
+        { value: 'company', label: 'Company' },
+    ];
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+        idx?: number,
     ) => {
         const { name, value, type } = e.target;
-
-        if (type === 'radio') {
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }));
+        if (name === 'emails' && typeof idx === 'number') {
+            setFormData((prev) => {
+                const newEmails = [...prev.emails];
+                newEmails[idx] = value;
+                return { ...prev, emails: newEmails };
+            });
+        } else if (type === 'radio') {
+            setFormData((prev) => ({ ...prev, [name]: value }));
         } else {
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }));
+            setFormData((prev) => ({ ...prev, [name]: value }));
         }
     };
 
     const handleAddEmail = () => {
-        if (emailCount < 5) {
-            // Giả định tối đa 5 email
-            setEmailCount(emailCount + 1);
-            // Trong ứng dụng thực tế, bạn sẽ thêm một trường input email mới tại đây.
-            // Với giao diện tĩnh này, chúng ta chỉ cập nhật số lượng hiển thị.
+        if (formData.emails.length < 5) {
+            setFormData((prev) => ({ ...prev, emails: [...prev.emails, ''] }));
+            setErrors((prev) => ({ ...prev, emails: [...prev.emails, ''] }));
         }
     };
 
-    const businessOptions = [
-        { value: 'personal', label: 'Personal' },
-        { value: 'household', label: 'House Hold' },
-        { value: 'company', label: 'Company' },
-    ];
+    const handleRemoveEmail = (idx: number) => {
+        if (formData.emails.length > 1) {
+            setFormData((prev) => {
+                const newEmails = prev.emails.filter((_, i) => i !== idx);
+                return { ...prev, emails: newEmails };
+            });
+            setErrors((prev) => {
+                const newErrors = prev.emails.filter((_, i) => i !== idx);
+                return { ...prev, emails: newErrors };
+            });
+        }
+    };
 
     return (
-        <div className="min-h-screen flex justify-center items-start py-12">
-            <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-8 mt-10">
-                <StepIndicator steps={steps} currentStep={step} />
-                {/* Loại hình kinh doanh */}
+        <div className="min-h-screen-90 flex justify-center items-start ">
+            <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-8">
                 <div className="mb-6">
                     <label className="block text-gray-700 text-sm font-bold mb-2">
-                        * Business type
+                        Business type
                     </label>
                     <div className="flex items-center space-x-6">
                         {businessOptions.map((option) => (
@@ -93,32 +160,42 @@ export default function SellerFaxForm() {
                 {/* Địa chỉ đăng ký kinh doanh */}
                 <div className="mb-6">
                     <label className="block text-gray-700 text-sm font-bold mb-2">
-                        * Business registration address
+                        * Besiness registration
                     </label>
                     <div className="mb-4">
                         <select
-                            name="selectedCity" // Đảm bảo name khớp với key trong formData
+                            name="city"
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-                            value={formData.selectedCity}
+                            value={formData.city}
                             onChange={handleChange}
                         >
-                            {/* Thêm các tỉnh/thành phố */}
+                            <option value="">Select city</option>
+                            {CITIES.map((city) => (
+                                <option key={city} value={city}>
+                                    {city}
+                                </option>
+                            ))}
                         </select>
+                        {errors.city && (
+                            <p className="text-red-500 text-xs mt-1">
+                                {errors.city}
+                            </p>
+                        )}
                     </div>
                     <div className="relative mb-2">
                         <input
                             type="text"
-                            name="address" // Đảm bảo name khớp với key trong formData
-                            placeholder="House
-              number/street, Districtv.v."
+                            name="address"
+                            placeholder="address..."
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                             value={formData.address}
                             onChange={handleChange}
                         />
-                        <p className="text-red-500 text-xs mt-1">
-                            Please fill in the specific address. For example:
-                            "House number/street, District..."
-                        </p>
+                        {errors.address && (
+                            <p className="text-red-500 text-xs mt-1">
+                                {errors.address}
+                            </p>
+                        )}
                     </div>
                     <p className="text-sm text-gray-500">
                         Business address: the address according to the business
@@ -133,26 +210,43 @@ export default function SellerFaxForm() {
                     <label className="block text-gray-700 text-sm font-bold mb-2">
                         * Email to receive electronic invoice
                     </label>
-                    <div className="relative mb-2">
-                        <input
-                            type="email"
-                            name="email" // Đảm bảo name khớp với key trong formData
-                            placeholder="Enter your email"
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-                            value={formData.email}
-                            onChange={handleChange}
-                        />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
-                            {formData.email.length}/100
-                        </span>
-                        <p className="text-red-500 text-xs mt-1">
-                            Please fill in the email address
-                        </p>
-                    </div>
+                    {formData.emails.map((email, idx) => (
+                        <div
+                            className="relative mb-2 flex items-center"
+                            key={idx}
+                        >
+                            <input
+                                type="email"
+                                name="emails"
+                                placeholder="Email"
+                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                                value={email}
+                                onChange={(e) => handleChange(e, idx)}
+                            />
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
+                                {email.length}/100
+                            </span>
+                            {formData.emails.length > 1 && (
+                                <button
+                                    type="button"
+                                    className="ml-2 text-red-500 hover:underline text-xs"
+                                    onClick={() => handleRemoveEmail(idx)}
+                                >
+                                    Xóa
+                                </button>
+                            )}
+                            {errors.emails[idx] && (
+                                <p className="text-red-500 text-xs ml-2">
+                                    {errors.emails[idx]}
+                                </p>
+                            )}
+                        </div>
+                    ))}
                     <button
+                        type="button"
                         onClick={handleAddEmail}
-                        className="flex items-center not-first text-sm font-semibold mt-2 hover:underline"
-                        disabled={emailCount >= 5}
+                        className="flex items-center text-sm font-semibold mt-2 hover:underline"
+                        disabled={formData.emails.length >= 5}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +262,7 @@ export default function SellerFaxForm() {
                                 d="M12 4v16m8-8H4"
                             />
                         </svg>
-                        Add Email ({emailCount}/5)
+                        Add Email ({formData.emails.length}/5)
                     </button>
                 </div>
 
@@ -189,9 +283,11 @@ export default function SellerFaxForm() {
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
                             {formData.taxCode.length}/14
                         </span>
-                        <p className="text-red-500 text-xs mt-1">
-                            Please fill in the Tax Identification Number
-                        </p>
+                        {errors.taxCode && (
+                            <p className="text-red-500 text-xs mt-1">
+                                {errors.taxCode}
+                            </p>
+                        )}
                     </div>
                     <p className="text-sm text-gray-500">
                         The tax code is the business tax code.{' '}
@@ -200,9 +296,6 @@ export default function SellerFaxForm() {
                         </a>
                     </p>
                 </div>
-
-                {/* Nút điều hướng */}
-                <FormNavigationButtons />
             </div>
         </div>
     );

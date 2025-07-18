@@ -1,5 +1,5 @@
-import Banner from '../components/customer/Home/Banner';
-import CategoryGrid from '../components/customer/Home/CategoryGrid';
+import Banner from '~/components/customer/Home/Banner';
+import CategoryGrid from '~/components/customer/Home/CategoryGrid';
 
 const HomeCustomer = () => (
     <div>

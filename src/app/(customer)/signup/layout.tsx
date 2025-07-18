@@ -1,6 +1,6 @@
-import './globals.css';
+import HeaderSignup from '~/components/customer/HeaderSignup';
 
-export default function RootLayout({
+export default function UserLayout({
     children,
 }: {
     children: React.ReactNode;
@@ -8,6 +8,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
+                <HeaderSignup />
                 <main>{children}</main>
             </body>
         </html>

@@ -1,4 +1,5 @@
-import './globals.css';
+import HeaderCustomService from '~/components/customer/HeaderCustomService';
+import FooterCustomService from '~/components/customer/FooterCustomService';
 
 export default function RootLayout({
     children,
@@ -8,7 +9,9 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
+                <HeaderCustomService />
                 <main>{children}</main>
+                <FooterCustomService />
             </body>
         </html>
     );
