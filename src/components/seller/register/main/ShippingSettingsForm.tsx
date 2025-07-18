@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import ExpandableItem from "./ExpandableItem";
-import StepIndicator from "../register/StepIndicator";
-import FormNavigationButtons from "../../common/FormNavigationButtons";
+import ExpandableItem from "../../common/ExpandableItem";
+import StepIndicator from "../common/StepIndicator";
+import FormNavigationButtons from "../common/FormNavigationButtons";
 
-// Reusable content component
 function ShippingToggle({
   label,
   checked,
@@ -77,7 +76,6 @@ export default function ShippingSettingsForm() {
         </p>
       </ExpandableItem>
 
-      {/* Nút điều hướng */}
       <FormNavigationButtons />
     </div>
   );

@@ -1,12 +1,10 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import GridViewIcon from "@mui/icons-material/GridView";
-import CategoryIcon from "@mui/icons-material/Category";
+import EventNoteIcon from "@mui/icons-material/EventNote";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import QueryStatsIcon from "@mui/icons-material/QueryStats";
-import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function QuickMenu() {
   const [open, setOpen] = useState(false);
@@ -24,10 +22,15 @@ export default function QuickMenu() {
   }, []);
 
   const items = [
-    { label: "All", icon: <CategoryIcon className="text-orange-500" /> },
+    {
+      label: "All",
+      icon: (
+        <EventNoteIcon className="text-orange-500" href="/seller/all-order" />
+      ),
+    },
     {
       label: "All Products",
-      icon: <Inventory2Icon className="text-purple-500" />,
+      icon: <Inventory2Icon className="text-purple-500" href="#" />,
     },
     {
       label: "Marketing Channel",
@@ -35,13 +38,13 @@ export default function QuickMenu() {
     },
     {
       label: "Shopee Account Balance",
-      icon: <AccountBalanceWalletIcon className="text-blue-500" />,
+      icon: (
+        <AccountBalanceWalletIcon
+          className="text-blue-500"
+          href="/seller/account-balance"
+        />
+      ),
     },
-    {
-      label: "Sales Analysis",
-      icon: <QueryStatsIcon className="text-green-500" />,
-    },
-    { label: "Shop Setup", icon: <SettingsIcon className="text-gray-600" /> },
   ];
 
   return (
@@ -55,7 +58,7 @@ export default function QuickMenu() {
 
       {open && (
         <div className="absolute top-12 right-0 w-72 bg-white shadow-xl rounded-lg p-4 z-50">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             {items.map((item, idx) => (
               <button
                 key={idx}

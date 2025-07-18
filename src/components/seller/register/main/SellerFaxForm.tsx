@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import StepIndicator from "../register/StepIndicator";
-import FormNavigationButtons from "../../common/FormNavigationButtons";
+import StepIndicator from "../common/StepIndicator";
+import FormNavigationButtons from "../common/FormNavigationButtons";
 
 export default function SellerFaxForm() {
   const [step, setStep] = useState(2);
@@ -109,8 +109,8 @@ export default function SellerFaxForm() {
               onChange={handleChange}
             />
             <p className="text-red-500 text-xs mt-1">
-              Please fill in the specific address. For example: "House
-              number/street, District..."
+              Please fill in the specific address. For example: House
+              number/street, District...
             </p>
           </div>
           <p className="text-sm text-gray-500">

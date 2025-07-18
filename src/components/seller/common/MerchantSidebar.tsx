@@ -1,17 +1,32 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import RecommendOutlinedIcon from "@mui/icons-material/RecommendOutlined";
-import QueryStatsIcon from "@mui/icons-material/QueryStats";
 
 export default function MerchantSidebar() {
   const [openItems, setOpenItems] = useState<Record<number, boolean>>({});
   const [activePath, setActivePath] = useState<string>("");
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setActivePath(pathname);
+    navItems.forEach((item, index) => {
+      const isChildActive = item.children.some((sub) => sub.href === pathname);
+      if (isChildActive) {
+        setOpenItems((prev) => ({
+          ...prev,
+          [index]: true,
+        }));
+      }
+    });
+  }, [pathname]);
 
   const toggleItem = (index: number) => {
     setOpenItems((prev) => ({
@@ -25,10 +40,11 @@ export default function MerchantSidebar() {
       label: "Order Management",
       icon: <ShoppingCartOutlinedIcon className="h-5 w-5 mr-3" />,
       children: [
-        { label: "All", href: "#all-orders" },
-        { label: "Order Delivery", href: "#delivery" },
-        { label: "Return/Refund or Cancellation Order", href: "#return" },
-        { label: "Shipping Settings", href: "#shipping" },
+        { label: "All", href: "/seller/all-order" },
+        {
+          label: "Return/Refund or Cancellation Order",
+          href: "/seller/return-order",
+        },
       ],
     },
     {
@@ -44,7 +60,6 @@ export default function MerchantSidebar() {
       icon: <LocalOfferIcon className="h-5 w-5 mr-3" />,
       children: [
         { label: "Marketing Channel", href: "#marketing" },
-        { label: "Sope Advertising", href: "#ads" },
         { label: "Live & Video", href: "#live" },
         { label: "Shop Promotions", href: "#promotions" },
         { label: "Shop Flash Sale", href: "#flash-sale" },
@@ -56,40 +71,31 @@ export default function MerchantSidebar() {
       label: "Customer Service",
       icon: <RecommendOutlinedIcon className="h-5 w-5 mr-3" />,
       children: [
-        { label: "Chat Management", href: "#chat" },
-        { label: "Review Management", href: "#review" },
+        { label: "Chat Management", href: "/seller/chat-management" },
+        { label: "Review Management", href: "/seller/review-management" },
       ],
     },
     {
       label: "Financial",
       icon: <PaymentsOutlinedIcon className="h-5 w-5 mr-3" />,
       children: [
-        { label: "Revenue", href: "#revenue" },
-        { label: "Sope Account Balance", href: "#balance" },
-        { label: "Bank Account", href: "#bank" },
-      ],
-    },
-    {
-      label: "Data Analysis",
-      icon: <QueryStatsIcon className="h-5 w-5 mr-3" />,
-      children: [
-        { label: "Sales Analysis", href: "#sales" },
-        { label: "Operational Efficiency", href: "#efficiency" },
+        { label: "Revenue", href: "/seller/turnover" },
+        { label: "Sope Account Balance", href: "/seller/account-balance" },
+        { label: "Bank Account", href: "/seller/bank" },
       ],
     },
     {
       label: "Shop Management",
       icon: <StoreOutlinedIcon className="h-5 w-5 mr-3" />,
       children: [
-        { label: "Shop Profile", href: "#profile" },
+        { label: "Shop Profile", href: "/seller/profile" },
         { label: "Shop Decoration", href: "#decoration" },
-        { label: "Shop Setup", href: "#setup" },
       ],
     },
   ];
 
   return (
-    <aside className="w-64 bg-white p-4 border-r border-gray-200 overflow-auto">
+    <aside className="w-66 bg-white p-4 border-r border-gray-200 overflow-auto">
       <nav>
         <ul>
           {navItems.map((item, index) => (
@@ -113,7 +119,6 @@ export default function MerchantSidebar() {
                     <li key={subIndex}>
                       <a
                         href={sub.href}
-                        onClick={() => setActivePath(sub.href)}
                         className={`block py-1 px-2 text-sm rounded-md ${
                           activePath === sub.href
                             ? "text-blue-500 bg-orange-100"

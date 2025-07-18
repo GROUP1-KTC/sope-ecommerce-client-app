@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import StepIndicator from "../register/StepIndicator";
-import FormNavigationButtons from "../../common/FormNavigationButtons";
+import StepIndicator from "../common/StepIndicator";
+import FormNavigationButtons from "../common/FormNavigationButtons";
 
 export default function SellerRegisterForm() {
   const [form, setForm] = useState({
