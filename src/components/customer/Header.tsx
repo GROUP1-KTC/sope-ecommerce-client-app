@@ -38,7 +38,10 @@ const Header = () => {
                 <div className="flex gap-2 sm:gap-3 items-center">
                     <span className="flex items-center gap-1 sm:flex">
                         <span>🔔</span>
-                        <Link href="/notification" className="hover:text-yellow-200 transition">
+                        <Link
+                            href="/notification"
+                            className="hover:text-yellow-200 transition"
+                        >
                             Thông báo
                         </Link>
                     </span>
@@ -51,7 +54,10 @@ const Header = () => {
                         <span>🌐</span> Tiếng Việt
                     </span>
                     <span className="h-4 w-px bg-white" />
-                    <Link href="/login" className="hover:text-yellow-200 transition">
+                    <Link
+                        href="/login"
+                        className="hover:text-yellow-200 transition"
+                    >
                         Đăng Nhập
                     </Link>
                 </div>
@@ -65,7 +71,10 @@ const Header = () => {
                             className="text-white"
                         />
                         <span className="h-8 w-px bg-white mx-2" />
-                        <Link href="/" className="hover:text-yellow-200 transition">
+                        <Link
+                            href="/"
+                            className="hover:text-yellow-200 transition"
+                        >
                             <Image
                                 src="/assets/logo/logo.svg"
                                 alt="Sope Logo"
@@ -112,16 +121,28 @@ const Header = () => {
             {/* Mobile menu placeholder */}
             {menuOpen && (
                 <div className="sm:hidden bg-[#ee4d2d] px-4 py-2 flex flex-col gap-2">
-                    <Link href="#" className="hover:underline hover:text-yellow-200 transition">
+                    <Link
+                        href="#"
+                        className="hover:underline hover:text-yellow-200 transition"
+                    >
                         Trở thành Người bán Sope
                     </Link>
-                    <Link href="#" className="hover:underline hover:text-yellow-200 transition">
+                    <Link
+                        href="#"
+                        className="hover:underline hover:text-yellow-200 transition"
+                    >
                         Tải ứng dụng
                     </Link>
-                    <Link href="/login" className="hover:text-yellow-200 transition">
+                    <Link
+                        href="/login"
+                        className="hover:text-yellow-200 transition"
+                    >
                         Đăng Nhập
                     </Link>
-                    <Link href="/cart" className="hover:text-yellow-200 transition">
+                    <Link
+                        href="/cart"
+                        className="hover:text-yellow-200 transition"
+                    >
                         Giỏ hàng
                     </Link>
                 </div>

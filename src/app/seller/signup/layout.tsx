@@ -1,13 +1,16 @@
-import HeaderSignup from "~/components/customer/HeaderSignup";
+import HeaderSignup from '~/components/customer/HeaderSignup';
 
-export default function SignupLayout({ children, }: { children: React.ReactNode }) {
-
-      return (
-            <html lang="en">
-                  <body>
-                        <HeaderSignup />
-                        <main>{children}</main>
-                  </body>
-            </html>
-      );
+export default function SignupLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    return (
+        <html lang="en">
+            <body>
+                <HeaderSignup />
+                <main>{children}</main>
+            </body>
+        </html>
+    );
 }

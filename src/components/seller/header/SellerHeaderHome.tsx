@@ -5,7 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import QuickMenu from '~/components/common/QuickMenu';
 
-export default function SellerHeaderHome({ headerTitle }: { headerTitle: string }) {
+export default function SellerHeaderHome({
+    headerTitle,
+}: {
+    headerTitle: string;
+}) {
     return (
         <header className="flex justify-between items-center p-2 px-10 bg-white shadow">
             <div className="flex items-center justify-between gap-2 text-lg font-semibold">

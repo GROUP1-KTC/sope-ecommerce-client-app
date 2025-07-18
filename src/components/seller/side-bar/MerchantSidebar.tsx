@@ -10,7 +10,11 @@ import RecommendOutlinedIcon from '@mui/icons-material/RecommendOutlined';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import Link from 'next/link';
 
-export default function MerchantSidebar({ setHeaderTitle }: { setHeaderTitle: (title: string) => void }) {
+export default function MerchantSidebar({
+    setHeaderTitle,
+}: {
+    setHeaderTitle: (title: string) => void;
+}) {
     const [openItems, setOpenItems] = useState<Record<number, boolean>>({});
     const [activePath, setActivePath] = useState<string>('');
 
@@ -32,7 +36,10 @@ export default function MerchantSidebar({ setHeaderTitle }: { setHeaderTitle: (t
                     label: 'Return/Refund or Cancellation Order',
                     href: '/seller/return-refund',
                 },
-                { label: 'Shipping Settings', href: '/seller/shipping-settings' },
+                {
+                    label: 'Shipping Settings',
+                    href: '/seller/shipping-settings',
+                },
             ],
         },
         {
@@ -47,7 +54,10 @@ export default function MerchantSidebar({ setHeaderTitle }: { setHeaderTitle: (t
             label: 'Marketing Channel',
             icon: <LocalOfferIcon className="h-5 w-5 mr-3" />,
             children: [
-                { label: 'Marketing Channel', href: '/seller/marketing-channel' },
+                {
+                    label: 'Marketing Channel',
+                    href: '/seller/marketing-channel',
+                },
                 { label: 'Sope Advertising', href: '#ads' },
                 { label: 'Live & Video', href: '#live' },
                 { label: 'Shop Promotions', href: '#promotions' },
@@ -107,7 +117,9 @@ export default function MerchantSidebar({ setHeaderTitle }: { setHeaderTitle: (t
                                     {item.icon}
                                     <span>{item.label}</span>
                                 </span>
-                                <span className='text-2xl' >{openItems[index] ? '▾' : '▸'}</span>
+                                <span className="text-2xl">
+                                    {openItems[index] ? '▾' : '▸'}
+                                </span>
                             </button>
 
                             {/* Children */}
@@ -120,12 +132,15 @@ export default function MerchantSidebar({ setHeaderTitle }: { setHeaderTitle: (t
                                                     href={sub.href}
                                                     onClick={() => {
                                                         setActivePath(sub.href);
-                                                        setHeaderTitle(sub.label);
+                                                        setHeaderTitle(
+                                                            sub.label,
+                                                        );
                                                     }}
-                                                    className={`block py-1 px-2 text-sm rounded-md ${activePath === sub.href
-                                                        ? 'text-blue-500 bg-orange-100'
-                                                        : 'text-gray-600 hover:text-blue-500 hover:bg-gray-50'
-                                                        }`}
+                                                    className={`block py-1 px-2 text-sm rounded-md ${
+                                                        activePath === sub.href
+                                                            ? 'text-blue-500 bg-orange-100'
+                                                            : 'text-gray-600 hover:text-blue-500 hover:bg-gray-50'
+                                                    }`}
                                                 >
                                                     {sub.label}
                                                 </Link>
@@ -134,12 +149,15 @@ export default function MerchantSidebar({ setHeaderTitle }: { setHeaderTitle: (t
                                                     href={sub.href}
                                                     onClick={() => {
                                                         setActivePath(sub.href);
-                                                        setHeaderTitle(sub.label);
+                                                        setHeaderTitle(
+                                                            sub.label,
+                                                        );
                                                     }}
-                                                    className={`block py-1 px-2 text-sm rounded-md ${activePath === sub.href
-                                                        ? 'text-blue-500 bg-orange-100'
-                                                        : 'text-gray-600 hover:text-blue-500 hover:bg-gray-50'
-                                                        }`}
+                                                    className={`block py-1 px-2 text-sm rounded-md ${
+                                                        activePath === sub.href
+                                                            ? 'text-blue-500 bg-orange-100'
+                                                            : 'text-gray-600 hover:text-blue-500 hover:bg-gray-50'
+                                                    }`}
                                                 >
                                                     {sub.label}
                                                 </a>

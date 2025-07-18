@@ -63,7 +63,6 @@ export default function ShippingSettingsForm() {
                     for any missing or damaged products.
                 </p>
             </ExpandableItem>
-
         </div>
     );
 }

@@ -88,7 +88,10 @@ export default function SellerFaxForm() {
         { value: 'company', label: 'Company' },
     ];
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, idx?: number) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+        idx?: number,
+    ) => {
         const { name, value, type } = e.target;
         if (name === 'emails' && typeof idx === 'number') {
             setFormData((prev) => {
@@ -141,7 +144,9 @@ export default function SellerFaxForm() {
                                     name="businessType"
                                     value={option.value}
                                     className="form-radio text-orange-500"
-                                    checked={formData.businessType === option.value}
+                                    checked={
+                                        formData.businessType === option.value
+                                    }
                                     onChange={handleChange}
                                 />
                                 <span className="ml-2 text-gray-700">
@@ -166,10 +171,16 @@ export default function SellerFaxForm() {
                         >
                             <option value="">Select city</option>
                             {CITIES.map((city) => (
-                                <option key={city} value={city}>{city}</option>
+                                <option key={city} value={city}>
+                                    {city}
+                                </option>
                             ))}
                         </select>
-                        {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
+                        {errors.city && (
+                            <p className="text-red-500 text-xs mt-1">
+                                {errors.city}
+                            </p>
+                        )}
                     </div>
                     <div className="relative mb-2">
                         <input
@@ -180,14 +191,17 @@ export default function SellerFaxForm() {
                             value={formData.address}
                             onChange={handleChange}
                         />
-                        {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
+                        {errors.address && (
+                            <p className="text-red-500 text-xs mt-1">
+                                {errors.address}
+                            </p>
+                        )}
                     </div>
                     <p className="text-sm text-gray-500">
                         Business address: the address according to the business
                         registration certificate for companies, business
                         households, or according to identification documents
                         (CCCD/ID card) for individuals.
-
                     </p>
                 </div>
 
@@ -197,7 +211,10 @@ export default function SellerFaxForm() {
                         * Email to receive electronic invoice
                     </label>
                     {formData.emails.map((email, idx) => (
-                        <div className="relative mb-2 flex items-center" key={idx}>
+                        <div
+                            className="relative mb-2 flex items-center"
+                            key={idx}
+                        >
                             <input
                                 type="email"
                                 name="emails"
@@ -218,7 +235,11 @@ export default function SellerFaxForm() {
                                     Xóa
                                 </button>
                             )}
-                            {errors.emails[idx] && <p className="text-red-500 text-xs ml-2">{errors.emails[idx]}</p>}
+                            {errors.emails[idx] && (
+                                <p className="text-red-500 text-xs ml-2">
+                                    {errors.emails[idx]}
+                                </p>
+                            )}
                         </div>
                     ))}
                     <button
@@ -262,7 +283,11 @@ export default function SellerFaxForm() {
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
                             {formData.taxCode.length}/14
                         </span>
-                        {errors.taxCode && <p className="text-red-500 text-xs mt-1">{errors.taxCode}</p>}
+                        {errors.taxCode && (
+                            <p className="text-red-500 text-xs mt-1">
+                                {errors.taxCode}
+                            </p>
+                        )}
                     </div>
                     <p className="text-sm text-gray-500">
                         The tax code is the business tax code.{' '}

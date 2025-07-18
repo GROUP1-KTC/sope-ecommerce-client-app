@@ -693,88 +693,88 @@ export default function VoucherPage() {
                                             >
                                                 {order.status ===
                                                     'completed' && (
-                                                        <span
+                                                    <span
+                                                        style={{
+                                                            display:
+                                                                'inline-flex',
+                                                            alignItems:
+                                                                'center',
+                                                            padding: '2px 10px',
+                                                            borderRadius:
+                                                                '9999px',
+                                                            fontSize: '12px',
+                                                            fontWeight: '500',
+                                                            backgroundColor:
+                                                                '#d1fae5',
+                                                            color: '#065f46',
+                                                        }}
+                                                    >
+                                                        <CheckCircleIcon
                                                             style={{
-                                                                display:
-                                                                    'inline-flex',
-                                                                alignItems:
-                                                                    'center',
-                                                                padding: '2px 10px',
-                                                                borderRadius:
-                                                                    '9999px',
-                                                                fontSize: '12px',
-                                                                fontWeight: '500',
-                                                                backgroundColor:
-                                                                    '#d1fae5',
-                                                                color: '#065f46',
+                                                                marginRight:
+                                                                    '4px',
                                                             }}
-                                                        >
-                                                            <CheckCircleIcon
-                                                                style={{
-                                                                    marginRight:
-                                                                        '4px',
-                                                                }}
-                                                                fontSize="small"
-                                                            />
-                                                            Hoàn thành
-                                                        </span>
-                                                    )}
+                                                            fontSize="small"
+                                                        />
+                                                        Hoàn thành
+                                                    </span>
+                                                )}
                                                 {order.status ===
                                                     'cancelled' && (
-                                                        <span
+                                                    <span
+                                                        style={{
+                                                            display:
+                                                                'inline-flex',
+                                                            alignItems:
+                                                                'center',
+                                                            padding: '2px 10px',
+                                                            borderRadius:
+                                                                '9999px',
+                                                            fontSize: '12px',
+                                                            fontWeight: '500',
+                                                            backgroundColor:
+                                                                '#fee2e2',
+                                                            color: '#991b1b',
+                                                        }}
+                                                    >
+                                                        <CancelIcon
                                                             style={{
-                                                                display:
-                                                                    'inline-flex',
-                                                                alignItems:
-                                                                    'center',
-                                                                padding: '2px 10px',
-                                                                borderRadius:
-                                                                    '9999px',
-                                                                fontSize: '12px',
-                                                                fontWeight: '500',
-                                                                backgroundColor:
-                                                                    '#fee2e2',
-                                                                color: '#991b1b',
+                                                                marginRight:
+                                                                    '4px',
                                                             }}
-                                                        >
-                                                            <CancelIcon
-                                                                style={{
-                                                                    marginRight:
-                                                                        '4px',
-                                                                }}
-                                                                fontSize="small"
-                                                            />
-                                                            Đã hủy
-                                                        </span>
-                                                    )}
+                                                            fontSize="small"
+                                                        />
+                                                        Đã hủy
+                                                    </span>
+                                                )}
                                                 {order.status ===
                                                     'processing' && (
-                                                        <span
+                                                    <span
+                                                        style={{
+                                                            display:
+                                                                'inline-flex',
+                                                            alignItems:
+                                                                'center',
+                                                            padding: '2px 10px',
+                                                            borderRadius:
+                                                                '9999px',
+                                                            fontSize: '12px',
+                                                            fontWeight: '500',
+                                                            backgroundColor:
+                                                                '#fffbe6',
+                                                            color: '#b45309',
+                                                        }}
+                                                    >
+                                                        <AccessTimeIcon
                                                             style={{
-                                                                display:
-                                                                    'inline-flex',
-                                                                alignItems:
-                                                                    'center',
-                                                                padding: '2px 10px',
-                                                                borderRadius:
-                                                                    '9999px',
-                                                                fontSize: '12px',
-                                                                fontWeight: '500',
-                                                                backgroundColor:
-                                                                    '#fffbe6',
-                                                                color: '#b45309',
+                                                                marginRight:
+                                                                    '4px',
                                                             }}
-                                                        >
-                                                            <AccessTimeIcon
-                                                                style={{
-                                                                    marginRight:
-                                                                        '4px',
-                                                                }}
-                                                                fontSize="small"
-                                                            />
-                                                            Đang xử lý
-                                                        </span>
-                                                    )}
+                                                            fontSize="small"
+                                                        />
+                                                        Đang xử lý
+                                                    </span>
+                                                )}
                                             </td>
                                         </tr>
                                     ))}
