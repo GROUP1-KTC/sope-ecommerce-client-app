@@ -63,12 +63,9 @@ export default function MerchantSidebar() {
                     label: 'Marketing Channel',
                     href: '/seller/marketing-channel',
                 },
-                { label: 'Sope Advertising', href: '#ads' },
-                { label: 'Live & Video', href: '#live' },
                 { label: 'Shop Promotions', href: '#promotions' },
                 { label: 'Shop Flash Sale', href: '#flash-sale' },
                 { label: 'Shop Discount Code', href: '#discount' },
-                { label: 'Sope Program', href: '#program' },
             ],
     },
     {
@@ -83,7 +80,7 @@ export default function MerchantSidebar() {
       label: "Financial",
       icon: <PaymentsOutlinedIcon className="h-5 w-5 mr-3" />,
       children: [
-        { label: "Revenue", href: "/seller/revenue" },
+        { label: "Revenue", href: "/seller/turnover" },
         { label: "Sope Account Balance", href: "/seller/account-balance" },
         { label: "Bank Account", href: "/seller/bank" },
       ],
