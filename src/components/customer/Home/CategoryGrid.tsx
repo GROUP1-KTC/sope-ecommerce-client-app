@@ -172,7 +172,6 @@ const CategoryGrid = () => {
             setFlashAtEnd(scrollLeft + clientWidth >= scrollWidth - 1);
         };
 
-
         handleCategoryScroll();
         handleFlashScrollEvent();
 
@@ -180,8 +179,14 @@ const CategoryGrid = () => {
         flashContainer?.addEventListener('scroll', handleFlashScrollEvent);
 
         return () => {
-            categoryContainer?.removeEventListener('scroll', handleCategoryScroll);
-            flashContainer?.removeEventListener('scroll', handleFlashScrollEvent);
+            categoryContainer?.removeEventListener(
+                'scroll',
+                handleCategoryScroll,
+            );
+            flashContainer?.removeEventListener(
+                'scroll',
+                handleFlashScrollEvent,
+            );
         };
     }, []);
 
@@ -192,7 +197,7 @@ const CategoryGrid = () => {
 
     const formatPrice = (price: number) => {
         return `₫${price.toLocaleString('vi-VN')}`;
-    }
+    };
 
     return (
         <>
@@ -252,10 +257,10 @@ const CategoryGrid = () => {
                             </div>
                         </div>
                         <style jsx>{`
-                [ref="${containerRef.current}"]::-webkit-scrollbar {
-                    display: none;
-                }
-            `}</style>
+                            [ref='${containerRef.current}']::-webkit-scrollbar {
+                                display: none;
+                            }
+                        `}</style>
                         {!categoryAtEnd && (
                             <button
                                 className="absolute -right-11 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow p-2 group-hover:bg-orange-100 group-hover:scale-110 transition-transform duration-150 flex items-center justify-center cursor-pointer opacity-50 group-hover:opacity-100"
@@ -349,7 +354,7 @@ const CategoryGrid = () => {
                             </div>
                         </div>
                         <style jsx>{`
-                            [ref="${flashRef.current}"]::-webkit-scrollbar {
+                            [ref='${flashRef.current}']::-webkit-scrollbar {
                                 display: none;
                             }
                         `}</style>

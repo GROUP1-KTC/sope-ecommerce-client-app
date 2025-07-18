@@ -106,7 +106,8 @@ const Banner = () => {
                             {banners
                                 .slice(
                                     slideId * BANNERS_PER_VIEW,
-                                    slideId * BANNERS_PER_VIEW + BANNERS_PER_VIEW,
+                                    slideId * BANNERS_PER_VIEW +
+                                        BANNERS_PER_VIEW,
                                 )
                                 .map((banner, index) => (
                                     <div
@@ -125,9 +126,11 @@ const Banner = () => {
                                         </div>
                                     </div>
                                 ))}
-                            {banners.length % 2 !== 0 && slideId === totalSlides - 1 && banners.length % BANNERS_PER_VIEW !== 0 && (
-                                <div className="w-1/2 h-64 mx-2" />
-                            )}
+                            {banners.length % 2 !== 0 &&
+                                slideId === totalSlides - 1 &&
+                                banners.length % BANNERS_PER_VIEW !== 0 && (
+                                    <div className="w-1/2 h-64 mx-2" />
+                                )}
                         </div>
                     ))}
                 </div>
