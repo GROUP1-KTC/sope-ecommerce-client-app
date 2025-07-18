@@ -34,13 +34,13 @@ export default function ChatAssistantCardGroup() {
         {assistantItems.map((item, index) => (
           <Card key={index} className="flex flex-col justify-between gap-4">
             <div className="flex items-center gap-2">
-              <div className="text-blue-500 text-2xl">{item.icon}</div>
+              <div className="text-red-500 text-2xl">{item.icon}</div>
               <h3 className="font-semibold text-gray-800 text-sm">
                 {item.title}
               </h3>
             </div>
             <p className="text-sm text-gray-600">{item.description}</p>
-            <button className="self-start border border-blue-500 text-blue-500 hover:bg-blue-50 rounded px-4 py-1 text-sm">
+            <button className="self-start border border-red-500 text-red-500 hover:bg-red-50 rounded px-4 py-1 text-sm">
               {item.action}
             </button>
           </Card>
