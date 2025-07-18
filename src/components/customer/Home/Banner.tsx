@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const banners = [
     {
@@ -73,14 +75,25 @@ const Banner = () => {
     const [current, setCurrent] = useState(0);
     const totalSlides = Math.ceil(banners.length / BANNERS_PER_VIEW);
 
-    const prev = () =>
+    const prev = () => {
         setCurrent((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
-    const next = () =>
+    };
+
+    const next = () => {
         setCurrent((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
+    };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            next();
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <div className="w-full flex flex-col items-center py-6">
-            <div className="w-full max-w-[1600px] relative overflow-hidden">
+            <div className="w-full max-w-[1600px] relative overflow-hidden group">
                 <div
                     className="flex transition-transform duration-500"
                     style={{
@@ -88,20 +101,18 @@ const Banner = () => {
                         transform: `translateX(-${current * (100 / totalSlides)}%)`,
                     }}
                 >
-                    {Array.from({ length: totalSlides }).map((key, slideId) => (
+                    {Array.from({ length: totalSlides }).map((_, slideId) => (
                         <div key={slideId} className="flex w-full">
                             {banners
                                 .slice(
                                     slideId * BANNERS_PER_VIEW,
-                                    slideId * BANNERS_PER_VIEW +
-                                        BANNERS_PER_VIEW,
+                                    slideId * BANNERS_PER_VIEW + BANNERS_PER_VIEW,
                                 )
                                 .map((banner, index) => (
                                     <div
                                         key={index}
                                         className={`w-1/2 h-84 rounded-3xl shadow-xl flex relative overflow-hidden mx-6 justify-between ${banner.bg}`}
                                     >
-                                        {/* Hình ảnh phủ full banner */}
                                         {banner.img && (
                                             <img
                                                 src={banner.img}
@@ -109,38 +120,36 @@ const Banner = () => {
                                                 className="absolute inset-0 w-full h-full object-cover z-10"
                                             />
                                         )}
-                                        {/* Nội dung chữ đè lên hình ảnh */}
                                         <div className="relative z-20 w-full h-full flex items-center">
                                             {banner.content}
                                         </div>
                                     </div>
                                 ))}
-                            {/* Nếu số lượng banner lẻ, thêm ô trống */}
-                            {banners.length % 2 !== 0 &&
-                                slideId === totalSlides - 1 &&
-                                banners.length % BANNERS_PER_VIEW !== 0 && (
-                                    <div className="w-1/2 h-64 mx-2" />
-                                )}
+                            {banners.length % 2 !== 0 && slideId === totalSlides - 1 && banners.length % BANNERS_PER_VIEW !== 0 && (
+                                <div className="w-1/2 h-64 mx-2" />
+                            )}
                         </div>
                     ))}
                 </div>
-                {/* Nút điều hướng */}
                 <button
                     onClick={prev}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-lg hover:bg-gray-100 z-30 border border-gray-200"
+                    className="absolute left-1 top-1/2 -translate-y-1/2 z-30 bg-white rounded-full shadow p-2 group-hover:bg-orange-100 group-hover:scale-110 group-hover:opacity-100 opacity-50 transition-all duration-150 flex items-center justify-center cursor-pointer"
+                    aria-label="Previous slide"
+                    type="button"
                 >
-                    &#8592;
+                    <ArrowBackIosNewIcon className="text-lg text-orange-500" />
                 </button>
                 <button
                     onClick={next}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-lg hover:bg-gray-100 z-30 border border-gray-200"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 z-30 bg-white rounded-full shadow p-2 group-hover:bg-orange-100 group-hover:scale-110 group-hover:opacity-100 opacity-50 transition-all duration-150 flex items-center justify-center cursor-pointer"
+                    aria-label="Next slide"
+                    type="button"
                 >
-                    &#8594;
+                    <ArrowForwardIosIcon className="text-lg text-orange-500" />
                 </button>
             </div>
-            {/* Dots */}
             <div className="flex gap-2 mt-4">
-                {Array.from({ length: totalSlides }).map((_key, index) => (
+                {Array.from({ length: totalSlides }).map((_, index) => (
                     <span
                         key={index}
                         className={`w-3 h-3 rounded-full ${current === index ? 'bg-black' : 'bg-gray-300'} inline-block`}
