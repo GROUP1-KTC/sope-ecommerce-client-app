@@ -18,15 +18,15 @@ type Step = {
 };
 
 type OrderProgressProps = {
-    steps: StepInput[]; 
+    steps: StepInput[];
 };
 
 const fixedSteps: Step[] = [
-    { label: "Đơn hàng đã đặt", icon: AssignmentIcon },
-    { label: "Đã xác nhận đơn hàng", icon: HowToRegIcon },
-    { label: "Đã giao cho EVC", icon: LocalShippingIcon },
-    { label: "Đã nhận đơn hàng", icon: SaveAltIcon },
-    { label: "Đơn hàng đã hoàn thành", icon: CheckCircleIcon },
+    { label: 'Đơn hàng đã đặt', icon: AssignmentIcon },
+    { label: 'Đã xác nhận đơn hàng', icon: HowToRegIcon },
+    { label: 'Đã giao cho EVC', icon: LocalShippingIcon },
+    { label: 'Đã nhận đơn hàng', icon: SaveAltIcon },
+    { label: 'Đơn hàng đã hoàn thành', icon: CheckCircleIcon },
 ];
 
 const OrderProgress: React.FC<OrderProgressProps> = ({ steps }) => {
@@ -36,20 +36,33 @@ const OrderProgress: React.FC<OrderProgressProps> = ({ steps }) => {
                 {fixedSteps.map((step, index) => {
                     const userStep = steps[index];
                     return (
-                        <div key={index} className="flex-1 text-center relative z-10">
+                        <div
+                            key={index}
+                            className="flex-1 text-center relative z-10"
+                        >
                             <div
                                 className={`w-10 h-10 rounded-full mx-auto flex items-center justify-center transition-all duration-300 ${
-                                    userStep?.active ? 'bg-green-600 shadow-lg' : 'bg-gray-200'
+                                    userStep?.active
+                                        ? 'bg-green-600 shadow-lg'
+                                        : 'bg-gray-200'
                                 }`}
                             >
                                 <step.icon
                                     className={`w-6 h-6 ${userStep?.active ? 'text-white' : 'text-gray-400'}`}
                                 />
                             </div>
-                            <p className={`mt-3 font-medium text-sm ${
-                                userStep?.active ? 'text-gray-900' : 'text-gray-500'
-                            }`}>{step.label}</p>
-                            <p className="text-xs text-gray-400 mt-1">{userStep?.date}</p>
+                            <p
+                                className={`mt-3 font-medium text-sm ${
+                                    userStep?.active
+                                        ? 'text-gray-900'
+                                        : 'text-gray-500'
+                                }`}
+                            >
+                                {step.label}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-1">
+                                {userStep?.date}
+                            </p>
                         </div>
                     );
                 })}
@@ -57,7 +70,7 @@ const OrderProgress: React.FC<OrderProgressProps> = ({ steps }) => {
                     <div
                         className="h-full bg-green-600 transition-all duration-500 ease-in-out"
                         style={{
-                            width: `${(steps.filter(s => s.active).length / fixedSteps.length) * 100}%`
+                            width: `${(steps.filter((s) => s.active).length / fixedSteps.length) * 100}%`,
                         }}
                     ></div>
                 </div>

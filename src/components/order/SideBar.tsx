@@ -13,45 +13,62 @@ const Sidebar: React.FC = () => {
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(true);
     const [isAccountOpen, setIsAccountOpen] = useState(true);
 
-    const toggleNotifications = () => setIsNotificationsOpen(!isNotificationsOpen);
+    const toggleNotifications = () =>
+        setIsNotificationsOpen(!isNotificationsOpen);
     const toggleAccount = () => setIsAccountOpen(!isAccountOpen);
 
     return (
         <aside className="w-60 bg-gray-50 rounded-lg p-4 text-sm flex-shrink-0">
-            <div 
+            <div
                 className="font-semibold mb-2 flex items-center gap-1 text-gray-700 p-1 rounded cursor-pointer hover:bg-gray-200 transition-colors"
                 onClick={toggleNotifications}
             >
                 <NotificationsIcon fontSize="small" />
                 Thông Báo
                 <span className="ml-auto">
-                    {isNotificationsOpen ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+                    {isNotificationsOpen ? (
+                        <ExpandLessIcon fontSize="small" />
+                    ) : (
+                        <ExpandMoreIcon fontSize="small" />
+                    )}
                 </span>
             </div>
 
-            <ul className={`list-none pl-4 border-l-2 border-orange-300 ml-1 mt-2 leading-relaxed text-gray-600 transition-all duration-300 ease-in-out ${
-                isNotificationsOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
-            }`}>
+            <ul
+                className={`list-none pl-4 border-l-2 border-orange-300 ml-1 mt-2 leading-relaxed text-gray-600 transition-all duration-300 ease-in-out ${
+                    isNotificationsOpen
+                        ? 'max-h-96 opacity-100'
+                        : 'max-h-0 opacity-0 overflow-hidden'
+                }`}
+            >
                 <li className="pl-2 mt-2">Khuyến Mãi</li>
                 <li className="pl-2 mt-2">Cập Nhật Đơn Hàng</li>
                 <li className="pl-2 mt-2">Cập Nhật Ví</li>
                 <li className="pl-2 mt-2">Cập Nhật Naver</li>
             </ul>
 
-            <div 
+            <div
                 className="font-semibold mt-2 flex items-center gap-1 text-gray-700 p-1 rounded cursor-pointer hover:bg-gray-200 transition-colors"
                 onClick={toggleAccount}
             >
                 <PersonIcon fontSize="small" />
                 Tài Khoản Của Tôi
                 <span className="ml-auto">
-                    {isAccountOpen ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+                    {isAccountOpen ? (
+                        <ExpandLessIcon fontSize="small" />
+                    ) : (
+                        <ExpandMoreIcon fontSize="small" />
+                    )}
                 </span>
             </div>
 
-            <ul className={`list-none pl-4 border-l-2 border-blue-300 ml-1 mt-2 leading-relaxed text-gray-600 transition-all duration-300 ease-in-out ${
-                isAccountOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
-            }`}>
+            <ul
+                className={`list-none pl-4 border-l-2 border-blue-300 ml-1 mt-2 leading-relaxed text-gray-600 transition-all duration-300 ease-in-out ${
+                    isAccountOpen
+                        ? 'max-h-96 opacity-100'
+                        : 'max-h-0 opacity-0 overflow-hidden'
+                }`}
+            >
                 <li className="pl-2 mt-2">Hồ Sơ</li>
                 <li className="pl-2 mt-2">Ngân Hàng</li>
                 <li className="pl-2 mt-2">Địa Chỉ</li>
