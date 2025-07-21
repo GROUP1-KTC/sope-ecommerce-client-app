@@ -17,7 +17,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import StoreIcon from '@mui/icons-material/Store';
 
-// Interfaces
+
 interface PromotionIconProps {
     type: 'discount' | 'cart' | 'gift' | 'shopee';
 }
@@ -49,7 +49,7 @@ interface Order {
     total: number;
 }
 
-// Utility function to format numbers consistently for Vietnamese currency
+
 const formatCurrency = (number: number): string => {
     return number
         .toString()
