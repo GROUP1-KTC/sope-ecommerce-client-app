@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import AddressForm from '~/components/checkout/addressform';
 
 type CartItem = {
     id: number;
@@ -43,6 +44,7 @@ export default function CheckoutPage() {
     const [showAddressForm, setShowAddressForm] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState<string>('cod');
     const [isLoading, setIsLoading] = useState(false);
+    const [orderSuccess, setOrderSuccess] = useState(false);
 
     // Parse query parameters
     useEffect(() => {
@@ -82,29 +84,6 @@ export default function CheckoutPage() {
     const discount = voucher?.discount || 0;
     const finalTotal = Math.max(0, total + shippingFee - discount);
 
-    // Handle address form changes
-    const handleAddressChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    ) => {
-        const { name, value } = e.target;
-        setAddressFormData((prev) => ({ ...prev, [name]: value }));
-    };
-
-    // Validate and submit address
-    const handleSubmitAddress = (e: React.FormEvent) => {
-        e.preventDefault();
-        const { fullName, phone, cityDistrict, address } = addressFormData;
-        if (!fullName || !phone || !cityDistrict || !address) {
-            alert('Vui lòng điền đầy đủ thông tin địa chỉ.');
-            return;
-        }
-        if (!/^\d{10}$/.test(phone)) {
-            alert('Số điện thoại phải có 10 chữ số.');
-            return;
-        }
-        setShowAddressForm(false);
-    };
-
     // Handle order submission
     const handleSubmitOrder = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -129,27 +108,30 @@ export default function CheckoutPage() {
         }
 
         setIsLoading(true);
+
+        // Simulate API call delay
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+
         try {
-            const response = await fetch('/api/orders', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    cartItems,
-                    voucher,
-                    address: addressFormData,
-                    paymentMethod,
-                    total: finalTotal,
-                }),
-            });
-            if (response.ok) {
-                alert('Đặt hàng thành công!');
-                router.push('/');
-            } else {
-                const errorData = await response.json();
-                alert(
-                    `Đặt hàng thất bại: ${errorData.message || 'Vui lòng thử lại.'}`,
-                );
-            }
+            // In a real app, you would save this order data to your state management or local storage
+            const orderData = {
+                cartItems,
+                voucher,
+                address: addressFormData,
+                paymentMethod,
+                total: finalTotal,
+                orderDate: new Date().toISOString(),
+                orderId: Math.floor(Math.random() * 1000000).toString(),
+            };
+
+            console.log('Order submitted:', orderData); // For debugging
+
+            // Clear cart after successful order
+            setCartItems([]);
+            setOrderSuccess(true);
+
+            alert('Đặt hàng thành công!');
+            router.push('/');
         } catch (error) {
             console.error('Error submitting order:', error);
             alert('Có lỗi xảy ra. Vui lòng thử lại.');
@@ -158,7 +140,28 @@ export default function CheckoutPage() {
         }
     };
 
-    // Handle empty cart
+    if (orderSuccess) {
+        return (
+            <div className="bg-gray-200 min-h-screen py-4">
+                <div className="max-w-4xl mx-auto bg-white rounded shadow p-6 mt-4 text-center">
+                    <h2 className="text-2xl font-bold text-green-500 mb-4">
+                        Đặt hàng thành công!
+                    </h2>
+                    <p className="mb-4">
+                        Cảm ơn bạn đã đặt hàng. Đơn hàng của bạn đang được xử
+                        lý.
+                    </p>
+                    <button
+                        className="mt-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+                        onClick={() => router.push('/')}
+                    >
+                        Quay lại trang chủ
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
     if (!cartItems.length && !searchParams.get('items')) {
         return (
             <div className="bg-gray-200 min-h-screen py-4">
@@ -207,86 +210,11 @@ export default function CheckoutPage() {
                         </button>
                     </div>
                     {showAddressForm ? (
-                        <form
-                            onSubmit={handleSubmitAddress}
-                            className="mt-4 space-y-4"
-                        >
-                            <div className="flex space-x-4">
-                                <input
-                                    type="text"
-                                    name="fullName"
-                                    value={addressFormData.fullName}
-                                    onChange={handleAddressChange}
-                                    className="w-1/2 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                                    placeholder="Họ và tên"
-                                    required
-                                />
-                                <input
-                                    type="text"
-                                    name="phone"
-                                    value={addressFormData.phone}
-                                    onChange={handleAddressChange}
-                                    className="w-1/2 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                                    placeholder="Số điện thoại"
-                                    required
-                                />
-                            </div>
-                            <select
-                                name="cityDistrict"
-                                value={addressFormData.cityDistrict}
-                                onChange={handleAddressChange}
-                                className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                                required
-                            >
-                                <option value="">
-                                    Tỉnh/Thành phố, Quận/Huyện, Phường/Xã
-                                </option>
-                                <option value="HCM">
-                                    TP. Hồ Chí Minh, Quận Bình Thạnh, Phường 25
-                                </option>
-                            </select>
-                            <input
-                                type="text"
-                                name="address"
-                                value={addressFormData.address}
-                                onChange={handleAddressChange}
-                                className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                                placeholder="Địa chỉ cụ thể"
-                                required
-                            />
-                            <div className="flex space-x-4">
-                                <select
-                                    name="type"
-                                    value={addressFormData.type}
-                                    onChange={handleAddressChange}
-                                    className="w-1/2 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                                >
-                                    <option value="Nhà Riêng">Nhà Riêng</option>
-                                    <option value="Văn Phòng">Văn Phòng</option>
-                                </select>
-                                <button
-                                    type="button"
-                                    className="w-1/2 bg-gray-200 border rounded px-3 py-2"
-                                >
-                                    + Thêm vị trí
-                                </button>
-                            </div>
-                            <div className="flex justify-end space-x-4">
-                                <button
-                                    type="button"
-                                    className="bg-gray-200 px-4 py-2 rounded"
-                                    onClick={() => setShowAddressForm(false)}
-                                >
-                                    Trở Lại
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
-                                >
-                                    Hoàn tất
-                                </button>
-                            </div>
-                        </form>
+                        <AddressForm
+                            addressFormData={addressFormData}
+                            setAddressFormData={setAddressFormData}
+                            setShowAddressForm={setShowAddressForm}
+                        />
                     ) : (
                         <p className="mt-2">{addressFormData.address}</p>
                     )}
