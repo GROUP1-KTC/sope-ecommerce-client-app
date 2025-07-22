@@ -2,10 +2,11 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import AddressForm from '~/components/checkout/addressform';
+import AddressSection from '~/components/checkout/AddressSection';
+import ProductList from '~/components/checkout/ProductList';
+import VoucherSection from '~/components/checkout/VoucherSection';
+import PaymentMethodSection from '~/components/checkout/PaymentMethodSection';
+import TotalSummary from '~/components/checkout/TotalSummary';
 
 type CartItem = {
     id: number;
@@ -193,187 +194,26 @@ export default function CheckoutPage() {
             </div>
 
             <div className="max-w-4xl mx-auto bg-white rounded shadow p-6 mt-4">
-                {/* Address Section */}
-                <div className="mb-6 p-4 border rounded">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                            <LocationOnIcon className="text-red-500 mr-2" />
-                            <span className="font-semibold">
-                                Địa Chỉ Nhận Hàng
-                            </span>
-                        </div>
-                        <button
-                            className="text-blue-500 underline"
-                            onClick={() => setShowAddressForm(!showAddressForm)}
-                        >
-                            Thay Đổi
-                        </button>
-                    </div>
-                    {showAddressForm ? (
-                        <AddressForm
-                            addressFormData={addressFormData}
-                            setAddressFormData={setAddressFormData}
-                            setShowAddressForm={setShowAddressForm}
-                        />
-                    ) : (
-                        <p className="mt-2">{addressFormData.address}</p>
-                    )}
-                </div>
-
-                {/* Product List */}
-                <div className="mb-6">
-                    <h3 className="text-lg font-semibold mb-2">Sản phẩm</h3>
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left border-t">
-                            <thead>
-                                <tr className="border-b text-gray-500 text-sm">
-                                    <th className="py-2">Sản Phẩm</th>
-                                    <th className="py-2">Đơn giá</th>
-                                    <th className="py-2">Số lượng</th>
-                                    <th className="py-2">Thành tiền</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {cartItems.map((item) => (
-                                    <tr
-                                        key={item.id}
-                                        className="border-b hover:bg-gray-50"
-                                    >
-                                        <td className="flex items-center gap-3 py-2">
-                                            <img
-                                                src={item.image}
-                                                alt={item.name}
-                                                className="w-16 h-16 object-cover border rounded"
-                                                loading="lazy"
-                                            />
-                                            <div className="font-medium line-clamp-2">
-                                                {item.name}
-                                            </div>
-                                        </td>
-                                        <td className="py-2">
-                                            ₫
-                                            {item.price.toLocaleString('vi-VN')}
-                                        </td>
-                                        <td className="py-2">
-                                            {item.quantity}
-                                        </td>
-                                        <td className="py-2 text-red-500 font-semibold">
-                                            ₫
-                                            {(
-                                                item.price * item.quantity
-                                            ).toLocaleString('vi-VN')}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                {/* Voucher Section */}
-                <div className="mb-6 p-4 border rounded">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                            <ConfirmationNumberIcon className="text-red-500 mr-2" />
-                            <span className="font-semibold">Shope Voucher</span>
-                        </div>
-                        <button
-                            className="text-blue-500 underline"
-                            onClick={() =>
-                                alert(
-                                    'Chức năng chọn voucher chưa được triển khai.',
-                                )
-                            }
-                        >
-                            Chọn Voucher
-                        </button>
-                    </div>
-                    {voucher && (
-                        <p className="mt-2 text-sm">
-                            Đã áp dụng voucher: -₫
-                            {voucher.discount.toLocaleString('vi-VN')}
-                        </p>
-                    )}
-                    <div className="flex items-center mt-2">
-                        <MonetizationOnIcon className="text-orange-500 mr-2" />
-                        <span>
-                            Shope Xu{' '}
-                            <span className="text-gray-500">
-                                (Không đủ sử dụng Xu)
-                            </span>
-                        </span>
-                        <input
-                            type="text"
-                            className="ml-2 w-16 border rounded px-1"
-                            defaultValue="-40"
-                            disabled
-                        />
-                    </div>
-                </div>
-
-                {/* Payment Method Section */}
-                <div className="mb-6 p-4 border rounded">
-                    <h3 className="text-lg font-semibold mb-2">
-                        Phương thức thanh toán
-                    </h3>
-                    <div className="flex space-x-4">
-                        <label className="flex items-center">
-                            <input
-                                type="radio"
-                                name="paymentMethod"
-                                value="cod"
-                                checked={paymentMethod === 'cod'}
-                                onChange={(e) =>
-                                    setPaymentMethod(e.target.value)
-                                }
-                                className="mr-2"
-                            />
-                            Thanh toán khi nhận hàng
-                        </label>
-                        <label className="flex items-center">
-                            <input
-                                type="radio"
-                                name="paymentMethod"
-                                value="card"
-                                checked={paymentMethod === 'card'}
-                                onChange={(e) =>
-                                    setPaymentMethod(e.target.value)
-                                }
-                                className="mr-2"
-                            />
-                            Thẻ tín dụng/ghi nợ
-                        </label>
-                    </div>
-                </div>
-
-                {/* Total Summary */}
-                <div className="mb-6 p-4 border-t">
-                    <div className="space-y-2 text-sm">
-                        <div className="flex justify-between">
-                            <span>Tổng tiền hàng</span>
-                            <span>₫{total.toLocaleString('vi-VN')}</span>
-                        </div>
-                        <div className="flex justify-between">
-                            <span>Tổng tiền phí vận chuyển</span>
-                            <span>₫{shippingFee.toLocaleString('vi-VN')}</span>
-                        </div>
-                        <div className="flex justify-between text-red-500">
-                            <span>Combo khuyến mãi</span>
-                            <span>-₫{discount.toLocaleString('vi-VN')}</span>
-                        </div>
-                        <div className="flex justify-between font-semibold text-lg border-t pt-2">
-                            <span>Tổng thanh toán</span>
-                            <span>₫{finalTotal.toLocaleString('vi-VN')}</span>
-                        </div>
-                    </div>
-                    <button
-                        onClick={handleSubmitOrder}
-                        className="w-full bg-orange-500 text-white py-3 rounded mt-4 hover:bg-orange-600 disabled:bg-orange-300"
-                        disabled={isLoading}
-                    >
-                        {isLoading ? 'Đang xử lý...' : 'Đặt hàng'}
-                    </button>
-                </div>
+                <AddressSection
+                    addressFormData={addressFormData}
+                    setAddressFormData={setAddressFormData}
+                    showAddressForm={showAddressForm}
+                    setShowAddressForm={setShowAddressForm}
+                />
+                <ProductList cartItems={cartItems} />
+                <VoucherSection voucher={voucher} />
+                <PaymentMethodSection
+                    paymentMethod={paymentMethod}
+                    setPaymentMethod={setPaymentMethod}
+                />
+                <TotalSummary
+                    total={total}
+                    shippingFee={shippingFee}
+                    discount={discount}
+                    finalTotal={finalTotal}
+                    isLoading={isLoading}
+                    handleSubmitOrder={handleSubmitOrder}
+                />
             </div>
 
             <div className="bg-white p-2 mt-4 flex justify-around text-sm text-gray-500">
