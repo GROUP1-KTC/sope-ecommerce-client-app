@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import VoucherModal from '~/components/cart/VoucherModal';
 
@@ -49,6 +50,8 @@ const products = [
 ];
 
 const Cart = () => {
+    const router = useRouter();
+
     const [cartItems, setCartItems] = useState(mockCartItems);
 
     const [selected, setSelected] = useState<number[]>([]);
@@ -130,6 +133,13 @@ const Cart = () => {
             alert('Vui lòng chọn ít nhất một sản phẩm để mua.');
             return;
         }
+        const selectedItems = cartItems.filter((item) =>
+            selected.includes(item.id),
+        );
+        // Pass voucher along with items to checkout
+        router.push(
+            `/checkout?items=${encodeURIComponent(JSON.stringify(selectedItems))}&voucher=${encodeURIComponent(JSON.stringify(voucher || null))}`,
+        );
 
         const items = cartItems.filter((item) => selected.includes(item.id));
         const detail = items
