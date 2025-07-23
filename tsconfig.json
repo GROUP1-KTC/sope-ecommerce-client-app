@@ -28,6 +28,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "check-pm.js"
-  ],
+, "src/app/(customer)/account/payment/page.tsx"  ],
   "exclude": ["node_modules"]
 }
