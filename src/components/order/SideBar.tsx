@@ -18,7 +18,7 @@ const Sidebar: React.FC = () => {
     const toggleAccount = () => setIsAccountOpen(!isAccountOpen);
 
     return (
-        <aside className="w-60 bg-gray-50 rounded-lg p-4 text-sm flex-shrink-0">
+        <aside className="w-60 bg-gray-50 rounded-lg p-4 my-4 text-sm flex-shrink-0">
             <div
                 className="font-semibold mb-2 flex items-center gap-1 text-gray-700 p-1 rounded cursor-pointer hover:bg-gray-200 transition-colors"
                 onClick={toggleNotifications}
@@ -69,16 +69,56 @@ const Sidebar: React.FC = () => {
                         : 'max-h-0 opacity-0 overflow-hidden'
                 }`}
             >
-                <li className="pl-2 mt-2">Hồ Sơ</li>
-                <li className="pl-2 mt-2">Ngân Hàng</li>
-                <li className="pl-2 mt-2">Địa Chỉ</li>
-                <li className="pl-2 mt-2">Đổi Mật Khẩu</li>
-                <li className="pl-2 mt-2">Cài Đặt Thông Báo</li>
-                <li className="pl-2 mt-2">Thiết Lập Riêng</li>
-                <li className="pl-2 mt-2">Thông Tin Cá Nhân</li>
+                <li className="pl-2 mt-2">
+                    <a href="/account/profile" className="hover:underline">
+                        Hồ Sơ
+                    </a>
+                </li>
+                <li className="pl-2 mt-2">
+                    <a href="/account/payment" className="hover:underline">
+                        Ngân Hàng
+                    </a>
+                </li>
+                <li className="pl-2 mt-2">
+                    <a href="/account/address" className="hover:underline">
+                        Địa Chỉ
+                    </a>
+                </li>
+                <li className="pl-2 mt-2">
+                    <a
+                        href="/account/change-password"
+                        className="hover:underline"
+                    >
+                        Đổi Mật Khẩu
+                    </a>
+                </li>
+                <li className="pl-2 mt-2">
+                    <a
+                        href="/account/notification-settings"
+                        className="hover:underline"
+                    >
+                        Cài Đặt Thông Báo
+                    </a>
+                </li>
+                <li className="pl-2 mt-2">
+                    <a
+                        href="/account/privacy-settings"
+                        className="hover:underline"
+                    >
+                        Thiết Lập Riêng Tư
+                    </a>
+                </li>
+                <li className="pl-2 mt-2">
+                    <a
+                        href="/account/personal-info"
+                        className="hover:underline"
+                    >
+                        Thông Tin Cá Nhân
+                    </a>
+                </li>
             </ul>
 
-            <div className="font-semibold mt-2 flex items-center gap-1 text-blue-600 p-1 rounded">
+            <div className="font-semibold mt-4 flex items-center gap-1 text-gray-600 p-1 rounded">
                 <InventoryIcon fontSize="small" />
                 Đơn Mua
             </div>
