@@ -52,18 +52,26 @@ const ChangePasswordPage = () => {
                             Đổi mật khẩu
                         </div>
                         <p className="text-sl text-gray-600 mb-4">
-                            Để bảo mật tài khoản của bạn, không chia sẻ mật khẩu với bất kỳ ai và sử dụng mật khẩu mạnh.
+                            Để bảo mật tài khoản của bạn, không chia sẻ mật khẩu
+                            với bất kỳ ai và sử dụng mật khẩu mạnh.
                         </p>
-                        <hr className="my-4 border-gray-300"/>
+                        <hr className="my-4 border-gray-300" />
 
-                        <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
+                        <form
+                            onSubmit={handleSubmit}
+                            className="max-w-md mx-auto space-y-4"
+                        >
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                     Mật khẩu hiện tại
                                 </label>
                                 <div className="relative">
                                     <input
-                                        type={showPassword.current ? 'text' : 'password'}
+                                        type={
+                                            showPassword.current
+                                                ? 'text'
+                                                : 'password'
+                                        }
                                         name="currentPassword"
                                         value={formData.currentPassword}
                                         onChange={handleChange}
@@ -72,9 +80,15 @@ const ChangePasswordPage = () => {
                                     />
                                     <span
                                         className="absolute top-2/4 right-3 -translate-y-2/4 text-gray-600 cursor-pointer"
-                                        onClick={() => toggleVisibility('current')}
+                                        onClick={() =>
+                                            toggleVisibility('current')
+                                        }
                                     >
-                                        {showPassword.current ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                        {showPassword.current ? (
+                                            <VisibilityOffIcon />
+                                        ) : (
+                                            <VisibilityIcon />
+                                        )}
                                     </span>
                                 </div>
                             </div>
@@ -85,7 +99,11 @@ const ChangePasswordPage = () => {
                                 </label>
                                 <div className="relative">
                                     <input
-                                        type={showPassword.new ? 'text' : 'password'}
+                                        type={
+                                            showPassword.new
+                                                ? 'text'
+                                                : 'password'
+                                        }
                                         name="newPassword"
                                         value={formData.newPassword}
                                         onChange={handleChange}
@@ -96,7 +114,11 @@ const ChangePasswordPage = () => {
                                         className="absolute top-2/4 right-3 -translate-y-2/4 text-gray-600 cursor-pointer"
                                         onClick={() => toggleVisibility('new')}
                                     >
-                                        {showPassword.new ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                        {showPassword.new ? (
+                                            <VisibilityOffIcon />
+                                        ) : (
+                                            <VisibilityIcon />
+                                        )}
                                     </span>
                                 </div>
                             </div>
@@ -107,7 +129,11 @@ const ChangePasswordPage = () => {
                                 </label>
                                 <div className="relative">
                                     <input
-                                        type={showPassword.confirm ? 'text' : 'password'}
+                                        type={
+                                            showPassword.confirm
+                                                ? 'text'
+                                                : 'password'
+                                        }
                                         name="confirmPassword"
                                         value={formData.confirmPassword}
                                         onChange={handleChange}
@@ -116,9 +142,15 @@ const ChangePasswordPage = () => {
                                     />
                                     <span
                                         className="absolute top-2/4 right-3 -translate-y-2/4 text-gray-600 cursor-pointer"
-                                        onClick={() => toggleVisibility('confirm')}
+                                        onClick={() =>
+                                            toggleVisibility('confirm')
+                                        }
                                     >
-                                        {showPassword.confirm ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                        {showPassword.confirm ? (
+                                            <VisibilityOffIcon />
+                                        ) : (
+                                            <VisibilityIcon />
+                                        )}
                                     </span>
                                 </div>
                             </div>

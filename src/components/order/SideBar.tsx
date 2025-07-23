@@ -70,25 +70,51 @@ const Sidebar: React.FC = () => {
                 }`}
             >
                 <li className="pl-2 mt-2">
-                    <a href="/account/profile" className="hover:underline">Hồ Sơ</a>
+                    <a href="/account/profile" className="hover:underline">
+                        Hồ Sơ
+                    </a>
                 </li>
                 <li className="pl-2 mt-2">
-                    <a href="/account/payment" className="hover:underline">Ngân Hàng</a>
+                    <a href="/account/payment" className="hover:underline">
+                        Ngân Hàng
+                    </a>
                 </li>
                 <li className="pl-2 mt-2">
-                    <a href="/account/address" className="hover:underline">Địa Chỉ</a>
+                    <a href="/account/address" className="hover:underline">
+                        Địa Chỉ
+                    </a>
                 </li>
                 <li className="pl-2 mt-2">
-                    <a href="/account/change-password" className="hover:underline">Đổi Mật Khẩu</a>
+                    <a
+                        href="/account/change-password"
+                        className="hover:underline"
+                    >
+                        Đổi Mật Khẩu
+                    </a>
                 </li>
                 <li className="pl-2 mt-2">
-                    <a href="/account/notification-settings" className="hover:underline">Cài Đặt Thông Báo</a>
+                    <a
+                        href="/account/notification-settings"
+                        className="hover:underline"
+                    >
+                        Cài Đặt Thông Báo
+                    </a>
                 </li>
                 <li className="pl-2 mt-2">
-                    <a href="/account/privacy-settings" className="hover:underline">Thiết Lập Riêng Tư</a>
+                    <a
+                        href="/account/privacy-settings"
+                        className="hover:underline"
+                    >
+                        Thiết Lập Riêng Tư
+                    </a>
                 </li>
                 <li className="pl-2 mt-2">
-                    <a href="/account/personal-info" className="hover:underline">Thông Tin Cá Nhân</a>
+                    <a
+                        href="/account/personal-info"
+                        className="hover:underline"
+                    >
+                        Thông Tin Cá Nhân
+                    </a>
                 </li>
             </ul>
 

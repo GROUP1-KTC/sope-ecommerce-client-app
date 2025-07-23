@@ -1,6 +1,6 @@
 'use client';
 import Sidebar from '~/components/order/SideBar';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface DashboardLayoutProps {
     children: ReactNode;
@@ -12,9 +12,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             <div className="flex flex-col min-h-screen">
                 <div className="flex flex-1 ">
                     <Sidebar />
-                    <div className="flex-1 bg-white rounded-lg">
-                        {children}
-                    </div>
+                    <div className="flex-1 bg-white rounded-lg">{children}</div>
                 </div>
             </div>
         </div>

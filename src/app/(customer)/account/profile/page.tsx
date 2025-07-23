@@ -3,7 +3,6 @@ import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-
 const userData = {
     username: 'pkuckpam',
     firstName: 'Pham',
@@ -13,7 +12,6 @@ const userData = {
     avtUrl: 'https://scontent.fsgn6-1.fna.fbcdn.net/v/t39.30808-6/475850716_1862410967665318_5163934026762753103_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=6RYmNAA0yVYQ7kNvwGbwh7b&_nc_oc=AdlcQe-W5e-5potihXBMXOUZYNwLEov4C0e_mZO688Qg4IVNnOC9DLkbWNgmKv80Om4&_nc_zt=23&_nc_ht=scontent.fsgn6-1.fna&_nc_gid=gatLYvEOxIe_TQ5mH3CoDA&oh=00_AfRKBny2LYHwxnjarKzE63e7ovt6xoc26RWxxOy4U8CciQ&oe=68851374',
     gender: 'Nam',
     birthDate: '1990-01-01',
-
 };
 
 const ProfilePage = () => {
@@ -58,7 +56,10 @@ const ProfilePage = () => {
                                     <div className="w-2/3 flex items-center">
                                         <div className="w-2/3 text-gray-800">
                                             <div className="w-2/3 text-gray-800">
-                                                {userData.email.replace(/(.{2})(.*)(@.*)/, "$1******$3")}
+                                                {userData.email.replace(
+                                                    /(.{2})(.*)(@.*)/,
+                                                    '$1******$3',
+                                                )}
                                             </div>
                                         </div>
                                         <a
@@ -76,7 +77,10 @@ const ProfilePage = () => {
 
                                     <div className="w-2/3 flex items-start">
                                         <div className="w-2/3 text-gray-800">
-                                            {userData.phone.replace(/(.{2})(.*)(.{2})/, "$1******$3")}
+                                            {userData.phone.replace(
+                                                /(.{2})(.*)(.{2})/,
+                                                '$1******$3',
+                                            )}
                                         </div>
                                         <a
                                             href="#"
@@ -127,7 +131,9 @@ const ProfilePage = () => {
                                     <div className="w-2/3 ">
                                         <DatePicker
                                             selected={birthDate}
-                                            onChange={(date) => setBirthDate(date)}
+                                            onChange={(date) =>
+                                                setBirthDate(date)
+                                            }
                                             dateFormat="dd/MM/yyyy"
                                             className="p-2 border border-gray-300 rounded text-gray-800 cursor-pointer w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500"
                                             maxDate={new Date()}
@@ -159,7 +165,8 @@ const ProfilePage = () => {
                                     </button>
                                 </div>
                                 <div className="text-gray-500 text-sm text-center">
-                                    Dung lượng file tối đa 1 MB. Định dạng: JPEG, PNG
+                                    Dung lượng file tối đa 1 MB. Định dạng:
+                                    JPEG, PNG
                                 </div>
                             </div>
                         </div>
