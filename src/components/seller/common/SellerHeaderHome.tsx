@@ -20,10 +20,10 @@ export default function SellerHeaderHome() {
                 Seller Channel
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 ">
                 <QuickMenu />
 
-                <div className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded hover:bg-gray-200">
+                <div className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer transition">
                     <AccountCircleIcon />
                     <span className="text-sm font-medium">haicute</span>
                 </div>

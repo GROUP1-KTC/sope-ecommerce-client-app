@@ -56,7 +56,7 @@ export default function QuickMenu() {
         <div className="relative" ref={menuRef}>
             <button
                 onClick={() => setOpen((prev) => !prev)}
-                className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded hover:bg-gray-200"
+                className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer transition"
             >
                 <GridViewIcon />
             </button>
@@ -67,7 +67,7 @@ export default function QuickMenu() {
                         {items.map((item, idx) => (
                             <button
                                 key={idx}
-                                className="flex flex-col items-center text-sm text-gray-700 hover:text-red-500"
+                                className="flex flex-col items-center text-sm text-gray-700 hover:text-red-500 cursor-pointer transition"
                             >
                                 <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 mb-1">
                                     {item.icon}

@@ -18,7 +18,7 @@ export default function SidebarPanel({ panel, onClose, headerHeight }: Props) {
             <div className="p-4 border-b font-semibold text-gray-800 flex justify-between items-center">
                 {panel === 'notifications' && 'Thông báo'}
                 {panel === 'support' && 'Hỗ trợ khách hàng'}
-                {panel === 'chat' && 'Nhắn tin'}
+
                 <button
                     onClick={onClose}
                     className="text-gray-500 hover:text-gray-800"
@@ -30,7 +30,6 @@ export default function SidebarPanel({ panel, onClose, headerHeight }: Props) {
                 {panel === 'notifications' &&
                     'Bạn không nhận được bất kỳ thông báo nào.'}
                 {panel === 'support' && 'Chưa có thông tin hỗ trợ.'}
-                {panel === 'chat' && 'Chưa có tin nhắn nào.'}
             </div>
         </div>
     );

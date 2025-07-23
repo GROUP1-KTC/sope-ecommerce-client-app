@@ -1,4 +1,6 @@
 import './globals.css';
+import StoreProvider from '~/providers/StoreProvider';
+import GlobalComponent from '~/components/shared/Global';
 
 export default function RootLayout({
     children,
@@ -8,7 +10,10 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <main>{children}</main>
+                <StoreProvider>
+                    {children}
+                    <GlobalComponent />
+                </StoreProvider>
             </body>
         </html>
     );

@@ -7,12 +7,10 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
-            <body>
-                <HeaderCustomService />
-                <main>{children}</main>
-                <FooterCustomService />
-            </body>
-        </html>
+        <>
+            <HeaderCustomService />
+            <main>{children}</main>
+            <FooterCustomService />
+        </>
     );
 }

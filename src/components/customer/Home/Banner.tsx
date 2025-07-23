@@ -90,7 +90,7 @@ const Banner = () => {
         }, 5000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [next]);
 
     return (
         <div className="w-full flex flex-col items-center py-6">

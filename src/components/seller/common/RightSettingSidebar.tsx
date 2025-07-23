@@ -2,15 +2,38 @@
 
 import { useState, useEffect } from 'react';
 import SidebarPanel from '../sidebar/SidebarPanel';
-import NotificationButton from '../sidebar/NotificationButton';
-import SupportButton from '../sidebar/SupportButton';
-import ChatButton from '../sidebar/ChatButton';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
+import ChatIcon from '@mui/icons-material/Chat';
+import ChatDialog from '~/components/shared/chat/ChatDialog';
+import IconButton from '~/components/shared/button/IconButton';
 
 export type PanelType = 'notifications' | 'support' | 'chat' | null;
 
 export default function Sidebar() {
     const [activePanel, setActivePanel] = useState<PanelType>(null);
     const [headerHeight, setHeaderHeight] = useState(64);
+
+    const panels = [
+        {
+            key: 'notifications',
+            icon: NotificationsNoneOutlinedIcon,
+            title: 'Thông báo',
+            counter: 5,
+        },
+        {
+            key: 'support',
+            icon: SupportAgentOutlinedIcon,
+            title: 'Hỗ trợ',
+            counter: 2,
+        },
+        {
+            key: 'chat',
+            icon: ChatIcon,
+            title: 'Nhắn tin',
+            counter: 0,
+        },
+    ];
 
     useEffect(() => {
         const header = document.querySelector('header');
@@ -23,7 +46,7 @@ export default function Sidebar() {
 
     return (
         <>
-            {activePanel && (
+            {activePanel && activePanel !== 'chat' && (
                 <SidebarPanel
                     panel={activePanel}
                     onClose={() => setActivePanel(null)}
@@ -31,25 +54,30 @@ export default function Sidebar() {
                 />
             )}
 
+            {activePanel === 'chat' && (
+                <ChatDialog
+                    open={activePanel === 'chat'}
+                    onClose={() => setActivePanel(null)}
+                />
+            )}
+
             <div
-                className="fixed right-0 w-16 bg-white shadow-lg z-50 flex flex-col gap-4 p-3"
+                className=" right-0 w-16 bg-white shadow-lg flex flex-col gap-4 p-4"
                 style={{
                     top: `${headerHeight}px`,
                     height: `calc(100% - ${headerHeight}px)`,
                 }}
             >
-                <NotificationButton
-                    active={activePanel === 'notifications'}
-                    onClick={() => togglePanel('notifications')}
-                />
-                <SupportButton
-                    active={activePanel === 'support'}
-                    onClick={() => togglePanel('support')}
-                />
-                <ChatButton
-                    active={activePanel === 'chat'}
-                    onClick={() => togglePanel('chat')}
-                />
+                {panels.map(({ key, icon: Icon, title, counter }) => (
+                    <IconButton
+                        key={key}
+                        active={activePanel === key}
+                        onClick={() => togglePanel(key as PanelType)}
+                        Icon={Icon}
+                        title={title}
+                        counter={counter}
+                    />
+                ))}
             </div>
         </>
     );

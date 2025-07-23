@@ -15,28 +15,6 @@ export default function MerchantSidebar() {
 
     const pathname = usePathname();
 
-    useEffect(() => {
-        setActivePath(pathname);
-        navItems.forEach((item, index) => {
-            const isChildActive = item.children.some(
-                (sub) => sub.href === pathname,
-            );
-            if (isChildActive) {
-                setOpenItems((prev) => ({
-                    ...prev,
-                    [index]: true,
-                }));
-            }
-        });
-    }, [pathname]);
-
-    const toggleItem = (index: number) => {
-        setOpenItems((prev) => ({
-            ...prev,
-            [index]: !prev[index],
-        }));
-    };
-
     const navItems = [
         {
             label: 'Order Management',
@@ -103,6 +81,28 @@ export default function MerchantSidebar() {
             ],
         },
     ];
+
+    useEffect(() => {
+        setActivePath(pathname);
+        navItems.forEach((item, index) => {
+            const isChildActive = item.children.some(
+                (sub) => sub.href === pathname,
+            );
+            if (isChildActive) {
+                setOpenItems((prev) => ({
+                    ...prev,
+                    [index]: true,
+                }));
+            }
+        });
+    }, [pathname, navItems]);
+
+    const toggleItem = (index: number) => {
+        setOpenItems((prev) => ({
+            ...prev,
+            [index]: !prev[index],
+        }));
+    };
 
     return (
         <aside className="w-66 bg-white p-4 border-r border-gray-200 overflow-auto">
