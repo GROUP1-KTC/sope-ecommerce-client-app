@@ -45,38 +45,41 @@ importers:
         specifier: ^8.5.6
         version: 8.5.6
       react:
-        specifier: ^19.1.0
+        specifier: ^19.0.0
         version: 19.1.0
       react-chartjs-2:
         specifier: ^5.3.0
         version: 5.3.0(chart.js@4.5.0)(react@19.1.0)
+      react-credit-cards-2:
+        specifier: ^1.0.3
+        version: 1.0.3(react@19.1.0)
       react-datepicker:
         specifier: ^8.4.0
         version: 8.4.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-dom:
-        specifier: ^19.1.0
+        specifier: ^19.0.0
         version: 19.1.0(react@19.1.0)
       tailwindcss:
         specifier: ^4.1.11
         version: 4.1.11
     devDependencies:
       '@eslint/eslintrc':
-        specifier: ^3.3.1
+        specifier: ^3
         version: 3.3.1
       '@types/node':
-        specifier: ^20.19.9
+        specifier: ^20
         version: 20.19.9
       '@types/react':
-        specifier: ^19.1.8
+        specifier: ^19
         version: 19.1.8
       '@types/react-dom':
-        specifier: ^19.1.6
+        specifier: ^19
         version: 19.1.6(@types/react@19.1.8)
       '@typescript-eslint/eslint-plugin':
-        specifier: ^8.38.0
+        specifier: ^8.36.0
         version: 8.38.0(@typescript-eslint/parser@8.38.0(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3)
       '@typescript-eslint/parser':
-        specifier: ^8.38.0
+        specifier: ^8.36.0
         version: 8.38.0(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3)
       eslint:
         specifier: ^9.31.0
@@ -85,10 +88,10 @@ importers:
         specifier: 15.3.5
         version: 15.3.5(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3)
       eslint-config-prettier:
-        specifier: ^10.1.8
+        specifier: ^10.1.5
         version: 10.1.8(eslint@9.31.0(jiti@2.4.2))
       eslint-plugin-prettier:
-        specifier: ^5.5.3
+        specifier: ^5.5.1
         version: 5.5.3(eslint-config-prettier@10.1.8(eslint@9.31.0(jiti@2.4.2)))(eslint@9.31.0(jiti@2.4.2))(prettier@3.6.2)
       eslint-plugin-react:
         specifier: ^7.37.5
@@ -100,7 +103,7 @@ importers:
         specifier: ^3.6.2
         version: 3.6.2
       typescript:
-        specifier: ^5.8.3
+        specifier: ^5
         version: 5.8.3
 
 packages:
@@ -1069,6 +1072,9 @@ packages:
     resolution: {integrity: sha512-AdmX6xUzdNASswsFtmwSt7Vj8po9IuqXm0UXz7QKPuEUmPB4XyjGfaAr2PSuELMwkRMVH1EpIkX5bTZGRB3eCA==}
     engines: {node: '>=10'}
 
+  credit-card-type@9.1.0:
+    resolution: {integrity: sha512-CpNFuLxiPFxuZqhSKml3M+t0K/484pMAnfYWH14JoD7OZMnmC0Lmo+P7JX9SobqFpRoo7ifA18kOHdxJywYPEA==}
+
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
@@ -1746,6 +1752,10 @@ packages:
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
+  luhn@2.4.1:
+    resolution: {integrity: sha512-p1eEWSb2RJAfv+BzrPEUqbUXV1H3ylHEAOk9yDM1L12ojD6OQQGrE29DqKLa0XYluJTIwXIOFmyzVOme3QSyww==}
+    engines: {node: '>=10'}
+
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
 
@@ -1900,6 +1910,9 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
 
+  payment@2.4.7:
+    resolution: {integrity: sha512-5HyD3HJ0q3XtVm/Dss4t3KGtIughkCfnyQ1WfMashVD2vvBOmuXnkswhBcknMcHW8oo4zqVnNbQSkNaqafYaGA==}
+
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
@@ -1946,6 +1959,9 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
+  qj@2.0.0:
+    resolution: {integrity: sha512-8466vlnAF/piI42tzMBUfhaAWn2yBNPOLSSbA2YBlEh+S8CxBXbAO1AwuDReGKYX6LlsK19wBL9cpXZGlgsXxA==}
+
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
@@ -1954,6 +1970,11 @@ packages:
     peerDependencies:
       chart.js: ^4.1.1
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  react-credit-cards-2@1.0.3:
+    resolution: {integrity: sha512-r4oi/92oUbDD7reCwOavjOZVJKpM941K3XYekUhVQysXEDxkzW8OGr0oD4Y5kYounJT2t75kbiEvERzRQS/shA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   react-datepicker@8.4.0:
     resolution: {integrity: sha512-6nPDnj8vektWCIOy9ArS3avus9Ndsyz5XgFCJ7nBxXASSpBdSL6lG9jzNNmViPOAOPh6T5oJyGaXuMirBLECag==}
@@ -3231,6 +3252,8 @@ snapshots:
       path-type: 4.0.0
       yaml: 1.10.2
 
+  credit-card-type@9.1.0: {}
+
   cross-spawn@7.0.6:
     dependencies:
       path-key: 3.1.1
@@ -4033,6 +4056,8 @@ snapshots:
     dependencies:
       react: 19.1.0
 
+  luhn@2.4.1: {}
+
   magic-string@0.30.17:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.4
@@ -4187,6 +4212,11 @@ snapshots:
 
   path-type@4.0.0: {}
 
+  payment@2.4.7:
+    dependencies:
+      globalthis: 1.0.4
+      qj: 2.0.0
+
   picocolors@1.1.1: {}
 
   picomatch@2.3.1: {}
@@ -4225,11 +4255,20 @@ snapshots:
 
   punycode@2.3.1: {}
 
+  qj@2.0.0: {}
+
   queue-microtask@1.2.3: {}
 
   react-chartjs-2@5.3.0(chart.js@4.5.0)(react@19.1.0):
     dependencies:
       chart.js: 4.5.0
+      react: 19.1.0
+
+  react-credit-cards-2@1.0.3(react@19.1.0):
+    dependencies:
+      credit-card-type: 9.1.0
+      luhn: 2.4.1
+      payment: 2.4.7
       react: 19.1.0
 
   react-datepicker@8.4.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
