@@ -2,6 +2,9 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { useAlertStore } from '~/store/zustand/alertStore';
+import { useModalStore } from '~/store/zustand/modalStore';
 interface ProductInfoProps {
     product: {
         id: number;
@@ -58,6 +61,19 @@ const ProductInfo = ({
 }: ProductInfoProps) => {
     const [showVoucherModal, setShowVoucherModal] = useState(false);
     const [showPolicyModal, setShowPolicyModal] = useState(false);
+
+    const handleAddToCart = () => {
+        useAlertStore.getState().showAlert({
+            severity: 'success',
+            message: 'Thêm sản phẩm thành công!',
+        });
+
+        useModalStore.getState().showModal({
+            type: 'info',
+            severity: 'success',
+            message: 'Thêm sản phẩm thành công!',
+        });
+    };
 
     return (
         <div className="bg-white shadow rounded p-4 flex flex-col md:flex-row gap-6">
@@ -411,9 +427,12 @@ const ProductInfo = ({
                     </div>
                 </div>
                 <div className="flex gap-4">
-                    <button className="bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700">
-                        {' '}
-                        <i></i> Thêm vào giỏ hàng
+                    <button
+                        onClick={handleAddToCart}
+                        className="bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700"
+                    >
+                        <AddShoppingCartIcon className="mr-2" />
+                        Thêm vào giỏ hàng
                     </button>
                     <button className="bg-red-600 text-white px-6 rounded hover:bg-red-700">
                         <span>

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import React, { useState } from 'react';
-import VoucherModal from '~/components/cart/VoucherModal';
+import VoucherModal, { type Voucher } from '~/components/cart/VoucherModal';
 
 const mockCartItems = [
     {
@@ -53,7 +53,7 @@ const Cart = () => {
 
     const [selected, setSelected] = useState<number[]>([]);
 
-    const [voucher, setVoucher] = useState<any>(null);
+    const [voucher, setVoucher] = useState<Voucher | null>(null);
 
     const [showVoucherModal, setShowVoucherModal] = useState(false);
 

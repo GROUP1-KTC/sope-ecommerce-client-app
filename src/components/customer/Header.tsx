@@ -8,6 +8,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import Link from 'next/link';
 import { useState } from 'react';
 import Image from 'next/image';
+import Badge from '@mui/material/Badge';
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -65,25 +66,24 @@ const Header = () => {
             {/* Main bar */}
             <div className="flex items-center px-2 sm:px-8 py-2 sm:py-2 gap-2 sm:gap-8 flex-col sm:flex-row">
                 <div className="flex items-center gap-2 w-full sm:w-auto justify-between">
-                    <div className="flex items-center gap-2">
+                    <Link
+                        href="/"
+                        className="hover:text-yellow-200 transition flex items-center gap-2"
+                    >
                         <StorefrontIcon
                             style={{ fontSize: 40 }}
                             className="text-white"
                         />
                         <span className="h-8 w-px bg-white mx-2" />
-                        <Link
-                            href="/"
-                            className="hover:text-yellow-200 transition"
-                        >
-                            <Image
-                                src="/assets/logo/logo.svg"
-                                alt="Sope Logo"
-                                width={220}
-                                height={94}
-                                className="h-12 sm:h-16 w-auto"
-                            />
-                        </Link>
-                    </div>
+
+                        <Image
+                            src="/assets/logo/logo.svg"
+                            alt="Sope Logo"
+                            width={220}
+                            height={94}
+                            className="h-12 sm:h-16 w-auto"
+                        />
+                    </Link>
                     {/* Hamburger menu for mobile */}
                     <button
                         className="sm:hidden text-3xl hover:text-yellow-200 transition"
@@ -108,14 +108,23 @@ const Header = () => {
                     </button>
                 </div>
                 {/* Cart icon */}
+
                 <Link
                     href="/cart"
                     className="ml-0 sm:ml-4 mt-2 sm:mt-0 flex items-center hover:text-yellow-200 transition"
                 >
-                    <ShoppingCartOutlinedIcon
-                        style={{ fontSize: 36 }}
-                        className="text-white"
-                    />
+                    <Badge
+                        badgeContent={9}
+                        sx={{
+                            '& .MuiBadge-badge': {
+                                backgroundColor: '#ffff',
+                                color: '#d0001a',
+                                fontWeight: 'bold',
+                            },
+                        }}
+                    >
+                        <ShoppingCartOutlinedIcon style={{ fontSize: 36 }} />
+                    </Badge>
                 </Link>
             </div>
             {/* Mobile menu placeholder */}
