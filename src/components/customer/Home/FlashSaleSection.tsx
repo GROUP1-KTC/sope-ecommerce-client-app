@@ -49,8 +49,7 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
         return () => el?.removeEventListener('scroll', onScroll);
     }, []);
 
-    const formatPrice = (price: number) =>
-        `₫${price.toLocaleString('vi-VN')}`;
+    const formatPrice = (price: number) => `₫${price.toLocaleString('vi-VN')}`;
 
     return (
         <div className="w-full flex justify-center bg-gray-50 py-4">
@@ -62,7 +61,10 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
                             <Countdown initialSeconds={initialSeconds} />
                         </span>
                     </h2>
-                    <a href="#" className="text-sm text-orange-500 hover:underline">
+                    <a
+                        href="#"
+                        className="text-sm text-orange-500 hover:underline"
+                    >
                         Xem tất cả {'>'}
                     </a>
                 </div>
@@ -115,7 +117,9 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
                                     <div className="w-full h-2 bg-orange-100 rounded-full overflow-hidden mb-1">
                                         <div
                                             className="h-full bg-gradient-to-r from-orange-400 to-pink-400"
-                                            style={{ width: `${item.soldPercent}%` }}
+                                            style={{
+                                                width: `${item.soldPercent}%`,
+                                            }}
                                         />
                                     </div>
                                 </div>

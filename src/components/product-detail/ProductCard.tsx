@@ -32,12 +32,11 @@ const ProductCard = ({ product }: { product: Product }) => {
                             WebkitBoxOrient: 'vertical',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
-                            maxHeight: '2.75rem', 
+                            maxHeight: '2.75rem',
                         }}
                     >
                         {product.name}
                     </h3>
-
                 </Link>
                 <p className="text-red-500 font-bold text-xs mb-1">
                     ₫{product.price.toLocaleString('vi-VN')}

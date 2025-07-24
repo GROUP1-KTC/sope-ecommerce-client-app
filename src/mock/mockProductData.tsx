@@ -253,7 +253,6 @@ export const productData = {
     ],
 };
 
-
 export const categories = [
     {
         name: 'Thời Trang Nam',
@@ -426,9 +425,8 @@ export const mostSearchProducts = [
         price: 2500000,
         image: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-loovapnhstw044.webp',
         rating: 4.9,
-        sold: '1k+',    
-    }
-    ,
+        sold: '1k+',
+    },
     {
         id: 107,
         name: 'Đồng hồ thông minh Apple Watch',
@@ -660,6 +658,5 @@ export const mostSearchProducts = [
         image: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-loovapnhstw044.webp',
         rating: 4.9,
         sold: '1k+',
-    }
+    },
 ];
-
