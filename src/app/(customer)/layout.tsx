@@ -9,7 +9,11 @@ export default function CustomerLayout({
     children: React.ReactNode;
 }) {
     const pathname = usePathname();
-    const hideHeaderFooter = pathname === '/login' || pathname === '/signup';
+    const hideHeaderFooter =
+        pathname === '/login' ||
+        pathname === '/signup' ||
+        pathname === '/forgot-password' ||
+        pathname === '/reset-password';
 
     return (
         <>

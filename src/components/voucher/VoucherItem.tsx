@@ -16,7 +16,7 @@ interface VoucherItemProps {
 
 const VoucherItem: React.FC<VoucherItemProps> = ({
     title,
-    discount,
+    // discount,
     minOrder,
     platform,
     expiry,

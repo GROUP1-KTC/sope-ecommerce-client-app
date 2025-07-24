@@ -1,14 +1,14 @@
 import Footer from '~/components/customer/Footer';
 import Header from '~/components/customer/HeaderAuth';
 
-export default function UserLayout({
+export default function ForgotPasswordLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
     return (
         <>
-            <Header title="Sign up" />
+            <Header title="Forgot password!" />
             <main>{children}</main>
             <Footer />
         </>

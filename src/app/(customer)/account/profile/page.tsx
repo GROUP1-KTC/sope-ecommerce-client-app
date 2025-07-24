@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -154,7 +155,9 @@ const ProfilePage = () => {
                             <div className="flex-[2] pl-4 flex flex-col items-center">
                                 <div className="mb-4 flex flex-col items-center">
                                     <div className="w-32 h-32 rounded-full border-4 border-gray-300 bg-gray-100 flex items-center justify-center overflow-hidden mb-4">
-                                        <img
+                                        <Image
+                                            width={128}
+                                            height={128}
                                             src={userData.avtUrl}
                                             alt="Avatar"
                                             className="w-full h-full object-cover"

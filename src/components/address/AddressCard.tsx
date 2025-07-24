@@ -37,7 +37,7 @@ const AddressCard = ({
     };
 
     const handleConfirmDelete = () => {
-        // onDelete(address.id);
+        onDelete(address.id);
         setOpenDeleteModal(false);
         setOpenSuccessModal(true);
     };

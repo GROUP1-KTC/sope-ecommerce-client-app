@@ -11,6 +11,9 @@ type Card = {
 };
 
 const PaymentList = ({ cards }: { cards: Card[] }) => {
+    const handleDeleteCard = (id: number) => {
+        console.log(`Card with id ${id} deleted`);
+    };
     return (
         <div className="mb-6">
             <h2 className="text-lg font-semibold mb-4">Thẻ đã thêm</h2>
@@ -20,9 +23,7 @@ const PaymentList = ({ cards }: { cards: Card[] }) => {
                         <PaymentCard
                             key={card.id}
                             card={card}
-                            onDelete={function (id: number): void {
-                                throw new Error('Function not implemented.');
-                            }}
+                            onDelete={handleDeleteCard}
                         />
                     ))}
                 </div>

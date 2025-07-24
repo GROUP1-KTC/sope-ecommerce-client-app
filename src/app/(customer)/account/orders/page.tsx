@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import MenuOrder from '~/components/order/MenuOrder';
 import OrderItem from '~/components/order/OrderItem';
 import SearchBar from '~/components/order/SearchBar';
-import Sidebar from '~/components/order/SideBar';
 
 const OrderPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -81,7 +80,6 @@ const OrderPage = () => {
         <div className="order-page">
             <div className="flex flex-col min-h-screen bg-gray-50 px-12 ">
                 <div className="flex flex-1">
-                    <Sidebar />
                     <div className="flex-1 p-6">
                         <div className="bg-gray-50 rounded-lg px-12">
                             <div className="mb-6">

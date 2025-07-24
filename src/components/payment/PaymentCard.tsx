@@ -7,6 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import WarningIcon from '@mui/icons-material/Warning';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Image from 'next/image';
 
 type Card = {
     id: number;
@@ -36,7 +37,7 @@ const PaymentCard = ({
     };
 
     const handleConfirmDelete = () => {
-        // onDelete(card.id);
+        onDelete(card.id);
         setOpenDeleteModal(false);
         setOpenSuccessModal(true);
     };
@@ -58,7 +59,9 @@ const PaymentCard = ({
         <div className="p-4 bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center space-x-2">
-                    <img
+                    <Image
+                        width={40}
+                        height={40}
                         src={card.logo}
                         alt={card.type}
                         className="h-10 w-10 object-contain"

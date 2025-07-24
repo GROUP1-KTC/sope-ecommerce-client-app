@@ -38,7 +38,7 @@ const ChatMessages = ({
         if (selected) {
             scrollToBottom();
         }
-    }, [selected?.messages]);
+    }, [selected]);
 
     useEffect(() => {
         let subscription: StompSubscription | null = null;

@@ -1,10 +1,10 @@
-import type { NextRequest } from 'next/server';
+// import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 // import { authMiddleware } from '~/middlewares/auth.middleware'
 // import { guestMiddleware } from '~/middlewares/guest.middleware'
 // import { roleMiddleware } from '~/middlewares/role.middlware'
 
-export function middleware(request: NextRequest) {
+export function middleware() {
     return (
         // guestMiddleware(request) ||
         // authMiddleware(request) ||

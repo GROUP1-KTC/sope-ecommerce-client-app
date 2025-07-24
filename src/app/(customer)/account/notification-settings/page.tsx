@@ -28,13 +28,13 @@ const NotificationSettingsPage = () => {
         },
     ]);
 
-    const [smsSettings, setSmsSettings] = useState<SettingItem[]>([
-        {
-            label: 'Khuyến mãi',
-            description: 'Cập nhật về các ưu đãi và khuyến mãi sắp tới',
-            enabled: false,
-        },
-    ]);
+    // const [smsSettings, setSmsSettings] = useState<SettingItem[]>([
+    //     {
+    //         label: 'Khuyến mãi',
+    //         description: 'Cập nhật về các ưu đãi và khuyến mãi sắp tới',
+    //         enabled: false,
+    //     },
+    // ]);
 
     const toggleEmailSetting = (index: number) => {
         const updated = [...emailSettings];
@@ -42,11 +42,11 @@ const NotificationSettingsPage = () => {
         setEmailSettings(updated);
     };
 
-    const toggleSmsSetting = (index: number) => {
-        const updated = [...smsSettings];
-        updated[index].enabled = !updated[index].enabled;
-        setSmsSettings(updated);
-    };
+    // const toggleSmsSetting = (index: number) => {
+    //     const updated = [...smsSettings];
+    //     updated[index].enabled = !updated[index].enabled;
+    //     setSmsSettings(updated);
+    // };
 
     return (
         <div className="order-detail-page">
