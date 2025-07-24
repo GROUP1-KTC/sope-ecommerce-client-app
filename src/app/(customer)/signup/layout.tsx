@@ -1,5 +1,5 @@
 import Footer from '~/components/customer/Footer';
-import HeaderSignup from '~/components/customer/HeaderSignup';
+import Header from '~/components/customer/HeaderAuth';
 
 export default function UserLayout({
     children,
@@ -8,7 +8,7 @@ export default function UserLayout({
 }) {
     return (
         <>
-            <HeaderSignup />
+            <Header title="Sign up" />
             <main>{children}</main>
             <Footer />
         </>

@@ -1,5 +1,5 @@
 import Footer from '~/components/customer/Footer';
-import HeaderLogin from '~/components/customer/HeaderLogin';
+import Header from '~/components/customer/HeaderAuth';
 
 export default function LoginLayout({
     children,
@@ -8,7 +8,7 @@ export default function LoginLayout({
 }) {
     return (
         <>
-            <HeaderLogin />
+            <Header title="Login" />
             <main>{children}</main>
             <Footer />
         </>

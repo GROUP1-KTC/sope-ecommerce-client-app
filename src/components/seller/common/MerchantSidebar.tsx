@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
@@ -15,6 +15,79 @@ export default function MerchantSidebar() {
 
     const pathname = usePathname();
 
+    const navItems = useMemo(
+        () => [
+            {
+                label: 'Order Management',
+                icon: <ShoppingCartOutlinedIcon className="h-5 w-5 mr-3" />,
+                children: [
+                    { label: 'All Order', href: '/seller/all-order' },
+                    {
+                        label: 'Return/Refund or Cancellation Order',
+                        href: '/seller/return-order',
+                    },
+                ],
+            },
+            {
+                label: 'Product Management',
+                icon: <Inventory2OutlinedIcon className="h-5 w-5 mr-3" />,
+                children: [
+                    { label: 'All Products', href: '/seller/all-products' },
+                    { label: 'Add Product', href: '/seller/add-product' },
+                ],
+            },
+            {
+                label: 'Marketing Channel',
+                icon: <LocalOfferIcon className="h-5 w-5 mr-3" />,
+                children: [
+                    {
+                        label: 'Marketing Channel',
+                        href: '/seller/marketing-channel',
+                    },
+                    { label: 'Shop Promotions', href: '#promotions' },
+                    { label: 'Shop Flash Sale', href: '#flash-sale' },
+                    { label: 'Shop Discount Code', href: '#discount' },
+                ],
+            },
+            {
+                label: 'Customer Service',
+                icon: <RecommendOutlinedIcon className="h-5 w-5 mr-3" />,
+                children: [
+                    {
+                        label: 'Chat Management',
+                        href: '/seller/chat-management',
+                    },
+                    {
+                        label: 'Review Management',
+                        href: '/seller/review-management',
+                    },
+                ],
+            },
+            {
+                label: 'Financial',
+                icon: <PaymentsOutlinedIcon className="h-5 w-5 mr-3" />,
+                children: [
+                    { label: 'Revenue', href: '/seller/turnover' },
+                    {
+                        label: 'Sope Account Balance',
+                        href: '/seller/account-balance',
+                    },
+                    { label: 'Bank Account', href: '/seller/bank' },
+                ],
+            },
+
+            {
+                label: 'Shop Management',
+                icon: <StoreOutlinedIcon className="h-5 w-5 mr-3" />,
+                children: [
+                    { label: 'Shop Profile', href: '/seller/profile' },
+                    { label: 'Shop Decoration', href: '#decoration' },
+                ],
+            },
+        ],
+        [],
+    );
+
     useEffect(() => {
         setActivePath(pathname);
         navItems.forEach((item, index) => {
@@ -28,7 +101,7 @@ export default function MerchantSidebar() {
                 }));
             }
         });
-    }, [pathname]);
+    }, [pathname, navItems]);
 
     const toggleItem = (index: number) => {
         setOpenItems((prev) => ({
@@ -36,73 +109,6 @@ export default function MerchantSidebar() {
             [index]: !prev[index],
         }));
     };
-
-    const navItems = [
-        {
-            label: 'Order Management',
-            icon: <ShoppingCartOutlinedIcon className="h-5 w-5 mr-3" />,
-            children: [
-                { label: 'All Order', href: '/seller/all-order' },
-                {
-                    label: 'Return/Refund or Cancellation Order',
-                    href: '/seller/return-order',
-                },
-            ],
-        },
-        {
-            label: 'Product Management',
-            icon: <Inventory2OutlinedIcon className="h-5 w-5 mr-3" />,
-            children: [
-                { label: 'All Products', href: '/seller/all-products' },
-                { label: 'Add Product', href: '/seller/add-product' },
-            ],
-        },
-        {
-            label: 'Marketing Channel',
-            icon: <LocalOfferIcon className="h-5 w-5 mr-3" />,
-            children: [
-                {
-                    label: 'Marketing Channel',
-                    href: '/seller/marketing-channel',
-                },
-                { label: 'Shop Promotions', href: '#promotions' },
-                { label: 'Shop Flash Sale', href: '#flash-sale' },
-                { label: 'Shop Discount Code', href: '#discount' },
-            ],
-        },
-        {
-            label: 'Customer Service',
-            icon: <RecommendOutlinedIcon className="h-5 w-5 mr-3" />,
-            children: [
-                { label: 'Chat Management', href: '/seller/chat-management' },
-                {
-                    label: 'Review Management',
-                    href: '/seller/review-management',
-                },
-            ],
-        },
-        {
-            label: 'Financial',
-            icon: <PaymentsOutlinedIcon className="h-5 w-5 mr-3" />,
-            children: [
-                { label: 'Revenue', href: '/seller/turnover' },
-                {
-                    label: 'Sope Account Balance',
-                    href: '/seller/account-balance',
-                },
-                { label: 'Bank Account', href: '/seller/bank' },
-            ],
-        },
-
-        {
-            label: 'Shop Management',
-            icon: <StoreOutlinedIcon className="h-5 w-5 mr-3" />,
-            children: [
-                { label: 'Shop Profile', href: '/seller/profile' },
-                { label: 'Shop Decoration', href: '#decoration' },
-            ],
-        },
-    ];
 
     return (
         <aside className="w-66 bg-white p-4 border-r border-gray-200 overflow-auto">

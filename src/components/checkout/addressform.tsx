@@ -48,7 +48,7 @@ export default function AddressForm({
                     name="fullName"
                     value={addressFormData.fullName}
                     onChange={handleAddressChange}
-                    className="w-1/2 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-1/2 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="Họ và tên"
                     required
                 />
@@ -57,7 +57,7 @@ export default function AddressForm({
                     name="phone"
                     value={addressFormData.phone}
                     onChange={handleAddressChange}
-                    className="w-1/2 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-1/2 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="Số điện thoại"
                     required
                 />
@@ -66,7 +66,7 @@ export default function AddressForm({
                 name="cityDistrict"
                 value={addressFormData.cityDistrict}
                 onChange={handleAddressChange}
-                className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
                 required
             >
                 <option value="">Tỉnh/Thành phố, Quận/Huyện, Phường/Xã</option>
@@ -79,7 +79,7 @@ export default function AddressForm({
                 name="address"
                 value={addressFormData.address}
                 onChange={handleAddressChange}
-                className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
                 placeholder="Địa chỉ cụ thể"
                 required
             />
@@ -88,14 +88,14 @@ export default function AddressForm({
                     name="type"
                     value={addressFormData.type}
                     onChange={handleAddressChange}
-                    className="w-1/2 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-1/2 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
                     <option value="Nhà Riêng">Nhà Riêng</option>
                     <option value="Văn Phòng">Văn Phòng</option>
                 </select>
                 <button
                     type="button"
-                    className="w-1/2 bg-gray-200 border rounded px-3 py-2"
+                    className="w-1/2 bg-gray-200 border rounded px-3 py-2 cursor-pointer"
                 >
                     + Thêm vị trí
                 </button>
@@ -110,7 +110,7 @@ export default function AddressForm({
                 </button>
                 <button
                     type="submit"
-                    className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+                    className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-red-600 cursor-pointer"
                 >
                     Hoàn tất
                 </button>

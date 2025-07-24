@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface Voucher {
+export interface Voucher {
     id: string;
     title: string;
     description: string;

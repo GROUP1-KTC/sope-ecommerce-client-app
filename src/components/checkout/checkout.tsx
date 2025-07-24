@@ -54,10 +54,8 @@ export default function Checkout() {
         console.log('Raw voucher:', voucherData);
 
         if (!items || items.trim() === '') {
-            console.error('No valid items parameter');
-            setErrorMessage(
-                'Dữ liệu giỏ hàng không hợp lệ. Vui lòng chọn sản phẩm.',
-            );
+            console.error('');
+            setErrorMessage('');
             return;
         }
 
@@ -162,8 +160,8 @@ export default function Checkout() {
 
     if (orderSuccess) {
         return (
-            <div className="bg-gray-200 min-h-screen py-4">
-                <div className="max-w-4xl mx-auto bg-white rounded shadow p-6 mt-4 text-center">
+            <div className="bg-gray-50 min-h-screen py-4 ">
+                <div className="max-w-4xl mx-auto bg-white rounded shadow p-6 mt-4 text-center ">
                     <h2 className="text-2xl font-bold text-green-500 mb-4">
                         Đặt hàng thành công!
                     </h2>
@@ -172,7 +170,7 @@ export default function Checkout() {
                         lý.
                     </p>
                     <button
-                        className="mt-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+                        className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-600"
                         onClick={() => router.push('/')}
                     >
                         Quay lại trang chủ
@@ -183,7 +181,7 @@ export default function Checkout() {
     }
 
     return (
-        <div className="bg-gradient-to-b from-gray-200 to-gray-300 min-h-screen py-4">
+        <div className="bg-gradient-to-b from-gray-200 to-gray-50 min-h-screen py-4">
             <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-xl p-6 mt-4">
                 <div className="mb-6 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg shadow-md">
                     <div className="flex items-center justify-between">
@@ -194,7 +192,7 @@ export default function Checkout() {
                             </span>
                         </div>
                         <button
-                            className="text-blue-500 underline hover:text-blue-600 drop-shadow-sm"
+                            className="text-blue-500 underline hover:text-red-600 drop-shadow-sm cursor-pointer"
                             onClick={() => setShowAddressForm(!showAddressForm)}
                         >
                             Thay Đổi
@@ -270,7 +268,7 @@ export default function Checkout() {
                             </span>
                         </div>
                         <button
-                            className="text-blue-500 underline hover:text-blue-600 drop-shadow-sm"
+                            className="text-blue-500 underline hover:text-red-600 drop-shadow-sm cursor-pointer"
                             onClick={() =>
                                 alert(
                                     'Chức năng chọn voucher chưa được triển khai.',
@@ -287,7 +285,7 @@ export default function Checkout() {
                         </p>
                     )}
                     <div className="flex items-center mt-2">
-                        <MonetizationOnIcon className="text-orange-500 mr-2 drop-shadow-sm" />
+                        <MonetizationOnIcon className="text-red-600 mr-2 drop-shadow-sm" />
                         <span className="drop-shadow-sm">
                             Shope Xu{' '}
                             <span className="text-gray-500">
@@ -308,7 +306,7 @@ export default function Checkout() {
                         Phương thức thanh toán
                     </h3>
                     <div className="flex space-x-4">
-                        <label className="flex items-center">
+                        <label className="flex items-center cursor-pointer">
                             <input
                                 type="radio"
                                 name="paymentMethod"
@@ -317,11 +315,11 @@ export default function Checkout() {
                                 onChange={(e) =>
                                     setPaymentMethod(e.target.value)
                                 }
-                                className="mr-2 accent-orange-500"
+                                className="mr-2 accent-red-500"
                             />
                             Thanh toán khi nhận hàng
                         </label>
-                        <label className="flex items-center">
+                        <label className="flex items-center cursor-pointer">
                             <input
                                 type="radio"
                                 name="paymentMethod"
@@ -330,12 +328,12 @@ export default function Checkout() {
                                 onChange={(e) =>
                                     setPaymentMethod(e.target.value)
                                 }
-                                className="mr-2 accent-orange-500"
+                                className="mr-2 accent-red-500"
                             />
                             thẻ tín dụng / thẻ ghi nợ
                         </label>
 
-                        <label className="flex items-center">
+                        <label className="flex items-center cursor-pointer">
                             <input
                                 type="radio"
                                 name="paymentMethod"
@@ -344,9 +342,22 @@ export default function Checkout() {
                                 onChange={(e) =>
                                     setPaymentMethod(e.target.value)
                                 }
-                                className="mr-2 accent-orange-500"
+                                className="mr-2 accent-red-500"
                             />
                             Ví điện tử
+                        </label>
+                        <label className="flex items-center cursor-pointer">
+                            <input
+                                type="radio"
+                                name="paymentMethod"
+                                value="bank-account"
+                                checked={paymentMethod === 'bank-account'}
+                                onChange={(e) =>
+                                    setPaymentMethod(e.target.value)
+                                }
+                                className="mr-2 accent-red-500"
+                            />
+                            Tài khoản ngân hàng
                         </label>
                     </div>
                 </div>
@@ -372,20 +383,12 @@ export default function Checkout() {
                     </div>
                     <button
                         onClick={handleSubmitOrder}
-                        className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 rounded-lg mt-4 hover:from-orange-600 hover:to-orange-700 disabled:from-orange-300 disabled:to-orange-400 shadow-lg transition-all duration-300"
+                        className="w-full bg-gradient-to-r from-red-500 to-red-700 text-white py-3 rounded-lg mt-4 hover:from-red-700 hover:to-red-700 disabled:from-red-700 disabled:to-red-700 shadow-lg transition-all duration-300 cursor-pointer"
                         disabled={isLoading}
                     >
                         {isLoading ? 'Đang xử lý...' : 'Đặt hàng'}
                     </button>
                 </div>
-            </div>
-
-            <div className="bg-white p-2 mt-4 flex justify-around text-sm text-gray-500 shadow-lg rounded-lg">
-                <span className="drop-shadow-sm">Dịch vụ khách hàng</span>
-                <span className="drop-shadow-sm">Shope Việt Nam</span>
-                <span className="drop-shadow-sm">Thanh toán</span>
-                <span className="drop-shadow-sm">Theo dõi Shope</span>
-                <span className="drop-shadow-sm">Tải ứng dụng Shope</span>
             </div>
         </div>
     );

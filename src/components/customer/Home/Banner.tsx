@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Image from 'next/image';
@@ -70,19 +70,31 @@ const banners = [
     },
 ];
 
-const BANNERS_PER_VIEW = 2;
-
 const Banner = () => {
     const [current, setCurrent] = useState(0);
-    const totalSlides = Math.ceil(banners.length / BANNERS_PER_VIEW);
+    const [bannersPerView, setBannersPerView] = useState(2);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 640) setBannersPerView(1);
+            else if (window.innerWidth < 1024) setBannersPerView(2);
+            else setBannersPerView(2);
+        };
+
+        handleResize(); // gọi lần đầu
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const totalSlides = Math.ceil(banners.length / bannersPerView);
 
     const prev = () => {
         setCurrent((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
     };
 
-    const next = () => {
+    const next = useCallback(() => {
         setCurrent((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
-    };
+    }, [totalSlides]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -90,7 +102,7 @@ const Banner = () => {
         }, 5000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [next]);
 
     return (
         <div className="w-full flex flex-col items-center py-6">
@@ -106,22 +118,23 @@ const Banner = () => {
                         <div key={slideId} className="flex w-full">
                             {banners
                                 .slice(
-                                    slideId * BANNERS_PER_VIEW,
-                                    slideId * BANNERS_PER_VIEW +
-                                        BANNERS_PER_VIEW,
+                                    slideId * bannersPerView,
+                                    slideId * bannersPerView + bannersPerView,
                                 )
                                 .map((banner, index) => (
                                     <div
                                         key={index}
-                                        className={`w-1/2 h-84 rounded-3xl shadow-xl flex relative overflow-hidden mx-6 justify-between ${banner.bg}`}
+                                        style={{
+                                            width: `${100 / bannersPerView}%`,
+                                        }}
+                                        className={`aspect-[16/9] rounded-3xl shadow-xl flex relative overflow-hidden mx-6 justify-between ${banner.bg}`}
                                     >
                                         {banner.img && (
                                             <Image
                                                 src={banner.img}
                                                 alt="banner"
-                                                width={40}
-                                                height={40}
-                                                className="absolute inset-0 w-full h-full object-cover z-10"
+                                                fill
+                                                className="object-cover z-10"
                                             />
                                         )}
                                         <div className="relative z-20 w-full h-full flex items-center">
@@ -129,9 +142,10 @@ const Banner = () => {
                                         </div>
                                     </div>
                                 ))}
+
                             {banners.length % 2 !== 0 &&
                                 slideId === totalSlides - 1 &&
-                                banners.length % BANNERS_PER_VIEW !== 0 && (
+                                banners.length % bannersPerView !== 0 && (
                                     <div className="w-1/2 h-64 mx-2" />
                                 )}
                         </div>

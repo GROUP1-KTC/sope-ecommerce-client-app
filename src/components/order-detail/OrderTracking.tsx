@@ -48,9 +48,7 @@ const OrderTracking: React.FC<OrderTrackingProps> = ({
                         </p>
                     )}
                 </div>
-                <div className="hidden md:flex items-center">
-                    <div className="h-32 w-px bg-gray-200" />
-                </div>
+                <div className="hidden md:flex items-center"></div>
                 <div>
                     <h3 className="text-xl font-semibold text-gray-700 mb-2">
                         Lịch sử vận chuyển
