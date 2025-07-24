@@ -93,7 +93,7 @@ const PaymentManagementPage = () => {
                         <div className="flex items-center justify-between text-xl font-semibold text-black uppercase mb-6">
                             <span>Quản lý thanh toán</span>
                             <button
-                                className="bg-green-500 text-white text-sm px-4 py-2 rounded hover:bg-green-600 transition hover:shadow-lg cursor-pointer"
+                                className="bg-red-500 text-white text-sm px-4 py-2 rounded hover:bg-red-600 transition hover:shadow-lg cursor-pointer"
                                 onClick={() => setIsModalOpen(true)}
                             >
                                 + Thêm thẻ
