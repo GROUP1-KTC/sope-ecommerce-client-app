@@ -8,7 +8,7 @@ import {
     flashSales,
     mostSearchProducts,
 } from '~/mock/mockProductData';
-
+import CategoryList from '~/components/customer/CategoryList';
 const title = 'TÌM KIẾM NHIỀU NHẤT';
 
 const HomeCustomer = () => (
@@ -18,6 +18,7 @@ const HomeCustomer = () => (
         <FlashSaleSection items={flashSales} initialSeconds={3600 + 55} />
         <MostSearch products={mostSearchProducts} title={title} />
         <SuggestedProductsSection products={mostSearchProducts} />
+        <CategoryList />
     </div>
 );
 
