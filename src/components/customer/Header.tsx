@@ -27,19 +27,34 @@ const Header = () => {
             {/* ✅ Top bar - only show on desktop */}
             <div className="hidden sm:flex flex-col md:flex-row justify-between items-center px-4 sm:px-8 md:px-20 lg:px-40 py-2 text-xs sm:text-sm">
                 <div className="flex gap-3 items-center">
-                    <Link href="#" className="hover:text-yellow-200 transition">Trang chủ Sope</Link>
-                    <Link href="#" className="hover:text-yellow-200 transition">Trở thành Người bán Sope</Link>
+                    <Link href="#" className="hover:text-yellow-200 transition">
+                        Trang chủ Sope
+                    </Link>
+                    <Link href="#" className="hover:text-yellow-200 transition">
+                        Trở thành Người bán Sope
+                    </Link>
                     <span>|</span>
-                    <Link href="#" className="hover:text-yellow-200 transition">Tải ứng dụng</Link>
+                    <Link href="#" className="hover:text-yellow-200 transition">
+                        Tải ứng dụng
+                    </Link>
                     <span>|</span>
                     <span>Kết nối</span>
-                    <Link href="#" className="hover:text-yellow-200 transition"><FacebookIcon style={{ fontSize: 20 }} /></Link>
-                    <Link href="#" className="hover:text-yellow-200 transition"><InstagramIcon style={{ fontSize: 20 }} /></Link>
+                    <Link href="#" className="hover:text-yellow-200 transition">
+                        <FacebookIcon style={{ fontSize: 20 }} />
+                    </Link>
+                    <Link href="#" className="hover:text-yellow-200 transition">
+                        <InstagramIcon style={{ fontSize: 20 }} />
+                    </Link>
                 </div>
                 <div className="flex gap-3 items-center">
                     <span className="flex items-center gap-1">
                         <span>🔔</span>
-                        <Link href="/notification" className="hover:text-yellow-200 transition">Thông báo</Link>
+                        <Link
+                            href="/notification"
+                            className="hover:text-yellow-200 transition"
+                        >
+                            Thông báo
+                        </Link>
                     </span>
                     <span className="h-4 w-px bg-white" />
                     <span className="flex items-center gap-1">
@@ -50,7 +65,12 @@ const Header = () => {
                         <span>🌐</span> Tiếng Việt
                     </span>
                     <span className="h-4 w-px bg-white" />
-                    <Link href="/login" className="hover:text-yellow-200 transition">Đăng Nhập</Link>
+                    <Link
+                        href="/login"
+                        className="hover:text-yellow-200 transition"
+                    >
+                        Đăng Nhập
+                    </Link>
                 </div>
             </div>
 
@@ -58,7 +78,10 @@ const Header = () => {
             <div className="flex items-center px-4 sm:px-8 md:px-20 lg:px-40 py-2 gap-4 justify-between">
                 {/* Logo & Menu */}
                 <div className="flex items-center gap-2">
-                    <StorefrontIcon style={{ fontSize: 40 }} className="text-white" />
+                    <StorefrontIcon
+                        style={{ fontSize: 40 }}
+                        className="text-white"
+                    />
                     <Link href="/" className="hover:text-yellow-200 transition">
                         <Image
                             src="/assets/logo/logo.svg"
@@ -84,8 +107,14 @@ const Header = () => {
 
                 {/* Cart + Hamburger */}
                 <div className="flex items-center gap-2">
-                    <Link href="/cart" className="flex items-center hover:text-yellow-200 transition">
-                        <ShoppingCartOutlinedIcon style={{ fontSize: 30 }} className="text-white" />
+                    <Link
+                        href="/cart"
+                        className="flex items-center hover:text-yellow-200 transition"
+                    >
+                        <ShoppingCartOutlinedIcon
+                            style={{ fontSize: 30 }}
+                            className="text-white"
+                        />
                     </Link>
                     {/* Only show menu button on mobile */}
                     <button
@@ -94,7 +123,10 @@ const Header = () => {
                         aria-label="Open menu"
                         style={{ height: 30, width: 30 }}
                     >
-                        <MenuIcon style={{ fontSize: 30 }} className="text-white" />
+                        <MenuIcon
+                            style={{ fontSize: 30 }}
+                            className="text-white"
+                        />
                     </button>
                 </div>
             </div>
@@ -106,7 +138,6 @@ const Header = () => {
                 />
             )}
 
-
             {/* Overlay làm mờ nền khi menu mở */}
             {menuOpen && (
                 <div
@@ -116,8 +147,9 @@ const Header = () => {
             )}
 
             <div
-                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'
-                    } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
+                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${
+                    menuOpen ? 'translate-x-0' : 'translate-x-full'
+                } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
             >
                 <div className="flex justify-end">
                     <button
@@ -129,7 +161,10 @@ const Header = () => {
                     </button>
                 </div>
 
-                <Link href="#" className="hover:bg-white/10 rounded px-2 py-1 transition flex items-center gap-2">
+                <Link
+                    href="#"
+                    className="hover:bg-white/10 rounded px-2 py-1 transition flex items-center gap-2"
+                >
                     <Image
                         src="/assets/logo/logo.svg"
                         alt="Sope Logo"
@@ -139,29 +174,56 @@ const Header = () => {
                     />
                     Trang chủ Sope
                 </Link>
-                <Link href="#" className="hover:bg-white/10 rounded px-2 py-1 transition"> <GroupsIcon className='mr-6' /> Trở thành Người bán</Link>
-                <Link href="#" className="hover:bg-white/10 rounded px-2 py-1 transition"> <GetAppIcon className='mr-6' /> Tải ứng dụng</Link>
+                <Link
+                    href="#"
+                    className="hover:bg-white/10 rounded px-2 py-1 transition"
+                >
+                    {' '}
+                    <GroupsIcon className="mr-6" /> Trở thành Người bán
+                </Link>
+                <Link
+                    href="#"
+                    className="hover:bg-white/10 rounded px-2 py-1 transition"
+                >
+                    {' '}
+                    <GetAppIcon className="mr-6" /> Tải ứng dụng
+                </Link>
 
                 <hr className="border-white/20 my-2" />
 
                 {/* Nhóm 2 */}
-                <Link href="/notification" className="hover:bg-white/10 rounded px-2 py-1 transition flex items-center gap-2">
-                    <NotificationsActiveIcon className='mr-6' /> Thông báo
+                <Link
+                    href="/notification"
+                    className="hover:bg-white/10 rounded px-2 py-1 transition flex items-center gap-2"
+                >
+                    <NotificationsActiveIcon className="mr-6" /> Thông báo
                 </Link>
-                <div className="hover:bg-white/10 rounded px-2 py-1 transition cursor-pointer"><HelpIcon className='mr-7' /> Hỗ trợ</div>
-                <div className="hover:bg-white/10 rounded px-2 py-1 transition cursor-pointer"><LanguageIcon className='mr-7' /> Tiếng Việt</div>
+                <div className="hover:bg-white/10 rounded px-2 py-1 transition cursor-pointer">
+                    <HelpIcon className="mr-7" /> Hỗ trợ
+                </div>
+                <div className="hover:bg-white/10 rounded px-2 py-1 transition cursor-pointer">
+                    <LanguageIcon className="mr-7" /> Tiếng Việt
+                </div>
 
                 <hr className="border-white/20 my-2" />
 
                 {/* Nhóm 3 */}
-                <Link href="/login" className="hover:bg-white/10 rounded px-2 py-1 transition"><AccountCircleIcon className='mr-6' /> Đăng Nhập</Link>
+                <Link
+                    href="/login"
+                    className="hover:bg-white/10 rounded px-2 py-1 transition"
+                >
+                    <AccountCircleIcon className="mr-6" /> Đăng Nhập
+                </Link>
 
                 <div className="flex gap-3 mt-auto pt-4">
-                    <Link href="#"><FacebookIcon fontSize="small" /></Link>
-                    <Link href="#"><InstagramIcon fontSize="small" /></Link>
+                    <Link href="#">
+                        <FacebookIcon fontSize="small" />
+                    </Link>
+                    <Link href="#">
+                        <InstagramIcon fontSize="small" />
+                    </Link>
                 </div>
             </div>
-
         </header>
     );
 };
