@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import VoucherModal, { type Voucher } from '~/components/cart/VoucherModal';
 
@@ -49,6 +50,8 @@ const products = [
 ];
 
 const Cart = () => {
+    const router = useRouter();
+
     const [cartItems, setCartItems] = useState(mockCartItems);
 
     const [selected, setSelected] = useState<number[]>([]);
@@ -130,13 +133,19 @@ const Cart = () => {
             alert('Vui lòng chọn ít nhất một sản phẩm để mua.');
             return;
         }
+        const selectedItems = cartItems.filter((item) =>
+            selected.includes(item.id),
+        );
+        const itemsParam = encodeURIComponent(JSON.stringify(selectedItems));
+        const voucherParam = encodeURIComponent(
+            JSON.stringify(voucher || null),
+        );
+        console.log('Sending params:', { itemsParam, voucherParam }); // Debug log
+        router.push(`/checkout?items=${itemsParam}&voucher=${voucherParam}`);
 
-        const items = cartItems.filter((item) => selected.includes(item.id));
-        const detail = items
+        const detail = selectedItems
             .map((item) => `- ${item.name} x${item.quantity}`)
             .join('\n');
-
-        // alert(`Bạn đã đặt mua:\n${detail}\nTổng tiền: ₫${total.toLocaleString()}`);
         alert(
             `Bạn đã đặt mua:\n${detail}\nTổng tiền: ₫${total.toLocaleString('vi-VN')}`,
         );

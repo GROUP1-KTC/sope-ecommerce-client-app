@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Sidebar from '~/components/order/SideBar';
 import OrderProgress from '~/components/order-detail/OrderProgress';
 import OrderTracking from '~/components/order-detail/OrderTracking';
 import OrderItems from '~/components/order-detail/OrderItems';
@@ -87,10 +86,9 @@ const OrderDetailPage = () => {
 
     return (
         <div className="order-detail-page">
-            <div className="flex flex-col min-h-screen bg-gray-50 px-16 ">
+            <div className="flex flex-col min-h-screen bg-gray-50 px-12 ">
                 <div className="flex flex-1">
-                    <Sidebar />
-                    <div className="flex-1 p-6 mx-4">
+                    <div className="flex-1 py-6">
                         <div className="bg-white rounded-lg shadow-md p-6">
                             <div className="flex justify-between items-center mb-6">
                                 <div>
@@ -99,7 +97,9 @@ const OrderDetailPage = () => {
                                         className="flex items-center text-xl uppercase hover:underline"
                                     >
                                         <ArrowBackIosNewIcon className="mr-2" />
-                                        Quay lại
+                                        <span className="hidden md:inline">
+                                            Quay lại
+                                        </span>
                                     </Link>
                                 </div>
                                 <h1 className="text-xl font-semibold text-black uppercase flex items-center gap-4">

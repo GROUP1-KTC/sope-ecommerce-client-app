@@ -32,7 +32,7 @@ const OrderItems: React.FC<OrderItemsProps> = ({ items, shop }) => {
                     <p className="text-black font-semibold">{shop.name}</p>
                 </div>
                 <div className="flex items-center">
-                    <button className="bg-orange-500 text-white text-xs px-3 py-1 rounded hover:bg-orange-600 transition cursor-pointer flex items-center">
+                    <button className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600 transition cursor-pointer flex items-center">
                         <span className="flex items-center">
                             <ChatOutlinedIcon
                                 className="mr-1"
