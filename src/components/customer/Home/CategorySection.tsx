@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface Category {
     name: string;
@@ -78,7 +79,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                             {rows.map((row, idx) => (
                                 <div key={idx} className="flex flex-row mb-2">
                                     {row.map((cat) => (
-                                        <a
+                                        <Link
                                             href="/product"
                                             key={cat.name}
                                             className="flex flex-col items-center mx-2 cursor-pointer w-24"
@@ -95,7 +96,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                                             <span className="text-xs text-center text-gray-700 font-medium leading-tight">
                                                 {cat.name}
                                             </span>
-                                        </a>
+                                        </Link>
                                     ))}
                                 </div>
                             ))}
