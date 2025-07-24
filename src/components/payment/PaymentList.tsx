@@ -17,7 +17,13 @@ const PaymentList = ({ cards }: { cards: Card[] }) => {
             {cards.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {cards.map((card) => (
-                        <PaymentCard key={card.id} card={card} />
+                        <PaymentCard
+                            key={card.id}
+                            card={card}
+                            onDelete={function (id: number): void {
+                                throw new Error('Function not implemented.');
+                            }}
+                        />
                     ))}
                 </div>
             ) : (

@@ -1,4 +1,6 @@
 'use client';
+
+import React from 'react';
 import AddressCard from './AddressCard';
 
 type Address = {
@@ -12,9 +14,11 @@ type Address = {
 const AddressList = ({
     addresses,
     onSetDefault,
+    onDelete,
 }: {
     addresses: Address[];
     onSetDefault: (id: number) => void;
+    onDelete: (id: number) => void;
 }) => {
     return (
         <div className="mb-6">
@@ -26,6 +30,7 @@ const AddressList = ({
                             key={address.id}
                             address={address}
                             onSetDefault={onSetDefault}
+                            onDelete={onDelete}
                         />
                     ))}
                 </div>
