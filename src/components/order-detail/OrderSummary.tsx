@@ -56,7 +56,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                         <p className="text-gray-600 font-semibold">
                             Thành tiền:
                         </p>
-                        <p className="font-semibold text-orange-500 text-2xl">
+                        <p className="font-semibold text-red-500 text-2xl">
                             {total.toLocaleString('vi-VN')}đ
                         </p>
                     </div>
