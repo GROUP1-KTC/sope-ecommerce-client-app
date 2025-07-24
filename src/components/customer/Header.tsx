@@ -5,148 +5,162 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+import GroupsIcon from '@mui/icons-material/Groups';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import HelpIcon from '@mui/icons-material/Help';
+import LanguageIcon from '@mui/icons-material/Language';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 import Link from 'next/link';
 import { useState } from 'react';
 import Image from 'next/image';
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
+
     return (
-        <header className="bg-[#d0001a] text-white w-full px-4 sm:px-8 md:px-20 lg:px-40 justify-between">
-            {/* Top bar */}
-            <div className="flex flex-col md:flex-row justify-between items-center px-2 sm:px-8 py-2 text-xs sm:text-sm gap-2 md:gap-0">
-                <div className="flex gap-2 sm:gap-3 items-center">
-                    <Link href="#" className="hover:text-yellow-200 transition">
-                        Trang chủ Sope
-                    </Link>
-                    <Link href="#" className="hover:text-yellow-200 transition">
-                        Trở thành Người bán Sope
-                    </Link>
-                    <span className="">|</span>
-                    <Link href="#" className="hover:text-yellow-200 transition">
-                        Tải ứng dụng
-                    </Link>
-                    <span className="">|</span>
+        <header className="relative bg-[#d0001a] text-white w-full z-50">
+            {/* ✅ Top bar - only show on desktop */}
+            <div className="hidden sm:flex flex-col md:flex-row justify-between items-center px-4 sm:px-8 md:px-20 lg:px-40 py-2 text-xs sm:text-sm">
+                <div className="flex gap-3 items-center">
+                    <Link href="#" className="hover:text-yellow-200 transition">Trang chủ Sope</Link>
+                    <Link href="#" className="hover:text-yellow-200 transition">Trở thành Người bán Sope</Link>
+                    <span>|</span>
+                    <Link href="#" className="hover:text-yellow-200 transition">Tải ứng dụng</Link>
+                    <span>|</span>
                     <span>Kết nối</span>
-                    <Link href="#" className="hover:text-yellow-200 transition">
-                        <FacebookIcon style={{ fontSize: 20 }} />
-                    </Link>
-                    <Link href="#" className="hover:text-yellow-200 transition">
-                        <InstagramIcon style={{ fontSize: 20 }} />
-                    </Link>
+                    <Link href="#" className="hover:text-yellow-200 transition"><FacebookIcon style={{ fontSize: 20 }} /></Link>
+                    <Link href="#" className="hover:text-yellow-200 transition"><InstagramIcon style={{ fontSize: 20 }} /></Link>
                 </div>
-                <div className="flex gap-2 sm:gap-3 items-center">
-                    <span className="flex items-center gap-1 sm:flex">
+                <div className="flex gap-3 items-center">
+                    <span className="flex items-center gap-1">
                         <span>🔔</span>
-                        <Link
-                            href="/notification"
-                            className="hover:text-yellow-200 transition"
-                        >
-                            Thông báo
-                        </Link>
+                        <Link href="/notification" className="hover:text-yellow-200 transition">Thông báo</Link>
                     </span>
                     <span className="h-4 w-px bg-white" />
-                    <span className="flex items-center gap-1 sm:flex">
+                    <span className="flex items-center gap-1">
                         <span>❓</span> Hỗ Trợ
                     </span>
                     <span className="h-4 w-px bg-white" />
-                    <span className="flex items-center gap-1 sm:flex">
+                    <span className="flex items-center gap-1">
                         <span>🌐</span> Tiếng Việt
                     </span>
                     <span className="h-4 w-px bg-white" />
-                    <Link
-                        href="/login"
-                        className="hover:text-yellow-200 transition"
-                    >
-                        Đăng Nhập
-                    </Link>
+                    <Link href="/login" className="hover:text-yellow-200 transition">Đăng Nhập</Link>
                 </div>
             </div>
-            {/* Main bar */}
-            <div className="flex items-center px-2 sm:px-8 py-2 sm:py-2 gap-2 sm:gap-8 flex-col sm:flex-row">
-                <div className="flex items-center gap-2 w-full sm:w-auto justify-between">
-                    <div className="flex items-center gap-2">
-                        <StorefrontIcon
-                            style={{ fontSize: 40 }}
-                            className="text-white"
+
+            {/* ✅ Main bar - always show */}
+            <div className="flex items-center px-4 sm:px-8 md:px-20 lg:px-40 py-2 gap-4 justify-between">
+                {/* Logo & Menu */}
+                <div className="flex items-center gap-2">
+                    <StorefrontIcon style={{ fontSize: 40 }} className="text-white" />
+                    <Link href="/" className="hover:text-yellow-200 transition">
+                        <Image
+                            src="/assets/logo/logo.svg"
+                            alt="Sope Logo"
+                            width={220}
+                            height={94}
+                            className="h-12 sm:h-16 w-auto"
                         />
-                        <span className="h-8 w-px bg-white mx-2" />
-                        <Link
-                            href="/"
-                            className="hover:text-yellow-200 transition"
-                        >
-                            <Image
-                                src="/assets/logo/logo.svg"
-                                alt="Sope Logo"
-                                width={220}
-                                height={94}
-                                className="h-12 sm:h-16 w-auto"
-                            />
-                        </Link>
-                    </div>
-                    {/* Hamburger menu for mobile */}
-                    <button
-                        className="sm:hidden text-3xl hover:text-yellow-200 transition"
-                        onClick={() => setMenuOpen(!menuOpen)}
-                        aria-label="Open menu"
-                    >
-                        ☰
-                    </button>
+                    </Link>
                 </div>
-                <div>
-                    <div className="hidden sm:block flex-1 min-w-[248px]" />
-                </div>
+
                 {/* Search bar */}
-                <div className="flex-1 ml-auto flex border-blue-500 items-center w-full sm:w-auto mt-2 sm:mt-0 p-2">
+                <div className="flex-1 mx-2 flex items-center">
                     <input
-                        className="w-full px-2 sm:px-4 py-2 text-gray-800 bg-white rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 text-gray-800 bg-white rounded-l-md focus:outline-none focus:ring-2 focus:ring-red-300"
                         placeholder="Tìm kiếm trong Sope"
                         type="text"
                     />
-                    <button className="bg-white px-2 sm:px-4 py-2 bordwer rounded-r-md hover:bg-gray-100 hover:cursor-pointer transition-colors">
+                    <button className="bg-white px-4 py-2 rounded-r-md hover:bg-gray-100 transition-colors">
                         <SearchIcon className="text-[#d0001a]" />
                     </button>
                 </div>
-                {/* Cart icon */}
-                <Link
-                    href="/cart"
-                    className="ml-0 sm:ml-4 mt-2 sm:mt-0 flex items-center hover:text-yellow-200 transition"
-                >
-                    <ShoppingCartOutlinedIcon
-                        style={{ fontSize: 36 }}
-                        className="text-white"
-                    />
-                </Link>
-            </div>
-            {/* Mobile menu placeholder */}
-            {menuOpen && (
-                <div className="sm:hidden bg-[#ee4d2d] px-4 py-2 flex flex-col gap-2">
-                    <Link
-                        href="#"
-                        className="hover:underline hover:text-yellow-200 transition"
-                    >
-                        Trở thành Người bán Sope
+
+                {/* Cart + Hamburger */}
+                <div className="flex items-center gap-2">
+                    <Link href="/cart" className="flex items-center hover:text-yellow-200 transition">
+                        <ShoppingCartOutlinedIcon style={{ fontSize: 30 }} className="text-white" />
                     </Link>
-                    <Link
-                        href="#"
-                        className="hover:underline hover:text-yellow-200 transition"
+                    {/* Only show menu button on mobile */}
+                    <button
+                        className="sm:hidden hover:text-yellow-200 transition flex items-center cursor-pointer"
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        aria-label="Open menu"
+                        style={{ height: 30, width: 30 }}
                     >
-                        Tải ứng dụng
-                    </Link>
-                    <Link
-                        href="/login"
-                        className="hover:text-yellow-200 transition"
-                    >
-                        Đăng Nhập
-                    </Link>
-                    <Link
-                        href="/cart"
-                        className="hover:text-yellow-200 transition"
-                    >
-                        Giỏ hàng
-                    </Link>
+                        <MenuIcon style={{ fontSize: 30 }} className="text-white" />
+                    </button>
                 </div>
+            </div>
+
+            {menuOpen && (
+                <div
+                    className="fixed inset-0 bg-black/10 backdrop-blur-sm z-40 sm:hidden"
+                    onClick={() => setMenuOpen(false)}
+                />
             )}
+
+
+            {/* Overlay làm mờ nền khi menu mở */}
+            {menuOpen && (
+                <div
+                    className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 sm:hidden"
+                    onClick={() => setMenuOpen(false)}
+                />
+            )}
+
+            <div
+                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'
+                    } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
+            >
+                <div className="flex justify-end">
+                    <button
+                        onClick={() => setMenuOpen(false)}
+                        className="text-white text-2xl hover:text-yellow-200 transition cursor-pointer"
+                        aria-label="Close menu"
+                    >
+                        <CloseIcon />
+                    </button>
+                </div>
+
+                <Link href="#" className="hover:bg-white/10 rounded px-2 py-1 transition flex items-center gap-2">
+                    <Image
+                        src="/assets/logo/logo.svg"
+                        alt="Sope Logo"
+                        width={24}
+                        height={24}
+                        className="h-6 w-auto"
+                    />
+                    Trang chủ Sope
+                </Link>
+                <Link href="#" className="hover:bg-white/10 rounded px-2 py-1 transition"> <GroupsIcon className='mr-6' /> Trở thành Người bán</Link>
+                <Link href="#" className="hover:bg-white/10 rounded px-2 py-1 transition"> <GetAppIcon className='mr-6' /> Tải ứng dụng</Link>
+
+                <hr className="border-white/20 my-2" />
+
+                {/* Nhóm 2 */}
+                <Link href="/notification" className="hover:bg-white/10 rounded px-2 py-1 transition flex items-center gap-2">
+                    <NotificationsActiveIcon className='mr-6' /> Thông báo
+                </Link>
+                <div className="hover:bg-white/10 rounded px-2 py-1 transition cursor-pointer"><HelpIcon className='mr-7' /> Hỗ trợ</div>
+                <div className="hover:bg-white/10 rounded px-2 py-1 transition cursor-pointer"><LanguageIcon className='mr-7' /> Tiếng Việt</div>
+
+                <hr className="border-white/20 my-2" />
+
+                {/* Nhóm 3 */}
+                <Link href="/login" className="hover:bg-white/10 rounded px-2 py-1 transition"><AccountCircleIcon className='mr-6' /> Đăng Nhập</Link>
+
+                <div className="flex gap-3 mt-auto pt-4">
+                    <Link href="#"><FacebookIcon fontSize="small" /></Link>
+                    <Link href="#"><InstagramIcon fontSize="small" /></Link>
+                </div>
+            </div>
+
         </header>
     );
 };
