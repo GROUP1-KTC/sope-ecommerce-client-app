@@ -12,11 +12,11 @@ interface Product {
 
 const ProductCard = ({ product }: { product: Product }) => {
     return (
-        <div className="bg-white shadow-sm rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300 w-full">
+        <div className="bg-white mb-1 shadow-sm rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300 w-[192px] min-w-[192px] min-h-[240px] hover:scale-105">
             <Link href={`/product/${product.id}`}>
                 <Image
-                    width={40}
-                    height={40}
+                    width={192}
+                    height={144}
                     src={product.image}
                     alt={product.name}
                     className="w-full h-36 object-cover"
@@ -24,9 +24,20 @@ const ProductCard = ({ product }: { product: Product }) => {
             </Link>
             <div className="p-2">
                 <Link href={`/product/${product.id}`}>
-                    <h3 className="text-xs font-semibold text-gray-800 mb-1 line-clamp-2">
+                    <h3
+                        className="text-xs font-semibold text-gray-800 mb-1"
+                        style={{
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            maxHeight: '2.75rem', 
+                        }}
+                    >
                         {product.name}
                     </h3>
+
                 </Link>
                 <p className="text-red-500 font-bold text-xs mb-1">
                     ₫{product.price.toLocaleString('vi-VN')}
