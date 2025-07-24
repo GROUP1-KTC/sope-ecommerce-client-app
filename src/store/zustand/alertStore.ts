@@ -1,12 +1,12 @@
-import { create } from 'zustand'
-import type { AlertColor } from '@mui/material'
+import { create } from 'zustand';
+import type { AlertColor } from '@mui/material';
 
 interface AlertState {
-    open: boolean
-    severity: AlertColor
-    message: string
-    showAlert: (payload: { severity: AlertColor; message: string }) => void
-    closeAlert: () => void
+    open: boolean;
+    severity: AlertColor;
+    message: string;
+    showAlert: (payload: { severity: AlertColor; message: string }) => void;
+    closeAlert: () => void;
 }
 
 export const useAlertStore = create<AlertState>((set) => ({
@@ -23,4 +23,4 @@ export const useAlertStore = create<AlertState>((set) => ({
         set({
             open: false,
         }),
-}))
+}));

@@ -1,5 +1,6 @@
-import { Badge, SvgIconTypeMap } from '@mui/material';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
+import type { SvgIconTypeMap } from '@mui/material';
+import { Badge } from '@mui/material';
+import type { OverridableComponent } from '@mui/material/OverridableComponent';
 import { colors } from '~/constants/color.constant';
 
 interface Props {

@@ -1,21 +1,21 @@
-import { create } from 'zustand'
-import type { AlertColor } from '@mui/material'
+import { create } from 'zustand';
+import type { AlertColor } from '@mui/material';
 
-type ModalType = 'confirm' | 'info' | 'custom'
+type ModalType = 'confirm' | 'info' | 'custom';
 
 interface ModalState {
-    open: boolean
-    type?: ModalType
-    severity: AlertColor
-    message: string
-    onConfirm?: () => void
+    open: boolean;
+    type?: ModalType;
+    severity: AlertColor;
+    message: string;
+    onConfirm?: () => void;
     showModal: (payload: {
-        type?: ModalType
-        severity: AlertColor
-        message: string
-        onConfirm?: () => void
-    }) => void
-    closeModal: () => void
+        type?: ModalType;
+        severity: AlertColor;
+        message: string;
+        onConfirm?: () => void;
+    }) => void;
+    closeModal: () => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
@@ -36,4 +36,4 @@ export const useModalStore = create<ModalState>((set) => ({
         set({
             open: false,
         }),
-}))
+}));

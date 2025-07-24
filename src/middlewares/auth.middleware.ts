@@ -1,13 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export function authMiddleware(request: NextRequest) {
-    const token = request.cookies.get('access_token')?.value
-    const { pathname } = request.nextUrl
+    const token = request.cookies.get('access_token')?.value;
+    const { pathname } = request.nextUrl;
 
-    const protectedRoutes = ['/dashboard', '/cart', '/checkout']
-    const requiredAuth = protectedRoutes.some((route) => pathname.startsWith(route))
+    const protectedRoutes = ['/dashboard', '/cart', '/checkout'];
+    const requiredAuth = protectedRoutes.some((route) =>
+        pathname.startsWith(route),
+    );
 
     if (requiredAuth && !token) {
-        return NextResponse.redirect(new URL('/login', request.url))
+        return NextResponse.redirect(new URL('/login', request.url));
     }
 }
