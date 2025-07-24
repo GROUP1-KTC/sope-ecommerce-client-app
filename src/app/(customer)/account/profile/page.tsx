@@ -20,7 +20,7 @@ const ProfilePage = () => {
 
     return (
         <div className="order-detail-page">
-            <div className="flex flex-col min-h-[80vh] bg-gray-50 px-12">
+            <div className="flex flex-col min-h-[80vh] bg-gray-50 px-0 sm:px-4 md:px-12">
                 <div className="flex flex-1">
                     <div className="flex-1 p-6 bg-white rounded-lg shadow-md my-6">
                         <div className="text-xl font-semibold text-black uppercase">
@@ -30,8 +30,8 @@ const ProfilePage = () => {
                             Quản lý thông tin hồ sơ để bảo mật tài khoản
                         </div>
                         <hr className="my-4 border-gray-300" />
-                        <div className="flex px-8">
-                            <div className="flex-[3] pr-4 gap-2 flex flex-col">
+                        <div className="flex flex-col md:flex-row px-4 md:px-8 gap-4">
+                            <div className="w-full md:w-3/4 gap-2 flex flex-col">
                                 <div className="mb-4 flex items-center">
                                     <label className="block text-gray-700 text-sm font-bold w-1/4">
                                         Tên đăng nhập
@@ -151,8 +151,8 @@ const ProfilePage = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className="border-l border-gray-300"></div>
-                            <div className="flex-[2] pl-4 flex flex-col items-center">
+                            <div className="hidden md:block border-l border-gray-300"></div>
+                            <div className="w-full md:w-1/4 pl-0 md:pl-4 flex flex-col items-center">
                                 <div className="mb-4 flex flex-col items-center">
                                     <div className="w-32 h-32 rounded-full border-4 border-gray-300 bg-gray-100 flex items-center justify-center overflow-hidden mb-4">
                                         <Image

@@ -9,6 +9,7 @@ type Order = {
     date: string;
     status: string;
     total: number | string;
+    received: boolean;
     shop: {
         name: string;
         address: string;
@@ -27,7 +28,6 @@ interface OrderItemProps {
 const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
     return (
         <div className=" p-6 mb-4 rounded-lg shadow-sm bg-white">
-            {/* Shop Information */}
             <div className="mb-4 flex items-center space-x-6">
                 <StorefrontOutlinedIcon className="text-gray-600 mr-2" />
 
@@ -37,7 +37,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
                     </p>
                 </div>
                 <div className="flex items-center">
-                    <button className="bg-orange-500 text-white text-xs px-3 py-1 rounded hover:bg-orange-600 transition cursor-pointer flex items-center">
+                    <button className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600 transition cursor-pointer flex items-center">
                         <span className="flex items-center">
                             <ChatOutlinedIcon
                                 className="mr-1"
@@ -68,7 +68,6 @@ const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
 
             <hr className="my-4 border-t border-gray-300" />
 
-            {/* Product Information */}
             <div className="mb-4 flex items-center justify-between space-x-4">
                 <div className="flex items-center space-x-4">
                     <div>
@@ -102,20 +101,35 @@ const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
             <div className="flex mb-6 space-x-4 justify-end items-center">
                 <p className="text-gray-600 flex items-center">
                     Thành tiền:
-                    <span className="font-semibold text-orange-500 text-2xl ml-2">
+                    <span className="font-semibold text-red-500 text-2xl ml-2">
                         {order.total}
                     </span>
                 </p>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex space-x-4 justify-end">
-                <button className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-700 cursor-pointer transition">
-                    Mua lại
-                </button>
-                <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 cursor-pointer transition">
-                    Liên hệ người bán
-                </button>
+                {order.received ? (
+                    <>
+                        <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-700 cursor-pointer transition">
+                            Mua lại
+                        </button>
+                        <button className="bg-white border border-gray-400 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 cursor-pointer transition">
+                            Liên hệ người bán
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-700 cursor-pointer transition">
+                            Đã nhận được hàng
+                        </button>
+                        <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 cursor-pointer transition">
+                            Yêu cầu trả hàng / hoàn tiền
+                        </button>
+                        <button className="bg-white border border-gray-400 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 cursor-pointer transition">
+                            Liên hệ người bán
+                        </button>
+                    </>
+                )}
             </div>
         </div>
     );
