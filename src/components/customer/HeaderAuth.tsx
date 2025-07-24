@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { colors } from '~/constants/color.constant';
 
-const Header = () => {
+const Header = ({ title }: { title: string }) => {
     return (
         <header className="bg-white text-[#d0001a] w-full px-4 sm:px-8 md:px-20 lg:px-40">
             {/* Main bar */}
@@ -18,7 +19,7 @@ const Header = () => {
                         />
                     </Link>
                     <p className="text-black font-normal text-xs sm:text-2xl ">
-                        Đăng ký
+                        {title}
                     </p>
                 </div>
 
@@ -26,7 +27,7 @@ const Header = () => {
                 <div className="flex items-center gap-4 mt-2 sm:mt-0 ml-auto">
                     <Link
                         href="/help"
-                        className="text-[#d0001a] hover:text-gray-200 text-sm hidden sm:inline-block"
+                        className={`text-[${colors.primary.main}] hover:text-black text-sm hidden sm:inline-block`}
                     >
                         Bạn cần giúp đỡ?
                     </Link>

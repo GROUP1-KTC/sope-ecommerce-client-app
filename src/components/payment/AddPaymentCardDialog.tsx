@@ -2,6 +2,7 @@
 import type { FormEvent } from 'react';
 import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
+import type { Focused } from 'react-credit-cards-2/dist/es/types';
 
 interface CardData {
     number: string;
@@ -60,7 +61,7 @@ const AddPaymentCardDialog: React.FC<AddPaymentCardDialogProps> = ({
                             expiry={cardData.expiry}
                             name={cardData.name}
                             cvc={cardData.cvc}
-                            focused={cardData.focused as any}
+                            focused={cardData.focused as Focused}
                         />
                     </div>
                     <form onSubmit={onSubmit} className="w-1/2 space-y-4">

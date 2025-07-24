@@ -1,4 +1,4 @@
-import HeaderSignup from '~/components/customer/HeaderSignup';
+import Header from '~/components/customer/HeaderAuth';
 
 export default function SignupLayout({
     children,
@@ -8,7 +8,7 @@ export default function SignupLayout({
     return (
         <html lang="en">
             <body>
-                <HeaderSignup />
+                <Header title="Sign up" />
                 <main>{children}</main>
             </body>
         </html>

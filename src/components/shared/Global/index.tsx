@@ -8,7 +8,30 @@ import { usePathname } from 'next/navigation';
 const GlobalComponent = () => {
     const location = usePathname();
 
-    const shouldRender = location.startsWith('/seller');
+    const allowedPrefixes = [
+        '/seller',
+        '/login',
+        '/signup',
+        '/forgot-password',
+        '/reset-password',
+        '/help',
+        '/terms',
+        '/privacy',
+        '/about',
+        '/contact',
+        '/policy',
+        '/cookie-policy',
+        '/shipping-policy',
+        '/return-policy',
+        '/refund-policy',
+    ];
+
+    const shouldRender = allowedPrefixes.some((prefix) =>
+        location.startsWith(prefix),
+    );
+
+    // const token = request.cookies.get('access_token')?.value;
+
     return (
         <>
             <GlobalAlert />

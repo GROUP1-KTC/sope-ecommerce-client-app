@@ -52,6 +52,10 @@ const AddressManagementPage = () => {
         );
     };
 
+    const handleDeleteAddress = (id: number) => {
+        setStoredAddresses((prev) => prev.filter((addr) => addr.id !== id));
+    };
+
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
@@ -74,6 +78,7 @@ const AddressManagementPage = () => {
                             <AddressList
                                 addresses={storedAddresses}
                                 onSetDefault={handleSetDefault}
+                                onDelete={handleDeleteAddress}
                             />
                         </div>
                     </div>

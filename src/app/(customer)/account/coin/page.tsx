@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
-const ShopeeXuTracker = () => {
-    const [xuHistory, setXuHistory] = useState([
+const CoinTracker = () => {
+    const [coinHistory] = useState([
         {
             id: 1,
             content: 'lorem ipsum dolor sit amet',
@@ -45,7 +45,7 @@ const ShopeeXuTracker = () => {
         setFilter(e.target.value);
     };
 
-    const filteredHistory = xuHistory.filter(
+    const filteredHistory = coinHistory.filter(
         (item) => filter === 'all' || item.status === filter,
     );
 
@@ -104,7 +104,7 @@ const ShopeeXuTracker = () => {
                                 />
                             ) : (
                                 <MonetizationOnIcon
-                                    className="text-yellow-600"
+                                    className="text-yellow-500"
                                     fontSize="large"
                                 />
                             )}
@@ -115,8 +115,11 @@ const ShopeeXuTracker = () => {
                                 </p>
                             </div>
                         </div>
-                        <span className="text-yellow-600 font-bold text-xl sm:text-2xl">
-                            +{item.amount}
+                        <span
+                            className={`${item.status === 'used' ? `text-black` : 'text-green-600'} font-bold text-xl sm:text-2xl`}
+                        >
+                            {item.status === 'used' ? '-' : '+'}
+                            {item.amount}
                         </span>
                     </div>
                 ))}
@@ -125,4 +128,4 @@ const ShopeeXuTracker = () => {
     );
 };
 
-export default ShopeeXuTracker;
+export default CoinTracker;

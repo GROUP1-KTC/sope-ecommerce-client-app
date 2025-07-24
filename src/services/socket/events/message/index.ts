@@ -1,5 +1,5 @@
 import type { IFrame } from '@stomp/stompjs';
-import type { AppDispatch } from '~/app/store';
+import type { AppDispatch } from '~/store/appStore';
 import { addMessage } from '~/features/chat/chatSlice';
 import stompClient from '~/services/socket/socket.service';
 import type { Message } from '~/types/chat';

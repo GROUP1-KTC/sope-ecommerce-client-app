@@ -86,10 +86,10 @@ const OrderDetailPage = () => {
 
     return (
         <div className="order-detail-page">
-            <div className="flex flex-col min-h-screen bg-gray-50 px-12">
+            <div className="flex flex-col min-h-screen bg-gray-50 px-16 ">
                 <div className="flex flex-1">
                     <Sidebar />
-                    <div className="flex-1 p-6">
+                    <div className="flex-1 p-6 mx-4">
                         <div className="bg-white rounded-lg shadow-md p-6">
                             <div className="flex justify-between items-center mb-6">
                                 <div>

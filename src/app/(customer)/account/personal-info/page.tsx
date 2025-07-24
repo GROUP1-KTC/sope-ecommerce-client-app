@@ -17,7 +17,11 @@ const PersonalInfoPage = () => {
     });
 
     const validate = () => {
-        const newErrors: any = { fullName: '', cccd: '', address: '' };
+        const newErrors: { fullName: string; cccd: string; address: string } = {
+            fullName: '',
+            cccd: '',
+            address: '',
+        };
         let isValid = true;
 
         if (!formData.fullName.trim()) {
