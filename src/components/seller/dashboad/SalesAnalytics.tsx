@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     Chart as ChartJS,
     LineElement,
@@ -61,20 +61,28 @@ const colors = [
     '#8b5cf6',
 ];
 
-const ITEMS_PER_PAGE = 4;
-
 export default function DynamicMetricChart() {
-    const [page, setPage] = useState(0);
     const [selectedMetrics, setSelectedMetrics] = useState<string[]>([
         'Doanh số',
         'Đơn hàng',
     ]);
-    const maxPage = Math.ceil(metrics.length / ITEMS_PER_PAGE) - 1;
+
+    const [metricAtStart, setMetricAtStart] = useState(true);
+    const [metricAtEnd, setMetricAtEnd] = useState(false);
+
+    const metricRef = useRef<HTMLDivElement>(null);
 
     const handleScroll = (direction: 'left' | 'right') => {
-        if (direction === 'left' && page > 0) setPage((prev) => prev - 1);
-        else if (direction === 'right' && page < maxPage)
-            setPage((prev) => prev + 1);
+        if (!metricRef.current) return;
+        const width = metricRef.current.offsetWidth;
+        if (direction === 'right') {
+            metricRef.current.scrollBy({ left: width / 2, behavior: 'smooth' });
+        } else {
+            metricRef.current.scrollBy({
+                left: -width / 2,
+                behavior: 'smooth',
+            });
+        }
     };
 
     const handleToggleMetric = (label: string) => {
@@ -84,11 +92,6 @@ export default function DynamicMetricChart() {
                 : [...prev, label],
         );
     };
-
-    const visibleMetrics = metrics.slice(
-        page * ITEMS_PER_PAGE,
-        (page + 1) * ITEMS_PER_PAGE,
-    );
 
     const labels = [
         'January',
@@ -125,6 +128,25 @@ export default function DynamicMetricChart() {
         },
     };
 
+    useEffect(() => {
+        const metricContainer = metricRef.current;
+        if (!metricContainer) return;
+
+        const handleMetricScroll = () => {
+            const { scrollLeft, scrollWidth, clientWidth } = metricContainer;
+            setMetricAtStart(scrollLeft <= 1);
+            setMetricAtEnd(scrollLeft + clientWidth >= scrollWidth - 1);
+        };
+
+        handleMetricScroll();
+
+        metricContainer?.addEventListener('scroll', handleMetricScroll);
+
+        return () => {
+            metricContainer?.removeEventListener('scroll', handleMetricScroll);
+        };
+    }, []);
+
     return (
         <div className="bg-white rounded shadow p-6 space-y-6">
             <div className="flex justify-between items-center">
@@ -136,42 +158,59 @@ export default function DynamicMetricChart() {
                 </div>
             </div>
 
-            <div className="relative">
-                <button
-                    onClick={() => handleScroll('left')}
-                    disabled={page === 0}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow hover:bg-gray-100 disabled:opacity-30"
-                >
-                    <ChevronLeftIcon />
-                </button>
+            <div className="relative group">
+                {!metricAtStart && (
+                    <button
+                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow p-2 group-hover:bg-orange-100 group-hover:scale-110 transition-transform duration-150 flex items-center justify-center cursor-pointer opacity-50 group-hover:opacity-100"
+                        onClick={() => handleScroll('left')}
+                        aria-label="Scroll left"
+                        type="button"
+                    >
+                        <ChevronLeftIcon className="text-lg text-orange-500" />
+                    </button>
+                )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 px-12">
-                    {visibleMetrics.map((m) => (
+                <div
+                    ref={metricRef}
+                    style={{
+                        scrollBehavior: 'smooth',
+                        overflowX: 'auto',
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                    }}
+                    className="no-scrollbar flex gap-4 px-6 py-2"
+                >
+                    {metrics.map((m, index) => (
                         <button
-                            key={m.label}
+                            key={m.label + index}
                             onClick={() => handleToggleMetric(m.label)}
-                            className={`text-start border rounded p-4 transition ${
+                            className={`w-48 min-w-[12rem] text-left border rounded-xl p-4 transition-transform duration-150 ease-in-out cursor-pointer hover:shadow-md active:scale-[0.98] ${
                                 selectedMetrics.includes(m.label)
                                     ? 'bg-pink-100 border-pink-400'
-                                    : 'bg-white shadow hover:bg-gray-100'
+                                    : 'bg-white border-gray-200 hover:bg-gray-50'
                             }`}
                         >
                             <p className="text-sm text-gray-500">{m.label}</p>
-                            <p className="text-lg font-semibold">{m.value}</p>
-                            <p className="text-xs text-gray-400">
+                            <p className="text-xl font-bold text-gray-800 mt-1">
+                                {m.value}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-1">
                                 — {m.change}
                             </p>
                         </button>
                     ))}
                 </div>
 
-                <button
-                    onClick={() => handleScroll('right')}
-                    disabled={page === maxPage}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow hover:bg-gray-100 disabled:opacity-30"
-                >
-                    <ChevronRightIcon />
-                </button>
+                {!metricAtEnd && (
+                    <button
+                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow p-2 group-hover:bg-orange-100 group-hover:scale-110 transition-transform duration-150 flex items-center justify-center cursor-pointer opacity-50 group-hover:opacity-100"
+                        onClick={() => handleScroll('right')}
+                        aria-label="Scroll right"
+                        type="button"
+                    >
+                        <ChevronRightIcon className="text-lg text-orange-500" />
+                    </button>
+                )}
             </div>
 
             <div className="mt-4">

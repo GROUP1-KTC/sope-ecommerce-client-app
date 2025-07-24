@@ -17,7 +17,7 @@ export default function MainTabs({ active, onChange }: Props) {
                 <button
                     key={tab}
                     onClick={() => onChange(tab)}
-                    className={`px-4 py-2 text-sm font-medium ${
+                    className={`px-4 py-2 text-sm font-medium cursor-pointer ${
                         active === tab
                             ? 'text-red-500 border-b-2 border-red-500'
                             : 'text-gray-600'

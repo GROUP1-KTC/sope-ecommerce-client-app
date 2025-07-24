@@ -65,7 +65,7 @@ export const DateFilter = ({
                     <button
                         key={p.value}
                         onClick={() => handlePresetChange(p.value)}
-                        className={`px-3 py-1 border rounded ${
+                        className={`px-3 py-1 border rounded cursor-pointer ${
                             preset === p.value
                                 ? 'bg-red-100 border-red-400 text-red-600'
                                 : 'text-gray-600 hover:border-gray-400'

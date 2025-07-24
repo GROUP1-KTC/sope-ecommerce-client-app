@@ -120,9 +120,7 @@ const Sidebar: React.FC = () => {
 
             <div className="font-semibold mt-4 flex items-center gap-1 text-gray-600 p-1 rounded">
                 <InventoryIcon fontSize="small" />
-                <a href="/order">
-                    Đơn mua
-                </a>
+                <a href="/order">Đơn mua</a>
             </div>
 
             <div className="font-semibold mt-4 flex items-center gap-1 text-gray-700 p-1 rounded">
