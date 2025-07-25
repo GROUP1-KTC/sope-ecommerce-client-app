@@ -7,7 +7,6 @@ import authReducer from '~/features/auth/authSlice';
 import { categoryApi } from '../features/categories/categoryApiSlice';
 import { productApi } from '../features/products/productApiSlice';
 
-
 export const appStore = configureStore({
     reducer: {
         [apiSlice.reducerPath]: apiSlice.reducer,

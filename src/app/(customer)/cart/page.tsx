@@ -1,6 +1,5 @@
 'use client';
 
-
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -100,7 +99,6 @@ const products: Product[] = [
         price: 15000,
     },
 ];
-
 
 const Cart: React.FC = () => {
     const [cartItems, setCartItems] = useState<CartItem[]>(mockCartItems);
