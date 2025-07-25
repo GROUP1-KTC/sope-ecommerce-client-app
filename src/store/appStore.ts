@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { apiSlice } from '~/services/api/apiSlice';
 import chatReducer from '~/features/chat/chatSlice';
+import authReducer from '~/features/auth/authSlice';
 
 export const appStore = configureStore({
     reducer: {
         [apiSlice.reducerPath]: apiSlice.reducer,
         chat: chatReducer,
+        auth: authReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
