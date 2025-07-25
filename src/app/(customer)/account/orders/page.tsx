@@ -22,6 +22,7 @@ const OrderPage = () => {
             quantity: 2,
             originalPrice: 900000,
             discountPrice: 750000,
+            received: true,
             shop: { id: 101, name: 'Shop A', address: '123 Đường A, Quận 1' },
             product: {
                 name: 'Áo thun nam',
@@ -41,6 +42,7 @@ const OrderPage = () => {
             quantity: 1,
             originalPrice: 2200000,
             discountPrice: 2000000,
+            received: false,
             shop: { id: 102, name: 'Shop B', address: '456 Đường B, Quận 2' },
             product: {
                 name: 'Giày thể thao nữ',
@@ -60,6 +62,7 @@ const OrderPage = () => {
             quantity: 1,
             originalPrice: 900000,
             discountPrice: 800000,
+            received: false,
             shop: { id: 103, name: 'Shop C', address: '789 Đường C, Quận 3' },
             product: {
                 name: 'Balo laptop',

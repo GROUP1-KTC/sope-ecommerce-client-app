@@ -401,7 +401,7 @@ const ProductFromCategory = () => {
                         {productucts.map((product, index) => (
                             <div
                                 key={index}
-                                className="border rounded-lg bg-white flex flex-col p-2 relative cursor-pointer hover:shadow-lg transition-shadow duration-200 hover:scale-105 hover:bg-orange-100"
+                                className="border border-gray-400 rounded-lg bg-white flex flex-col p-2 relative cursor-pointer hover:shadow-lg transition-shadow duration-200 hover:scale-105 hover:bg-orange-100"
                             >
                                 {product.label && (
                                     <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">

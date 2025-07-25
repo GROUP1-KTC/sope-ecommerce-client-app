@@ -2,6 +2,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Footer = () => {
     return (
@@ -43,7 +44,7 @@ const Footer = () => {
                     <h3 className="font-bold mb-2">THANH TOÁN</h3>
                     <ul className="grid grid-cols-3 gap-2 mb-4">
                         <li>
-                            <a
+                            <Link
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -56,7 +57,7 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </Link>
                         </li>
                         <li>
                             <a
@@ -432,9 +433,9 @@ const Footer = () => {
                     © 2025 Shopee. All Rights Reserved .
                 </div>
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mt-2">
-                    <a href="/privacy-policy">
+                    <Link href="/privacy-policy">
                         <span>PRIVACY POLICY</span>
-                    </a>
+                    </Link>
                     <span className="hidden sm:inline">|</span>
                     <span>TERM OF SERVICE</span>
                     <span className="hidden sm:inline">|</span>

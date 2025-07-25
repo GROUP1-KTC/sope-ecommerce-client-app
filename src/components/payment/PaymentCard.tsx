@@ -66,7 +66,6 @@ const PaymentCard = ({
                         alt={card.type}
                         className="h-10 w-10 object-contain"
                     />
-                    <span className="text-sm text-gray-500">{card.type}</span>
                 </div>
                 <button
                     className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"

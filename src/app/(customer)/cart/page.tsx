@@ -1,5 +1,9 @@
 'use client';
 
+
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
 import React, { useState } from 'react';
 import { Box, Container, Typography, Paper } from '@mui/material';
 import CartTable from '~/components/cart/CartTable';
@@ -97,8 +101,10 @@ const products: Product[] = [
     },
 ];
 
+
 const Cart: React.FC = () => {
     const [cartItems, setCartItems] = useState<CartItem[]>(mockCartItems);
+
     const [selected, setSelected] = useState<number[]>([]);
     const [voucher, setVoucher] = useState<Voucher | null>(null);
     const [showVoucherModal, setShowVoucherModal] = useState(false);
@@ -172,8 +178,10 @@ const Cart: React.FC = () => {
             alert('Vui lòng chọn ít nhất một sản phẩm để mua.');
             return;
         }
+
         const items = cartItems.filter((item) => selected.includes(item.id));
         const detail = items
+
             .map((item) => `- ${item.name} x${item.quantity}`)
             .join('\n');
         alert(
