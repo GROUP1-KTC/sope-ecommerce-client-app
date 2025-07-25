@@ -1,8 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { apiSlice } from '~/services/api/apiSlice';
 import chatReducer from '~/features/chat/chatSlice';
+
+import authReducer from '~/features/auth/authSlice';
+
 import { categoryApi } from '../features/categories/categoryApiSlice';
 import { productApi } from '../features/products/productApiSlice';
+
 
 export const appStore = configureStore({
     reducer: {
@@ -10,6 +14,7 @@ export const appStore = configureStore({
         [categoryApi.reducerPath]: categoryApi.reducer,
         [productApi.reducerPath]: productApi.reducer,
         chat: chatReducer,
+        auth: authReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

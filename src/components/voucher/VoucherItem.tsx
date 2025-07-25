@@ -57,7 +57,7 @@ const VoucherItem: React.FC<VoucherItemProps> = ({
                         used
                             ? 'bg-gray-500 cursor-not-allowed'
                             : 'bg-white hover:bg-red-600 hover:text-white'
-                    } text-red-600 text-xs border border-red-600 border-2 font-medium rounded transition-colors cursor-pointer`}
+                    } text-red-600 text-xs  border-red-600 border-2 font-medium rounded transition-colors cursor-pointer`}
                     disabled={used}
                 >
                     {used ? 'Đã Sử Dụng' : 'Dùng Ngay'}
