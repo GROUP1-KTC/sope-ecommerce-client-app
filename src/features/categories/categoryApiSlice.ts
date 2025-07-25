@@ -1,18 +1,8 @@
-import { API_PREFIX } from '~/constants/apiConstanst';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { Category } from '../../types/products';
 import type { Product } from '../../types/products';
+import { apiSlice } from '~/services/api/apiSlice';
 
-export const categoryApi = createApi({
-    reducerPath: 'categoryApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: API_PREFIX,
-        prepareHeaders: (headers) => {
-            console.log('✅ Gọi tới base URL:', API_PREFIX); // thêm để chắc chắn
-            return headers;
-        },
-    }),
-    tagTypes: ['Category'],
+export const categoryApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getCategory: builder.query<Category[], void>({
             query: () => 'categories',
@@ -20,7 +10,7 @@ export const categoryApi = createApi({
         }),
         getProductByCategory: builder.query<Product[], string>({
             query: (slug) => `products/by-category/${slug}`,
-            providesTags: (result, error, slug) => [{ type: 'Category', slug }],
+            providesTags: (slug) => [{ type: 'Category', slug }],
         }),
     }),
 });

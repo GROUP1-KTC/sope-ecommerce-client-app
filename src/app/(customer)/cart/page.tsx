@@ -1,8 +1,5 @@
 'use client';
 
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-
 import React, { useState } from 'react';
 import { Box, Container, Typography, Paper } from '@mui/material';
 import CartTable from '~/components/cart/CartTable';

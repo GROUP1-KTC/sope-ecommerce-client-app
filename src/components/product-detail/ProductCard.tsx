@@ -12,8 +12,8 @@ interface Product {
 
 const ProductCard = ({ product }: { product: Product }) => {
     return (
-        <div className="bg-white mb-1 shadow-sm rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300 w-[192px] min-w-[192px] min-h-[240px] hover:scale-105">
-            <Link href={`/product/${product.id}`}>
+        <Link href={`/product/${product.id}`}>
+            <div className="bg-white mb-1 shadow-sm rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300 w-[192px] min-w-[192px] min-h-[240px] hover:scale-105">
                 <Image
                     width={192}
                     height={144}
@@ -21,9 +21,8 @@ const ProductCard = ({ product }: { product: Product }) => {
                     alt={product.name}
                     className="w-full h-36 object-cover"
                 />
-            </Link>
-            <div className="p-2">
-                <Link href={`/product/${product.id}`}>
+
+                <div className="p-2">
                     <h3
                         className="text-xs font-semibold text-gray-800 mb-1"
                         style={{
@@ -37,17 +36,18 @@ const ProductCard = ({ product }: { product: Product }) => {
                     >
                         {product.name}
                     </h3>
-                </Link>
-                <p className="text-red-500 font-bold text-xs mb-1">
-                    ₫{product.price.toLocaleString('vi-VN')}
-                </p>
-                <div className="flex items-center gap-1 text-xs text-gray-600">
-                    <span>⭐ {product.rating}</span>
-                    <span>|</span>
-                    <span>{product.sold} Đã bán</span>
+
+                    <p className="text-red-500 font-bold text-xs mb-1">
+                        ₫{product.price.toLocaleString('vi-VN')}
+                    </p>
+                    <div className="flex items-center gap-1 text-xs text-gray-600">
+                        <span>⭐ {product.rating}</span>
+                        <span>|</span>
+                        <span>{product.sold} Đã bán</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 

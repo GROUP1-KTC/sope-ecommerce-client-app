@@ -1,24 +1,19 @@
-import { API_PREFIX } from '~/constants/apiConstanst';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 import type { Product } from '../../types/products';
 
-export const productApi = createApi({
-    reducerPath: 'productApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: API_PREFIX,
-        prepareHeaders: (headers) => {
-            console.log('✅ Gọi tới base URL:', API_PREFIX); // thêm để chắc chắn
-            return headers;
-        },
-    }),
-    tagTypes: ['Product'],
+import { apiSlice } from '~/services/api/apiSlice';
+
+export const productApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        // Get product by slug
         getProductBySlug: builder.query<Product, string>({
             query: (slug) => `products/by-slug/${slug}`,
+            providesTags: ['Product'],
+        }),
+        getAllProducts: builder.query<Product[], void>({
+            query: () => 'products',
             providesTags: ['Product'],
         }),
     }),
 });
 
-export const { useGetProductBySlugQuery } = productApi;
+export const { useGetProductBySlugQuery, useGetAllProductsQuery } = productApi;

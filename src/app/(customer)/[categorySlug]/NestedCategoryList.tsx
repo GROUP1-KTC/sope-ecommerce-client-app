@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import type { Category } from '~/types/products';
 
 const NestedCategoryList = ({
     categories,
     selectedCategory,
     setSelectedCategory,
 }: {
-    categories: any[];
+    categories: Category[];
     selectedCategory: string | null;
     setSelectedCategory: (slug: string) => void;
 }) => {

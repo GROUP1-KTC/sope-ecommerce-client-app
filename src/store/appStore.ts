@@ -4,14 +4,9 @@ import chatReducer from '~/features/chat/chatSlice';
 
 import authReducer from '~/features/auth/authSlice';
 
-import { categoryApi } from '../features/categories/categoryApiSlice';
-import { productApi } from '../features/products/productApiSlice';
-
 export const appStore = configureStore({
     reducer: {
         [apiSlice.reducerPath]: apiSlice.reducer,
-        [categoryApi.reducerPath]: categoryApi.reducer,
-        [productApi.reducerPath]: productApi.reducer,
         chat: chatReducer,
         auth: authReducer,
     },
@@ -20,10 +15,7 @@ export const appStore = configureStore({
             serializableCheck: {
                 ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
             },
-        })
-            .concat([apiSlice.middleware])
-            .concat(categoryApi.middleware)
-            .concat(productApi.middleware),
+        }).concat([apiSlice.middleware]),
     devTools: process.env.NODE_ENV !== 'production',
 });
 
