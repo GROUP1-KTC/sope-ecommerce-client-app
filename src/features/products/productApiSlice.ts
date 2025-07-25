@@ -1,4 +1,3 @@
-
 import type { Product } from '../../types/products';
 
 import { apiSlice } from '~/services/api/apiSlice';
