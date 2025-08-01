@@ -15,7 +15,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
-    // ✨ Auto-close sidebar on large screen
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1024) {

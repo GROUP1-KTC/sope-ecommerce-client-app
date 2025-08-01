@@ -40,10 +40,10 @@ const Sidebar: React.FC = () => {
             icon: <NotificationsIcon fontSize="small" />,
             borderColor: 'border-orange-300',
             items: [
-                { label: 'Khuyến Mãi' },
-                { label: 'Cập Nhật Đơn Hàng' },
-                { label: 'Cập Nhật Ví' },
-                { label: 'Cập Nhật Naver' },
+                { label: 'Khuyến Mãi', href: '/account/notification' },
+                { label: 'Cập Nhật Đơn Hàng', href: '/account/orders-updates' },
+                { label: 'Cập Nhật Ví', href: '/account/wallet-updates' },
+                { label: 'Cập Nhật Naver', href: '/account/naver-updates' },
             ],
         },
         {
