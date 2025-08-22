@@ -1,8 +1,10 @@
+version: "3.9"
+
 services:
-    server:
-        build:
-            context: .
-        environment:
-            NODE_ENV: production
-        ports:
-            - 3000:3000
+  server:
+    image: your-dockerhub-username/frontend-app:latest   # dùng image đã build và push từ GitHub Actions
+    environment:
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
