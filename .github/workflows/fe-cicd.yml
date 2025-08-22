@@ -7,52 +7,60 @@ on:
       - dev
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. Lấy code
+      # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Cài Node + pnpm
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
-
+      # 2. Setup Node + pnpm
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
 
-      # 3. Cài lib + build FE
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      # 3. Install deps + build frontend
       - name: Install dependencies
         run: pnpm install
 
       - name: Build frontend
         run: pnpm run build
 
-      # Copy chỉ build folder + docker-compose.yml
-      - name: Copy build files to EC2
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          source: ".next,package.json,pnpm-lock.yaml,docker-compose.yml,Dockerfile"
-          target: "~/frontend-app"
+      # 4. Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend-app:latest .
 
-      - name: Restart frontend service
+      # 5. Login Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      # 6. Push image
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend-app:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+      # SSH vào EC2 và deploy
+      - name: Pull & restart container on EC2
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/frontend-app
-            docker compose down
-            docker compose up -d
-            echo "Deployed at $(date)" > deployed.log
-
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/frontend-app:latest
+            docker stop frontend || true
+            docker rm frontend || true
+            docker run -d --name frontend -p 80:3000 ${{ secrets.DOCKERHUB_USERNAME }}/frontend-app:latest
+            echo "Deployed at $(date)" >> ~/frontend-app/deployed.log
