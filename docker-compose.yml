@@ -1,7 +1,7 @@
 
 services:
   server:
-    image: your-dockerhub-username/frontend-app:latest  
+    image: pkucpkam/frontend-app:latest  
     environment:
       NODE_ENV: production
     ports:
