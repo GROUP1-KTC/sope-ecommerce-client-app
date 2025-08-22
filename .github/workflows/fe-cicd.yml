@@ -11,9 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Lấy code
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. Cài Node + pnpm
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -25,24 +27,25 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
+      # 3. Cài lib + build FE
       - name: Install dependencies
         run: pnpm install
 
       - name: Build frontend
         run: pnpm run build
 
-      # Copy build lên EC2
-      - name: Copy build files to EC2
+      # 4. Copy toàn bộ code (hoặc chỉ build + compose.yaml) lên EC2
+      - name: Copy files to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "out/*" # hoặc .next/* nếu là Next.js
-          target: "~/frontend-app" # thư mục trên EC2
+          source: "."
+          target: "~/frontend-app"
 
-      # SSH vào EC2 để restart service/nginx
-      - name: Restart frontend service
+      # 5. SSH vào EC2 để restart docker compose
+      - name: Restart frontend service with Docker Compose
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -50,5 +53,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/frontend-app
+            docker compose down
+            docker compose up -d --build
             echo "Deployed at $(date)" > deployed.log
-            sudo systemctl restart nginx
