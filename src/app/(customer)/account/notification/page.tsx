@@ -287,10 +287,7 @@ export default function VoucherPage() {
     ];
 
     return (
-        <div
-        className='flex flex-col md:flex-row gap-4 bg-gray-50 p-6 min-h-screen '
-          
-        >
+        <div className="flex flex-col md:flex-row gap-4 bg-gray-50 p-6 min-h-screen ">
             <main
                 style={{
                     flex: '1',
