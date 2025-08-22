@@ -30,8 +30,8 @@ jobs:
       # 4. Tag and push to Docker Hub
       - name: Push Docker image
         run: |
-          docker tag myfrontend:latest <dockerhub_user>/myfrontend:latest
-          docker push <dockerhub_user>/myfrontend:latest
+          docker tag myfrontend:latest ${{ secrets.DOCKER_USERNAME }}/myfrontend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/myfrontend:latest
 
       # 5. SSH to EC2 and pull image + restart container
       - name: Deploy on EC2
