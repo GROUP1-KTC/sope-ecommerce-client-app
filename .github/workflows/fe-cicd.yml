@@ -45,14 +45,14 @@ jobs:
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/frontend-app:latest
 
-      # 7. Copy docker-compose.yml + .env sang EC2
-      - name: Copy docker-compose.yml and .env to EC2
+      # 7. Copy docker-compose.yml sang EC2
+      - name: Copy docker-compose.yml to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "docker-compose.yml .env"
+          source: "docker-compose.yml"
           target: ~/frontend-app
 
   deploy:
