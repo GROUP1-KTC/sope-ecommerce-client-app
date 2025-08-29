@@ -4,11 +4,17 @@ import chatReducer from '~/features/chat/chatSlice';
 
 import authReducer from '~/features/auth/authSlice';
 
+import cartReducer from '~/features/cart/cartSlice';
+
+import checkoutReducer from '~/features/orders/checkoutSlice';
+
 export const appStore = configureStore({
     reducer: {
         [apiSlice.reducerPath]: apiSlice.reducer,
         chat: chatReducer,
         auth: authReducer,
+        cart: cartReducer,
+        checkout: checkoutReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

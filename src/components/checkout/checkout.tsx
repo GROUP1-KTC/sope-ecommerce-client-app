@@ -6,6 +6,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import AddressForm from '~/components/checkout/addressform';
+import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
+import { clearCheckoutItems } from '~/features/orders/checkoutSlice';
 
 type CartItem = {
     id: number;
@@ -30,8 +32,9 @@ type Voucher = {
 
 export default function Checkout() {
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const dispatch = useAppDispatch();
+    const cartItems = useAppSelector((state) => state.checkout.items);
+
     const [voucher, setVoucher] = useState<Voucher | null>(null);
     const [addressFormData, setAddressFormData] = useState<AddressFormData>({
         fullName: '',
@@ -48,46 +51,17 @@ export default function Checkout() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
-        const items = searchParams.get('items');
-        const voucherData = searchParams.get('voucher');
-        console.log('Raw items:', items);
-        console.log('Raw voucher:', voucherData);
-
-        if (!items || items.trim() === '') {
-            console.error('');
-            setErrorMessage('');
-            return;
+        if (cartItems.length === 0 && !orderSuccess) {
+            router.push('/cart');
         }
+    }, []);
 
-        try {
-            const decodedItems = decodeURIComponent(items);
-            console.log('Decoded items:', decodedItems);
-            const parsedItems = JSON.parse(decodedItems);
-            if (Array.isArray(parsedItems) && parsedItems.length > 0) {
-                console.log('Validated items:', parsedItems);
-                setCartItems(parsedItems);
-                setErrorMessage(null);
-            } else {
-                throw new Error('Dữ liệu giỏ hàng trống hoặc không hợp lệ');
-            }
-
-            if (voucherData && voucherData !== 'null') {
-                const decodedVoucher = decodeURIComponent(voucherData);
-                console.log('Decoded voucher:', decodedVoucher);
-                setVoucher(JSON.parse(decodedVoucher));
-            }
-
-            router.replace('/checkout', { scroll: false });
-        } catch (error: unknown) {
-            console.error(
-                'Parse error:',
-                (error as Error)?.message || 'Unknown error',
-            );
-            setErrorMessage(
-                `Lỗi phân tích dữ liệu: ${(error as Error)?.message || 'Không xác định'}. Vui lòng kiểm tra dữ liệu từ giỏ hàng.`,
-            );
-        }
-    }, [searchParams, router]);
+    // useEffect(() => {
+    //     return () => {
+    //         console.log('Clearing checkout items');
+    //         dispatch(clearCheckoutItems());
+    //     };
+    // }, [router]);
 
     // Calculate totals
     const total = useMemo(
@@ -140,7 +114,7 @@ export default function Checkout() {
 
             console.log('Order submitted:', orderData);
 
-            setCartItems([]);
+            dispatch(clearCheckoutItems());
             setOrderSuccess(true);
 
             alert('Đặt hàng thành công!');
