@@ -129,7 +129,7 @@ const Signup = () => {
     return (
         <div className="min-h-[80vh] bg-[#d0001a] text-gray-900 flex justify-center">
             <div className="max-w-screen-lg mx-8 bg-white sm:rounded-lg flex justify-center flex-1">
-                <div className="w-4/7 bg-[#d0001a] text-center hidden lg:flex items-center justify-center">
+                <div className="w-4/7 bg-[#d0001a] text-center hidden lg:flex items-center justify-center flex-col">
                     <Image
                         src="/assets/logo/logo.svg"
                         alt="Sope Logo"
@@ -137,6 +137,9 @@ const Signup = () => {
                         height={130}
                         className="h-24 sm:h-48 w-auto"
                     />
+                    <p className="text-white text-xl font-semibold mt-4">
+                        Leading e-commerce platform in District 7
+                    </p>
                 </div>
                 <div className="bg-gray-50 flex-1">
                     <div className="min-h-[85vh] bg-[#d0001a] flex flex-col items-center justify-center px-4">
@@ -203,7 +206,7 @@ const Signup = () => {
                                         <div className="flex items-center my-4">
                                             <div className="flex-grow h-px bg-gray-200"></div>
                                             <span className="mx-4 text-gray-400 text-sm font-medium">
-                                                HOẶC
+                                                OR
                                             </span>
                                             <div className="flex-grow h-px bg-gray-200"></div>
                                         </div>
@@ -226,17 +229,17 @@ const Signup = () => {
                                                         height={20}
                                                         className="mr-2"
                                                     />
-                                                    Đăng ký với Google
+                                                    Sign up with Google
                                                 </button>
                                             </div>
                                         </div>
                                         <p className="text-slate-900 text-sm !mt-6 text-center">
-                                            Đã có tài khoản?{' '}
+                                            Already have an account?{' '}
                                             <Link
                                                 href="/login"
                                                 className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
                                             >
-                                                Đăng nhập ở đây
+                                                Sign in here
                                             </Link>
                                         </p>
                                     </form>
@@ -248,7 +251,7 @@ const Signup = () => {
                                     >
                                         <div>
                                             <label className="text-slate-900 text-sm font-medium mb-2 block">
-                                                Mã xác nhận
+                                                OTP Verification Code
                                             </label>
                                             <div className="relative flex items-center">
                                                 <input
@@ -256,7 +259,7 @@ const Signup = () => {
                                                     type="text"
                                                     required
                                                     className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                    placeholder="Nhập mã xác nhận (6 chữ số)"
+                                                    placeholder="Enter OTP (6 digits)"
                                                     value={
                                                         input.verificationCode
                                                     }
@@ -286,7 +289,7 @@ const Signup = () => {
                                                 type="submit"
                                                 className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer"
                                             >
-                                                Xác nhận
+                                                Confirm
                                             </button>
                                         </div>
                                         <p className="text-slate-900 text-sm !mt-6 text-center">
@@ -295,7 +298,7 @@ const Signup = () => {
                                                 className="text-blue-600 hover:underline font-semibold cursor-pointer"
                                                 onClick={() => setStep(1)}
                                             >
-                                                Quay lại
+                                                Back
                                             </button>
                                         </p>
                                     </form>
@@ -307,7 +310,7 @@ const Signup = () => {
                                     >
                                         <div>
                                             <label className="text-slate-900 text-sm font-medium mb-2 block">
-                                                Mật khẩu
+                                                Password
                                             </label>
                                             <div className="relative flex items-center">
                                                 <input
@@ -319,7 +322,7 @@ const Signup = () => {
                                                     }
                                                     required
                                                     className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                    placeholder="Nhập mật khẩu"
+                                                    placeholder="Enter your password"
                                                     value={input.password}
                                                     onChange={
                                                         changeEventHandler
@@ -355,7 +358,7 @@ const Signup = () => {
                                         </div>
                                         <div>
                                             <label className="text-slate-900 text-sm font-medium mb-2 block">
-                                                Xác nhận mật khẩu
+                                                Confirm Password
                                             </label>
                                             <div className="relative flex items-center">
                                                 <input
@@ -367,7 +370,7 @@ const Signup = () => {
                                                     }
                                                     required
                                                     className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                    placeholder="Xác nhận mật khẩu"
+                                                    placeholder="Confirm password"
                                                     value={
                                                         input.confirmPassword
                                                     }
@@ -409,7 +412,7 @@ const Signup = () => {
                                                 type="submit"
                                                 className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer"
                                             >
-                                                Đăng ký
+                                                Sign Up
                                             </button>
                                         </div>
                                         <p className="text-slate-900 text-sm !mt-6 text-center">
@@ -418,7 +421,7 @@ const Signup = () => {
                                                 className="text-blue-600 hover:underline font-semibold cursor-pointer"
                                                 onClick={() => setStep(2)}
                                             >
-                                                Quay lại
+                                                Back
                                             </button>
                                         </p>
                                     </form>

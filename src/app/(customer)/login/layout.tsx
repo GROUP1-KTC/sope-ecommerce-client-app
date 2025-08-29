@@ -8,7 +8,7 @@ export default function LoginLayout({
 }) {
     return (
         <>
-            <Header title="Login" />
+            <Header title="Sign In" />
             <main>{children}</main>
             <Footer />
         </>

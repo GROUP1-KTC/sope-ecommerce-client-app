@@ -28,6 +28,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "check-pm.js"
-, "src/app/(customer)/account/payment/page.tsx"  ],
+, "src/app/(customer)/account/payment/page.tsx", "src/env.d.ts"  ],
   "exclude": ["node_modules"]
 }

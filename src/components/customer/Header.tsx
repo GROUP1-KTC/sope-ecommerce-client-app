@@ -15,20 +15,18 @@ import LanguageIcon from '@mui/icons-material/Language';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import UserMenu from './Home/UserMenu';
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     return (
         <header className="relative bg-[#d0001a] text-white w-full z-50">
-            {/* ✅ Top bar - only show on desktop */}
-            <div className="hidden sm:flex flex-col md:flex-row justify-between items-center px-4 sm:px-8 md:px-20 lg:px-40 py-2 text-xs sm:text-sm">
+            {/* Top bar - only show on desktop */}
+            <div className="hidden sm:flex flex-col md:flex-row justify-between items-center px-4 sm:px-8 md:px-20 lg:px-40 py-1 text-xs sm:text-sm">
                 <div className="flex gap-3 items-center">
-                    <Link href="#" className="hover:text-yellow-200 transition">
-                        Trang chủ Sope
-                    </Link>
                     <Link href="#" className="hover:text-yellow-200 transition">
                         Trở thành Người bán Sope
                     </Link>
@@ -47,33 +45,30 @@ const Header = () => {
                 </div>
                 <div className="flex gap-3 items-center">
                     <span className="flex items-center gap-1">
-                        <span>🔔</span>
+                        <NotificationsActiveIcon style={{ fontSize: 18 }} />
                         <Link
                             href="/notification"
-                            className="hover:text-yellow-200 transition"
+                            className="hover:text-gray-400 transition"
                         >
                             Thông báo
                         </Link>
                     </span>
                     <span className="h-4 w-px bg-white" />
                     <span className="flex items-center gap-1">
-                        <span>❓</span> Hỗ Trợ
+                        <HelpIcon style={{ fontSize: 18 }} />
+                        Hỗ Trợ
                     </span>
                     <span className="h-4 w-px bg-white" />
                     <span className="flex items-center gap-1">
-                        <span>🌐</span> Tiếng Việt
+                        <LanguageIcon style={{ fontSize: 18 }} />
+                        Tiếng Việt
                     </span>
                     <span className="h-4 w-px bg-white" />
-                    <Link
-                        href="/login"
-                        className="hover:text-yellow-200 transition"
-                    >
-                        Đăng Nhập
-                    </Link>
+                    <UserMenu />
                 </div>
             </div>
 
-            {/* ✅ Main bar - always show */}
+            {/* Main bar - always show */}
             <div className="flex items-center px-4 sm:px-8 md:px-20 lg:px-40 py-2 gap-4 justify-between">
                 {/* Logo & Menu */}
                 <div className="flex items-center gap-2">
@@ -146,9 +141,8 @@ const Header = () => {
             )}
 
             <div
-                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${
-                    menuOpen ? 'translate-x-0' : 'translate-x-full'
-                } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
+                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'
+                    } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
             >
                 <div className="flex justify-end">
                     <button

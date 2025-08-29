@@ -32,7 +32,7 @@ const baseQueryWithReauth: BaseQueryFn<
         // Gọi refresh token (cookie HttpOnly sẽ tự gửi)
         const refreshResult = await baseQuery(
             {
-                url: '/api/refresh-token',
+                url: '/refresh-token',
                 method: 'POST',
             },
             api,
@@ -43,9 +43,6 @@ const baseQueryWithReauth: BaseQueryFn<
             const { accessToken } = refreshResult.data as {
                 accessToken: string;
             };
-
-            // Lưu accessToken vào Redux
-            api.dispatch(setCredentials({ token: accessToken }));
 
             // Thử lại request ban đầu
             result = await baseQuery(args, api, extraOptions);

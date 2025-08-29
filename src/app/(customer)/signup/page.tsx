@@ -1,25 +1,46 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
+import EmailStep from '~/components/signup/EmailStepProps';
+import VerificationCodeStep from '~/components/signup/VerificationCodeStepProps';
+import PasswordStep from '~/components/signup/PasswordStep';
+import { useLoginMutation, useRegisterMutation, useSendOtpMutation, useVerifyOtpMutation } from '~/features/auth/authApi';
+import { LoginResponse, RegisterRequest } from '~/types/auth/auth';
+import { useRouter } from "next/navigation";
+import { useAppDispatch } from '~/hooks/useTypes';
+import { setCredentials } from '~/features/auth/authSlice';
+import { ServerResponse } from '~/types/serverReponse';
 
 const Signup = () => {
     const [input, setInput] = useState({
         email: '',
         verificationCode: '',
+        fullName: '',
+        gender: '',
         password: '',
         confirmPassword: '',
     });
 
-    const [step, setStep] = useState(1); // Track current step: 1 (email), 2 (verification code), 3 (passwords)
+    const [step, setStep] = useState(1);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    // Step call API
+    const [sendOtp] = useSendOtpMutation();
+    const [verifyOtp] = useVerifyOtpMutation();
+    const [register] = useRegisterMutation();
+
+    // Login
+    const [login, { isLoading }] = useLoginMutation();
+    const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const [errors, setErrors] = useState({
         email: '',
         verificationCode: '',
+        fullName: '',
+        gender: '',
         password: '',
         confirmPassword: '',
     });
@@ -41,6 +62,12 @@ const Signup = () => {
                 else if (!codeRegex.test(value))
                     error = 'Code must be 6 digits';
                 break;
+            case 'fullName':
+                if (!value) error = 'Full name is required';
+                break;
+            case 'gender':
+                if (!value) error = 'Gender is required';
+                break;
             case 'password':
                 if (!value) error = 'Password is required';
                 break;
@@ -53,13 +80,13 @@ const Signup = () => {
         return error;
     };
 
-    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         const error = validateField(name, value);
         setErrors((prev) => ({ ...prev, [name]: error }));
     };
 
-    const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setInput({ ...input, [e.target.name]: e.target.value });
         setErrors((prev) => ({ ...prev, [e.target.name]: '' }));
     };
@@ -73,31 +100,50 @@ const Signup = () => {
         if (emailError) return;
 
         try {
-            // Simulate sending verification code to email
-            console.log('Sending verification code to', input.email);
-            setStep(2); // Move to verification code step
-        } catch (error) {
-            console.error('Error sending verification code', error);
+            const response = await sendOtp({ email: input.email }).unwrap();
+            console.log('OTP sent:', response.data);
+            setStep(2);
+        } catch (err: any) {
+            let errorMessage = "Failed to send OTP";
+            if ("data" in err && err.data) {
+                const backendError = err.data as { message?: string; errors?: string[] };
+                if (backendError.errors?.length) {
+                    errorMessage = backendError.errors.join(", ");
+                } else if (backendError.message) {
+                    errorMessage = backendError.message;
+                }
+            }
+
+            setErrors((prev) => ({ ...prev, email: errorMessage }));
         }
     };
 
     const handleCodeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const codeError = validateField(
-            'verificationCode',
-            input.verificationCode,
-        );
+        const codeError = validateField('verificationCode', input.verificationCode);
         setErrors((prev) => ({ ...prev, verificationCode: codeError }));
-
         if (codeError) return;
 
         try {
-            // Simulate verifying the code
-            console.log('Verifying code', input.verificationCode);
-            setStep(3); // Move to password step
-        } catch (error) {
-            console.error('Verification error', error);
+            const response = await verifyOtp({
+                email: input.email,
+                otp: input.verificationCode
+            }).unwrap();
+
+            console.log('OTP verified:', response.data);
+            setStep(3);
+        } catch (err: any) {
+            let errorMessage = "Invalid OTP";
+            if ("data" in err && err.data) {
+                const backendError = err.data as { message?: string; errors?: string[] };
+                if (backendError.errors?.length) {
+                    errorMessage = backendError.errors.join(", ");
+                } else if (backendError.message) {
+                    errorMessage = backendError.message;
+                }
+            }
+            setErrors((prev) => ({ ...prev, verificationCode: errorMessage }));
         }
     };
 
@@ -105,24 +151,54 @@ const Signup = () => {
         e.preventDefault();
 
         const newErrors = {
+            fullName: validateField('fullName', input.fullName),
+            gender: validateField('gender', input.gender),
             password: validateField('password', input.password),
-            confirmPassword: validateField(
-                'confirmPassword',
-                input.confirmPassword,
-            ),
+            confirmPassword: validateField('confirmPassword', input.confirmPassword),
         };
-
         setErrors((prev) => ({ ...prev, ...newErrors }));
-
-        if (Object.values(newErrors).some((err) => err)) return;
+        if (Object.values(newErrors).some(err => err)) return;
 
         try {
-            console.log('Signup successfully with', {
+            const genderMap: Record<string, "MALE" | "FEMALE" | "OTHER"> = {
+                male: "MALE",
+                female: "FEMALE",
+                other: "OTHER",
+            };
+
+            const registerRequest: RegisterRequest = {
+                username: input.email,
                 email: input.email,
+                name: input.fullName,
+                gender: genderMap[input.gender.toLowerCase()] || "OTHER",
                 password: input.password,
-            });
-        } catch (error) {
-            console.error('Signup error', error);
+            };
+
+            const response = await register(registerRequest).unwrap();
+
+            // Login
+            const res: ServerResponse<LoginResponse> = await login(input).unwrap();
+
+            console.log("Response from server:", res.data);
+
+            dispatch(setCredentials(res.data));
+            router.push("/");
+
+            console.log('Registered successfully:', response.data);
+        } catch (err: any) {
+            console.error("Signup error:", err);
+
+            let errorMessage = "Signup failed";
+            if (err?.data) {
+                const backendError = err.data as { message?: string; errors?: string[] };
+                if (backendError.errors?.length) {
+                    errorMessage = backendError.errors.join(", ");
+                } else if (backendError.message) {
+                    errorMessage = backendError.message;
+                }
+            }
+
+            setErrors(prev => ({ ...prev, general: errorMessage }));
         }
     };
 
@@ -138,7 +214,7 @@ const Signup = () => {
                         className="h-24 sm:h-48 w-auto"
                     />
                     <p className="text-white text-xl font-semibold mt-4">
-                        Nền tảng thương mại điện tử hàng đầu quận 7
+                        Leading e-commerce platform in District 7
                     </p>
                 </div>
                 <div className="bg-gray-50 flex-1">
@@ -146,285 +222,40 @@ const Signup = () => {
                         <div className="max-w-[600px] w-full">
                             <div className="p-6 sm:p-8 rounded-2xl bg-white border border-gray-200 shadow-sm">
                                 <h1 className="text-slate-900 text-center text-3xl font-semibold">
-                                    Đăng ký
+                                    Sign Up
                                 </h1>
                                 {step === 1 && (
-                                    <form
-                                        onSubmit={handleEmailSubmit}
-                                        className="mt-6 space-y-6"
-                                    >
-                                        <div>
-                                            <label className="text-slate-900 text-sm font-medium mb-2 block">
-                                                Email
-                                            </label>
-                                            <div className="relative flex items-center">
-                                                <input
-                                                    name="email"
-                                                    type="text"
-                                                    required
-                                                    className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                    placeholder="Nhập email"
-                                                    value={input.email}
-                                                    onChange={
-                                                        changeEventHandler
-                                                    }
-                                                    onBlur={handleBlur}
-                                                />
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="#bbb"
-                                                    stroke="#bbb"
-                                                    className="w-4 h-4 absolute right-4"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <circle
-                                                        cx="10"
-                                                        cy="7"
-                                                        r="6"
-                                                        data-original="#000000"
-                                                    ></circle>
-                                                    <path
-                                                        d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z"
-                                                        data-original="#000000"
-                                                    ></path>
-                                                </svg>
-                                            </div>
-                                            {errors.email && (
-                                                <p className="text-red-500 text-sm mt-1">
-                                                    {errors.email}
-                                                </p>
-                                            )}
-                                        </div>
-                                        <div className="!mt-6">
-                                            <button
-                                                type="submit"
-                                                className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer"
-                                            >
-                                                Tiếp tục
-                                            </button>
-                                        </div>
-                                        <div className="flex items-center my-4">
-                                            <div className="flex-grow h-px bg-gray-200"></div>
-                                            <span className="mx-4 text-gray-400 text-sm font-medium">
-                                                HOẶC
-                                            </span>
-                                            <div className="flex-grow h-px bg-gray-200"></div>
-                                        </div>
-                                        <div>
-                                            <div className="flex flex-col items-center">
-                                                <button
-                                                    type="button"
-                                                    className="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-md bg-white hover:bg-gray-100 text-slate-900 font-medium shadow-sm transition cursor-pointer"
-                                                    onClick={() => {
-                                                        // Google signup logic
-                                                        console.log(
-                                                            'Google signup initiated',
-                                                        );
-                                                    }}
-                                                >
-                                                    <Image
-                                                        src="/assets/logo/google_logo.svg"
-                                                        alt="Google"
-                                                        width={20}
-                                                        height={20}
-                                                        className="mr-2"
-                                                    />
-                                                    Đăng ký với Google
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <p className="text-slate-900 text-sm !mt-6 text-center">
-                                            Đã có tài khoản?{' '}
-                                            <Link
-                                                href="/login"
-                                                className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
-                                            >
-                                                Đăng nhập ở đây
-                                            </Link>
-                                        </p>
-                                    </form>
+                                    <EmailStep
+                                        input={input}
+                                        errors={errors}
+                                        changeEventHandler={changeEventHandler}
+                                        handleBlur={handleBlur}
+                                        handleEmailSubmit={handleEmailSubmit}
+                                    />
                                 )}
                                 {step === 2 && (
-                                    <form
-                                        onSubmit={handleCodeSubmit}
-                                        className="mt-6 space-y-6"
-                                    >
-                                        <div>
-                                            <label className="text-slate-900 text-sm font-medium mb-2 block">
-                                                Mã xác nhận
-                                            </label>
-                                            <div className="relative flex items-center">
-                                                <input
-                                                    name="verificationCode"
-                                                    type="text"
-                                                    required
-                                                    className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                    placeholder="Nhập mã xác nhận (6 chữ số)"
-                                                    value={
-                                                        input.verificationCode
-                                                    }
-                                                    onChange={
-                                                        changeEventHandler
-                                                    }
-                                                    onBlur={handleBlur}
-                                                />
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="#bbb"
-                                                    stroke="#bbb"
-                                                    className="w-4 h-4 absolute right-4"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.17-5.24l-1.41 1.41L12 13.41l-2.76 2.76-1.41-1.41L10.59 12l-2.76-2.76 1.41-1.41L12 10.59l2.76-2.76 1.41 1.41L13.41 12l2.76 2.76z" />
-                                                </svg>
-                                            </div>
-                                            {errors.verificationCode && (
-                                                <p className="text-red-500 text-sm mt-1">
-                                                    {errors.verificationCode}
-                                                </p>
-                                            )}
-                                        </div>
-                                        <div className="!mt-6">
-                                            <button
-                                                type="submit"
-                                                className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer"
-                                            >
-                                                Xác nhận
-                                            </button>
-                                        </div>
-                                        <p className="text-slate-900 text-sm !mt-6 text-center">
-                                            <button
-                                                type="button"
-                                                className="text-blue-600 hover:underline font-semibold cursor-pointer"
-                                                onClick={() => setStep(1)}
-                                            >
-                                                Quay lại
-                                            </button>
-                                        </p>
-                                    </form>
+                                    <VerificationCodeStep
+                                        input={input}
+                                        errors={errors}
+                                        changeEventHandler={changeEventHandler}
+                                        handleBlur={handleBlur}
+                                        handleCodeSubmit={handleCodeSubmit}
+                                        setStep={setStep}
+                                    />
                                 )}
                                 {step === 3 && (
-                                    <form
-                                        onSubmit={handleSignupSubmit}
-                                        className="mt-6 space-y-6"
-                                    >
-                                        <div>
-                                            <label className="text-slate-900 text-sm font-medium mb-2 block">
-                                                Mật khẩu
-                                            </label>
-                                            <div className="relative flex items-center">
-                                                <input
-                                                    name="password"
-                                                    type={
-                                                        showPassword
-                                                            ? 'text'
-                                                            : 'password'
-                                                    }
-                                                    required
-                                                    className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                    placeholder="Nhập mật khẩu"
-                                                    value={input.password}
-                                                    onChange={
-                                                        changeEventHandler
-                                                    }
-                                                    onBlur={handleBlur}
-                                                />
-                                                <span
-                                                    className="absolute right-4 cursor-pointer"
-                                                    onClick={() =>
-                                                        setShowPassword(
-                                                            (prev) => !prev,
-                                                        )
-                                                    }
-                                                >
-                                                    {showPassword ? (
-                                                        <EyeOff
-                                                            size={16}
-                                                            color="#bbb"
-                                                        />
-                                                    ) : (
-                                                        <Eye
-                                                            size={16}
-                                                            color="#bbb"
-                                                        />
-                                                    )}
-                                                </span>
-                                            </div>
-                                            {errors.password && (
-                                                <p className="text-red-500 text-sm mt-1">
-                                                    {errors.password}
-                                                </p>
-                                            )}
-                                        </div>
-                                        <div>
-                                            <label className="text-slate-900 text-sm font-medium mb-2 block">
-                                                Xác nhận mật khẩu
-                                            </label>
-                                            <div className="relative flex items-center">
-                                                <input
-                                                    name="confirmPassword"
-                                                    type={
-                                                        showConfirmPassword
-                                                            ? 'text'
-                                                            : 'password'
-                                                    }
-                                                    required
-                                                    className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                    placeholder="Xác nhận mật khẩu"
-                                                    value={
-                                                        input.confirmPassword
-                                                    }
-                                                    onChange={
-                                                        changeEventHandler
-                                                    }
-                                                    onBlur={handleBlur}
-                                                />
-                                                <span
-                                                    className="absolute right-4 cursor-pointer"
-                                                    onClick={() =>
-                                                        setShowConfirmPassword(
-                                                            (prev) => !prev,
-                                                        )
-                                                    }
-                                                >
-                                                    {showConfirmPassword ? (
-                                                        <EyeOff
-                                                            size={16}
-                                                            color="#bbb"
-                                                        />
-                                                    ) : (
-                                                        <Eye
-                                                            size={16}
-                                                            color="#bbb"
-                                                        />
-                                                    )}
-                                                </span>
-                                            </div>
-                                            {errors.confirmPassword && (
-                                                <p className="text-red-500 text-sm mt-1">
-                                                    {errors.confirmPassword}
-                                                </p>
-                                            )}
-                                        </div>
-
-                                        <div className="!mt-6">
-                                            <button
-                                                type="submit"
-                                                className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer"
-                                            >
-                                                Đăng ký
-                                            </button>
-                                        </div>
-                                        <p className="text-slate-900 text-sm !mt-6 text-center">
-                                            <button
-                                                type="button"
-                                                className="text-blue-600 hover:underline font-semibold cursor-pointer"
-                                                onClick={() => setStep(2)}
-                                            >
-                                                Quay lại
-                                            </button>
-                                        </p>
-                                    </form>
+                                    <PasswordStep
+                                        input={input}
+                                        errors={errors}
+                                        showPassword={showPassword}
+                                        setShowPassword={setShowPassword}
+                                        showConfirmPassword={showConfirmPassword}
+                                        setShowConfirmPassword={setShowConfirmPassword}
+                                        changeEventHandler={changeEventHandler}
+                                        handleBlur={handleBlur}
+                                        handleSignupSubmit={handleSignupSubmit}
+                                        setStep={setStep}
+                                    />
                                 )}
                             </div>
                         </div>

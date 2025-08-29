@@ -5,18 +5,30 @@ import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
 
+import type { LoginInput, LoginErrors } from '~/types/auth/auth';
+import { useLoginMutation } from '~/features/auth/authApi';
+import { useAppDispatch } from '~/hooks/useTypes';
+import { useRouter } from "next/navigation";
+import type { LoginResponse } from '~/types/auth/auth';
+import { setCredentials } from '~/features/auth/authSlice';
+import type { ServerResponse } from "~/types/serverReponse";
+
 const Login = () => {
-    const [input, setInput] = useState({
+    const [input, setInput] = useState<LoginInput>({
         email: '',
         password: '',
     });
 
     const [showPassword, setShowPassword] = useState(false);
 
-    const [errors, setErrors] = useState({
+    const [errors, setErrors] = useState<LoginErrors>({
         email: '',
         password: '',
     });
+
+    const [login, { isLoading }] = useLoginMutation();
+    const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -50,19 +62,38 @@ const Login = () => {
     const loginHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const newErrors = {
-            email: validateField('email', input.email),
-            password: validateField('password', input.password),
+        const newErrors: LoginErrors = {
+            email: validateField("email", input.email),
+            password: validateField("password", input.password),
         };
-
         setErrors(newErrors);
 
         if (Object.values(newErrors).some((err) => err)) return;
 
         try {
-            console.log('Login successfully with', input);
-        } catch (error) {
-            console.error('Login error', error);
+            const res: ServerResponse<LoginResponse> = await login(input).unwrap();
+
+            console.log("Response from server:", res.data);
+
+            dispatch(setCredentials(res.data));
+            router.push("/");
+        } catch (err: any) {
+            console.error("Full error object:", err);
+
+            let message = "Login failed, please try again.";
+
+            if (err?.data?.message) {
+                message = err.data.message;
+            } else if (typeof err?.error === "string") {
+                message = err.error;
+            } else if (err?.status) {
+                message = `Server error (${err.status}).`;
+            } else if (err instanceof Error) {
+                message = err.message;
+            }
+
+            console.error("Error message:", message);
+
         }
     };
 
@@ -78,7 +109,7 @@ const Login = () => {
                         className="h-24 sm:h-48 w-auto"
                     />
                     <p className="text-white text-xl font-semibold mt-4">
-                        Nền tảng thương mại điện tử hàng đầu quận 7
+                        Leading e-commerce platform in District 7
                     </p>
                 </div>
                 <div className="bg-gray-50 flex-1">
@@ -86,7 +117,7 @@ const Login = () => {
                         <div className="max-w-[600px] w-full">
                             <div className="p-6 sm:p-8 rounded-2xl bg-white border border-gray-200 shadow-sm">
                                 <h1 className="text-slate-900 text-center text-3xl font-semibold">
-                                    Đăng nhập
+                                    Sign In
                                 </h1>
                                 <form
                                     onSubmit={loginHandler}
@@ -190,7 +221,7 @@ const Login = () => {
                                                 htmlFor="remember-me"
                                                 className="ml-3 block text-sm text-slate-900 cursor-pointer"
                                             >
-                                                Ghi nhớ tôi
+                                                Remember me
                                             </label>
                                         </div>
                                         <div className="text-sm">
@@ -198,7 +229,7 @@ const Login = () => {
                                                 href="/forgot-password"
                                                 className="text-blue-600 hover:underline font-semibold"
                                             >
-                                                Quên mật khẩu?
+                                                Forgot password?
                                             </Link>
                                         </div>
                                     </div>
@@ -207,13 +238,13 @@ const Login = () => {
                                             type="submit"
                                             className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer"
                                         >
-                                            Đăng nhập
+                                            Sign In
                                         </button>
                                     </div>
                                     <div className="flex items-center my-4">
                                         <div className="flex-grow h-px bg-gray-200"></div>
                                         <span className="mx-4 text-gray-400 text-sm font-medium">
-                                            HOẶC
+                                            OR
                                         </span>
                                         <div className="flex-grow h-px bg-gray-200"></div>
                                     </div>
@@ -233,17 +264,17 @@ const Login = () => {
                                                     height={20}
                                                     className="mr-2"
                                                 />
-                                                Đăng nhập với Google
+                                                Sign in with Google
                                             </button>
                                         </div>
                                     </div>
                                     <p className="text-slate-900 text-sm !mt-6 text-center">
-                                        Chưa có tài khoản ?{' '}
+                                        Don't have an account yet ?{' '}
                                         <Link
                                             href="/signup"
                                             className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
                                         >
-                                            Đăng ký ở đây
+                                            Sign up here
                                         </Link>
                                     </p>
                                 </form>

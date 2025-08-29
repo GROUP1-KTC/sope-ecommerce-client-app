@@ -29,7 +29,7 @@ const Header = ({ title }: { title: string }) => {
                         href="/help"
                         className={`text-[${colors.primary.main}] hover:text-black text-sm hidden sm:inline-block`}
                     >
-                        Bạn cần giúp đỡ?
+                        Do you need help ?
                     </Link>
                 </div>
             </div>

@@ -1,22 +1,31 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
-const userData = {
-    username: 'pkuckpam',
-    firstName: 'Pham',
-    lastName: 'Kuck',
-    email: 'pkuckpam@gmail.com',
-    phone: '0123456789',
-    avtUrl: 'https://scontent.fsgn6-1.fna.fbcdn.net/v/t39.30808-6/475850716_1862410967665318_5163934026762753103_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=6RYmNAA0yVYQ7kNvwGbwh7b&_nc_oc=AdlcQe-W5e-5potihXBMXOUZYNwLEov4C0e_mZO688Qg4IVNnOC9DLkbWNgmKv80Om4&_nc_zt=23&_nc_ht=scontent.fsgn6-1.fna&_nc_gid=gatLYvEOxIe_TQ5mH3CoDA&oh=00_AfRKBny2LYHwxnjarKzE63e7ovt6xoc26RWxxOy4U8CciQ&oe=68851374',
-    gender: 'Nam',
-    birthDate: '1990-01-01',
-};
+import { useGetProfileQuery } from '~/features/user/userApi';
+import { setUser } from '~/features/user/userSlice';
+import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 
 const ProfilePage = () => {
+
+    const dispatch = useAppDispatch();
+    const user = useAppSelector((state) => state.user); 
+    const { data, isLoading } = useGetProfileQuery();
+
+      console.log("Profile API result:", { data, isLoading });
+
+
     const [birthDate, setBirthDate] = useState<Date | null>(new Date());
+
+    useEffect(() => {
+        if (data) {
+            dispatch(setUser(data));
+            if (data.birthDate) setBirthDate(new Date(data.birthDate));
+        }
+    }, [data, dispatch]);
+
+    if (isLoading) return <div>Loading...</div>;
 
     return (
         <div className="order-detail-page">
@@ -37,7 +46,7 @@ const ProfilePage = () => {
                                         Tên đăng nhập
                                     </label>
                                     <div className="w-2/3 text-gray-800">
-                                        {userData.username}
+                                        {user.username}
                                     </div>
                                 </div>
                                 <div className="mb-4 flex items-center">
@@ -47,7 +56,7 @@ const ProfilePage = () => {
                                     <input
                                         className="w-2/3 p-2 border rounded"
                                         type="text"
-                                        defaultValue={userData.firstName}
+                                        defaultValue={user.name || ''}
                                     />
                                 </div>
                                 <div className="mb-4 flex items-center">
@@ -57,7 +66,7 @@ const ProfilePage = () => {
                                     <div className="w-2/3 flex items-center">
                                         <div className="w-2/3 text-gray-800">
                                             <div className="w-2/3 text-gray-800">
-                                                {userData.email.replace(
+                                                {(user.email ?? '').replace(
                                                     /(.{2})(.*)(@.*)/,
                                                     '$1******$3',
                                                 )}
@@ -78,7 +87,7 @@ const ProfilePage = () => {
 
                                     <div className="w-2/3 flex items-start">
                                         <div className="w-2/3 text-gray-800">
-                                            {userData.phone.replace(
+                                            {(user.phone ?? '').replace(
                                                 /(.{2})(.*)(.{2})/,
                                                 '$1******$3',
                                             )}
@@ -158,7 +167,7 @@ const ProfilePage = () => {
                                         <Image
                                             width={128}
                                             height={128}
-                                            src={userData.avtUrl}
+                                            src={user.avatarUrl || '/default-avatar.png'}
                                             alt="Avatar"
                                             className="w-full h-full object-cover"
                                         />

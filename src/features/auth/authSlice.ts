@@ -1,25 +1,45 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {
-    token: string | null;
+  username: string | null;
+  roles: string[];
+  accessToken: string | null;
 }
 
 const initialState: AuthState = {
-    token: null,
+  username: null,
+  roles: [],
+  accessToken: null,
 };
 
 const authSlice = createSlice({
-    name: 'auth',
-    initialState,
-    reducers: {
-        setCredentials: (state, action) => {
-            state.token = action.payload;
-        },
-        clearCredentials: (state) => {
-            state.token = null;
-        },
+  name: "auth",
+  initialState,
+  reducers: {
+    setCredentials: (state, action: PayloadAction<{ username: string; roles: string[], accessToken: string | null }>) => {
+      state.username = action.payload.username;
+      state.roles = action.payload.roles;
+      state.accessToken = action.payload.accessToken;
+
+      sessionStorage.setItem("authUser", JSON.stringify(action.payload));
     },
+    clearCredentials: (state) => {
+      state.username = null;
+      state.roles = [];
+      state.accessToken = null;
+      sessionStorage.removeItem("authUser");
+    },
+    loadCredentialsFromStorage: (state) => {
+      const storedUser = sessionStorage.getItem("authUser");
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        state.username = parsedUser.username;
+        state.roles = parsedUser.roles;
+        state.accessToken = parsedUser.accessToken;
+      }
+    },
+  },
 });
 
-export const { setCredentials, clearCredentials } = authSlice.actions;
+export const { setCredentials, clearCredentials, loadCredentialsFromStorage } = authSlice.actions;
 export default authSlice.reducer;

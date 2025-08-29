@@ -1,21 +1,28 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { apiSlice } from '~/services/api/apiSlice';
+import { authApi } from '~/features/auth/authApi';
 import chatReducer from '~/features/chat/chatSlice';
+import userReducer from '~/features/user/userSlice';
+
 
 import authReducer from '~/features/auth/authSlice';
+import { userApi } from '~/features/user/userApi';
 
 export const appStore = configureStore({
     reducer: {
         [apiSlice.reducerPath]: apiSlice.reducer,
+        [authApi.reducerPath]: authApi.reducer,
+        [userApi.reducerPath]: userApi.reducer,
         chat: chatReducer,
         auth: authReducer,
+        user: userReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
                 ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
             },
-        }).concat([apiSlice.middleware]),
+        }).concat([apiSlice.middleware, authApi.middleware, userApi.middleware]),
     devTools: process.env.NODE_ENV !== 'production',
 });
 
