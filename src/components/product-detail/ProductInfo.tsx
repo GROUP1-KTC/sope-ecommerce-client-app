@@ -5,6 +5,12 @@ import { useState } from 'react';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useAlertStore } from '~/store/zustand/alertStore';
 import { useModalStore } from '~/store/zustand/modalStore';
+import { useAddCartMutation } from '~/features/cart/cartApiSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '~/store/appStore';
+import type { CartItem } from '~/app/(customer)/cart/page';
+import { addItem } from '~/features/cart/cartSlice';
+import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 interface ProductInfoProps {
     product: {
         id: number;
@@ -62,17 +68,49 @@ const ProductInfo = ({
     const [showVoucherModal, setShowVoucherModal] = useState(false);
     const [showPolicyModal, setShowPolicyModal] = useState(false);
 
-    const handleAddToCart = () => {
-        useAlertStore.getState().showAlert({
-            severity: 'success',
-            message: 'Thêm sản phẩm thành công!',
-        });
+    const token = useAppSelector((state) => state.auth.token);
+    const dispatch = useAppDispatch();
+    const [addCartApi] = useAddCartMutation();
 
-        useModalStore.getState().showModal({
-            type: 'info',
-            severity: 'success',
-            message: 'Thêm sản phẩm thành công!',
-        });
+    const handleAddToCart = (item: CartItem) => {
+        if (token) {
+            addCartApi(item)
+                .unwrap()
+                .then(() => {
+                    useAlertStore.getState().showAlert({
+                        severity: 'success',
+                        message: 'Thêm sản phẩm vào giỏ hàng thành công!',
+                    });
+                })
+                .catch(() => {
+                    useAlertStore.getState().showAlert({
+                        severity: 'error',
+                        message: 'Thêm giỏ hàng thất bại!',
+                    });
+                });
+        } else {
+            const stored = localStorage.getItem('cart');
+            const currentCart: CartItem[] = stored ? JSON.parse(stored) : [];
+            const existingIndex = currentCart.findIndex(
+                (i) => i.id === item.id,
+            );
+
+            if (existingIndex !== -1) {
+                currentCart[existingIndex].quantity += item.quantity;
+            } else {
+                currentCart.push(item);
+            }
+
+            localStorage.setItem('cart', JSON.stringify(currentCart));
+
+            useAlertStore.getState().showAlert({
+                severity: 'success',
+                message:
+                    'Thêm sản phẩm vào giỏ hàng thành công (chưa đăng nhập)!',
+            });
+        }
+
+        dispatch(addItem(item));
     };
 
     return (
@@ -428,7 +466,15 @@ const ProductInfo = ({
                 </div>
                 <div className="flex gap-4">
                     <button
-                        onClick={handleAddToCart}
+                        onClick={() =>
+                            handleAddToCart({
+                                id: product.id,
+                                name: product.name,
+                                price: product.price,
+                                image: product.image,
+                                quantity: 1,
+                            })
+                        }
                         className="bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700"
                     >
                         <AddShoppingCartIcon className="mr-2" />

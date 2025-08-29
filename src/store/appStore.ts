@@ -8,6 +8,10 @@ import userReducer from '~/features/user/userSlice';
 import authReducer from '~/features/auth/authSlice';
 import { userApi } from '~/features/user/userApi';
 
+import cartReducer from '~/features/cart/cartSlice';
+
+import checkoutReducer from '~/features/orders/checkoutSlice';
+
 export const appStore = configureStore({
     reducer: {
         [apiSlice.reducerPath]: apiSlice.reducer,
@@ -16,6 +20,8 @@ export const appStore = configureStore({
         chat: chatReducer,
         auth: authReducer,
         user: userReducer,
+        cart: cartReducer,
+        checkout: checkoutReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
