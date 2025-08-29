@@ -1,12 +1,21 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Container, Typography, Paper } from '@mui/material';
 import CartTable from '~/components/cart/CartTable';
 import CartSummary from '~/components/cart/CartSummary';
 import ProductSuggestions from '~/components/cart/ProductSuggestions';
 import VoucherSection from '~/components/cart/VoucherSection';
 import VoucherModal, { type Voucher } from '~/components/cart/VoucherModal';
+import {
+    useDeleteItemsMutation,
+    useDeleteItemMutation,
+    useGetCartQuery,
+} from '~/features/cart/cartApiSlice';
+import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
+import { removeItem, removeItems } from '~/features/cart/cartSlice';
+import { setCheckoutItems } from '~/features/orders/checkoutSlice';
+import { useRouter } from 'next/navigation';
 
 export interface CartItem {
     id: number;
@@ -22,23 +31,6 @@ export interface Product {
     image: string;
     price: number;
 }
-
-const mockCartItems: CartItem[] = [
-    {
-        id: 1,
-        name: 'Thẻ nhớ tải nhạc 2gb 4gb,8gb',
-        image: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQe42ZXWwPudaJhV7R_FllhgDf3grwZ9QnVKFZ3vq9mgITZCuaYwUkTnTEpWqK1oxdHHMrVlWLzvAjgRdhH0MXRw3n1qHD3HpGNEOiZTrLapkQPc-jMt0Wv',
-        price: 30000,
-        quantity: 1,
-    },
-    {
-        id: 2,
-        name: 'Thẻ nhớ tải nhạc 2gb 4gb,8gb',
-        image: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-m0cgbhue08od57@resize_w160_nl.webp',
-        price: 28000,
-        quantity: 3,
-    },
-];
 
 const products: Product[] = [
     {
@@ -98,7 +90,35 @@ const products: Product[] = [
 ];
 
 const Cart: React.FC = () => {
-    const [cartItems, setCartItems] = useState<CartItem[]>(mockCartItems);
+    const router = useRouter();
+    const token = useAppSelector((state) => state.auth.token);
+
+    const { data: cartItemFromApi = [], isLoading } = useGetCartQuery(
+        undefined,
+        {
+            skip: !token,
+        },
+    );
+
+    const [deleteItemApi] = useDeleteItemMutation();
+    const [deleteItemsApi] = useDeleteItemsMutation();
+
+    const dispatch = useAppDispatch();
+
+    const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+        if (typeof window === 'undefined') return [];
+        if (token) return [];
+
+        const stored = localStorage.getItem('cart');
+
+        return stored ? JSON.parse(stored) || [] : [];
+    });
+
+    useEffect(() => {
+        if (token && cartItemFromApi.length) {
+            setCartItems(cartItemFromApi);
+        }
+    }, [cartItemFromApi, token]);
 
     const [selected, setSelected] = useState<number[]>([]);
     const [voucher, setVoucher] = useState<Voucher | null>(null);
@@ -121,6 +141,15 @@ const Cart: React.FC = () => {
     };
 
     const handleDelete = (id: number) => {
+        if (token) {
+            deleteItemApi(id);
+        } else {
+            const stored = localStorage.getItem('cart');
+            const cart: CartItem[] = stored ? JSON.parse(stored) : [];
+            const newCart = cart.filter((item) => item.id !== id);
+            localStorage.setItem('cart', JSON.stringify(newCart));
+        }
+        dispatch(removeItem(id));
         setCartItems((prev) => prev.filter((item) => item.id !== id));
         setSelected((prev) => prev.filter((item) => item !== id));
     };
@@ -145,11 +174,30 @@ const Cart: React.FC = () => {
         );
     };
 
-    const handleDeleteSelected = () => {
+    const handleDeleteSelected = async () => {
         if (selected.length === 0) {
             alert('Vui lòng chọn sản phẩm để xóa.');
             return;
         }
+
+        // 1️⃣ Xóa state global
+
+        // 2️⃣ Xóa backend nếu login
+        if (token) {
+            try {
+                await deleteItemsApi(selected).unwrap();
+            } catch (err) {
+                console.error(err);
+            }
+        } else {
+            // 3️⃣ Sync localStorage nếu chưa login
+            const stored = localStorage.getItem('cart');
+            let cart: CartItem[] = stored ? JSON.parse(stored) : [];
+            cart = cart.filter((i) => !selected.includes(i.id));
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+        dispatch(removeItems(selected));
+
         setCartItems((prev) =>
             prev.filter((item) => !selected.includes(item.id)),
         );
@@ -175,13 +223,9 @@ const Cart: React.FC = () => {
         }
 
         const items = cartItems.filter((item) => selected.includes(item.id));
-        const detail = items
+        dispatch(setCheckoutItems(items));
 
-            .map((item) => `- ${item.name} x${item.quantity}`)
-            .join('\n');
-        alert(
-            `Bạn đã đặt mua:\n${detail}\nTổng tiền: ₫${total.toLocaleString('vi-VN')}`,
-        );
+        router.push('/checkout');
     };
 
     const total = cartItems
@@ -213,19 +257,40 @@ const Cart: React.FC = () => {
                             )
                         }
                     />
-                    <VoucherSection
-                        onSelectVoucher={() => setShowVoucherModal(true)}
-                        voucher={voucher}
-                    />
-                    <CartSummary
-                        cartItems={cartItems}
-                        selected={selected}
-                        total={total}
-                        handleSelectAll={handleSelectAll}
-                        handleDeleteSelected={handleDeleteSelected}
-                        handleSaveToFavorites={handleSaveToFavorites}
-                        handleCheckout={handleCheckout}
-                    />
+                    {token && (
+                        <VoucherSection
+                            onSelectVoucher={() => setShowVoucherModal(true)}
+                            voucher={voucher}
+                        />
+                    )}
+                    {cartItems.length > 0 ? (
+                        <CartSummary
+                            cartItems={cartItems}
+                            selected={selected}
+                            total={total}
+                            handleSelectAll={handleSelectAll}
+                            handleDeleteSelected={handleDeleteSelected}
+                            handleSaveToFavorites={handleSaveToFavorites}
+                            handleCheckout={handleCheckout}
+                        />
+                    ) : (
+                        <Box
+                            sx={{
+                                py: 6,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Typography variant="h6" mb={2}>
+                                Giỏ hàng trống
+                            </Typography>
+                            <Typography variant="body2">
+                                Bạn chưa có sản phẩm nào trong giỏ hàng.
+                            </Typography>
+                        </Box>
+                    )}
                 </Paper>
                 <ProductSuggestions products={products} />
 

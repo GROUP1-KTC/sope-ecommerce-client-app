@@ -96,18 +96,18 @@ const ProductBySlug = () => {
 
                         {/* IMAGE VARIANTS */}
                         {/* <div className="flex mt-2 justify-center gap-2">
-                                    {selectedVariant?.images?.map((img, index) => (
-                                          <div key={index} className="w-12 h-12 border rounded overflow-hidden">
-                                                <Image
-                                                      src={img.url}
-                                                      alt={`Variant ${index}`}
-                                                      width={48}
-                                                      height={48}
-                                                      className="object-cover"
-                                                />
-                                          </div>
-                                    ))}
-                              </div> */}
+                                        {selectedVariant?.images?.map((img, index) => (
+                                            <div key={index} className="w-12 h-12 border rounded overflow-hidden">
+                                                    <Image
+                                                        src={img.url}
+                                                        alt={`Variant ${index}`}
+                                                        width={48}
+                                                        height={48}
+                                                        className="object-cover"
+                                                    />
+                                            </div>
+                                        ))}
+                                </div> */}
                     </div>
 
                     {/* RIGHT CONTENT */}

@@ -17,6 +17,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Link from 'next/link';
 import { useState } from 'react';
 import Image from 'next/image';
+import HeaderCartIconWithBadge from './HeaderCartIconWithBadge';
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -91,7 +92,6 @@ const Header = () => {
                         />
                     </Link>
                 </div>
-
                 {/* Search bar */}
                 <div className="flex-1 mx-2 flex items-center">
                     <input
@@ -103,31 +103,11 @@ const Header = () => {
                         <SearchIcon className="text-[#d0001a]" />
                     </button>
                 </div>
-
                 {/* Cart + Hamburger */}
-                <div className="flex items-center gap-2">
-                    <Link
-                        href="/cart"
-                        className="flex items-center hover:text-yellow-200 transition"
-                    >
-                        <ShoppingCartOutlinedIcon
-                            style={{ fontSize: 30 }}
-                            className="text-white"
-                        />
-                    </Link>
-                    {/* Only show menu button on mobile */}
-                    <button
-                        className="sm:hidden hover:text-yellow-200 transition flex items-center cursor-pointer"
-                        onClick={() => setMenuOpen(!menuOpen)}
-                        aria-label="Open menu"
-                        style={{ height: 30, width: 30 }}
-                    >
-                        <MenuIcon
-                            style={{ fontSize: 30 }}
-                            className="text-white"
-                        />
-                    </button>
-                </div>
+                <HeaderCartIconWithBadge
+                    menuOpen={menuOpen}
+                    setMenuOpen={setMenuOpen}
+                />
             </div>
 
             {menuOpen && (
