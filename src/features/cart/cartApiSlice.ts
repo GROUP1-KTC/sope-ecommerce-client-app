@@ -32,9 +32,12 @@ export const cartApi = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Cart'],
         }),
-
     }),
 });
 
-export const { useGetCartQuery, useAddCartMutation, useDeleteItemMutation, useDeleteItemsMutation } = cartApi;
-
+export const {
+    useGetCartQuery,
+    useAddCartMutation,
+    useDeleteItemMutation,
+    useDeleteItemsMutation,
+} = cartApi;

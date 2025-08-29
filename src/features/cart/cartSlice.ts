@@ -1,7 +1,7 @@
 // cartSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { CartItem } from '~/app/(customer)/cart/page';
-
 
 interface CartState {
     items: CartItem[];
@@ -19,22 +19,30 @@ export const cartSlice = createSlice({
             state.items = action.payload;
         },
         addItem: (state, action: PayloadAction<CartItem>) => {
-            const existing = state.items.find(i => i.id === action.payload.id);
+            const existing = state.items.find(
+                (i) => i.id === action.payload.id,
+            );
             if (existing) existing.quantity += action.payload.quantity;
             else state.items.push(action.payload);
         },
         removeItem: (state, action: PayloadAction<number>) => {
-            state.items = state.items.filter(i => i.id !== action.payload);
+            state.items = state.items.filter((i) => i.id !== action.payload);
         },
         removeItems: (state, action: PayloadAction<number[]>) => {
-            state.items = state.items.filter(i => !action.payload.includes(i.id));
+            state.items = state.items.filter(
+                (i) => !action.payload.includes(i.id),
+            );
         },
-        updateQuantity: (state, action: PayloadAction<{ id: number, quantity: number }>) => {
-            const item = state.items.find(i => i.id === action.payload.id);
+        updateQuantity: (
+            state,
+            action: PayloadAction<{ id: number; quantity: number }>,
+        ) => {
+            const item = state.items.find((i) => i.id === action.payload.id);
             if (item) item.quantity = action.payload.quantity;
         },
     },
 });
 
-export const { setCart, addItem, removeItem, removeItems, updateQuantity } = cartSlice.actions;
+export const { setCart, addItem, removeItem, removeItems, updateQuantity } =
+    cartSlice.actions;
 export default cartSlice.reducer;
