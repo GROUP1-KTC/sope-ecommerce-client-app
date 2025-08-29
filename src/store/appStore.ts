@@ -4,7 +4,6 @@ import { authApi } from '~/features/auth/authApi';
 import chatReducer from '~/features/chat/chatSlice';
 import userReducer from '~/features/user/userSlice';
 
-
 import authReducer from '~/features/auth/authSlice';
 import { userApi } from '~/features/user/userApi';
 
@@ -28,7 +27,11 @@ export const appStore = configureStore({
             serializableCheck: {
                 ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
             },
-        }).concat([apiSlice.middleware, authApi.middleware, userApi.middleware]),
+        }).concat([
+            apiSlice.middleware,
+            authApi.middleware,
+            userApi.middleware,
+        ]),
     devTools: process.env.NODE_ENV !== 'production',
 });
 

@@ -8,13 +8,11 @@ import { setUser } from '~/features/user/userSlice';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 
 const ProfilePage = () => {
-
     const dispatch = useAppDispatch();
-    const user = useAppSelector((state) => state.user); 
+    const user = useAppSelector((state) => state.user);
     const { data, isLoading } = useGetProfileQuery();
 
-      console.log("Profile API result:", { data, isLoading });
-
+    console.log('Profile API result:', { data, isLoading });
 
     const [birthDate, setBirthDate] = useState<Date | null>(new Date());
 
@@ -167,7 +165,10 @@ const ProfilePage = () => {
                                         <Image
                                             width={128}
                                             height={128}
-                                            src={user.avatarUrl || '/default-avatar.png'}
+                                            src={
+                                                user.avatarUrl ||
+                                                '/default-avatar.png'
+                                            }
                                             alt="Avatar"
                                             className="w-full h-full object-cover"
                                         />

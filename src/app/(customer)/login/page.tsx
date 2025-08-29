@@ -8,10 +8,10 @@ import Image from 'next/image';
 import type { LoginInput, LoginErrors } from '~/types/auth/auth';
 import { useLoginMutation } from '~/features/auth/authApi';
 import { useAppDispatch } from '~/hooks/useTypes';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import type { LoginResponse } from '~/types/auth/auth';
 import { setCredentials } from '~/features/auth/authSlice';
-import type { ServerResponse } from "~/types/serverReponse";
+import type { ServerResponse } from '~/types/serverReponse';
 
 const Login = () => {
     const [input, setInput] = useState<LoginInput>({
@@ -63,28 +63,29 @@ const Login = () => {
         e.preventDefault();
 
         const newErrors: LoginErrors = {
-            email: validateField("email", input.email),
-            password: validateField("password", input.password),
+            email: validateField('email', input.email),
+            password: validateField('password', input.password),
         };
         setErrors(newErrors);
 
         if (Object.values(newErrors).some((err) => err)) return;
 
         try {
-            const res: ServerResponse<LoginResponse> = await login(input).unwrap();
+            const res: ServerResponse<LoginResponse> =
+                await login(input).unwrap();
 
-            console.log("Response from server:", res.data);
+            console.log('Response from server:', res.data);
 
             dispatch(setCredentials(res.data));
-            router.push("/");
+            router.push('/');
         } catch (err: any) {
-            console.error("Full error object:", err);
+            console.error('Full error object:', err);
 
-            let message = "Login failed, please try again.";
+            let message = 'Login failed, please try again.';
 
             if (err?.data?.message) {
                 message = err.data.message;
-            } else if (typeof err?.error === "string") {
+            } else if (typeof err?.error === 'string') {
                 message = err.error;
             } else if (err?.status) {
                 message = `Server error (${err.status}).`;
@@ -92,8 +93,7 @@ const Login = () => {
                 message = err.message;
             }
 
-            console.error("Error message:", message);
-
+            console.error('Error message:', message);
         }
     };
 
