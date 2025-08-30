@@ -1,30 +1,64 @@
-import type { Category } from './category';
-import type { ProductVariant } from './product_variant';
-// import { Review } from "./review";
-// import { Wishlist } from "./wishlist";
+// import type { Category } from './category';
+import type {
+    ProductVariantFormData,
+    ProductVariantResponse,
+} from './product_variant';
 import type { Shop } from '../users/shop';
 import type { ProductDetail } from './product_detail';
+import type { Image } from './image';
 
 export type StatusProduct = 'PENDING' | 'APPROVED' | 'REJECTED';
 
-export interface Product {
-    productId: string;
+export interface BaseProduct {
     name: string;
-    defaultPrice: number;
     brand?: string;
-    description?: string;
-    defaultImage: string;
+    description: string;
     hidden: boolean;
+    categoryId: string;
+    shopId: string;
+    // productDetails?: ProductDetail[];
+}
+
+// Product for form data (with File objects for uploads)
+export interface ProductFormData extends BaseProduct {
+    defaultImage: File | null;
+    defaultVideoIntro: File | null;
+    imagesList: File[];
+    variants?: ProductVariantFormData[];
+}
+
+// Product for API response (with string URLs and full objects)
+export interface ProductResponse extends BaseProduct {
+    productId: string;
+    defaultImage: string;
+    defaultVideoIntro: string;
+    imagesList: Image[];
+    category?: {
+        id: string;
+        name: string;
+        slug: string;
+    };
     status: StatusProduct;
     slug: string;
-    createdAt?: string; // ISO format timeDate
+    createdAt?: string;
     updatedAt?: string;
-
-    category: Category;
-    shop: Shop;
-
-    variants: ProductVariant[];
-    //   reviews?: Review[];
-    //   wishlists?: Wishlist[];
-    productDetails?: ProductDetail[];
+    shop?: Shop;
+    variants?: ProductVariantResponse[];
 }
+
+export interface ProductVariantByCategory {
+    price: number;
+    sold: number;
+}
+
+export interface ProductResponseByCategory {
+    productId: string;
+    slug: string;
+    name: string;
+    brand: string;
+    defaultImage: string;
+    variantsByCategory: ProductVariantByCategory[];
+}
+
+// Legacy Product type for backward compatibility
+export type Product = ProductFormData;

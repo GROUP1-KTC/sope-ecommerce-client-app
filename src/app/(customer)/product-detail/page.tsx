@@ -1,5 +1,5 @@
 import ProductDescription from '~/components/product-detail/ProductDescription';
-import ProductInfo from '~/components/product-detail/ProductInfo';
+import ProductInfoDetail from '~/components/product-detail/ProductInfoDetail';
 import ProductList from '~/components/product-detail/ProductList';
 import ProductReviews from '~/components/product-detail/ProductReviews';
 import SellerInfo from '~/components/product-detail/SellerInfo';
@@ -26,7 +26,7 @@ const ProductDetail = () => {
     return (
         <div className="w-4/5 mx-auto ">
             <h1 className="text-s mb-4 mt-4">{breadcrumb}</h1>
-            <ProductInfo
+            <ProductInfoDetail
                 product={mainProduct}
                 priceDetail={priceDetail}
                 productOptions={productOptions}

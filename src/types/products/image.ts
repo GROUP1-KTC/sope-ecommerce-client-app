@@ -1,8 +1,8 @@
-import type { ProductVariant } from './product_variant';
+import type { Product } from './product';
 
 export interface Image {
     imageId: number;
     priority: number;
     url: string;
-    productVariant?: ProductVariant;
+    product?: Product;
 }

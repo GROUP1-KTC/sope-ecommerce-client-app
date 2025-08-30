@@ -1,10 +1,27 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
+import { useParams } from 'next/navigation';
+import { useGetProductByShopIdQuery } from '~/features/products/productApi';
+import type { ProductResponse } from '~/types/products';
+import Link from 'next/link';
 
-const AllProducts = () => {
+const AllProductsByShop = () => {
+    const params = useParams();
+    const shopId = params?.shopId as string;
+
+    const { data: products = [], isLoading, isError } = useGetProductByShopIdQuery(shopId);
+
+    console.log('check', products);
+
+    if (isLoading) return <div className="p-6">Đang tải sản phẩm...</div>;
+    if (isError)
+        return <div className="p-6 text-red-600">Lỗi khi tải sản phẩm.</div>;
+
     return (
         <div className="p-6 bg-white rounded shadow">
-            <div className="text-lg font-semibold mb-6 flex items-center  justify-between gap-2">
+            <div className="text-lg font-semibold mb-6 flex items-center justify-between gap-2">
                 <div>Products</div>
                 <div className="flex gap-2 items-center">
                     <option className="border-2 p-2 border-grey-400 rounded-xl">
@@ -15,24 +32,6 @@ const AllProducts = () => {
                     </option>
                     <button className="bg-orange-500 text-white p-2 rounded font-semibold hover:bg-orange-600 transition">
                         + Add product
-                    </button>
-                </div>
-            </div>
-            {/* Header and Tabs */}
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-8 text-base font-medium">
-                    <button className="text-orange-500 border-b-2 border-orange-500 pb-2">
-                        Tất cả
-                    </button>
-                    <button className="text-gray-700">
-                        Đang hoạt động (57)
-                    </button>
-                    <button className="text-gray-700">Vi phạm (0)</button>
-                    <button className="text-gray-700">
-                        Chờ duyệt bởi Shopee (0)
-                    </button>
-                    <button className="text-gray-700">
-                        Chưa được đăng (0)
                     </button>
                 </div>
             </div>
@@ -50,15 +49,15 @@ const AllProducts = () => {
                 </button>
             </div>
 
-            {/* Search and Filter Bar */}
+            {/* Search & Filter (bạn có thể tối ưu sau) */}
             <div className="flex flex-wrap gap-4 items-center mb-4">
                 <input
                     className="border rounded px-3 py-2 w-64"
-                    placeholder="Select for product"
+                    placeholder="Tìm theo tên sản phẩm"
                 />
                 <input
                     className="border rounded px-3 py-2 w-64"
-                    placeholder="Select for category"
+                    placeholder="Tìm theo danh mục"
                 />
                 <select className="border rounded px-3 py-2 w-48 text-gray-500">
                     <option>Loại Sản phẩm</option>
@@ -71,13 +70,14 @@ const AllProducts = () => {
                 </button>
             </div>
 
-            {/* Product Count and Limit */}
             <div className="mb-4 text-gray-700">
-                <span className="font-semibold">57 Sản Phẩm</span>{' '}
+                <span className="font-semibold">
+                    {products.length} Sản Phẩm
+                </span>
                 <span className="ml-2 text-sm">Hạn mức đăng bán: 5000</span>
             </div>
 
-            {/* Product List Table */}
+            {/* Danh sách sản phẩm */}
             <div className="border rounded overflow-x-auto">
                 <table className="min-w-full bg-white">
                     <thead>
@@ -88,221 +88,105 @@ const AllProducts = () => {
                             <th className="p-3 border-b text-left">
                                 Tên sản phẩm
                             </th>
-                            <th className="p-3 border-b text-center">
-                                Doanh số
-                            </th>
+                            <th className="p-3 border-b text-center">Doanh số</th>
                             <th className="p-3 border-b text-center">Giá</th>
-                            <th className="p-3 border-b text-center">
-                                Kho hàng
-                            </th>
-                            <th className="p-3 border-b text-center">
-                                Chất Lượng Nội Dung
-                            </th>
-                            <th className="p-3 border-b text-center">
-                                Thao tác
-                            </th>
+                            <th className="p-3 border-b text-center">Kho hàng</th>
+                            <th className="p-3 border-b text-center">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="hover:bg-orange-50 border-b">
-                            <td className="p-3 align-top">
-                                <input type="checkbox" />
-                            </td>
-                            <td className="p-3 align-top flex gap-3">
-                                <Image
-                                    src="/assets/images/meomeo.jpg"
-                                    width={90}
-                                    height={90}
-                                    alt="product"
-                                    className="object-cover rounded border"
-                                />
-                                <div>
-                                    <div className="font-semibold text-gray-900">
-                                        Mao hoà tốc - Giá vẽ tranh [3 SIZE] Gỗ
-                                        Thông Tự Nhiên, Các Loại Cỡ , ( Kích
-                                        Thước 36*65 , 50*110, 55*130)
-                                    </div>
-                                    <div className="text-xs text-gray-500 mt-1">
-                                        ID: 29970884185
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="p-3 align-top text-center">9</td>
-                            <td className="p-3 align-top text-center">
-                                <div className="text-gray-900">
-                                    ₫105.000 - ₫160.000
-                                </div>
-                                <div className="text-xs text-red-500">
-                                    Cơ hội gia tăng hiển thị với Đấu Giá Rẻ Vô
-                                    Địch!
-                                </div>
-                            </td>
-                            <td className="p-3 align-top text-center">96</td>
-                            <td className="p-3 align-top text-center">
-                                <div className="text-gray-900">Đạt chuẩn</div>
-                                <div className="text-xs text-yellow-600">
-                                    Có 3 yếu tố cần điều chỉnh để bài đăng tốt
-                                    hơn
-                                </div>
-                            </td>
-                            <td className="p-3 align-top text-center">
-                                <div className="flex flex-col gap-1 items-center">
-                                    <a
-                                        href="#"
-                                        className="text-blue-600 hover:underline text-sm"
-                                    >
-                                        Cập nhật
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="text-blue-600 hover:underline text-sm"
-                                    >
-                                        Quảng cáo
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="text-blue-600 hover:underline text-sm"
-                                    >
-                                        Xem thêm
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        {/* More rows can be mapped here */}
-                    </tbody>
-                    <tbody>
-                        <tr className="hover:bg-orange-50 border-b">
-                            <td className="p-3 align-top">
-                                <input type="checkbox" />
-                            </td>
-                            <td className="p-3 align-top flex gap-3">
-                                <Image
-                                    src="/assets/images/bigcat.jpg"
-                                    width={90}
-                                    height={90}
-                                    alt="product"
-                                    className="object-cover rounded border"
-                                />
-                                <div>
-                                    <div className="font-semibold text-gray-900">
-                                        Mao hoà tốc - Giá vẽ tranh [3 SIZE] Gỗ
-                                        Thông Tự Nhiên, Các Loại Cỡ , ( Kích
-                                        Thước 36*65 , 50*110, 55*130)
-                                    </div>
-                                    <div className="text-xs text-gray-500 mt-1">
-                                        ID: 29970884185
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="p-3 align-top text-center">9</td>
-                            <td className="p-3 align-top text-center">
-                                <div className="text-gray-900">
-                                    ₫105.000 - ₫160.000
-                                </div>
-                                <div className="text-xs text-red-500">
-                                    Cơ hội gia tăng hiển thị với Đấu Giá Rẻ Vô
-                                    Địch!
-                                </div>
-                            </td>
-                            <td className="p-3 align-top text-center">96</td>
-                            <td className="p-3 align-top text-center">
-                                <div className="text-gray-900">Đạt chuẩn</div>
-                                <div className="text-xs text-yellow-600">
-                                    Có 3 yếu tố cần điều chỉnh để bài đăng tốt
-                                    hơn
-                                </div>
-                            </td>
-                            <td className="p-3 align-top text-center">
-                                <div className="flex flex-col gap-1 items-center">
-                                    <a
-                                        href="#"
-                                        className="text-blue-600 hover:underline text-sm"
-                                    >
-                                        Cập nhật
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="text-blue-600 hover:underline text-sm"
-                                    >
-                                        Quảng cáo
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="text-blue-600 hover:underline text-sm"
-                                    >
-                                        Xem thêm
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        {/* More rows can be mapped here */}
-                    </tbody>
-                    <tbody>
-                        <tr className="hover:bg-orange-50 border-b">
-                            <td className="p-3 align-top">
-                                <input type="checkbox" />
-                            </td>
-                            <td className="p-3 align-top flex gap-3">
-                                <Image
-                                    src="/assets/images/cathuhu.jpg"
-                                    width={90}
-                                    height={90}
-                                    alt="product"
-                                    className="object-cover rounded border"
-                                />
-                                <div>
-                                    <div className="font-semibold text-gray-900">
-                                        Mao hoà tốc - Giá vẽ tranh [3 SIZE] Gỗ
-                                        Thông Tự Nhiên, Các Loại Cỡ , ( Kích
-                                        Thước 36*65 , 50*110, 55*130)
-                                    </div>
-                                    <div className="text-xs text-gray-500 mt-1">
-                                        ID: 29970884185
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="p-3 align-top text-center">9</td>
-                            <td className="p-3 align-top text-center">
-                                <div className="text-gray-900">
-                                    ₫105.000 - ₫160.000
-                                </div>
-                                <div className="text-xs text-red-500">
-                                    Cơ hội gia tăng hiển thị với Đấu Giá Rẻ Vô
-                                    Địch!
-                                </div>
-                            </td>
-                            <td className="p-3 align-top text-center">96</td>
-                            <td className="p-3 align-top text-center">
-                                <div className="text-gray-900">Đạt chuẩn</div>
-                                <div className="text-xs text-yellow-600">
-                                    Có 3 yếu tố cần điều chỉnh để bài đăng tốt
-                                    hơn
-                                </div>
-                            </td>
-                            <td className="p-3 align-top text-center">
-                                <div className="flex flex-col gap-1 items-center">
-                                    <a
-                                        href="#"
-                                        className="text-blue-600 hover:underline text-sm"
-                                    >
-                                        Cập nhật
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="text-blue-600 hover:underline text-sm"
-                                    >
-                                        Quảng cáo
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="text-blue-600 hover:underline text-sm"
-                                    >
-                                        Xem thêm
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        {/* More rows can be mapped here */}
+                        {products.map((product: ProductResponse) => {
+                            const variantCount = product.variants?.length ?? 0;
+                            return (
+                                <tr
+                                    key={product.productId}
+                                    className="hover:bg-orange-50 border-b"
+                                >
+                                    <td className="p-3 align-top">
+                                        <input type="checkbox" />
+                                    </td>
+                                    <td className="p-3 align-top flex gap-3">
+                                        <Image
+                                            src={
+                                                product.defaultImage ||
+                                                '/assets/images/default.jpg'
+                                            }
+                                            width={90}
+                                            height={90}
+                                            alt={product.name}
+                                            className="object-cover rounded border"
+                                        />
+                                        <div>
+                                            <div className="font-semibold text-gray-900 flex items-center gap-1">
+                                                {product.name}
+                                                {/* {variantCount > 0 && (
+                                                    <span className="text-xs text-orange-500 border border-orange-300 px-1 rounded-full">
+                                                        {variantCount} biến thể
+                                                    </span>
+                                                )}
+
+                                                <span
+                                                    className="text-xs text-orange-500 border border-orange-300 px-1 rounded-full cursor-pointer"
+                                                    title={product.variants?.map(v => {
+                                                        const attrText = v.attributes.map(a => `${a.name}: ${a.value}`).join(', ');
+                                                        return `${attrText} - ₫${v.price.toLocaleString('vi-VN')}`;
+                                                    }).join('\n')}
+                                                >
+                                                    {product.variants?.length} biến thể
+                                                </span> */}
+
+                                            </div>
+                                            <div className="text-xs text-gray-500 mt-1">
+                                                ID: {product.productId}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="p-3 align-top text-center">
+                                        {/* {product.variants && product.variants.length > 0
+                                            ? product.variants.reduce((total, v) => total + (v.sold ?? 0), 0)
+                                            : product.sold ?? 0} */}
+                                    </td>
+                                    <td className="p-3 align-top text-center">
+                                        {product.variants && product.variants.length > 0 ? (
+                                            <>
+                                                ₫
+                                                {Math.min(...product.variants.map(v => v.price)).toLocaleString('vi-VN')} - ₫
+                                                {Math.max(...product.variants.map(v => v.price)).toLocaleString('vi-VN')}
+                                            </>
+                                        ) : (
+                                            <>₫{product.defaultPrice?.toLocaleString('vi-VN')}</>
+                                        )}
+                                    </td>
+                                    <td className="p-3 align-top text-center">
+                                        {product.variants && product.variants.length > 0
+                                            ? product.variants.reduce((total, v) => total + (v.stock ?? 0), 0)
+                                            : product.stock ?? 0}
+                                    </td>
+                                    <td className="p-3 align-top text-center">
+                                        <div className="flex flex-col gap-1 items-center">
+                                            <Link
+                                                href={`/seller/edit-product/${product.slug}`}
+                                                className="text-blue-600 hover:underline text-sm"
+                                            >
+                                                Cập nhật
+                                            </Link>
+                                            <Link
+                                                href="#"
+                                                className="text-blue-600 hover:underline text-sm"
+                                            >
+                                                Quảng cáo
+                                            </Link>
+                                            <Link
+                                                href="#"
+                                                className="text-blue-600 hover:underline text-sm"
+                                            >
+                                                Xem thêm
+                                            </Link>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )
+                        })}
                     </tbody>
                 </table>
             </div>
@@ -310,4 +194,4 @@ const AllProducts = () => {
     );
 };
 
-export default AllProducts;
+export default AllProductsByShop;

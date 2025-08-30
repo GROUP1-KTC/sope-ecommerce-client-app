@@ -1,18 +1,20 @@
-import type { Product } from './product';
 import type { Attribute } from './attribute';
-import type { Image } from './image';
 
-export interface ProductVariant {
+export interface ProductVariantFormData {
+    price: number;
+    stock: number;
+    imageVariant?: File | null;
+    attributes: Attribute[];
+}
+
+// For API response
+export interface ProductVariantResponse {
     productVariantId: string;
     price: number;
     stock: number;
     sold: number;
-    hidden: boolean;
-    slug: string;
     createdAt?: string;
     updatedAt?: string;
-
-    product: Product;
-    attributes: Attribute[];
-    images: Image[];
+    imageVariant?: string; // Optional - independent for each variant
+    attributes?: Attribute[];
 }
