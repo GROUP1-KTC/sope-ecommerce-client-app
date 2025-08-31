@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 // import Image from 'next/image';
-import Link from "next/link";
+import Link from 'next/link';
 import { useGetProductBySlugQuery } from '~/features/products/productApi';
 import { useGetBreadcrumbCategoryQuery } from '~/features/categories/categoryApi';
 import ProductInfo from '~/components/product-detail/ProductInfo';
@@ -12,7 +12,11 @@ const ProductBySlug = () => {
     const params = useParams();
     const slug = params?.productSlug as string;
 
-    const { data: product, isLoading, isError } = useGetProductBySlugQuery(slug);
+    const {
+        data: product,
+        isLoading,
+        isError,
+    } = useGetProductBySlugQuery(slug);
     const [categoryId, setCategoryId] = useState<string | null>(null);
 
     useEffect(() => {
@@ -28,7 +32,7 @@ const ProductBySlug = () => {
     const attributeMap = useMemo(() => {
         const map = new Map<string, Set<string>>();
         product?.variants?.forEach((variant) => {
-            variant.attributes.forEach((attr) => {
+            variant.attributes?.forEach((attr) => {
                 if (!map.has(attr.name)) map.set(attr.name, new Set());
                 map.get(attr.name)?.add(attr.value);
             });
@@ -36,7 +40,9 @@ const ProductBySlug = () => {
         return map;
     }, [product]);
 
-    const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
+    const [selectedAttributes, setSelectedAttributes] = useState<
+        Record<string, string>
+    >({});
 
     const handleAttributeSelect = (name: string, value: string) => {
         setSelectedAttributes((prev) => {
@@ -51,16 +57,15 @@ const ProductBySlug = () => {
     const selectedVariant = useMemo(() => {
         if (Object.keys(selectedAttributes).length === 0) return undefined;
         return product?.variants?.find((variant) =>
-            variant.attributes.every(
+            variant.attributes?.every(
                 (attr) => selectedAttributes[attr.name] === attr.value,
             ),
         );
     }, [product, selectedAttributes]);
 
-
     const minPrice = useMemo(() => {
         if (!product?.variants || product.variants.length === 0) return 0;
-        return Math.min(...product.variants.map(v => v.price));
+        return Math.min(...product.variants.map((v) => v.price));
     }, [product]);
 
     const displayedPrice = selectedVariant?.price ?? minPrice;
@@ -95,7 +100,9 @@ const ProductBySlug = () => {
                     ))}
 
                     {/* Product name */}
-                    <span className="text-gray-800 font-medium">{product.name}</span>
+                    <span className="text-gray-800 font-medium">
+                        {product.name}
+                    </span>
                 </nav>
             </div>
 
@@ -108,7 +115,6 @@ const ProductBySlug = () => {
                 price={displayedPrice}
                 stock={displayedStock}
             />
-
         </div>
     );
 };

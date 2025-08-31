@@ -1,7 +1,7 @@
 import type { User } from './user';
 
 export interface Shop {
-    shopId: string;
+    id: string;
     name: string;
     description?: string;
     address: string;

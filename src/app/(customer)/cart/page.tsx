@@ -18,9 +18,10 @@ import { setCheckoutItems } from '~/features/orders/checkoutSlice';
 import { useRouter } from 'next/navigation';
 
 export interface CartItem {
-    id: number;
+    id: string;
+    productVariantId: string;
     name: string;
-    image: string;
+    image: string | null;
     price: number;
     quantity: number;
 }
@@ -91,7 +92,7 @@ const products: Product[] = [
 
 const Cart: React.FC = () => {
     const router = useRouter();
-    const token = useAppSelector((state) => state.auth.token);
+    const token = useAppSelector((state) => state.auth.accessToken);
 
     const { data: cartItemFromApi = [], isLoading } = useGetCartQuery(
         undefined,
