@@ -1,11 +1,13 @@
+'use client';
+
 import React from 'react';
 import { Box, Checkbox, Typography, Button } from '@mui/material';
-import type { CartItem } from '~/app/(customer)/cart/page';
+import type { CartGroup } from '~/app/(customer)/cart/page';
 import { colors } from '~/constants/color.constant';
 
 interface CartSummaryProps {
-    cartItems: CartItem[];
-    selected: number[];
+    cartGroups: CartGroup[];
+    selected: string[];
     total: number;
     handleSelectAll: () => void;
     handleDeleteSelected: () => void;
@@ -14,7 +16,7 @@ interface CartSummaryProps {
 }
 
 const CartSummary: React.FC<CartSummaryProps> = ({
-    cartItems,
+    cartGroups,
     selected,
     total,
     handleSelectAll,
@@ -22,6 +24,11 @@ const CartSummary: React.FC<CartSummaryProps> = ({
     handleSaveToFavorites,
     handleCheckout,
 }) => {
+    const totalItems = cartGroups.reduce(
+        (sum, group) => sum + group.items.length,
+        0,
+    );
+
     return (
         <Box
             sx={{
@@ -45,13 +52,10 @@ const CartSummary: React.FC<CartSummaryProps> = ({
                 sx={{ width: { xs: '100%', md: 'auto' } }}
             >
                 <Checkbox
-                    checked={
-                        selected.length === cartItems.length &&
-                        cartItems.length > 0
-                    }
+                    checked={selected.length === totalItems && totalItems > 0}
                     onChange={handleSelectAll}
                 />
-                <Typography>Chọn Tất Cả ({cartItems.length})</Typography>
+                <Typography>Chọn Tất Cả ({totalItems})</Typography>
 
                 {selected.length > 0 && (
                     <>
@@ -69,7 +73,6 @@ const CartSummary: React.FC<CartSummaryProps> = ({
                                 maxWidth: 180,
                                 borderRadius: 1,
                                 textTransform: 'none',
-
                                 background: colors.primary.background,
                                 ':hover': {
                                     background: colors.primary.backgroundHover,

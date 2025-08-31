@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useAlertStore } from '~/store/zustand/alertStore';
-import { useModalStore } from '~/store/zustand/modalStore';
 import type { CartItem } from '~/app/(customer)/cart/page';
 import { ProductResponse, ProductVariantResponse } from '../../types/products';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
@@ -20,6 +19,7 @@ interface ProductInfoProps {
 }
 
 import { v4 as uuidv4 } from 'uuid';
+import { addItem } from '~/features/cart/cartSlice';
 
 interface CartGroup {
     shop: {
@@ -96,6 +96,9 @@ const ProductInfo = ({
                 price: item.price,
                 image: item.image || null,
                 quantity: item.quantity,
+                shopId: product.shop?.id || '',
+                shopName: product.shop?.name || '',
+                shopAvatar: product.shop?.logoUrl || '',
             };
 
             console.log(product);
@@ -129,6 +132,8 @@ const ProductInfo = ({
             }
 
             localStorage.setItem('cart', JSON.stringify(currentCart));
+
+            dispatch(addItem(newItem));
 
             useAlertStore.getState().showAlert({
                 severity: 'success',
