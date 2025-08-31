@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams } from "next/navigation";
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import type { Category } from '~/types/products';
 
@@ -28,10 +28,11 @@ const CategoryNode = ({
             <div className="flex justify-between items-center">
                 <Link
                     href={`/${category.slug}`}
-                    className={`flex-1 block rounded text-sm px-2 py-1 cursor-pointer ${currentSlug === category.slug
-                        ? 'border border-red-500 text-red-500 font-semibold bg-red-50'
-                        : 'hover:bg-gray-100'
-                        }`}
+                    className={`flex-1 block rounded text-sm px-2 py-1 cursor-pointer ${
+                        currentSlug === category.slug
+                            ? 'border border-red-500 text-red-500 font-semibold bg-red-50'
+                            : 'hover:bg-gray-100'
+                    }`}
                 >
                     {category.name}
                 </Link>
@@ -74,10 +75,9 @@ const NestedCategoryList = ({
     selectedCategory: string | null;
     setSelectedCategory: (slug: string) => void;
 }) => {
-
-    const [openCategories, setOpenCategories] = useState<Record<string, boolean>>(
-        {}
-    );
+    const [openCategories, setOpenCategories] = useState<
+        Record<string, boolean>
+    >({});
 
     const toggleOpen = (id: string) => {
         setOpenCategories((prev) => ({ ...prev, [id]: !prev[id] }));

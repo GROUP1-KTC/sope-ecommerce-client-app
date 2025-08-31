@@ -18,8 +18,11 @@ const CategoryPage = () => {
     const params = useParams();
     const slug = params?.categorySlug as string;
 
-    const { data: categories = [], isLoading: loadingCategories } = useGetCategoriesQuery();
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const { data: categories = [], isLoading: loadingCategories } =
+        useGetCategoriesQuery();
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(
+        null,
+    );
     const [sort, setSort] = useState(sortOptions[0]);
     const [page, setPage] = useState(1);
 
@@ -27,8 +30,13 @@ const CategoryPage = () => {
         useGetProductsByCategoryQuery(slug);
 
     const mappedProducts = products.map((p) => {
-        const minPrice = Math.min(...p.variantsByCategory.map(v => Number(v.price)));
-        const totalSold = p.variantsByCategory.reduce((acc, v) => acc + v.sold, 0);
+        const minPrice = Math.min(
+            ...p.variantsByCategory.map((v) => Number(v.price)),
+        );
+        const totalSold = p.variantsByCategory.reduce(
+            (acc, v) => acc + v.sold,
+            0,
+        );
 
         return {
             productId: p.productId,
@@ -193,10 +201,11 @@ const CategoryPage = () => {
                         {sortOptions.map((key) => (
                             <button
                                 key={key}
-                                className={`px-4 py-2 rounded cursor-pointer border text-sm font-medium ${sort === key
-                                    ? 'bg-red-500 text-white border-red-500'
-                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
-                                    }`}
+                                className={`px-4 py-2 rounded cursor-pointer border text-sm font-medium ${
+                                    sort === key
+                                        ? 'bg-red-500 text-white border-red-500'
+                                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                                }`}
                                 onClick={() => setSort(key)}
                             >
                                 {key}
@@ -221,7 +230,6 @@ const CategoryPage = () => {
                         </button>
                     </div>
 
-
                     {/* Grid sản phẩm */}
                     <div className="grid grid-cols-5 gap-4">
                         {mappedProducts.map((product) => (
@@ -245,7 +253,10 @@ const CategoryPage = () => {
                                     </div>
                                     <div className="flex items-center gap-2 mb-1">
                                         <span className="text-red-500 font-bold">
-                                            ₫{product.defaultPrice.toLocaleString('vi-VN')}
+                                            ₫
+                                            {product.defaultPrice.toLocaleString(
+                                                'vi-VN',
+                                            )}
                                         </span>
                                     </div>
                                     <div className="text-xs text-gray-500">

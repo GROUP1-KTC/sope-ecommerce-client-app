@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 // import Image from 'next/image';
-import Link from "next/link";
+import Link from 'next/link';
 import { useGetProductBySlugQuery } from '~/features/products/productApi';
 import { useGetBreadcrumbCategoryQuery } from '~/features/categories/categoryApi';
 import ProductInfo from '~/components/product-detail/ProductInfo';
@@ -12,7 +12,11 @@ const ProductBySlug = () => {
     const params = useParams();
     const slug = params?.productSlug as string;
 
-    const { data: product, isLoading, isError } = useGetProductBySlugQuery(slug);
+    const {
+        data: product,
+        isLoading,
+        isError,
+    } = useGetProductBySlugQuery(slug);
     const [categoryId, setCategoryId] = useState<string | null>(null);
 
     useEffect(() => {
@@ -36,7 +40,9 @@ const ProductBySlug = () => {
         return map;
     }, [product]);
 
-    const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
+    const [selectedAttributes, setSelectedAttributes] = useState<
+        Record<string, string>
+    >({});
 
     const handleAttributeSelect = (name: string, value: string) => {
         setSelectedAttributes((prev) => {
@@ -57,10 +63,9 @@ const ProductBySlug = () => {
         );
     }, [product, selectedAttributes]);
 
-
     const minPrice = useMemo(() => {
         if (!product?.variants || product.variants.length === 0) return 0;
-        return Math.min(...product.variants.map(v => v.price));
+        return Math.min(...product.variants.map((v) => v.price));
     }, [product]);
 
     const displayedPrice = selectedVariant?.price ?? minPrice;
@@ -95,7 +100,9 @@ const ProductBySlug = () => {
                     ))}
 
                     {/* Product name */}
-                    <span className="text-gray-800 font-medium">{product.name}</span>
+                    <span className="text-gray-800 font-medium">
+                        {product.name}
+                    </span>
                 </nav>
             </div>
 
@@ -108,7 +115,6 @@ const ProductBySlug = () => {
                 price={displayedPrice}
                 stock={displayedStock}
             />
-
         </div>
     );
 };

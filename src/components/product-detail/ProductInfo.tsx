@@ -6,7 +6,10 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useAlertStore } from '~/store/zustand/alertStore';
 import { useModalStore } from '~/store/zustand/modalStore';
 import type { CartItem } from '~/app/(customer)/cart/page';
-import { ProductResponse, ProductVariantResponse } from "../../types/products";
+import type {
+    ProductResponse,
+    ProductVariantResponse,
+} from '../../types/products';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 interface ProductInfoProps {
     product: ProductResponse;
@@ -27,12 +30,17 @@ const ProductInfo = ({
     price,
     stock,
 }: ProductInfoProps) => {
-
     const [showVoucherModal, setShowVoucherModal] = useState(false);
     const [showPolicyModal, setShowPolicyModal] = useState(false);
 
-    const totalSold = product.variants?.reduce((sum, variant) => sum + (variant.sold || 0), 0) ?? 0;
-    const attributeEntries: [string, Set<string>][] = attributeMap ? Array.from(attributeMap.entries()) : [];
+    const totalSold =
+        product.variants?.reduce(
+            (sum, variant) => sum + (variant.sold || 0),
+            0,
+        ) ?? 0;
+    const attributeEntries: [string, Set<string>][] = attributeMap
+        ? Array.from(attributeMap.entries())
+        : [];
     const [quantity, setQuantity] = useState(1);
 
     const hasAttributes = attributeEntries.length > 0;
@@ -45,7 +53,6 @@ const ProductInfo = ({
     }, [selectedVariant]);
 
     const [selectedImage, setSelectedImage] = useState(product.defaultImage);
-
 
     // const token = useAppSelector((state) => state.auth.token);
 
@@ -90,7 +97,6 @@ const ProductInfo = ({
     //     // dispatch(addItem(item));
     // };
 
-
     return (
         <div className="bg-white shadow rounded p-4 flex flex-col md:flex-row gap-6">
             <div className="w-full md:w-[450px]">
@@ -102,26 +108,28 @@ const ProductInfo = ({
                     className="w-full h-[450px] object-contain rounded"
                 />
                 <div className="flex overflow-x-auto gap-2 mt-4 pb-2">
-                    {[product.defaultImage, ...product.imagesList.map(img => img.url)].map(
-                        (img, index) => (
-                            <button
-                                key={index}
-                                onClick={() => setSelectedImage(img)}
-                                className="focus:outline-none"
-                            >
-                                <Image
-                                    width={80}
-                                    height={80}
-                                    src={img}
-                                    alt={`${product.name} - View ${index + 1}`}
-                                    className={`w-20 h-20 object-cover rounded border-2 ${selectedImage === img
-                                        ? "border-red-500"
-                                        : "border-gray-300 hover:border-gray-500"
-                                        }`}
-                                />
-                            </button>
-                        )
-                    )}
+                    {[
+                        product.defaultImage,
+                        ...product.imagesList.map((img) => img.url),
+                    ].map((img, index) => (
+                        <button
+                            key={index}
+                            onClick={() => setSelectedImage(img)}
+                            className="focus:outline-none"
+                        >
+                            <Image
+                                width={80}
+                                height={80}
+                                src={img}
+                                alt={`${product.name} - View ${index + 1}`}
+                                className={`w-20 h-20 object-cover rounded border-2 ${
+                                    selectedImage === img
+                                        ? 'border-red-500'
+                                        : 'border-gray-300 hover:border-gray-500'
+                                }`}
+                            />
+                        </button>
+                    ))}
                 </div>
                 <div className="flex justify-center items-center mt-4 space-x-6">
                     <button className="flex items-center gap-2 px-4 py-2 bg-white rounded-md text-red-700 hover:bg-red-50 transition-colors cursor-pointer">
@@ -171,7 +179,10 @@ const ProductInfo = ({
                     <span>|</span>
                     <span>700 Đánh giá</span>
                     <span>|</span>
-                    <span className="text-gray-700 font-semibold"> {totalSold}</span>
+                    <span className="text-gray-700 font-semibold">
+                        {' '}
+                        {totalSold}
+                    </span>
                     <span className="ml-1 text-gray-500">Đã bán</span>
                     <span className="ml-auto">Tố cáo</span>
                 </div>
@@ -368,37 +379,68 @@ const ProductInfo = ({
 
                     {attributeEntries.map(([name, values], index) => (
                         <div className="flex items-center mt-4" key={name}>
-                            <span className="w-32 font-semibold">Chọn {name}</span>
+                            <span className="w-32 font-semibold">
+                                Chọn {name}
+                            </span>
                             <div className="flex gap-2 flex-wrap">
                                 {Array.from(values).map((value) => {
-                                    const matchingVariants = product.variants?.filter((variant) =>
-                                        variant?.attributes?.every((attr) => {
-                                            if (attr.name === name) return attr.value === value;
-                                            if (selectedAttributes?.[attr.name]) {
-                                                return selectedAttributes[attr.name] === attr.value;
-                                            }
-                                            return true;
-                                        })
-                                    );
+                                    const matchingVariants =
+                                        product.variants?.filter((variant) =>
+                                            variant?.attributes?.every(
+                                                (attr) => {
+                                                    if (attr.name === name)
+                                                        return (
+                                                            attr.value === value
+                                                        );
+                                                    if (
+                                                        selectedAttributes?.[
+                                                            attr.name
+                                                        ]
+                                                    ) {
+                                                        return (
+                                                            selectedAttributes[
+                                                                attr.name
+                                                            ] === attr.value
+                                                        );
+                                                    }
+                                                    return true;
+                                                },
+                                            ),
+                                        );
 
-                                    const isOutOfStock = !matchingVariants?.some((v) => v.stock > 0);
+                                    const isOutOfStock =
+                                        !matchingVariants?.some(
+                                            (v) => v.stock > 0,
+                                        );
 
                                     const variantImage =
                                         index === 0
-                                            ? matchingVariants?.find((v) => v.imageVariant)?.imageVariant
+                                            ? matchingVariants?.find(
+                                                  (v) => v.imageVariant,
+                                              )?.imageVariant
                                             : null;
 
                                     return (
                                         <button
                                             key={value}
-                                            onClick={() => !isOutOfStock && handleAttributeSelect?.(name, value)}
+                                            onClick={() =>
+                                                !isOutOfStock &&
+                                                handleAttributeSelect?.(
+                                                    name,
+                                                    value,
+                                                )
+                                            }
                                             disabled={isOutOfStock}
                                             className={`
                                                     relative flex items-center gap-2 px-3 py-2 rounded border text-sm font-medium
                                                     transition-colors
-                                                    ${selectedAttributes?.[name] === value
-                                                    ? 'border-red-500 text-red-500 bg-red-50'
-                                                    : 'border-gray-300 bg-white hover:bg-gray-100'}
+                                                    ${
+                                                        selectedAttributes?.[
+                                                            name
+                                                        ] === value
+                                                            ? 'border-red-500 text-red-500 bg-red-50'
+                                                            : 'border-gray-300 bg-white hover:bg-gray-100'
+                                                    }
                                                     ${isOutOfStock ? 'opacity-50 cursor-not-allowed' : ''}
                                                 `}
                                         >
@@ -412,7 +454,8 @@ const ProductInfo = ({
                                             <span>{value}</span>
 
                                             {/* dấu tick ở góc khi đang chọn */}
-                                            {selectedAttributes?.[name] === value && (
+                                            {selectedAttributes?.[name] ===
+                                                value && (
                                                 <span className="absolute top-0 right-0 text-red-500 text-xs font-bold">
                                                     ✓
                                                 </span>
@@ -432,7 +475,9 @@ const ProductInfo = ({
                                     ${!isQuantityEnabled ? 'bg-gray-200 cursor-not-allowed opacity-50' : 'bg-gray-100 hover:bg-gray-200 transition-colors'}`}
                                 type="button"
                                 disabled={!isQuantityEnabled}
-                                onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+                                onClick={() =>
+                                    setQuantity((prev) => Math.max(1, prev - 1))
+                                }
                             >
                                 -
                             </button>
@@ -445,7 +490,8 @@ const ProductInfo = ({
                                 disabled={!isQuantityEnabled}
                                 onChange={(e) => {
                                     const val = Number(e.target.value);
-                                    if (val > 0 && val <= (stock ?? 9999)) setQuantity(val);
+                                    if (val > 0 && val <= (stock ?? 9999))
+                                        setQuantity(val);
                                 }}
                                 className={`w-16 h-10 text-center border border-gray-300 rounded-none outline-none 
                                     ${!isQuantityEnabled ? 'bg-gray-100 cursor-not-allowed opacity-50' : 'focus:ring-2 focus:ring-blue-500'}`}
@@ -456,19 +502,22 @@ const ProductInfo = ({
                                     ${!isQuantityEnabled ? 'bg-gray-200 cursor-not-allowed opacity-50' : 'bg-gray-100 hover:bg-gray-200 transition-colors'}`}
                                 type="button"
                                 disabled={!isQuantityEnabled}
-                                onClick={() => setQuantity(prev => Math.min(stock ?? 9999, prev + 1))}
+                                onClick={() =>
+                                    setQuantity((prev) =>
+                                        Math.min(stock ?? 9999, prev + 1),
+                                    )
+                                }
                             >
                                 +
                             </button>
 
-
                             {selectedVariant && (
-                                <span className="text-gray-600">Còn {stock} sản phẩm</span>
+                                <span className="text-gray-600">
+                                    Còn {stock} sản phẩm
+                                </span>
                             )}
                         </div>
                     </div>
-
-
                 </div>
                 <div className="flex gap-4">
                     <button
@@ -491,9 +540,8 @@ const ProductInfo = ({
                         </span>
                     </button>
                 </div>
-
             </div>
-        </div >
+        </div>
     );
 };
 
