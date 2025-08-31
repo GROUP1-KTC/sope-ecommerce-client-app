@@ -1,6 +1,69 @@
 import { useState } from 'react';
+import { useParams } from "next/navigation";
 import Link from 'next/link';
 import type { Category } from '~/types/products';
+
+const CategoryNode = ({
+    category,
+    categories,
+    selectedCategory,
+    setSelectedCategory,
+    openCategories,
+    toggleOpen,
+}: {
+    category: Category;
+    categories: Category[];
+    selectedCategory: string | null;
+    setSelectedCategory: (slug: string) => void;
+    openCategories: Record<string, boolean>;
+    toggleOpen: (id: string) => void;
+}) => {
+    const children = categories.filter((cat) => cat.parent?.id === category.id);
+
+    const params = useParams();
+    const currentSlug = params?.categorySlug;
+
+    return (
+        <li key={category.id}>
+            <div className="flex justify-between items-center">
+                <Link
+                    href={`/${category.slug}`}
+                    className={`flex-1 block rounded text-sm px-2 py-1 cursor-pointer ${currentSlug === category.slug
+                        ? 'border border-red-500 text-red-500 font-semibold bg-red-50'
+                        : 'hover:bg-gray-100'
+                        }`}
+                >
+                    {category.name}
+                </Link>
+
+                {children.length > 0 && (
+                    <button
+                        className="text-xs text-gray-800 px-2 focus:outline-none"
+                        onClick={() => toggleOpen(category.id)}
+                    >
+                        {openCategories[category.id] ? '-' : '+'}
+                    </button>
+                )}
+            </div>
+
+            {openCategories[category.id] && children.length > 0 && (
+                <ul className="ml-4 mt-1 space-y-1">
+                    {children.map((child) => (
+                        <CategoryNode
+                            key={child.id}
+                            category={child}
+                            categories={categories}
+                            selectedCategory={selectedCategory}
+                            setSelectedCategory={setSelectedCategory}
+                            openCategories={openCategories}
+                            toggleOpen={toggleOpen}
+                        />
+                    ))}
+                </ul>
+            )}
+        </li>
+    );
+};
 
 const NestedCategoryList = ({
     categories,
@@ -11,147 +74,30 @@ const NestedCategoryList = ({
     selectedCategory: string | null;
     setSelectedCategory: (slug: string) => void;
 }) => {
-    const [openCategories, setOpenCategories] = useState<
-        Record<string, boolean>
-    >({});
 
-    const getChildren = (parentId: string) =>
-        categories.filter((cat) => cat.parent?.id === parentId);
+    const [openCategories, setOpenCategories] = useState<Record<string, boolean>>(
+        {}
+    );
 
     const toggleOpen = (id: string) => {
         setOpenCategories((prev) => ({ ...prev, [id]: !prev[id] }));
     };
 
+    const rootCategories = categories.filter((cat) => cat.parentId === null);
+
     return (
         <ul className="space-y-1">
-            {categories
-                .filter((cat) => cat.parent === null)
-                .map((parent) => {
-                    const children = getChildren(parent.id);
-                    return (
-                        <li key={parent.id}>
-                            <div className="flex justify-between items-center">
-                                {/* Phần bấm để chọn danh mục */}
-                                <Link
-                                    key={parent.id}
-                                    href={`/${parent.slug}`}
-                                    className="block"
-                                >
-                                    <div
-                                        className={`py-1 px-2 cursor-pointer rounded text-sm ${
-                                            selectedCategory === parent.slug
-                                                ? 'text-red-500 font-semibold bg-red-50 p-2'
-                                                : 'hover:bg-gray-100'
-                                        }`}
-                                        onClick={() =>
-                                            setSelectedCategory(parent.slug)
-                                        }
-                                    >
-                                        <span>{parent.name}</span>
-                                    </div>
-                                </Link>
-
-                                {/* Phần bấm để toggle mở/đóng danh mục con */}
-                                {children.length > 0 && (
-                                    <button
-                                        className="text-xs text-gray-800 px-2 focus:outline-none"
-                                        onClick={() => toggleOpen(parent.id)}
-                                    >
-                                        {openCategories[parent.id] ? '-' : '+'}
-                                    </button>
-                                )}
-                            </div>
-
-                            {/* Children cấp 1 */}
-                            {openCategories[parent.id] &&
-                                children.length > 0 && (
-                                    <ul className="ml-4 mt-1 space-y-1">
-                                        {children.map((child) => {
-                                            const subChildren = getChildren(
-                                                child.id,
-                                            );
-                                            return (
-                                                <li key={child.id}>
-                                                    <div className="flex justify-between items-center">
-                                                        {/* Click tên danh mục => chuyển trang */}
-                                                        <Link
-                                                            href={`/${child.slug}`}
-                                                            className={`flex-1 block rounded text-sm p-1 cursor-pointer ${
-                                                                selectedCategory ===
-                                                                child.slug
-                                                                    ? 'text-red-500 font-semibold bg-red-50'
-                                                                    : 'hover:bg-gray-100'
-                                                            }`}
-                                                            onClick={() =>
-                                                                setSelectedCategory(
-                                                                    child.slug,
-                                                                )
-                                                            }
-                                                        >
-                                                            <span>
-                                                                {child.name}
-                                                            </span>
-                                                        </Link>
-
-                                                        {/* Dấu + / - toggle con */}
-                                                        {subChildren.length >
-                                                            0 && (
-                                                            <span
-                                                                className="text-xs text-gray-800 px-2 cursor-pointer select-none"
-                                                                onClick={() =>
-                                                                    toggleOpen(
-                                                                        child.id,
-                                                                    )
-                                                                }
-                                                            >
-                                                                {openCategories[
-                                                                    child.id
-                                                                ]
-                                                                    ? '-'
-                                                                    : '+'}
-                                                            </span>
-                                                        )}
-                                                    </div>
-
-                                                    {/* Children cấp 2 */}
-                                                    {openCategories[child.id] &&
-                                                        subChildren.length >
-                                                            0 && (
-                                                            <ul className="ml-4 mt-1 space-y-1">
-                                                                {subChildren.map(
-                                                                    (grand) => (
-                                                                        <li
-                                                                            key={
-                                                                                grand.id
-                                                                            }
-                                                                            className={`py-1 px-2 cursor-pointer rounded text-sm ${
-                                                                                selectedCategory ===
-                                                                                grand.slug
-                                                                                    ? 'text-red-500 font-semibold bg-red-50'
-                                                                                    : 'hover:bg-gray-100'
-                                                                            }`}
-                                                                            onClick={() =>
-                                                                                setSelectedCategory(
-                                                                                    grand.slug,
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                grand.name
-                                                                            }
-                                                                        </li>
-                                                                    ),
-                                                                )}
-                                                            </ul>
-                                                        )}
-                                                </li>
-                                            );
-                                        })}
-                                    </ul>
-                                )}
-                        </li>
-                    );
-                })}
+            {rootCategories.map((cat) => (
+                <CategoryNode
+                    key={cat.id}
+                    category={cat}
+                    categories={categories}
+                    selectedCategory={selectedCategory}
+                    setSelectedCategory={setSelectedCategory}
+                    openCategories={openCategories}
+                    toggleOpen={toggleOpen}
+                />
+            ))}
         </ul>
     );
 };
