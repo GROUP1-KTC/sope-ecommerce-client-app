@@ -2,56 +2,50 @@
 
 import Link from 'next/link';
 import React from 'react';
-import { useGetCategoryQuery } from '~/features/categories/categoryApiSlice';
+import { useGetCategoriesQuery } from '~/features/categories/categoryApi';
 import type { Category } from '~/types/products';
 
 const CategoryList = () => {
-    const { data: categories = [], isLoading } = useGetCategoryQuery();
+    const { data: categories = [], isLoading } = useGetCategoriesQuery();
 
-    if (isLoading) return <div>Đang tải danh mục...</div>;
+    console.log('Categories:', categories);
 
-    // Group categories by parentId
-    const categoryMap = categories.reduce(
-        (acc: Record<string, Category[]>, cat) => {
-            const parentId = cat.parent?.id ?? '__ROOT__'; // 👈 dùng "__ROOT__" thay cho null
-            if (!acc[parentId]) acc[parentId] = [];
-            acc[parentId].push(cat);
-            return acc;
-        },
-        {},
-    );
+    const level1 = categories.filter((cat) => cat.level === 1);
 
     return (
-        <div className="mx-80 p-20s  border-red-400 border-t">
+        <div className="mx-80 p-20 border-t border-red-400">
             <div className="grid grid-cols-5 gap-6 text-sm mt-4 text-gray-800">
-                {(categoryMap['__ROOT__'] || []).map((parent: Category) => (
-                    <div key={parent.id}>
-                        <Link
-                            key={parent.slug}
-                            href={`/category/${parent.slug}`}
-                            className="hover:underline"
-                        >
-                            <h3 className="font-bold mb-2 uppercase">
-                                {parent.name}
-                            </h3>
-                        </Link>
+                {level1.map((parent: Category) => {
+                    const children = categories.filter(
+                        (cat) => cat.level === 2 && cat.parentId === parent.id,
+                    );
 
-                        <ul className="space-y-1">
-                            {(categoryMap[parent.id] || []).map(
-                                (child: Category) => (
+                    return (
+                        <div key={parent.id}>
+                            <Link
+                                href={`/${parent.slug}`}
+                                className="hover:underline"
+                            >
+                                <h3 className="font-bold mb-2 uppercase">
+                                    {parent.name}
+                                </h3>
+                            </Link>
+
+                            <ul className="space-y-1">
+                                {children.map((child: Category) => (
                                     <li key={child.id}>
-                                        <a
-                                            href={parent.slug}
+                                        <Link
+                                            href={`/${child.slug}`}
                                             className="hover:underline"
                                         >
                                             {child.name}
-                                        </a>
+                                        </Link>
                                     </li>
-                                ),
-                            )}
-                        </ul>
-                    </div>
-                ))}
+                                ))}
+                            </ul>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

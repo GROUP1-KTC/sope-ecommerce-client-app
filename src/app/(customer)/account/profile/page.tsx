@@ -225,7 +225,10 @@ const ProfilePage = () => {
                                         <Image
                                             width={128}
                                             height={128}
-                                            src={user.avatarUrl || '/default-avatar.png'}
+                                            src={
+                                                user.avatarUrl ||
+                                                '/default-avatar.png'
+                                            }
                                             alt="Avatar"
                                             className="w-full h-full object-cover"
                                         />

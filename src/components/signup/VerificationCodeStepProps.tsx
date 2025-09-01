@@ -22,7 +22,8 @@ const VerificationCodeStep = ({
                     OTP Verification Code
                 </label>
                 <p className="text-slate-600 text-sm mb-2">
-                    OTP has been sent to your email. Please enter the 6-digit code below.
+                    OTP has been sent to your email. Please enter the 6-digit
+                    code below.
                 </p>
                 <div className="relative flex items-center">
                     <input
@@ -37,7 +38,9 @@ const VerificationCodeStep = ({
                     />
                 </div>
                 {errors.verificationCode && (
-                    <p className="text-red-500 text-sm mt-2">{errors.verificationCode}</p>
+                    <p className="text-red-500 text-sm mt-2">
+                        {errors.verificationCode}
+                    </p>
                 )}
                 <p className="text-slate-600 text-sm mt-4">
                     Didn't receive the email?{' '}

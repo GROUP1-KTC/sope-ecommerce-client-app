@@ -5,12 +5,17 @@ import Image from 'next/image';
 import EmailStep from '~/components/signup/EmailStepProps';
 import VerificationCodeStep from '~/components/signup/VerificationCodeStepProps';
 import PasswordStep from '~/components/signup/PasswordStep';
-import { useLoginMutation, useRegisterMutation, useSendOtpMutation, useVerifyOtpMutation } from '~/features/auth/authApi';
-import { LoginResponse, RegisterRequest } from '~/types/auth/auth';
-import { useRouter } from "next/navigation";
+import {
+    useLoginMutation,
+    useRegisterMutation,
+    useSendOtpMutation,
+    useVerifyOtpMutation,
+} from '~/features/auth/authApi';
+import type { LoginResponse, RegisterRequest } from '~/types/auth/auth';
+import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '~/hooks/useTypes';
 import { setCredentials } from '~/features/auth/authSlice';
-import { ServerResponse } from '~/types/serverReponse';
+import type { ServerResponse } from '~/types/serverReponse';
 
 const Signup = () => {
     const [input, setInput] = useState({
@@ -80,13 +85,17 @@ const Signup = () => {
         return error;
     };
 
-    const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleBlur = (
+        e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>,
+    ) => {
         const { name, value } = e.target;
         const error = validateField(name, value);
         setErrors((prev) => ({ ...prev, [name]: error }));
     };
 
-    const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const changeEventHandler = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    ) => {
         setInput({ ...input, [e.target.name]: e.target.value });
         setErrors((prev) => ({ ...prev, [e.target.name]: '' }));
     };
@@ -104,11 +113,14 @@ const Signup = () => {
             console.log('OTP sent:', response.data);
             setStep(2);
         } catch (err: any) {
-            let errorMessage = "Failed to send OTP";
-            if ("data" in err && err.data) {
-                const backendError = err.data as { message?: string; errors?: string[] };
+            let errorMessage = 'Failed to send OTP';
+            if ('data' in err && err.data) {
+                const backendError = err.data as {
+                    message?: string;
+                    errors?: string[];
+                };
                 if (backendError.errors?.length) {
-                    errorMessage = backendError.errors.join(", ");
+                    errorMessage = backendError.errors.join(', ');
                 } else if (backendError.message) {
                     errorMessage = backendError.message;
                 }
@@ -121,24 +133,30 @@ const Signup = () => {
     const handleCodeSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const codeError = validateField('verificationCode', input.verificationCode);
+        const codeError = validateField(
+            'verificationCode',
+            input.verificationCode,
+        );
         setErrors((prev) => ({ ...prev, verificationCode: codeError }));
         if (codeError) return;
 
         try {
             const response = await verifyOtp({
                 email: input.email,
-                otp: input.verificationCode
+                otp: input.verificationCode,
             }).unwrap();
 
             console.log('OTP verified:', response.data);
             setStep(3);
         } catch (err: any) {
-            let errorMessage = "Invalid OTP";
-            if ("data" in err && err.data) {
-                const backendError = err.data as { message?: string; errors?: string[] };
+            let errorMessage = 'Invalid OTP';
+            if ('data' in err && err.data) {
+                const backendError = err.data as {
+                    message?: string;
+                    errors?: string[];
+                };
                 if (backendError.errors?.length) {
-                    errorMessage = backendError.errors.join(", ");
+                    errorMessage = backendError.errors.join(', ');
                 } else if (backendError.message) {
                     errorMessage = backendError.message;
                 }
@@ -154,51 +172,58 @@ const Signup = () => {
             fullName: validateField('fullName', input.fullName),
             gender: validateField('gender', input.gender),
             password: validateField('password', input.password),
-            confirmPassword: validateField('confirmPassword', input.confirmPassword),
+            confirmPassword: validateField(
+                'confirmPassword',
+                input.confirmPassword,
+            ),
         };
         setErrors((prev) => ({ ...prev, ...newErrors }));
-        if (Object.values(newErrors).some(err => err)) return;
+        if (Object.values(newErrors).some((err) => err)) return;
 
         try {
-            const genderMap: Record<string, "MALE" | "FEMALE" | "OTHER"> = {
-                male: "MALE",
-                female: "FEMALE",
-                other: "OTHER",
+            const genderMap: Record<string, 'MALE' | 'FEMALE' | 'OTHER'> = {
+                male: 'MALE',
+                female: 'FEMALE',
+                other: 'OTHER',
             };
 
             const registerRequest: RegisterRequest = {
                 username: input.email,
                 email: input.email,
                 name: input.fullName,
-                gender: genderMap[input.gender.toLowerCase()] || "OTHER",
+                gender: genderMap[input.gender.toLowerCase()] || 'OTHER',
                 password: input.password,
             };
 
             const response = await register(registerRequest).unwrap();
 
             // Login
-            const res: ServerResponse<LoginResponse> = await login(input).unwrap();
+            const res: ServerResponse<LoginResponse> =
+                await login(input).unwrap();
 
-            console.log("Response from server:", res.data);
+            console.log('Response from server:', res.data);
 
             dispatch(setCredentials(res.data));
-            router.push("/");
+            router.push('/');
 
             console.log('Registered successfully:', response.data);
         } catch (err: any) {
-            console.error("Signup error:", err);
+            console.error('Signup error:', err);
 
-            let errorMessage = "Signup failed";
+            let errorMessage = 'Signup failed';
             if (err?.data) {
-                const backendError = err.data as { message?: string; errors?: string[] };
+                const backendError = err.data as {
+                    message?: string;
+                    errors?: string[];
+                };
                 if (backendError.errors?.length) {
-                    errorMessage = backendError.errors.join(", ");
+                    errorMessage = backendError.errors.join(', ');
                 } else if (backendError.message) {
                     errorMessage = backendError.message;
                 }
             }
 
-            setErrors(prev => ({ ...prev, general: errorMessage }));
+            setErrors((prev) => ({ ...prev, general: errorMessage }));
         }
     };
 
@@ -249,8 +274,12 @@ const Signup = () => {
                                         errors={errors}
                                         showPassword={showPassword}
                                         setShowPassword={setShowPassword}
-                                        showConfirmPassword={showConfirmPassword}
-                                        setShowConfirmPassword={setShowConfirmPassword}
+                                        showConfirmPassword={
+                                            showConfirmPassword
+                                        }
+                                        setShowConfirmPassword={
+                                            setShowConfirmPassword
+                                        }
                                         changeEventHandler={changeEventHandler}
                                         handleBlur={handleBlur}
                                         handleSignupSubmit={handleSignupSubmit}

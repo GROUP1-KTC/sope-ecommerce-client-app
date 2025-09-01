@@ -1,157 +1,135 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useAlertStore } from '~/store/zustand/alertStore';
 import { useModalStore } from '~/store/zustand/modalStore';
-import { useAddCartMutation } from '~/features/cart/cartApiSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import type { RootState } from '~/store/appStore';
 import type { CartItem } from '~/app/(customer)/cart/page';
-import { addItem } from '~/features/cart/cartSlice';
+import type {
+    ProductResponse,
+    ProductVariantResponse,
+} from '../../types/products';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 interface ProductInfoProps {
-    product: {
-        id: number;
-        name: string;
-        price: number;
-        image: string;
-        rating: number;
-        sold: string;
-    };
-
-    priceDetail: {
-        originalPrice: number;
-        discounts: { type: string; value: number; description: string }[];
-        finalPrice: number;
-    };
-
-    productOptions: {
-        sizes: string[];
-        colors: string[];
-    };
-
-    shopVouchers?: {
-        description: string;
-        discount: number;
-        validUntil: string;
-    }[];
-
-    promotionCombo?: {
-        description: string;
-        discount: number;
-        requiredQuantity: number;
-    };
-
-    shipInformation?: {
-        time: string;
-        fee: string;
-        policy: string;
-    };
-
-    policy: {
-        sopePolicy: string;
-        procurementPolicy: string[];
-    };
+    product: ProductResponse;
+    selectedVariant?: ProductVariantResponse;
+    attributeMap?: Map<string, Set<string>>;
+    selectedAttributes?: Record<string, string>;
+    handleAttributeSelect?: (name: string, value: string) => void;
+    price: number;
+    stock?: number;
 }
 
 const ProductInfo = ({
     product,
-    priceDetail,
-    productOptions,
-    shopVouchers,
-    promotionCombo,
-    shipInformation,
-    policy,
+    selectedVariant,
+    attributeMap,
+    selectedAttributes,
+    handleAttributeSelect,
+    price,
+    stock,
 }: ProductInfoProps) => {
     const [showVoucherModal, setShowVoucherModal] = useState(false);
     const [showPolicyModal, setShowPolicyModal] = useState(false);
 
-    const token = useAppSelector((state) => state.auth.token);
-    const dispatch = useAppDispatch();
-    const [addCartApi] = useAddCartMutation();
+    const totalSold =
+        product.variants?.reduce(
+            (sum, variant) => sum + (variant.sold || 0),
+            0,
+        ) ?? 0;
+    const attributeEntries: [string, Set<string>][] = attributeMap
+        ? Array.from(attributeMap.entries())
+        : [];
+    const [quantity, setQuantity] = useState(1);
 
-    const handleAddToCart = (item: CartItem) => {
-        if (token) {
-            addCartApi(item)
-                .unwrap()
-                .then(() => {
-                    useAlertStore.getState().showAlert({
-                        severity: 'success',
-                        message: 'Thêm sản phẩm vào giỏ hàng thành công!',
-                    });
-                })
-                .catch(() => {
-                    useAlertStore.getState().showAlert({
-                        severity: 'error',
-                        message: 'Thêm giỏ hàng thất bại!',
-                    });
-                });
-        } else {
-            const stored = localStorage.getItem('cart');
-            const currentCart: CartItem[] = stored ? JSON.parse(stored) : [];
-            const existingIndex = currentCart.findIndex(
-                (i) => i.id === item.id,
-            );
+    const hasAttributes = attributeEntries.length > 0;
+    const isQuantityEnabled = hasAttributes ? !!selectedVariant : true;
 
-            if (existingIndex !== -1) {
-                currentCart[existingIndex].quantity += item.quantity;
-            } else {
-                currentCart.push(item);
-            }
-
-            localStorage.setItem('cart', JSON.stringify(currentCart));
-
-            useAlertStore.getState().showAlert({
-                severity: 'success',
-                message:
-                    'Thêm sản phẩm vào giỏ hàng thành công (chưa đăng nhập)!',
-            });
+    useEffect(() => {
+        if (!selectedVariant) {
+            setQuantity(1); // reset về 1 khi không chọn variant
         }
+    }, [selectedVariant]);
 
-        dispatch(addItem(item));
-    };
+    const [selectedImage, setSelectedImage] = useState(product.defaultImage);
+
+    // const token = useAppSelector((state) => state.auth.token);
+
+    // const handleAddToCart = (item: CartItem) => {
+    //     if (token) {
+    //         // addCartApi(item)
+    //         //   .unwrap()
+    //         //   .then(() => {
+    //         //     useAlertStore.getState().showAlert({
+    //         //       severity: 'success',
+    //         //       message: 'Thêm sản phẩm vào giỏ hàng thành công!',
+    //         //     });
+    //         //   })
+    //         //   .catch(() => {
+    //         //     useAlertStore.getState().showAlert({
+    //         //       severity: 'error',
+    //         //       message: 'Thêm giỏ hàng thất bại!',
+    //         //     });
+    //         //   });
+    //     } else {
+    //         const stored = localStorage.getItem('cart');
+    //         const currentCart: CartItem[] = stored ? JSON.parse(stored) : [];
+    //         const existingIndex = currentCart.findIndex(
+    //             (i) => i.id === item.id,
+    //         );
+
+    //         if (existingIndex !== -1) {
+    //             currentCart[existingIndex].quantity += item.quantity;
+    //         } else {
+    //             currentCart.push(item);
+    //         }
+
+    //         localStorage.setItem('cart', JSON.stringify(currentCart));
+
+    //         useAlertStore.getState().showAlert({
+    //             severity: 'success',
+    //             message:
+    //                 'Thêm sản phẩm vào giỏ hàng thành công (chưa đăng nhập)!',
+    //         });
+    //     }
+
+    //     // dispatch(addItem(item));
+    // };
 
     return (
         <div className="bg-white shadow rounded p-4 flex flex-col md:flex-row gap-6">
             <div className="w-full md:w-[450px]">
                 <Image
-                    width={40}
-                    height={40}
-                    src={product.image}
+                    width={450}
+                    height={450}
+                    src={selectedImage}
                     alt={product.name}
                     className="w-full h-[450px] object-contain rounded"
                 />
                 <div className="flex overflow-x-auto gap-2 mt-4 pb-2">
-                    <Image
-                        width={40}
-                        height={40}
-                        src={product.image}
-                        alt={`${product.name} - View 1`}
-                        className="w-20 h-20 object-cover rounded border-3 border-red-500"
-                    />
-                    <Image
-                        width={40}
-                        height={40}
-                        src={product.image}
-                        alt={`${product.name} - View 2`}
-                        className="w-20 h-20 object-cover rounded border-2 border-gray-300"
-                    />
-                    <Image
-                        width={40}
-                        height={40}
-                        src={product.image}
-                        alt={`${product.name} - View 3`}
-                        className="w-20 h-20 object-cover rounded border-2 border-gray-300"
-                    />
-                    <Image
-                        width={40}
-                        height={40}
-                        src={product.image}
-                        alt={`${product.name} - View 4`}
-                        className="w-20 h-20 object-cover rounded border-2 border-gray-300"
-                    />
+                    {[
+                        product.defaultImage,
+                        ...product.imagesList.map((img) => img.url),
+                    ].map((img, index) => (
+                        <button
+                            key={index}
+                            onClick={() => setSelectedImage(img)}
+                            className="focus:outline-none"
+                        >
+                            <Image
+                                width={80}
+                                height={80}
+                                src={img}
+                                alt={`${product.name} - View ${index + 1}`}
+                                className={`w-20 h-20 object-cover rounded border-2 ${
+                                    selectedImage === img
+                                        ? 'border-red-500'
+                                        : 'border-gray-300 hover:border-gray-500'
+                                }`}
+                            />
+                        </button>
+                    ))}
                 </div>
                 <div className="flex justify-center items-center mt-4 space-x-6">
                     <button className="flex items-center gap-2 px-4 py-2 bg-white rounded-md text-red-700 hover:bg-red-50 transition-colors cursor-pointer">
@@ -197,16 +175,15 @@ const ProductInfo = ({
                     {product.name}
                 </h2>
                 <div className="flex items-center text-sm text-gray-500 gap-4 mb-4">
-                    <span>⭐ {product.rating}</span>
+                    <span>⭐ 4.5</span>
                     <span>|</span>
                     <span>700 Đánh giá</span>
                     <span>|</span>
-                    <span>
-                        <span className="text-gray-700 font-semibold">
-                            {product.sold}
-                        </span>
-                        <span className="ml-1 text-gray-500">Đã bán</span>
+                    <span className="text-gray-700 font-semibold">
+                        {' '}
+                        {totalSold}
                     </span>
+                    <span className="ml-1 text-gray-500">Đã bán</span>
                     <span className="ml-auto">Tố cáo</span>
                 </div>
                 <div
@@ -215,7 +192,7 @@ const ProductInfo = ({
                     onMouseLeave={() => setShowVoucherModal(false)}
                 >
                     <span className="text-red-500 font-medium text-3xl">
-                        ₫{product.price.toLocaleString('vi-VN')}
+                        ₫{price.toLocaleString('vi-VN')}
                     </span>
                     <span className="text-yellow-500 cursor-pointer">
                         <svg
@@ -238,7 +215,7 @@ const ProductInfo = ({
                             />
                         </svg>
                     </span>
-                    <span className="text-gray-400 text-lg line-through">
+                    {/* <span className="text-gray-400 text-lg line-through">
                         ₫{(product.price * 1.2).toLocaleString('vi-VN')}
                     </span>
                     {showVoucherModal && (
@@ -280,12 +257,12 @@ const ProductInfo = ({
                                             {discount.description.includes(
                                                 '.',
                                             ) && (
-                                                <div className="text-gray-500 text-xs mt-1">
-                                                    {discount.description
-                                                        .split('.')[1]
-                                                        .trim()}
-                                                </div>
-                                            )}
+                                                    <div className="text-gray-500 text-xs mt-1">
+                                                        {discount.description
+                                                            .split('.')[1]
+                                                            .trim()}
+                                                    </div>
+                                                )}
                                             <hr className="border-t border-gray-200 my-2" />
                                         </div>
                                     ),
@@ -307,63 +284,64 @@ const ProductInfo = ({
                                 </p>
                             </div>
                         </div>
-                    )}
+                    )} */}
                 </div>
+
                 <div className="flex flex-col gap-4 mb-4 text-sm text-gray-500">
                     <div className="flex items-start mt-2">
                         <span className="w-32 font-semibold">
                             Voucher của shop
                         </span>
                         <div className="flex-1 flex flex-wrap gap-2">
-                            {shopVouchers?.map((voucher, index) => (
-                                <span
-                                    key={index}
-                                    className="bg-red-200 text-red-700 font-medium px-2 py-1 rounded shadow-md"
-                                >
-                                    {voucher.description}
-                                </span>
-                            ))}
+                            {/* {shopVouchers?.map((voucher, index) => (
+                                    <span
+                                        key={index}
+                                        className="bg-red-200 text-red-700 font-medium px-2 py-1 rounded shadow-md"
+                                    >
+                                        {voucher.description}
+                                    </span>
+                                ))} */}
                         </div>
                     </div>
 
-                    {promotionCombo && (
-                        <div className="flex items-start mt-4">
-                            <span className="w-32 font-semibold">
-                                Combo Khuyến Mãi
-                            </span>
-                            <div className="flex-1">
-                                <span className="text-red-700 font-medium px-2 py-1 rounded shadow-md border border-red-500">
-                                    {promotionCombo.description}
+                    {/* {promotionCombo && (
+                            <div className="flex items-start mt-4">
+                                <span className="w-32 font-semibold">
+                                    Combo Khuyến Mãi
                                 </span>
+                                <div className="flex-1">
+                                    <span className="text-red-700 font-medium px-2 py-1 rounded shadow-md border border-red-500">
+                                        {promotionCombo.description}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )} */}
 
-                    <div className="flex items-start mt-4">
-                        <span className="w-32 font-semibold">Vận chuyển</span>
-                        <div className="flex-1 flex flex-col gap-1 break-words">
-                            <span className="text-black">
-                                {shipInformation?.time ||
-                                    'Thông tin vận chuyển chưa có'}
-                            </span>
-                            <span className="text-black">
-                                {shipInformation?.fee
-                                    ? `Phí ship: ${shipInformation.fee}`
-                                    : ''}
-                            </span>
-                            {shipInformation?.policy && (
-                                <span className="text-gray-500">
-                                    {shipInformation.policy}
+                    {/* <div className="flex items-start mt-4">
+                            <span className="w-32 font-semibold">Vận chuyển</span>
+                            <div className="flex-1 flex flex-col gap-1 break-words">
+                                <span className="text-black">
+                                    {shipInformation?.time ||
+                                        'Thông tin vận chuyển chưa có'}
                                 </span>
-                            )}
-                        </div>
-                    </div>
+                                <span className="text-black">
+                                    {shipInformation?.fee
+                                        ? `Phí ship: ${shipInformation.fee}`
+                                        : ''}
+                                </span>
+                                {shipInformation?.policy && (
+                                    <span className="text-gray-500">
+                                        {shipInformation.policy}
+                                    </span>
+                                )}
+                            </div>
+                        </div> */}
                     <div className="flex items-center relative">
                         <span className="w-32 font-semibold">
                             An tâm mua sắm cùng Sope
                         </span>
                         <span className="flex-1 break-words text-black">
-                            {policy.sopePolicy}
+                            {/* {policy.sopePolicy} */}
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-6 w-6 text-blue-500 ml-2 cursor-pointer"
@@ -387,94 +365,169 @@ const ProductInfo = ({
                                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                                     Chính sách mua sắm
                                 </h3>
-                                {policy.procurementPolicy.map((item, idx) => (
-                                    <p
-                                        key={idx}
-                                        className={`text-gray-600 ${idx > 0 ? 'mt-2' : ''}`}
-                                    >
-                                        {item}
-                                    </p>
-                                ))}
+                                {/* {policy.procurementPolicy.map((item, idx) => (
+                                        <p
+                                            key={idx}
+                                            className={`text-gray-600 ${idx > 0 ? 'mt-2' : ''}`}
+                                        >
+                                            {item}
+                                        </p>
+                                    ))} */}
                             </div>
                         )}
                     </div>
-                    <div className="flex items-center mt-4">
-                        <span className="w-32 font-semibold">Chọn Size</span>
-                        <div className="flex gap-2">
-                            {productOptions.sizes.map((size) => (
-                                <button
-                                    key={size}
-                                    className={
-                                        'px-3 py-1 rounded text-sm font-medium transition-colors bg-gray-200 hover:bg-gray-300 active:bg-gray-400'
-                                    }
 
-                                    //   onClick={() => handleSizeSelect(size)}
-                                >
-                                    {size}
-                                </button>
-                            ))}
+                    {attributeEntries.map(([name, values], index) => (
+                        <div className="flex items-center mt-4" key={name}>
+                            <span className="w-32 font-semibold">
+                                Chọn {name}
+                            </span>
+                            <div className="flex gap-2 flex-wrap">
+                                {Array.from(values).map((value) => {
+                                    const matchingVariants =
+                                        product.variants?.filter((variant) =>
+                                            variant?.attributes?.every(
+                                                (attr) => {
+                                                    if (attr.name === name)
+                                                        return (
+                                                            attr.value === value
+                                                        );
+                                                    if (
+                                                        selectedAttributes?.[
+                                                            attr.name
+                                                        ]
+                                                    ) {
+                                                        return (
+                                                            selectedAttributes[
+                                                                attr.name
+                                                            ] === attr.value
+                                                        );
+                                                    }
+                                                    return true;
+                                                },
+                                            ),
+                                        );
+
+                                    const isOutOfStock =
+                                        !matchingVariants?.some(
+                                            (v) => v.stock > 0,
+                                        );
+
+                                    const variantImage =
+                                        index === 0
+                                            ? matchingVariants?.find(
+                                                  (v) => v.imageVariant,
+                                              )?.imageVariant
+                                            : null;
+
+                                    return (
+                                        <button
+                                            key={value}
+                                            onClick={() =>
+                                                !isOutOfStock &&
+                                                handleAttributeSelect?.(
+                                                    name,
+                                                    value,
+                                                )
+                                            }
+                                            disabled={isOutOfStock}
+                                            className={`
+                                                    relative flex items-center gap-2 px-3 py-2 rounded border text-sm font-medium
+                                                    transition-colors
+                                                    ${
+                                                        selectedAttributes?.[
+                                                            name
+                                                        ] === value
+                                                            ? 'border-red-500 text-red-500 bg-red-50'
+                                                            : 'border-gray-300 bg-white hover:bg-gray-100'
+                                                    }
+                                                    ${isOutOfStock ? 'opacity-50 cursor-not-allowed' : ''}
+                                                `}
+                                        >
+                                            {variantImage && (
+                                                <img
+                                                    src={variantImage}
+                                                    alt={`${name} - ${value}`}
+                                                    className="w-6 h-6 object-cover rounded"
+                                                />
+                                            )}
+                                            <span>{value}</span>
+
+                                            {/* dấu tick ở góc khi đang chọn */}
+                                            {selectedAttributes?.[name] ===
+                                                value && (
+                                                <span className="absolute top-0 right-0 text-red-500 text-xs font-bold">
+                                                    ✓
+                                                </span>
+                                            )}
+                                        </button>
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex items-center mt-4">
-                        <span className="w-32 font-semibold">Chọn Màu</span>
-                        <div className="flex gap-2">
-                            {productOptions.colors.map((color) => (
-                                <button
-                                    key={color}
-                                    className={
-                                        'px-3 py-1 rounded text-sm font-medium transition-colors bg-gray-200 hover:bg-gray-300 active:bg-gray-400'
-                                    }
-                                    //   onClick={() => handleColorSelect(color)}
-                                >
-                                    {color}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                    ))}
+
                     <div className="flex items-center mt-4 mb-2">
                         <span className="w-32 font-semibold">Số lượng</span>
                         <div className="flex items-center gap-3 flex-1">
                             <button
-                                className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-l-md bg-gray-100 hover:bg-gray-200 transition-colors text-lg font-semibold"
+                                className={`w-10 h-10 flex items-center justify-center border border-gray-300 rounded-l-md text-lg font-semibold
+                                    ${!isQuantityEnabled ? 'bg-gray-200 cursor-not-allowed opacity-50' : 'bg-gray-100 hover:bg-gray-200 transition-colors'}`}
                                 type="button"
-                                aria-label="Giảm số lượng"
-                                onClick={() => {
-                                    // handle decrease quantity
-                                }}
+                                disabled={!isQuantityEnabled}
+                                onClick={() =>
+                                    setQuantity((prev) => Math.max(1, prev - 1))
+                                }
                             >
                                 -
                             </button>
+
                             <input
                                 type="number"
                                 min={1}
-                                defaultValue={1}
-                                className="w-16 h-10 text-center border border-gray-300 rounded-none outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                            <button
-                                className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-r-md bg-gray-100 hover:bg-gray-200 transition-colors text-lg font-semibold"
-                                type="button"
-                                aria-label="Tăng số lượng"
-                                onClick={() => {
-                                    // handle increase quantity
+                                max={stock ?? 9999}
+                                value={quantity}
+                                disabled={!isQuantityEnabled}
+                                onChange={(e) => {
+                                    const val = Number(e.target.value);
+                                    if (val > 0 && val <= (stock ?? 9999))
+                                        setQuantity(val);
                                 }}
+                                className={`w-16 h-10 text-center border border-gray-300 rounded-none outline-none 
+                                    ${!isQuantityEnabled ? 'bg-gray-100 cursor-not-allowed opacity-50' : 'focus:ring-2 focus:ring-blue-500'}`}
+                            />
+
+                            <button
+                                className={`w-10 h-10 flex items-center justify-center border border-gray-300 rounded-r-md text-lg font-semibold
+                                    ${!isQuantityEnabled ? 'bg-gray-200 cursor-not-allowed opacity-50' : 'bg-gray-100 hover:bg-gray-200 transition-colors'}`}
+                                type="button"
+                                disabled={!isQuantityEnabled}
+                                onClick={() =>
+                                    setQuantity((prev) =>
+                                        Math.min(stock ?? 9999, prev + 1),
+                                    )
+                                }
                             >
                                 +
                             </button>
-                            <span className="text-gray-600">Còn hàng</span>
+
+                            {selectedVariant && (
+                                <span className="text-gray-600">
+                                    Còn {stock} sản phẩm
+                                </span>
+                            )}
                         </div>
                     </div>
                 </div>
                 <div className="flex gap-4">
                     <button
-                        onClick={() =>
-                            handleAddToCart({
-                                id: product.id,
-                                name: product.name,
-                                price: product.price,
-                                image: product.image,
-                                quantity: 1,
-                            })
-                        }
+                        // onClick={() =>
+                        //     handleAddToCart({
+                        //         id: product.productId,
+                        //         name: product.name,
+                        //         quantity: 1,
+                        //     })
+                        // }
                         className="bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700"
                     >
                         <AddShoppingCartIcon className="mr-2" />
@@ -483,7 +536,7 @@ const ProductInfo = ({
                     <button className="bg-red-600 text-white px-6 rounded hover:bg-red-700">
                         <span>
                             <p>Mua với Voucher</p>
-                            <p>đ{product.price}</p>
+                            {/* <p>đ{product.price}</p> */}
                         </span>
                     </button>
                 </div>

@@ -61,15 +61,16 @@ const UserMenu = () => {
                         <Link href="/account/orders" className="px-4 py-2 hover:bg-gray-100 hover:text-red-500">
                             Orders
                         </Link>
-                        <button onClick={handleLogout} className="text-left px-4 py-2 hover:bg-gray-100 hover:text-red-500">
+                        <button
+                            onClick={handleLogout}
+                            className="text-left px-4 py-2 hover:bg-gray-100 hover:text-red-500"
+                        >
                             Logout
                         </button>
                     </div>
                 </div>
             )}
         </div>
-
-
     );
 };
 

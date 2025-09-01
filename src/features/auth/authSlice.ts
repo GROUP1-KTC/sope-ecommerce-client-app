@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface AuthState {
   id: string | null;
@@ -24,26 +25,26 @@ const authSlice = createSlice({
       state.roles = action.payload.roles;
       state.accessToken = action.payload.accessToken;
 
-      sessionStorage.setItem("authUser", JSON.stringify(action.payload));
+            sessionStorage.setItem('authUser', JSON.stringify(action.payload));
+        },
+        clearCredentials: (state) => {
+            state.username = null;
+            state.roles = [];
+            state.accessToken = null;
+            sessionStorage.removeItem('authUser');
+        },
+        loadCredentialsFromStorage: (state) => {
+            const storedUser = sessionStorage.getItem('authUser');
+            if (storedUser) {
+                const parsedUser = JSON.parse(storedUser);
+                state.username = parsedUser.username;
+                state.roles = parsedUser.roles;
+                state.accessToken = parsedUser.accessToken;
+            }
+        },
     },
-    clearCredentials: (state) => {
-      state.username = null;
-      state.roles = [];
-      state.accessToken = null;
-      sessionStorage.removeItem("authUser");
-    },
-    loadCredentialsFromStorage: (state) => {
-      const storedUser = sessionStorage.getItem("authUser");
-      if (storedUser) {
-        const parsedUser = JSON.parse(storedUser);
-        state.id = parsedUser.id;
-        state.username = parsedUser.username;
-        state.roles = parsedUser.roles;
-        state.accessToken = parsedUser.accessToken;
-      }
-    },
-  },
 });
 
-export const { setCredentials, clearCredentials, loadCredentialsFromStorage } = authSlice.actions;
+export const { setCredentials, clearCredentials, loadCredentialsFromStorage } =
+    authSlice.actions;
 export default authSlice.reducer;

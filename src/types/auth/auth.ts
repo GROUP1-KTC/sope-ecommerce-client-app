@@ -1,52 +1,57 @@
-
 export interface LoginInput {
-  email: string;
-  password: string;
+    email: string;
+    password: string;
 }
 
 export interface LoginErrors {
-  email: string;
-  password: string;
+    email: string;
+    password: string;
 }
 
 export interface LoginResponse {
+<<<<<<< HEAD
   id: string;
   username: string;
   roles: string[];
   accessToken: string;
+=======
+    username: string;
+    roles: string[];
+    accessToken: string;
+>>>>>>> dev
 }
 
 export interface EmailRequest {
-  email: string;
+    email: string;
 }
 
 export interface VerifyEmailRequest {
-  email: string;
-  otp: string;
+    email: string;
+    otp: string;
 }
 
 export interface RegisterRequest {
-  username: string;
-  password: string;
-  name: string;
-  email: string;
-  gender: "MALE" | "FEMALE" | "OTHER";
+    username: string;
+    password: string;
+    name: string;
+    email: string;
+    gender: 'MALE' | 'FEMALE' | 'OTHER';
 }
 
 export interface RegisterErrors {
-  username: string;
-  password: string;
-  name: string;
-  email: string;
-  gender: string;
+    username: string;
+    password: string;
+    name: string;
+    email: string;
+    gender: string;
 }
 
 export interface RegisterResponse {
-  username: string;
-  name: string;
-  email: string;
-  gender: string;
-  accessToken: string;
-  refreshToken: string;
-  roles: string[];
+    username: string;
+    name: string;
+    email: string;
+    gender: string;
+    accessToken: string;
+    refreshToken: string;
+    roles: string[];
 }

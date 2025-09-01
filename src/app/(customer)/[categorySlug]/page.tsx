@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import {
-    useGetCategoryQuery,
-    useGetProductByCategoryQuery,
-} from '~/features/categories/categoryApiSlice';
+    useGetCategoriesQuery,
+    useGetProductsByCategoryQuery,
+} from '~/features/categories/categoryApi';
 import Link from 'next/link';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -19,16 +19,35 @@ const CategoryPage = () => {
     const slug = params?.categorySlug as string;
 
     const { data: categories = [], isLoading: loadingCategories } =
-        useGetCategoryQuery();
+        useGetCategoriesQuery();
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null,
     );
     const [sort, setSort] = useState(sortOptions[0]);
     const [page, setPage] = useState(1);
 
-    // Gọi danh sách sản phẩm theo slug
     const { data: products = [], isLoading: loadingProducts } =
-        useGetProductByCategoryQuery(slug);
+        useGetProductsByCategoryQuery(slug);
+
+    const mappedProducts = products.map((p) => {
+        const minPrice = Math.min(
+            ...p.variantsByCategory.map((v) => Number(v.price)),
+        );
+        const totalSold = p.variantsByCategory.reduce(
+            (acc, v) => acc + v.sold,
+            0,
+        );
+
+        return {
+            productId: p.productId,
+            slug: p.slug,
+            name: p.name,
+            brand: p.brand,
+            defaultImage: p.defaultImage,
+            defaultPrice: minPrice,
+            totalSold,
+        };
+    });
 
     if (loadingCategories || loadingProducts) return <p>Đang tải...</p>;
 
@@ -44,18 +63,6 @@ const CategoryPage = () => {
                     <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
                         Tất Cả Danh Mục
                     </h2>
-                    {/* {categories.map((cat) => (
-							<li
-								key={cat.id}
-								className={`py-1 px-2 cursor-pointer rounded text-sm mb-1 ${selectedCategory === cat.slug
-										? 'text-red-500 font-semibold bg-red-50'
-										: 'hover:bg-gray-100'
-									}`}
-								onClick={() => setSelectedCategory(cat.slug)}
-							>
-								{cat.name}
-							</li>
-						))} */}
 
                     <NestedCategoryList
                         categories={categories}
@@ -225,7 +232,7 @@ const CategoryPage = () => {
 
                     {/* Grid sản phẩm */}
                     <div className="grid grid-cols-5 gap-4">
-                        {products.map((product) => (
+                        {mappedProducts.map((product) => (
                             <Link
                                 key={product.productId}
                                 href={`/product-by-slug/${product.slug}`}
@@ -251,10 +258,12 @@ const CategoryPage = () => {
                                                 'vi-VN',
                                             )}
                                         </span>
-                                        {/* Optionally show old price, discount, etc. */}
                                     </div>
                                     <div className="text-xs text-gray-500">
                                         Thương hiệu: {product.brand}
+                                    </div>
+                                    <div className="text-xs text-gray-500">
+                                        Đã bán {product.totalSold}
                                     </div>
                                 </div>
                             </Link>

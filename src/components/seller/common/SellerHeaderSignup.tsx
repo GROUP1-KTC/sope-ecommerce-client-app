@@ -15,7 +15,9 @@ const SellerSignupHeader = () => {
                 </span>
             </div>
             <div>
-                <span className="text-xl text-[#ee4d2d]">Do you need help ?</span>
+                <span className="text-xl text-[#ee4d2d]">
+                    Do you need help ?
+                </span>
             </div>
         </header>
     );

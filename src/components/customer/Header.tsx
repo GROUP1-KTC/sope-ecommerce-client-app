@@ -119,8 +119,9 @@ const Header = () => {
             )}
 
             <div
-                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'
-                    } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
+                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${
+                    menuOpen ? 'translate-x-0' : 'translate-x-full'
+                } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
             >
                 <div className="flex justify-end">
                     <button
