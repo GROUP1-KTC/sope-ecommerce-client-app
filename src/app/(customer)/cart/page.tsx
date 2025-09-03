@@ -23,6 +23,7 @@ import {
 } from '~/features/cart/cartSlice';
 import { setCheckoutItems } from '~/features/orders/checkoutSlice';
 import { useRouter } from 'next/navigation';
+import { useAlertStore } from '~/store/zustand/alertStore';
 
 export interface CartItem {
     id: string;
@@ -53,7 +54,8 @@ const products: Product[] = [];
 
 const Cart: React.FC = () => {
     const router = useRouter();
-    const token = useAppSelector((state) => state.auth.accessToken);
+    // const token = useAppSelector((state) => state.auth.accessToken);
+    const token = 'znb';
 
     const { groups: cartGroups } = useAppSelector((state) => state.cart);
 
@@ -71,39 +73,10 @@ const Cart: React.FC = () => {
     // Memoize grouped cart from API
     const groupedCart = useMemo(() => {
         if (!token || !cartItemsFromApi?.length) return null;
-        const groupedByShop: CartGroup[] = [];
-        cartItemsFromApi.forEach(
-            (
-                item: CartItem & {
-                    shopId?: string;
-                    shopName?: string;
-                    shopAvatar?: string;
-                },
-            ) => {
-                const shopId = item.shopId || 'default-shop';
-                const shopIndex = groupedByShop.findIndex(
-                    (g) => g.shop.id === shopId,
-                );
-                const shopInfo = {
-                    id: shopId,
-                    name: item.shopName || `Shop ${shopId}`,
-                    avatarUrl: item.shopAvatar || '/default-shop-avatar.png',
-                };
-                const cartItem = {
-                    ...item,
-                    name: item.name || 'Unknown Product',
-                };
-                if (shopIndex === -1) {
-                    groupedByShop.push({
-                        shop: shopInfo,
-                        items: [cartItem],
-                    });
-                } else {
-                    groupedByShop[shopIndex].items.push(cartItem);
-                }
-            },
-        );
-        return groupedByShop;
+
+        console.log('Cart items from API:', cartItemsFromApi);
+
+        return cartItemsFromApi;
     }, [cartItemsFromApi, token]);
 
     // Sync Redux store with API or localStorage
@@ -148,7 +121,7 @@ const Cart: React.FC = () => {
     const handleDelete = async (id: string) => {
         try {
             if (token) {
-                // await deleteItemApi(id).unwrap();
+                await deleteItemApi(id).unwrap();
             }
             if (!token) {
                 const newCartGroups = cartGroups
@@ -161,10 +134,18 @@ const Cart: React.FC = () => {
                 localStorage.setItem('cart', JSON.stringify(newCartGroups));
             }
             dispatch(removeItem(id));
+
+            useAlertStore.getState().showAlert({
+                severity: 'success',
+                message: 'Xóa sản phẩm thành công!',
+            });
             setSelected((prev) => prev.filter((item) => item !== id));
         } catch (err) {
             console.error('Failed to delete item:', err);
-            alert('Xóa sản phẩm thất bại. Vui lòng thử lại.');
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: 'Xóa sản phẩm thất bại!',
+            });
         }
     };
 

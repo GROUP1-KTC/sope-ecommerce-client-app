@@ -20,6 +20,7 @@ interface ProductInfoProps {
 
 import { v4 as uuidv4 } from 'uuid';
 import { addItem } from '~/features/cart/cartSlice';
+import type { AddToCartRequest } from '~/types/cart/AddToCartRequest';
 
 interface CartGroup {
     shop: {
@@ -42,7 +43,9 @@ const ProductInfo = ({
     const [showVoucherModal, setShowVoucherModal] = useState(false);
     const [showPolicyModal, setShowPolicyModal] = useState(false);
     const [addCartApi] = useAddCartMutation();
-    const token = useAppSelector((state) => state.auth.accessToken);
+    // const token = useAppSelector((state) => state.auth.accessToken);
+    const token =
+        'Bearer eyJhbGciOiJSUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIiwiU0VMTEVSIl0sInVzZXJJZCI6IjM0ZjI2YzBkLTNjOGUtNDA0ZS1hNDUzLWU4ZDViZjhhOWFlOSIsInN1YiI6InVzZXIiLCJpYXQiOjE3NTY4ODQwMjksImV4cCI6MTc1Njg4NzYyOX0.c7RIL_BBIVhk2cJ2CBNwT4RJjZ5dS0leLZjmROxVA3dhZkYqzdmKbhqgP4E8AxDCfrLa2z-OZ-LP0MV9QTdAGwo0lQaHCWBhPINBLyR_9RaEB5pQaumk7VgFd2eus9c-R3ZNPLjMFMsYaeSRMr0dkN8qjTfDwR3D7y7ejH7fKHZ5mItxI8EH9ImtR2rFtuuJH7Sf0qFAC92KIcjo-pMJfYgkSExjqwBkbFNkmw9meFOq3hH1CWlE0syNjtBzMbKtOMx4dAtQYUeouuECcqW7Cl-9b4Z1aU92JZAxSizAuoE3OW5mrnr2jOkYA1qm8pY2ur2rhY9dDqnGmoPdqLXagg';
 
     const dispatch = useAppDispatch();
 
@@ -68,10 +71,32 @@ const ProductInfo = ({
     const [selectedImage, setSelectedImage] = useState(product.defaultImage);
 
     const handleAddToCart = async (item: CartItem) => {
+        console.log('Adding to cart:', item);
+
+        const newItem = {
+            id: uuidv4(),
+            name: item.name,
+            productVariantId: item.productVariantId,
+            price: item.price,
+            image: item.image || null,
+            quantity: item.quantity,
+            shopId: product.shop?.id || '',
+            shopName: product.shop?.name || '',
+            shopAvatar: product.shop?.logoUrl || '',
+        };
+
         if (token) {
             // Handle logged-in user
             try {
-                await addCartApi(item).unwrap();
+                const request: AddToCartRequest = {
+                    productVariantId: item.productVariantId,
+                    quantity: item.quantity,
+                    image: item.image || null,
+                };
+
+                console.log('Add to cart request:', request);
+
+                await addCartApi(request).unwrap();
                 useAlertStore.getState().showAlert({
                     severity: 'success',
                     message: 'Thêm sản phẩm vào giỏ hàng thành công!',
@@ -86,22 +111,6 @@ const ProductInfo = ({
             // Handle non-logged-in user
             const stored = localStorage.getItem('cart');
             const currentCart: CartGroup[] = stored ? JSON.parse(stored) : [];
-
-            console.log('Current Cart from localStorage:', currentCart);
-
-            const newItem = {
-                id: uuidv4(),
-                name: item.name,
-                productVariantId: item.productVariantId,
-                price: item.price,
-                image: item.image || null,
-                quantity: item.quantity,
-                shopId: product.shop?.id || '',
-                shopName: product.shop?.name || '',
-                shopAvatar: product.shop?.logoUrl || '',
-            };
-
-            console.log(product);
 
             // Find or create shop in cart
             let shopIndex = currentCart.findIndex(
@@ -133,14 +142,14 @@ const ProductInfo = ({
 
             localStorage.setItem('cart', JSON.stringify(currentCart));
 
-            dispatch(addItem(newItem));
-
             useAlertStore.getState().showAlert({
                 severity: 'success',
                 message:
                     'Thêm sản phẩm vào giỏ hàng thành công (chưa đăng nhập)!',
             });
         }
+
+        dispatch(addItem(newItem));
     };
 
     return (
@@ -573,7 +582,8 @@ const ProductInfo = ({
                                 name: product.name,
                                 productVariantId:
                                     selectedVariant?.productVariantId ||
-                                    product.productId,
+                                    product.variants?.[0].productVariantId ||
+                                    '',
                                 price: price,
                                 image:
                                     selectedVariant?.imageVariant ||

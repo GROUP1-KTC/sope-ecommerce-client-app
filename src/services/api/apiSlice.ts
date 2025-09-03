@@ -11,11 +11,13 @@ const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL_V3,
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
-        const token = (getState() as { auth?: { token?: string } }).auth?.token;
+        const token = (getState() as { auth?: { accessToken?: string } }).auth?.accessToken;
 
         if (token) {
             headers.set('Authorization', `Bearer ${token}`);
         }
+        headers.set('Authorization', `Bearer eyJhbGciOiJSUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIiwiU0VMTEVSIl0sInVzZXJJZCI6IjM0ZjI2YzBkLTNjOGUtNDA0ZS1hNDUzLWU4ZDViZjhhOWFlOSIsInN1YiI6InVzZXIiLCJpYXQiOjE3NTY4ODQwMjksImV4cCI6MTc1Njg4NzYyOX0.c7RIL_BBIVhk2cJ2CBNwT4RJjZ5dS0leLZjmROxVA3dhZkYqzdmKbhqgP4E8AxDCfrLa2z-OZ-LP0MV9QTdAGwo0lQaHCWBhPINBLyR_9RaEB5pQaumk7VgFd2eus9c-R3ZNPLjMFMsYaeSRMr0dkN8qjTfDwR3D7y7ejH7fKHZ5mItxI8EH9ImtR2rFtuuJH7Sf0qFAC92KIcjo-pMJfYgkSExjqwBkbFNkmw9meFOq3hH1CWlE0syNjtBzMbKtOMx4dAtQYUeouuECcqW7Cl-9b4Z1aU92JZAxSizAuoE3OW5mrnr2jOkYA1qm8pY2ur2rhY9dDqnGmoPdqLXagg`);
+
 
         return headers;
     },

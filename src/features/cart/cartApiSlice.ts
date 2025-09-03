@@ -1,14 +1,16 @@
-import type { CartItem } from '~/app/(customer)/cart/page';
+import type { CartGroup, CartItem } from '~/app/(customer)/cart/page';
 import { apiSlice } from '~/services/api/apiSlice';
+import type { AddToCartRequest } from '~/types/cart/AddToCartRequest';
 
 export const cartApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getCart: builder.query<CartItem[], void>({
+        getCart: builder.query<CartGroup[], void>({
             query: () => 'cart',
+            transformResponse: (response: { data: CartGroup[] }) => response.data,
             providesTags: ['Cart'],
         }),
 
-        addCart: builder.mutation<void, CartItem>({
+        addCart: builder.mutation<void, AddToCartRequest>({
             query: (item) => ({
                 url: 'cart',
                 method: 'POST',
@@ -17,7 +19,7 @@ export const cartApi = apiSlice.injectEndpoints({
             invalidatesTags: ['Cart'],
         }),
 
-        deleteItem: builder.mutation<void, number>({
+        deleteItem: builder.mutation<void, string>({
             query: (cartItemId) => ({
                 url: `cart/${cartItemId}`,
                 method: 'DELETE',
@@ -27,8 +29,9 @@ export const cartApi = apiSlice.injectEndpoints({
 
         deleteItems: builder.mutation<void, number[]>({
             query: (cartItemIds) => ({
-                url: `cart/${cartItemIds}`,
+                url: 'cart',
                 method: 'DELETE',
+                body: cartItemIds,
             }),
             invalidatesTags: ['Cart'],
         }),
