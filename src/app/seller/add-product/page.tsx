@@ -11,10 +11,16 @@ import VideoTrimModal from '../../../components/add-edit-product/VideoTrimModal'
 import SalesInfo from '../../../components/add-edit-product/SalesInfo';
 import DetailInfo from '../../../components/add-edit-product/DetailInfo';
 import LeftSideBar from '~/components/add-edit-product/LeftSideBar';
-import RightSideBar, { ProductFormDataWithMedia, MediaItem } from '~/components/add-edit-product/RightSideBar';
+import type {
+    ProductFormDataWithMedia,
+    MediaItem,
+} from '~/components/add-edit-product/RightSideBar';
+import RightSideBar from '~/components/add-edit-product/RightSideBar';
 
 const AddProduct = () => {
-    const [selectedCategories, setSelectedCategories] = useState<Category[]>([],);
+    const [selectedCategories, setSelectedCategories] = useState<Category[]>(
+        [],
+    );
     const [showModal, setShowModal] = useState(false);
     const { data: categories = [] } = useGetCategoriesQuery();
     const [createProduct] = useCreateProductMutation();
@@ -39,39 +45,59 @@ const AddProduct = () => {
             ...prev,
             description: content,
         }));
-
     };
 
-    const handleProductVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleProductVideoChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         const file = e.target.files?.[0];
         if (!file) return;
         if (file.type !== 'video/mp4') return alert('Chỉ hỗ trợ định dạng MP4');
-        if (file.size > 30 * 1024 * 1024) return alert('Dung lượng video không được vượt quá 30MB');
+        if (file.size > 30 * 1024 * 1024)
+            return alert('Dung lượng video không được vượt quá 30MB');
 
-        const mediaItem: MediaItem = { file, preview: URL.createObjectURL(file) };
-        setProductData(prev => ({ ...prev, defaultVideoIntro: mediaItem }));
+        const mediaItem: MediaItem = {
+            file,
+            preview: URL.createObjectURL(file),
+        };
+        setProductData((prev) => ({ ...prev, defaultVideoIntro: mediaItem }));
         e.target.value = '';
     };
 
-    const handleProductImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleProductImageChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         const files = Array.from(e.target.files || []);
         const maxSizeMB = 10;
-        if (files.some(f => !f.type.startsWith('image/'))) return alert('Chỉ hỗ trợ định dạng hình ảnh');
-        if (files.some(f => f.size > maxSizeMB * 1024 * 1024)) return alert('Dung lượng hình ảnh không được vượt quá 10MB');
+        if (files.some((f) => !f.type.startsWith('image/')))
+            return alert('Chỉ hỗ trợ định dạng hình ảnh');
+        if (files.some((f) => f.size > maxSizeMB * 1024 * 1024))
+            return alert('Dung lượng hình ảnh không được vượt quá 10MB');
 
-        const newImages: MediaItem[] = files.map(f => ({ file: f, preview: URL.createObjectURL(f) }));
-        setProductData(prev => ({ ...prev, imagesList: [...prev.imagesList, ...newImages] }));
+        const newImages: MediaItem[] = files.map((f) => ({
+            file: f,
+            preview: URL.createObjectURL(f),
+        }));
+        setProductData((prev) => ({
+            ...prev,
+            imagesList: [...prev.imagesList, ...newImages],
+        }));
         e.target.value = '';
     };
 
     const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        if (!file.type.startsWith('image/')) return alert('Chỉ hỗ trợ định dạng hình ảnh');
-        if (file.size > 5 * 1024 * 1024) return alert('Dung lượng hình ảnh không được vượt quá 5MB');
+        if (!file.type.startsWith('image/'))
+            return alert('Chỉ hỗ trợ định dạng hình ảnh');
+        if (file.size > 5 * 1024 * 1024)
+            return alert('Dung lượng hình ảnh không được vượt quá 5MB');
 
-        const mediaItem: MediaItem = { file, preview: URL.createObjectURL(file) };
-        setProductData(prev => ({ ...prev, defaultImage: mediaItem }));
+        const mediaItem: MediaItem = {
+            file,
+            preview: URL.createObjectURL(file),
+        };
+        setProductData((prev) => ({ ...prev, defaultImage: mediaItem }));
         e.target.value = '';
     };
 
@@ -114,7 +140,9 @@ const AddProduct = () => {
         setProductData((prev) => ({ ...prev, stock }));
     };
 
-    const handleVariantsChange = (updatedVariants: ProductVariantFormData[]) => {
+    const handleVariantsChange = (
+        updatedVariants: ProductVariantFormData[],
+    ) => {
         setProductData((prev) => ({
             ...prev,
             variants: updatedVariants,
@@ -137,13 +165,14 @@ const AddProduct = () => {
             brand: productData.brand || '',
             hidden: productData.hidden,
             name: productData.name,
-            variants: productData.variants?.map(v => ({
+            variants: productData.variants?.map((v) => ({
                 price: Number(v.price) || 0,
                 stock: Number(v.stock) || 0,
                 attributes: v.attributes || [],
-                imageVariant: typeof v.imageVariant === 'string'
-                    ? v.imageVariant
-                    : v.imageVariant?.name
+                imageVariant:
+                    typeof v.imageVariant === 'string'
+                        ? v.imageVariant
+                        : v.imageVariant?.name,
             })),
             shopId: productData.shopId,
             categoryId: productData.categoryId,
@@ -151,19 +180,27 @@ const AddProduct = () => {
             // productDetails: productData.productDetails || []
         };
 
-        formData.append('product', new Blob([JSON.stringify(productPayload)], { type: 'application/json' }));
+        formData.append(
+            'product',
+            new Blob([JSON.stringify(productPayload)], {
+                type: 'application/json',
+            }),
+        );
 
         // Append files
         if (productData.defaultImage) {
             formData.append('defaultImage', productData.defaultImage.file);
         }
         if (productData.defaultVideoIntro) {
-            formData.append('defaultVideoIntro', productData.defaultVideoIntro.file);
+            formData.append(
+                'defaultVideoIntro',
+                productData.defaultVideoIntro.file,
+            );
         }
-        productData.imagesList.forEach(img => {
+        productData.imagesList.forEach((img) => {
             formData.append('productImages', img.file);
         });
-        productData.variants?.forEach(v => {
+        productData.variants?.forEach((v) => {
             if (v.imageVariant instanceof File) {
                 formData.append('variantFiles', v.imageVariant);
             }
@@ -208,9 +245,13 @@ const AddProduct = () => {
 
     useEffect(() => {
         return () => {
-            if (productData.defaultImage) URL.revokeObjectURL(productData.defaultImage.preview);
-            if (productData.defaultVideoIntro) URL.revokeObjectURL(productData.defaultVideoIntro.preview);
-            productData.imagesList.forEach(img => URL.revokeObjectURL(img.preview));
+            if (productData.defaultImage)
+                URL.revokeObjectURL(productData.defaultImage.preview);
+            if (productData.defaultVideoIntro)
+                URL.revokeObjectURL(productData.defaultVideoIntro.preview);
+            productData.imagesList.forEach((img) =>
+                URL.revokeObjectURL(img.preview),
+            );
         };
     }, []); // chỉ cleanup khi component unmount
 
@@ -334,7 +375,10 @@ const AddProduct = () => {
                                             <ImageNext
                                                 width={50}
                                                 height={50}
-                                                src={productData.defaultImage?.preview ?? ''}
+                                                src={
+                                                    productData.defaultImage
+                                                        ?.preview ?? ''
+                                                }
                                                 alt="Ảnh bìa"
                                                 className="w-full h-full object-cover pointer-events-none"
                                             />
@@ -372,9 +416,12 @@ const AddProduct = () => {
 
                             <div className="flex items-center space-x-4">
                                 {showVideoModal &&
-                                    productData.defaultVideoIntro ? (
+                                productData.defaultVideoIntro ? (
                                     <VideoTrimModal
-                                        videoUrl={productData.defaultVideoIntro?.preview}
+                                        videoUrl={
+                                            productData.defaultVideoIntro
+                                                ?.preview
+                                        }
                                         onClose={() => setShowVideoModal(false)}
                                         onConfirm={(start, end) => {
                                             if (end - start < 10) {
@@ -391,7 +438,11 @@ const AddProduct = () => {
                                         <div className="flex flex-col items-center border border-dashed border-gray-300 rounded p-1 w-32 h-32 justify-center text-center cursor-pointer overflow-hidden relative">
                                             {productData.defaultVideoIntro && (
                                                 <video
-                                                    src={productData.defaultVideoIntro?.preview}
+                                                    src={
+                                                        productData
+                                                            .defaultVideoIntro
+                                                            ?.preview
+                                                    }
                                                     controls
                                                     className="w-100 h-100 rounded"
                                                 />
@@ -475,8 +526,8 @@ const AddProduct = () => {
                             >
                                 {selectedCategories.length > 0
                                     ? selectedCategories
-                                        .map((c) => c.name)
-                                        .join(' > ')
+                                          .map((c) => c.name)
+                                          .join(' > ')
                                     : 'Chọn ngành hàng'}
                             </button>
                         </div>
@@ -539,7 +590,6 @@ const AddProduct = () => {
                         </div>
                     </div>
                 </main>
-
 
                 <RightSideBar productData={productData} />
             </div>

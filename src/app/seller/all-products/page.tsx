@@ -11,7 +11,11 @@ const AllProductsByShop = () => {
     const params = useParams();
     const shopId = params?.shopId as string;
 
-    const { data: products = [], isLoading, isError } = useGetProductByShopIdQuery(shopId);
+    const {
+        data: products = [],
+        isLoading,
+        isError,
+    } = useGetProductByShopIdQuery(shopId);
 
     console.log('check', products);
 
@@ -88,10 +92,16 @@ const AllProductsByShop = () => {
                             <th className="p-3 border-b text-left">
                                 Tên sản phẩm
                             </th>
-                            <th className="p-3 border-b text-center">Doanh số</th>
+                            <th className="p-3 border-b text-center">
+                                Doanh số
+                            </th>
                             <th className="p-3 border-b text-center">Giá</th>
-                            <th className="p-3 border-b text-center">Kho hàng</th>
-                            <th className="p-3 border-b text-center">Thao tác</th>
+                            <th className="p-3 border-b text-center">
+                                Kho hàng
+                            </th>
+                            <th className="p-3 border-b text-center">
+                                Thao tác
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -134,7 +144,6 @@ const AllProductsByShop = () => {
                                                 >
                                                     {product.variants?.length} biến thể
                                                 </span> */}
-
                                             </div>
                                             <div className="text-xs text-gray-500 mt-1">
                                                 ID: {product.productId}
@@ -147,20 +156,40 @@ const AllProductsByShop = () => {
                                             : product.sold ?? 0} */}
                                     </td>
                                     <td className="p-3 align-top text-center">
-                                        {product.variants && product.variants.length > 0 ? (
+                                        {product.variants &&
+                                        product.variants.length > 0 ? (
                                             <>
                                                 ₫
-                                                {Math.min(...product.variants.map(v => v.price)).toLocaleString('vi-VN')} - ₫
-                                                {Math.max(...product.variants.map(v => v.price)).toLocaleString('vi-VN')}
+                                                {Math.min(
+                                                    ...product.variants.map(
+                                                        (v) => v.price,
+                                                    ),
+                                                ).toLocaleString('vi-VN')}{' '}
+                                                - ₫
+                                                {Math.max(
+                                                    ...product.variants.map(
+                                                        (v) => v.price,
+                                                    ),
+                                                ).toLocaleString('vi-VN')}
                                             </>
                                         ) : (
-                                            <>₫{product.defaultPrice?.toLocaleString('vi-VN')}</>
+                                            <>
+                                                ₫
+                                                {product.defaultPrice?.toLocaleString(
+                                                    'vi-VN',
+                                                )}
+                                            </>
                                         )}
                                     </td>
                                     <td className="p-3 align-top text-center">
-                                        {product.variants && product.variants.length > 0
-                                            ? product.variants.reduce((total, v) => total + (v.stock ?? 0), 0)
-                                            : product.stock ?? 0}
+                                        {product.variants &&
+                                        product.variants.length > 0
+                                            ? product.variants.reduce(
+                                                  (total, v) =>
+                                                      total + (v.stock ?? 0),
+                                                  0,
+                                              )
+                                            : (product.stock ?? 0)}
                                     </td>
                                     <td className="p-3 align-top text-center">
                                         <div className="flex flex-col gap-1 items-center">
@@ -185,7 +214,7 @@ const AllProductsByShop = () => {
                                         </div>
                                     </td>
                                 </tr>
-                            )
+                            );
                         })}
                     </tbody>
                 </table>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
     Table,
     TableBody,
@@ -25,6 +25,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import type { CartItem, CartGroup } from '~/app/(customer)/cart/page';
+import { debounce } from 'lodash';
 
 interface CartTableProps {
     cartGroups: CartGroup[];
@@ -52,6 +53,14 @@ const CartTable: React.FC<CartTableProps> = ({
     const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
     const [isClient, setIsClient] = useState(false);
+
+    const debouncedUpdate = useMemo(
+        () =>
+            debounce((id: string, quantity: number) => {
+                handleQuantityChange(id, quantity);
+            }, 500),
+        [handleQuantityChange],
+    );
 
     useEffect(() => {
         setIsClient(true);
@@ -193,7 +202,6 @@ const CartTable: React.FC<CartTableProps> = ({
                                             <TextField
                                                 type="number"
                                                 value={item.quantity}
-                                                inputProps={{ min: 1 }}
                                                 size="small"
                                                 sx={{
                                                     flexGrow: 1,
@@ -217,7 +225,7 @@ const CartTable: React.FC<CartTableProps> = ({
                                                         e.target.value,
                                                     );
                                                     if (newQuantity >= 1) {
-                                                        handleQuantityChange(
+                                                        debouncedUpdate(
                                                             item.id,
                                                             newQuantity,
                                                         );
@@ -412,7 +420,7 @@ const CartTable: React.FC<CartTableProps> = ({
                                                         e.target.value,
                                                     );
                                                     if (newQuantity >= 1) {
-                                                        handleQuantityChange(
+                                                        debouncedUpdate(
                                                             item.id,
                                                             newQuantity,
                                                         );

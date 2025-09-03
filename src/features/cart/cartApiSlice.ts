@@ -1,6 +1,7 @@
 import type { CartGroup, CartItem } from '~/app/(customer)/cart/page';
 import { apiSlice } from '~/services/api/apiSlice';
 import type { AddToCartRequest } from '~/types/cart/AddToCartRequest';
+import type { UpdateCartItemRequest } from '~/types/cart/UpdateCartItemReques';
 
 export const cartApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -19,6 +20,15 @@ export const cartApi = apiSlice.injectEndpoints({
             invalidatesTags: ['Cart'],
         }),
 
+        updateCart: builder.mutation<void, UpdateCartItemRequest>({
+            query: (item) => ({
+                url: `cart/items/${item.id}`,
+                method: 'PATCH',
+                body: item,
+            }),
+            invalidatesTags: ['Cart'],
+        }),
+
         deleteItem: builder.mutation<void, string>({
             query: (cartItemId) => ({
                 url: `cart/${cartItemId}`,
@@ -27,7 +37,7 @@ export const cartApi = apiSlice.injectEndpoints({
             invalidatesTags: ['Cart'],
         }),
 
-        deleteItems: builder.mutation<void, number[]>({
+        deleteItems: builder.mutation<void, string[]>({
             query: (cartItemIds) => ({
                 url: 'cart',
                 method: 'DELETE',
@@ -41,6 +51,7 @@ export const cartApi = apiSlice.injectEndpoints({
 export const {
     useGetCartQuery,
     useAddCartMutation,
+    useUpdateCartMutation,
     useDeleteItemMutation,
     useDeleteItemsMutation,
 } = cartApi;

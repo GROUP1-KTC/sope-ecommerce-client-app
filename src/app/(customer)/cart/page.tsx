@@ -11,6 +11,7 @@ import {
     useDeleteItemsMutation,
     useDeleteItemMutation,
     useGetCartQuery,
+    useUpdateCartMutation,
 } from '~/features/cart/cartApiSlice';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 import {
@@ -64,6 +65,8 @@ const Cart: React.FC = () => {
     });
     const [deleteItemApi] = useDeleteItemMutation();
     const [deleteItemsApi] = useDeleteItemsMutation();
+
+    const [updateCartApi] = useUpdateCartMutation();
     const dispatch = useAppDispatch();
 
     const [selected, setSelected] = useState<string[]>([]);
@@ -156,7 +159,7 @@ const Cart: React.FC = () => {
         }
         try {
             if (token) {
-                // await deleteItemsApi(selected).unwrap();
+                await deleteItemsApi(selected).unwrap();
             }
             if (!token) {
                 const newCartGroups = cartGroups
@@ -170,15 +173,21 @@ const Cart: React.FC = () => {
                 localStorage.setItem('cart', JSON.stringify(newCartGroups));
             }
             dispatch(removeItems(selected));
+            useAlertStore.getState().showAlert({
+                severity: 'success',
+                message: 'Xóa các sản phẩm thành công!',
+            });
             setSelected([]);
         } catch (err) {
             console.error('Failed to delete selected items:', err);
-            alert('Xóa các sản phẩm thất bại. Vui lòng thử lại.');
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: 'Xóa các sản phẩm thất bại!',
+            });
         }
     };
 
-    const handleIncrease = (id: string) => {
-        dispatch(increaseQuantity(id));
+    const handleIncrease = async (id: string) => {
         if (!token) {
             const newCartGroups = cartGroups
                 .map((group) => ({
@@ -191,11 +200,35 @@ const Cart: React.FC = () => {
                 }))
                 .filter((group) => group.items.length > 0);
             localStorage.setItem('cart', JSON.stringify(newCartGroups));
+            dispatch(increaseQuantity(id));
+
+            return;
+        }
+        const item = cartGroups
+            .flatMap((group) => group.items)
+            .find((item) => item.id === id);
+        if (!item) return;
+
+        try {
+            await updateCartApi({
+                id,
+                newVariantId: null,
+                quantity: item.quantity + 1,
+            }).unwrap();
+
+            console.log('Cart updated successfully');
+
+            dispatch(increaseQuantity(id));
+        } catch (err: any) {
+            console.error('Failed to update cart:', err);
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: err.data?.errors[0] || 'Cập nhật giỏ hàng thất bại!',
+            });
         }
     };
 
-    const handleDecrease = (id: string) => {
-        dispatch(decreaseQuantity(id));
+    const handleDecrease = async (id: string) => {
         if (!token) {
             const newCartGroups = cartGroups
                 .map((group) => ({
@@ -208,12 +241,33 @@ const Cart: React.FC = () => {
                 }))
                 .filter((group) => group.items.length > 0);
             localStorage.setItem('cart', JSON.stringify(newCartGroups));
+            dispatch(decreaseQuantity(id));
+            return;
+        }
+        const item = cartGroups
+            .flatMap((group) => group.items)
+            .find((item) => item.id === id);
+        if (!item) return;
+
+        try {
+            await updateCartApi({
+                id,
+                newVariantId: null,
+                quantity: item.quantity - 1,
+            }).unwrap();
+
+            dispatch(decreaseQuantity(id));
+        } catch (err: any) {
+            console.error('Failed to update cart:', err);
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: err.data?.errors[0] || 'Cập nhật giỏ hàng thất bại!',
+            });
         }
     };
 
-    const handleQuantityChange = (id: string, quantity: number) => {
+    const handleQuantityChange = async (id: string, quantity: number) => {
         if (quantity < 1) return;
-        dispatch(updateQuantity({ id, quantity }));
         if (!token) {
             const newCartGroups = cartGroups
                 .map((group) => ({
@@ -224,6 +278,24 @@ const Cart: React.FC = () => {
                 }))
                 .filter((group) => group.items.length > 0);
             localStorage.setItem('cart', JSON.stringify(newCartGroups));
+            dispatch(updateQuantity({ id, quantity }));
+        } else {
+            try {
+                await updateCartApi({
+                    id,
+                    newVariantId: null,
+                    quantity,
+                }).unwrap();
+
+                dispatch(updateQuantity({ id, quantity }));
+            } catch (err: any) {
+                console.error('Failed to update cart:', err);
+                useAlertStore.getState().showAlert({
+                    severity: 'error',
+                    message:
+                        err.data?.errors[0] || 'Cập nhật giỏ hàng thất bại!',
+                });
+            }
         }
     };
 
@@ -301,14 +373,14 @@ const Cart: React.FC = () => {
                                     />
                                 </Box>
                             ))}
-                            {token && (
+                            {/* {token && (
                                 <VoucherSection
                                     onSelectVoucher={() =>
                                         setShowVoucherModal(true)
                                     }
                                     voucher={voucher}
                                 />
-                            )}
+                            )} */}
                             <CartSummary
                                 cartGroups={cartGroups}
                                 selected={selected}
@@ -322,12 +394,12 @@ const Cart: React.FC = () => {
                     )}
                 </Paper>
                 <ProductSuggestions products={products} />
-                <VoucherModal
+                {/* <VoucherModal
                     visible={showVoucherModal}
                     onClose={() => setShowVoucherModal(false)}
                     onSelect={(v) => setVoucher(v)}
                     selectedVoucher={voucher}
-                />
+                /> */}
             </Container>
         </Box>
     );

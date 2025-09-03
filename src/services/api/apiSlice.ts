@@ -16,7 +16,7 @@ const baseQuery = fetchBaseQuery({
         if (token) {
             headers.set('Authorization', `Bearer ${token}`);
         }
-        headers.set('Authorization', `Bearer eyJhbGciOiJSUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIiwiU0VMTEVSIl0sInVzZXJJZCI6IjM0ZjI2YzBkLTNjOGUtNDA0ZS1hNDUzLWU4ZDViZjhhOWFlOSIsInN1YiI6InVzZXIiLCJpYXQiOjE3NTY4ODQwMjksImV4cCI6MTc1Njg4NzYyOX0.c7RIL_BBIVhk2cJ2CBNwT4RJjZ5dS0leLZjmROxVA3dhZkYqzdmKbhqgP4E8AxDCfrLa2z-OZ-LP0MV9QTdAGwo0lQaHCWBhPINBLyR_9RaEB5pQaumk7VgFd2eus9c-R3ZNPLjMFMsYaeSRMr0dkN8qjTfDwR3D7y7ejH7fKHZ5mItxI8EH9ImtR2rFtuuJH7Sf0qFAC92KIcjo-pMJfYgkSExjqwBkbFNkmw9meFOq3hH1CWlE0syNjtBzMbKtOMx4dAtQYUeouuECcqW7Cl-9b4Z1aU92JZAxSizAuoE3OW5mrnr2jOkYA1qm8pY2ur2rhY9dDqnGmoPdqLXagg`);
+        headers.set('Authorization', `Bearer eyJhbGciOiJSUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIiwiU0VMTEVSIl0sInVzZXJJZCI6IjM0ZjI2YzBkLTNjOGUtNDA0ZS1hNDUzLWU4ZDViZjhhOWFlOSIsInN1YiI6InVzZXIiLCJpYXQiOjE3NTY4OTEzNjcsImV4cCI6MTc1Njg5NDk2N30.FbyGY2_Lp2XkqffaOs5bqMmjDlONyUtHghinDko-RZkauEeQuvppTzluBbVVRwpFmRGEMWemqFHmLU5gcur9Rn0g5ORtq_6oWmCH-Wbda1nF_k9sFuH_E9hu1DbsBAEYP3Ia3VxXKVzxCMQRuEIffTtL1PjOZxsN7Ov-XvFl-tom8znMlXHr5w-E4UTdh76NOM1lV3R2FZWZnkouH_lyhXBzVjFpbAWgUmBdC4gche26kyF-uTdA7N4Qj_7f4WMmOoJ7sXe3hFJUXb6yufnAAqk6jZSiziDQy37fNMUQTaUI4Bb5kSLPPIYVxWKb5rLJS5FEKttrH82z0w7RlGrdKw`);
 
 
         return headers;

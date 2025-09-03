@@ -9,9 +9,16 @@ export interface LoginErrors {
 }
 
 export interface LoginResponse {
+<<<<<<< HEAD
+  id: string;
+  username: string;
+  roles: string[];
+  accessToken: string;
+=======
     username: string;
     roles: string[];
     accessToken: string;
+>>>>>>> dev
 }
 
 export interface EmailRequest {

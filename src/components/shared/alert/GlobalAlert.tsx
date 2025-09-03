@@ -10,7 +10,7 @@ const GlobalAlert = () => {
     return (
         <Snackbar
             open={open}
-            autoHideDuration={2000}
+            autoHideDuration={2500}
             onClose={closeAlert}
             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             TransitionComponent={Fade}
