@@ -8,6 +8,10 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import AddressForm from '~/components/checkout/addressform';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 import { clearCheckoutItems } from '~/features/orders/checkoutSlice';
+import { Box, Button, Switch, Typography } from '@mui/material';
+import DiscountIcon from '@mui/icons-material/Discount';
+import VoucherSection from '../cart/VoucherSection';
+import AddressSection from './AddressSection';
 
 type CartItem = {
     id: number;
@@ -20,7 +24,9 @@ type CartItem = {
 type AddressFormData = {
     fullName: string;
     phone: string;
-    cityDistrict: string;
+    district: string;
+    city: string;
+    ward: string;
     address: string;
     type: string;
 };
@@ -35,11 +41,15 @@ export default function Checkout() {
     const dispatch = useAppDispatch();
     const cartItems = useAppSelector((state) => state.checkout.items);
 
+    const userCoins = 12;
+
     const [voucher, setVoucher] = useState<Voucher | null>(null);
     const [addressFormData, setAddressFormData] = useState<AddressFormData>({
         fullName: '',
         phone: '',
-        cityDistrict: '',
+        district: '',
+        city: '',
+        ward: '',
         address:
             'Phạm Thiện Cõ (+84) 852150879, 167/14, Đường Nguyễn Văn Thường, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh',
         type: 'Nhà Riêng',
@@ -48,6 +58,7 @@ export default function Checkout() {
     const [paymentMethod, setPaymentMethod] = useState<string>('cod');
     const [isLoading, setIsLoading] = useState(false);
     const [orderSuccess, setOrderSuccess] = useState(false);
+    const [useCoin, setUseCoin] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
@@ -83,13 +94,16 @@ export default function Checkout() {
         if (
             !addressFormData.fullName ||
             !addressFormData.phone ||
-            !addressFormData.cityDistrict ||
+            !addressFormData.district ||
+            !addressFormData.city ||
+            !addressFormData.ward ||
             !addressFormData.address
         ) {
             setErrorMessage('Vui lòng cập nhật thông tin địa chỉ.');
             setShowAddressForm(true);
             return;
         }
+
         if (!paymentMethod) {
             setErrorMessage('Vui lòng chọn phương thức thanh toán.');
             return;
@@ -118,7 +132,6 @@ export default function Checkout() {
             setOrderSuccess(true);
 
             alert('Đặt hàng thành công!');
-            router.push('/');
         } catch (error: unknown) {
             console.error(
                 'Order error:',
@@ -134,21 +147,50 @@ export default function Checkout() {
 
     if (orderSuccess) {
         return (
-            <div className="bg-gray-50 min-h-screen py-4 ">
-                <div className="max-w-4xl mx-auto bg-white rounded shadow p-6 mt-4 text-center ">
-                    <h2 className="text-2xl font-bold text-green-500 mb-4">
-                        Đặt hàng thành công!
-                    </h2>
-                    <p className="mb-4">
-                        Cảm ơn bạn đã đặt hàng. Đơn hàng của bạn đang được xử
-                        lý.
-                    </p>
-                    <button
-                        className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-600"
-                        onClick={() => router.push('/')}
-                    >
-                        Quay lại trang chủ
-                    </button>
+            <div className="bg-gray-50  flex items-center justify-center py-12 px-4">
+                <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div className="flex flex-col items-center">
+                        {/* Icon success */}
+                        <div className="bg-green-100 rounded-full p-4 mb-4">
+                            <svg
+                                className="w-12 h-12 text-green-500"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M5 13l4 4L19 7"
+                                />
+                            </svg>
+                        </div>
+
+                        <h2 className="text-3xl font-extrabold text-gray-900 mb-2">
+                            Đặt hàng thành công!
+                        </h2>
+                        <p className="text-gray-600 mb-6">
+                            Cảm ơn bạn đã mua sắm tại cửa hàng của chúng tôi.
+                            Đơn hàng của bạn đang được xử lý và sẽ sớm được vận
+                            chuyển.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            <button
+                                onClick={() => router.push('/')}
+                                className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-md transition-colors duration-200"
+                            >
+                                Quay lại trang chủ
+                            </button>
+                            <button
+                                onClick={() => router.push('/orders')}
+                                className="w-full sm:w-auto bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold px-6 py-3 rounded-md transition-colors duration-200"
+                            >
+                                Xem đơn hàng
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
@@ -157,33 +199,12 @@ export default function Checkout() {
     return (
         <div className="bg-gradient-to-b from-gray-200 to-gray-50 min-h-screen py-4">
             <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-xl p-6 mt-4">
-                <div className="mb-6 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg shadow-md">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                            <LocationOnIcon className="text-red-500 mr-2 drop-shadow-sm" />
-                            <span className="font-semibold drop-shadow-sm">
-                                Địa Chỉ Nhận Hàng
-                            </span>
-                        </div>
-                        <button
-                            className="text-blue-500 underline hover:text-red-600 drop-shadow-sm cursor-pointer"
-                            onClick={() => setShowAddressForm(!showAddressForm)}
-                        >
-                            Thay Đổi
-                        </button>
-                    </div>
-                    {showAddressForm ? (
-                        <AddressForm
-                            addressFormData={addressFormData}
-                            setAddressFormData={setAddressFormData}
-                            setShowAddressForm={setShowAddressForm}
-                        />
-                    ) : (
-                        <p className="mt-2 text-gray-700 drop-shadow-sm">
-                            {addressFormData.address}
-                        </p>
-                    )}
-                </div>
+                <AddressSection
+                    addressFormData={addressFormData}
+                    setAddressFormData={setAddressFormData}
+                    showAddressForm={showAddressForm}
+                    setShowAddressForm={setShowAddressForm}
+                />
 
                 <div className="mb-6">
                     <div className="overflow-x-auto">
@@ -204,7 +225,10 @@ export default function Checkout() {
                                     >
                                         <td className="flex items-center gap-3 py-2">
                                             <img
-                                                src={item.image}
+                                                src={
+                                                    item.image ||
+                                                    '/placeholder.png'
+                                                }
                                                 alt={item.name}
                                                 className="w-16 h-16 object-cover  rounded shadow-md"
                                                 loading="lazy"
@@ -233,53 +257,21 @@ export default function Checkout() {
                     </div>
                 </div>
 
-                <div className="mb-6 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg shadow-md">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                            <ConfirmationNumberIcon className="text-red-500 mr-2 drop-shadow-sm" />
-                            <span className="font-semibold drop-shadow-sm">
-                                Shope Voucher
-                            </span>
-                        </div>
-                        <button
-                            className="text-blue-500 underline hover:text-red-600 drop-shadow-sm cursor-pointer"
-                            onClick={() =>
-                                alert(
-                                    'Chức năng chọn voucher chưa được triển khai.',
-                                )
-                            }
-                        >
-                            Chọn Voucher
-                        </button>
-                    </div>
-                    {voucher && (
-                        <p className="mt-2 text-sm text-gray-700 drop-shadow-sm">
-                            Đã áp dụng voucher: ₫
-                            {voucher.discount.toLocaleString('vi-VN')}
-                        </p>
-                    )}
-                    <div className="flex items-center mt-2">
-                        <MonetizationOnIcon className="text-red-600 mr-2 drop-shadow-sm" />
-                        <span className="drop-shadow-sm">
-                            Shope Xu{' '}
-                            <span className="text-gray-500">
-                                (Không đủ sử dụng Xu)
-                            </span>
-                        </span>
-                        <input
-                            type="text"
-                            className="ml-2 w-16  rounded px-1 shadow-md bg-gray-50"
-                            defaultValue="40"
-                            disabled
-                        />
-                    </div>
-                </div>
+                <VoucherSection
+                    voucher={voucher}
+                    userCoins={userCoins}
+                    useCoin={useCoin}
+                    setUseCoin={setUseCoin}
+                    onSelectVoucher={() => {
+                        // mở dialog chọn voucher
+                    }}
+                />
 
                 <div className="mb-6 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg shadow-md">
                     <h3 className="text-lg font-semibold mb-2 drop-shadow-sm">
                         Phương thức thanh toán
                     </h3>
-                    <div className="flex space-x-4">
+                    <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
                         <label className="flex items-center cursor-pointer">
                             <input
                                 type="radio"
@@ -304,9 +296,8 @@ export default function Checkout() {
                                 }
                                 className="mr-2 accent-red-500"
                             />
-                            thẻ tín dụng / thẻ ghi nợ
+                            Thẻ tín dụng / thẻ ghi nợ
                         </label>
-
                         <label className="flex items-center cursor-pointer">
                             <input
                                 type="radio"

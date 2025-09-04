@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import {
     Table,
     TableBody,
@@ -27,18 +27,23 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import type { CartItem, CartGroup } from '~/app/(customer)/cart/page';
 import { debounce } from 'lodash';
 
-interface CartTableProps {
+// Component DesktopTable
+const DesktopTableComponent: React.FC<{
     cartGroups: CartGroup[];
     selected: string[];
     handleSelect: (id: string) => void;
     handleSelectGroup: (shopId: string) => void;
     handleDelete: (id: string) => void;
-    handleIncrease: (id: string) => void;
-    handleDecrease: (id: string) => void;
-    handleQuantityChange: (id: string, quantity: number) => void;
-}
-
-const CartTable: React.FC<CartTableProps> = ({
+    handleIncrease: (id: string) => Promise<void>;
+    handleDecrease: (id: string) => Promise<void>;
+    inputQuantities: { [key: string]: number | '' };
+    setInputQuantities: React.Dispatch<
+        React.SetStateAction<{ [key: string]: number | '' }>
+    >;
+    handleInputChange: (id: string, value: string) => void;
+    getDebouncedUpdate: (id: string) => (quantity: number) => void;
+    flushDebouncedUpdate: (id: string) => void;
+}> = ({
     cartGroups,
     selected,
     handleSelect,
@@ -46,95 +51,77 @@ const CartTable: React.FC<CartTableProps> = ({
     handleDelete,
     handleIncrease,
     handleDecrease,
-    handleQuantityChange,
-}) => {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-
-    const [isClient, setIsClient] = useState(false);
-
-    const debouncedUpdate = useMemo(
-        () =>
-            debounce((id: string, quantity: number) => {
-                handleQuantityChange(id, quantity);
-            }, 500),
-        [handleQuantityChange],
-    );
-
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    // Desktop Table Layout
-    const DesktopTable = () => (
-        <TableContainer>
-            <Table>
-                {cartGroups.map((group) => (
-                    <React.Fragment key={group.shop.id}>
-                        <TableHead>
-                            <TableRow sx={{ bgcolor: '#f5f5f5' }}>
-                                <TableCell colSpan={6}>
-                                    <Box
+    inputQuantities,
+    setInputQuantities,
+    handleInputChange,
+    getDebouncedUpdate,
+    flushDebouncedUpdate,
+}) => (
+    <TableContainer>
+        <Table>
+            {cartGroups.map((group) => (
+                <React.Fragment key={group.shop.id}>
+                    <TableHead>
+                        <TableRow sx={{ bgcolor: '#f5f5f5' }}>
+                            <TableCell colSpan={6}>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 1,
+                                        py: 1,
+                                    }}
+                                >
+                                    <StorefrontIcon sx={{ color: '#d32f2f' }} />
+                                    <Typography variant="h6" fontWeight="bold">
+                                        {group.shop.name || 'Unknown Shop'}
+                                    </Typography>
+                                    <Box sx={{ flexGrow: 1 }} />
+                                    <Typography
+                                        variant="body2"
                                         sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: 1,
-                                            py: 1,
+                                            color: '#1976d2',
+                                            cursor: 'pointer',
                                         }}
-                                    >
-                                        <StorefrontIcon
-                                            sx={{ color: '#d32f2f' }}
-                                        />
-                                        <Typography
-                                            variant="h6"
-                                            fontWeight="bold"
-                                        >
-                                            {group.shop.name || 'Unknown Shop'}
-                                        </Typography>
-                                        <Box sx={{ flexGrow: 1 }} />
-                                        <Typography
-                                            variant="body2"
-                                            sx={{
-                                                color: '#1976d2',
-                                                cursor: 'pointer',
-                                            }}
-                                            onClick={() =>
-                                                handleSelectGroup(group.shop.id)
-                                            }
-                                        >
-                                            {group.items.every((item) =>
-                                                selected.includes(item.id),
-                                            )
-                                                ? 'Bỏ chọn tất cả'
-                                                : 'Chọn tất cả'}
-                                        </Typography>
-                                    </Box>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow sx={{ bgcolor: '#f5f5f5' }}>
-                                <TableCell padding="checkbox">
-                                    <Checkbox
-                                        checked={
-                                            group.items.length > 0 &&
-                                            group.items.every((item) =>
-                                                selected.includes(item.id),
-                                            )
-                                        }
-                                        onChange={() =>
+                                        onClick={() =>
                                             handleSelectGroup(group.shop.id)
                                         }
-                                    />
-                                </TableCell>
-                                <TableCell align="left">Sản Phẩm</TableCell>
-                                <TableCell align="center">Đơn Giá</TableCell>
-                                <TableCell align="center">Số Lượng</TableCell>
-                                <TableCell align="center">Số Tiền</TableCell>
-                                <TableCell align="center">Thao Tác</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {group.items.map((item) => (
+                                    >
+                                        {group.items.every((item) =>
+                                            selected.includes(item.id),
+                                        )
+                                            ? 'Bỏ chọn tất cả'
+                                            : 'Chọn tất cả'}
+                                    </Typography>
+                                </Box>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow sx={{ bgcolor: '#f5f5f5' }}>
+                            <TableCell padding="checkbox">
+                                <Checkbox
+                                    checked={
+                                        group.items.length > 0 &&
+                                        group.items.every((item) =>
+                                            selected.includes(item.id),
+                                        )
+                                    }
+                                    onChange={() =>
+                                        handleSelectGroup(group.shop.id)
+                                    }
+                                />
+                            </TableCell>
+                            <TableCell align="left">Sản Phẩm</TableCell>
+                            <TableCell align="center">Đơn Giá</TableCell>
+                            <TableCell align="center">Số Lượng</TableCell>
+                            <TableCell align="center">Số Tiền</TableCell>
+                            <TableCell align="center">Thao Tác</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {group.items.map((item) => {
+                            const displayQuantity =
+                                inputQuantities[item.id] ?? item.quantity;
+                            return (
                                 <TableRow key={item.id} hover>
                                     <TableCell padding="checkbox">
                                         <Checkbox
@@ -192,16 +179,43 @@ const CartTable: React.FC<CartTableProps> = ({
                                         >
                                             <IconButton
                                                 size="small"
-                                                onClick={() =>
-                                                    handleDecrease(item.id)
-                                                }
+                                                onClick={async () => {
+                                                    const currentQty =
+                                                        (inputQuantities[
+                                                            item.id
+                                                        ] as number) ??
+                                                        item.quantity;
+                                                    const newQty = Math.max(
+                                                        currentQty - 1,
+                                                        1,
+                                                    );
+                                                    setInputQuantities(
+                                                        (prev) => ({
+                                                            ...prev,
+                                                            [item.id]: newQty,
+                                                        }),
+                                                    );
+                                                    try {
+                                                        await handleDecrease(
+                                                            item.id,
+                                                        );
+                                                    } catch {
+                                                        setInputQuantities(
+                                                            (prev) => ({
+                                                                ...prev,
+                                                                [item.id]:
+                                                                    item.quantity,
+                                                            }),
+                                                        );
+                                                    }
+                                                }}
                                                 disabled={item.quantity === 1}
                                             >
                                                 <RemoveIcon />
                                             </IconButton>
                                             <TextField
                                                 type="number"
-                                                value={item.quantity}
+                                                value={displayQuantity}
                                                 size="small"
                                                 sx={{
                                                     flexGrow: 1,
@@ -220,23 +234,66 @@ const CartTable: React.FC<CartTableProps> = ({
                                                             'textfield',
                                                     },
                                                 }}
-                                                onChange={(e) => {
-                                                    const newQuantity = Number(
+                                                onChange={(e) =>
+                                                    handleInputChange(
+                                                        item.id,
                                                         e.target.value,
-                                                    );
-                                                    if (newQuantity >= 1) {
-                                                        debouncedUpdate(
+                                                    )
+                                                }
+                                                onBlur={() => {
+                                                    const qty =
+                                                        inputQuantities[
+                                                            item.id
+                                                        ];
+                                                    if (
+                                                        typeof qty ===
+                                                            'number' &&
+                                                        qty >= 1
+                                                    ) {
+                                                        flushDebouncedUpdate(
                                                             item.id,
-                                                            newQuantity,
+                                                        );
+                                                    } else {
+                                                        setInputQuantities(
+                                                            (prev) => ({
+                                                                ...prev,
+                                                                [item.id]:
+                                                                    item.quantity,
+                                                            }),
                                                         );
                                                     }
                                                 }}
                                             />
                                             <IconButton
                                                 size="small"
-                                                onClick={() =>
-                                                    handleIncrease(item.id)
-                                                }
+                                                onClick={async () => {
+                                                    const currentQty =
+                                                        (inputQuantities[
+                                                            item.id
+                                                        ] as number) ??
+                                                        item.quantity;
+                                                    const newQty =
+                                                        currentQty + 1;
+                                                    setInputQuantities(
+                                                        (prev) => ({
+                                                            ...prev,
+                                                            [item.id]: newQty,
+                                                        }),
+                                                    );
+                                                    try {
+                                                        await handleIncrease(
+                                                            item.id,
+                                                        );
+                                                    } catch {
+                                                        setInputQuantities(
+                                                            (prev) => ({
+                                                                ...prev,
+                                                                [item.id]:
+                                                                    item.quantity,
+                                                            }),
+                                                        );
+                                                    }
+                                                }}
                                             >
                                                 <AddIcon />
                                             </IconButton>
@@ -251,7 +308,10 @@ const CartTable: React.FC<CartTableProps> = ({
                                         }}
                                     >
                                         {(
-                                            item.price * item.quantity
+                                            item.price *
+                                            (typeof displayQuantity === 'number'
+                                                ? displayQuantity
+                                                : item.quantity)
                                         ).toLocaleString('vi-VN', {
                                             style: 'currency',
                                             currency: 'VND',
@@ -268,56 +328,87 @@ const CartTable: React.FC<CartTableProps> = ({
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                        {cartGroups.length - 1 !==
-                            cartGroups.indexOf(group) && (
-                            <TableRow>
-                                <TableCell colSpan={6}>
-                                    <Divider sx={{ my: 2 }} />
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </React.Fragment>
-                ))}
-            </Table>
-        </TableContainer>
-    );
+                            );
+                        })}
+                    </TableBody>
+                    {cartGroups.length - 1 !== cartGroups.indexOf(group) && (
+                        <TableRow>
+                            <TableCell colSpan={6}>
+                                <Divider sx={{ my: 2 }} />
+                            </TableCell>
+                        </TableRow>
+                    )}
+                </React.Fragment>
+            ))}
+        </Table>
+    </TableContainer>
+);
 
-    // Mobile/Tablet Card Layout
-    const MobileCardLayout = () => (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
-            {cartGroups.map((group) => (
-                <Box key={group.shop.id}>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 1,
-                            bgcolor: '#f5f5f5',
-                            p: 2,
-                            borderRadius: 1,
-                            mb: 2,
-                        }}
+// Component MobileCardLayout (tương tự, áp dụng các thay đổi giống DesktopTableComponent)
+const MobileCardLayoutComponent: React.FC<{
+    cartGroups: CartGroup[];
+    selected: string[];
+    handleSelect: (id: string) => void;
+    handleSelectGroup: (shopId: string) => void;
+    handleDelete: (id: string) => void;
+    handleIncrease: (id: string) => Promise<void>;
+    handleDecrease: (id: string) => Promise<void>;
+    inputQuantities: { [key: string]: number | '' };
+    setInputQuantities: React.Dispatch<
+        React.SetStateAction<{ [key: string]: number | '' }>
+    >;
+    handleInputChange: (id: string, value: string) => void;
+    getDebouncedUpdate: (id: string) => (quantity: number) => void;
+    flushDebouncedUpdate: (id: string) => void;
+    isMobile: boolean;
+}> = ({
+    cartGroups,
+    selected,
+    handleSelect,
+    handleSelectGroup,
+    handleDelete,
+    handleIncrease,
+    handleDecrease,
+    inputQuantities,
+    setInputQuantities,
+    handleInputChange,
+    getDebouncedUpdate,
+    flushDebouncedUpdate,
+    isMobile,
+}) => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+        {cartGroups.map((group) => (
+            <Box key={group.shop.id}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        bgcolor: '#f5f5f5',
+                        p: 2,
+                        borderRadius: 1,
+                        mb: 2,
+                    }}
+                >
+                    <StorefrontIcon sx={{ color: '#d32f2f' }} />
+                    <Typography variant="h6" fontWeight="bold">
+                        {group.shop.name || 'Unknown Shop'}
+                    </Typography>
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Typography
+                        variant="body2"
+                        sx={{ color: '#1976d2', cursor: 'pointer' }}
+                        onClick={() => handleSelectGroup(group.shop.id)}
                     >
-                        <StorefrontIcon sx={{ color: '#d32f2f' }} />
-                        <Typography variant="h6" fontWeight="bold">
-                            {group.shop.name || 'Unknown Shop'}
-                        </Typography>
-                        <Box sx={{ flexGrow: 1 }} />
-                        <Typography
-                            variant="body2"
-                            sx={{ color: '#1976d2', cursor: 'pointer' }}
-                            onClick={() => handleSelectGroup(group.shop.id)}
-                        >
-                            {group.items.every((item) =>
-                                selected.includes(item.id),
-                            )
-                                ? 'Bỏ chọn tất cả'
-                                : 'Chọn tất cả'}
-                        </Typography>
-                    </Box>
-                    {group.items.map((item) => (
+                        {group.items.every((item) => selected.includes(item.id))
+                            ? 'Bỏ chọn tất cả'
+                            : 'Chọn tất cả'}
+                    </Typography>
+                </Box>
+                {group.items.map((item) => {
+                    const displayQuantity =
+                        inputQuantities[item.id] ?? item.quantity;
+                    return (
                         <Card
                             key={item.id}
                             sx={{ boxShadow: 2, borderRadius: 2, mb: 2 }}
@@ -378,9 +469,36 @@ const CartTable: React.FC<CartTableProps> = ({
                                         >
                                             <IconButton
                                                 size="small"
-                                                onClick={() =>
-                                                    handleDecrease(item.id)
-                                                }
+                                                onClick={async () => {
+                                                    const currentQty =
+                                                        (inputQuantities[
+                                                            item.id
+                                                        ] as number) ??
+                                                        item.quantity;
+                                                    const newQty = Math.max(
+                                                        currentQty - 1,
+                                                        1,
+                                                    );
+                                                    setInputQuantities(
+                                                        (prev) => ({
+                                                            ...prev,
+                                                            [item.id]: newQty,
+                                                        }),
+                                                    );
+                                                    try {
+                                                        await handleDecrease(
+                                                            item.id,
+                                                        );
+                                                    } catch {
+                                                        setInputQuantities(
+                                                            (prev) => ({
+                                                                ...prev,
+                                                                [item.id]:
+                                                                    item.quantity,
+                                                            }),
+                                                        );
+                                                    }
+                                                }}
                                                 disabled={item.quantity === 1}
                                             >
                                                 <RemoveIcon
@@ -393,7 +511,7 @@ const CartTable: React.FC<CartTableProps> = ({
                                             </IconButton>
                                             <TextField
                                                 type="number"
-                                                value={item.quantity}
+                                                value={displayQuantity}
                                                 inputProps={{ min: 1 }}
                                                 size="small"
                                                 sx={{
@@ -415,23 +533,66 @@ const CartTable: React.FC<CartTableProps> = ({
                                                             'textfield',
                                                     },
                                                 }}
-                                                onChange={(e) => {
-                                                    const newQuantity = Number(
+                                                onChange={(e) =>
+                                                    handleInputChange(
+                                                        item.id,
                                                         e.target.value,
-                                                    );
-                                                    if (newQuantity >= 1) {
-                                                        debouncedUpdate(
+                                                    )
+                                                }
+                                                onBlur={() => {
+                                                    const qty =
+                                                        inputQuantities[
+                                                            item.id
+                                                        ];
+                                                    if (
+                                                        typeof qty ===
+                                                            'number' &&
+                                                        qty >= 1
+                                                    ) {
+                                                        flushDebouncedUpdate(
                                                             item.id,
-                                                            newQuantity,
+                                                        );
+                                                    } else {
+                                                        setInputQuantities(
+                                                            (prev) => ({
+                                                                ...prev,
+                                                                [item.id]:
+                                                                    item.quantity,
+                                                            }),
                                                         );
                                                     }
                                                 }}
                                             />
                                             <IconButton
                                                 size="small"
-                                                onClick={() =>
-                                                    handleIncrease(item.id)
-                                                }
+                                                onClick={async () => {
+                                                    const currentQty =
+                                                        (inputQuantities[
+                                                            item.id
+                                                        ] as number) ??
+                                                        item.quantity;
+                                                    const newQty =
+                                                        currentQty + 1;
+                                                    setInputQuantities(
+                                                        (prev) => ({
+                                                            ...prev,
+                                                            [item.id]: newQty,
+                                                        }),
+                                                    );
+                                                    try {
+                                                        await handleIncrease(
+                                                            item.id,
+                                                        );
+                                                    } catch {
+                                                        setInputQuantities(
+                                                            (prev) => ({
+                                                                ...prev,
+                                                                [item.id]:
+                                                                    item.quantity,
+                                                            }),
+                                                        );
+                                                    }
+                                                }}
                                             >
                                                 <AddIcon
                                                     fontSize={
@@ -461,18 +622,216 @@ const CartTable: React.FC<CartTableProps> = ({
                                 </Box>
                             </CardContent>
                         </Card>
-                    ))}
-                </Box>
-            ))}
-        </Box>
-    );
+                    );
+                })}
+            </Box>
+        ))}
+    </Box>
+);
+
+// Component chính CartTable
+interface CartTableProps {
+    cartGroups: CartGroup[];
+    selected: string[];
+    handleSelect: (id: string) => void;
+    handleSelectGroup: (shopId: string) => void;
+    handleDelete: (id: string) => void;
+    handleIncrease: (id: string) => Promise<void>;
+    handleDecrease: (id: string) => Promise<void>;
+    handleQuantityChange: (id: string, quantity: number) => Promise<void>; // Sửa thành async để xử lý lỗi
+}
+
+const CartTable: React.FC<CartTableProps> = ({
+    cartGroups,
+    selected,
+    handleSelect,
+    handleSelectGroup,
+    handleDelete,
+    handleIncrease,
+    handleDecrease,
+    handleQuantityChange,
+}) => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+
+    const [isClient, setIsClient] = useState(false);
+    const [inputQuantities, setInputQuantities] = useState<{
+        [key: string]: number | '';
+    }>({});
+    const isInternalUpdate = useRef(false);
+    const debouncedUpdates = useRef<{
+        [key: string]: ReturnType<typeof debounce>;
+    }>({});
+
+    useEffect(() => {
+        return () => {
+            Object.values(debouncedUpdates.current).forEach((debounceFn) =>
+                debounceFn.cancel(),
+            );
+        };
+    }, []);
+
+    useEffect(() => {
+        setIsClient(true);
+        const initialQuantities: { [key: string]: number } = {};
+        cartGroups.forEach((group) => {
+            group.items.forEach((item) => {
+                initialQuantities[item.id] = item.quantity;
+            });
+        });
+        setInputQuantities(initialQuantities);
+    }, []);
+
+    useEffect(() => {
+        if (!isInternalUpdate.current) {
+            setInputQuantities((prev) => {
+                const updated: { [key: string]: number | '' } = { ...prev };
+                cartGroups.forEach((group) => {
+                    group.items.forEach((item) => {
+                        if (!(item.id in updated)) {
+                            updated[item.id] = item.quantity;
+                        } else if (
+                            typeof updated[item.id] === 'number' &&
+                            updated[item.id] !== item.quantity
+                        ) {
+                            updated[item.id] = item.quantity;
+                        }
+                    });
+                });
+                return updated;
+            });
+        }
+        isInternalUpdate.current = false;
+    }, [cartGroups]);
+
+    const getDebouncedUpdate = (id: string) => {
+        if (!debouncedUpdates.current[id]) {
+            debouncedUpdates.current[id] = debounce(
+                async (quantity: number) => {
+                    try {
+                        await handleQuantityChange(id, quantity);
+                    } catch {
+                        setInputQuantities((prev) => ({
+                            ...prev,
+                            [id]:
+                                cartGroups
+                                    .flatMap((group) => group.items)
+                                    .find((item) => item.id === id)?.quantity ??
+                                1,
+                        }));
+                    }
+                },
+                1000,
+            );
+        }
+        return debouncedUpdates.current[id];
+    };
+
+    const flushDebouncedUpdate = (id: string) => {
+        if (debouncedUpdates.current[id]) {
+            debouncedUpdates.current[id].flush();
+        }
+    };
+
+    const handleInputChange = (id: string, value: string) => {
+        if (value === '') {
+            setInputQuantities((prev) => ({ ...prev, [id]: '' }));
+        } else {
+            const newQuantity = Number(value);
+            if (!isNaN(newQuantity) && newQuantity >= 1) {
+                setInputQuantities((prev) => ({ ...prev, [id]: newQuantity }));
+                const debouncedFn = getDebouncedUpdate(id);
+                debouncedFn(newQuantity);
+            }
+        }
+    };
+
+    const handleLocalIncrease = async (id: string) => {
+        isInternalUpdate.current = true;
+        const currentQty =
+            (inputQuantities[id] as number) ??
+            cartGroups
+                .flatMap((group) => group.items)
+                .find((item) => item.id === id)?.quantity ??
+            1;
+        const newQty = currentQty + 1;
+        setInputQuantities((prev) => ({ ...prev, [id]: newQty }));
+        try {
+            await handleIncrease(id);
+            const debouncedFn = getDebouncedUpdate(id);
+            debouncedFn(newQty);
+            debouncedFn.flush();
+        } catch {
+            setInputQuantities((prev) => ({
+                ...prev,
+                [id]:
+                    cartGroups
+                        .flatMap((group) => group.items)
+                        .find((item) => item.id === id)?.quantity ?? 1,
+            }));
+        }
+    };
+
+    const handleLocalDecrease = async (id: string) => {
+        isInternalUpdate.current = true;
+        const currentQty =
+            (inputQuantities[id] as number) ??
+            cartGroups
+                .flatMap((group) => group.items)
+                .find((item) => item.id === id)?.quantity ??
+            1;
+        const newQty = Math.max(currentQty - 1, 1);
+        setInputQuantities((prev) => ({ ...prev, [id]: newQty }));
+        try {
+            await handleDecrease(id);
+            const debouncedFn = getDebouncedUpdate(id);
+            debouncedFn(newQty);
+            debouncedFn.flush();
+        } catch {
+            setInputQuantities((prev) => ({
+                ...prev,
+                [id]:
+                    cartGroups
+                        .flatMap((group) => group.items)
+                        .find((item) => item.id === id)?.quantity ?? 1,
+            }));
+        }
+    };
 
     return (
         <Box sx={{ overflowX: 'auto' }}>
             {isClient && (isMobile || isTablet) ? (
-                <MobileCardLayout />
+                <MobileCardLayoutComponent
+                    cartGroups={cartGroups}
+                    selected={selected}
+                    handleSelect={handleSelect}
+                    handleSelectGroup={handleSelectGroup}
+                    handleDelete={handleDelete}
+                    handleIncrease={handleLocalIncrease}
+                    handleDecrease={handleLocalDecrease}
+                    inputQuantities={inputQuantities}
+                    setInputQuantities={setInputQuantities}
+                    handleInputChange={handleInputChange}
+                    getDebouncedUpdate={getDebouncedUpdate}
+                    flushDebouncedUpdate={flushDebouncedUpdate}
+                    isMobile={isMobile}
+                />
             ) : (
-                <DesktopTable />
+                <DesktopTableComponent
+                    cartGroups={cartGroups}
+                    selected={selected}
+                    handleSelect={handleSelect}
+                    handleSelectGroup={handleSelectGroup}
+                    handleDelete={handleDelete}
+                    handleIncrease={handleLocalIncrease}
+                    handleDecrease={handleLocalDecrease}
+                    inputQuantities={inputQuantities}
+                    setInputQuantities={setInputQuantities}
+                    handleInputChange={handleInputChange}
+                    getDebouncedUpdate={getDebouncedUpdate}
+                    flushDebouncedUpdate={flushDebouncedUpdate}
+                />
             )}
         </Box>
     );

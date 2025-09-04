@@ -373,14 +373,7 @@ const Cart: React.FC = () => {
                                     />
                                 </Box>
                             ))}
-                            {/* {token && (
-                                <VoucherSection
-                                    onSelectVoucher={() =>
-                                        setShowVoucherModal(true)
-                                    }
-                                    voucher={voucher}
-                                />
-                            )} */}
+
                             <CartSummary
                                 cartGroups={cartGroups}
                                 selected={selected}
@@ -394,12 +387,6 @@ const Cart: React.FC = () => {
                     )}
                 </Paper>
                 <ProductSuggestions products={products} />
-                {/* <VoucherModal
-                    visible={showVoucherModal}
-                    onClose={() => setShowVoucherModal(false)}
-                    onSelect={(v) => setVoucher(v)}
-                    selectedVoucher={voucher}
-                /> */}
             </Container>
         </Box>
     );
