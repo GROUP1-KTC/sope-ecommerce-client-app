@@ -4,13 +4,10 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useAlertStore } from '~/store/zustand/alertStore';
-import { useModalStore } from '~/store/zustand/modalStore';
 import type { CartItem } from '~/app/(customer)/cart/page';
-import type {
-    ProductResponse,
-    ProductVariantResponse,
-} from '../../types/products';
+import { ProductResponse, ProductVariantResponse } from '~/types/products';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
+import { useAddCartMutation } from '~/features/cart/cartApiSlice';
 interface ProductInfoProps {
     product: ProductResponse;
     selectedVariant?: ProductVariantResponse;
@@ -19,6 +16,19 @@ interface ProductInfoProps {
     handleAttributeSelect?: (name: string, value: string) => void;
     price: number;
     stock?: number;
+}
+
+import { v4 as uuidv4 } from 'uuid';
+import { addItem } from '~/features/cart/cartSlice';
+import type { AddToCartRequest } from '~/types/cart/AddToCartRequest';
+
+interface CartGroup {
+    shop: {
+        id: string;
+        name: string;
+        avatarUrl: string;
+    };
+    items: CartItem[];
 }
 
 const ProductInfo = ({
@@ -32,6 +42,12 @@ const ProductInfo = ({
 }: ProductInfoProps) => {
     const [showVoucherModal, setShowVoucherModal] = useState(false);
     const [showPolicyModal, setShowPolicyModal] = useState(false);
+    const [addCartApi] = useAddCartMutation();
+    // const token = useAppSelector((state) => state.auth.accessToken);
+    const token =
+        'Bearer eyJhbGciOiJSUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIiwiU0VMTEVSIl0sInVzZXJJZCI6IjM0ZjI2YzBkLTNjOGUtNDA0ZS1hNDUzLWU4ZDViZjhhOWFlOSIsInN1YiI6InVzZXIiLCJpYXQiOjE3NTY4OTEzNjcsImV4cCI6MTc1Njg5NDk2N30.FbyGY2_Lp2XkqffaOs5bqMmjDlONyUtHghinDko-RZkauEeQuvppTzluBbVVRwpFmRGEMWemqFHmLU5gcur9Rn0g5ORtq_6oWmCH-Wbda1nF_k9sFuH_E9hu1DbsBAEYP3Ia3VxXKVzxCMQRuEIffTtL1PjOZxsN7Ov-XvFl-tom8znMlXHr5w-E4UTdh76NOM1lV3R2FZWZnkouH_lyhXBzVjFpbAWgUmBdC4gche26kyF-uTdA7N4Qj_7f4WMmOoJ7sXe3hFJUXb6yufnAAqk6jZSiziDQy37fNMUQTaUI4Bb5kSLPPIYVxWKb5rLJS5FEKttrH82z0w7RlGrdKw';
+
+    const dispatch = useAppDispatch();
 
     const totalSold =
         product.variants?.reduce(
@@ -48,54 +64,93 @@ const ProductInfo = ({
 
     useEffect(() => {
         if (!selectedVariant) {
-            setQuantity(1); // reset về 1 khi không chọn variant
+            setQuantity(1);
         }
     }, [selectedVariant]);
 
     const [selectedImage, setSelectedImage] = useState(product.defaultImage);
 
-    // const token = useAppSelector((state) => state.auth.token);
+    const handleAddToCart = async (item: CartItem) => {
+        console.log('Adding to cart:', item);
 
-    // const handleAddToCart = (item: CartItem) => {
-    //     if (token) {
-    //         // addCartApi(item)
-    //         //   .unwrap()
-    //         //   .then(() => {
-    //         //     useAlertStore.getState().showAlert({
-    //         //       severity: 'success',
-    //         //       message: 'Thêm sản phẩm vào giỏ hàng thành công!',
-    //         //     });
-    //         //   })
-    //         //   .catch(() => {
-    //         //     useAlertStore.getState().showAlert({
-    //         //       severity: 'error',
-    //         //       message: 'Thêm giỏ hàng thất bại!',
-    //         //     });
-    //         //   });
-    //     } else {
-    //         const stored = localStorage.getItem('cart');
-    //         const currentCart: CartItem[] = stored ? JSON.parse(stored) : [];
-    //         const existingIndex = currentCart.findIndex(
-    //             (i) => i.id === item.id,
-    //         );
+        const newItem = {
+            id: uuidv4(),
+            name: item.name,
+            productVariantId: item.productVariantId,
+            price: item.price,
+            image: item.image || null,
+            quantity: item.quantity,
+            shopId: product.shop?.id || '',
+            shopName: product.shop?.name || '',
+            shopAvatar: product.shop?.logoUrl || '',
+        };
 
-    //         if (existingIndex !== -1) {
-    //             currentCart[existingIndex].quantity += item.quantity;
-    //         } else {
-    //             currentCart.push(item);
-    //         }
+        if (token) {
+            // Handle logged-in user
+            try {
+                const request: AddToCartRequest = {
+                    productVariantId: item.productVariantId,
+                    quantity: item.quantity,
+                    image: item.image || null,
+                };
 
-    //         localStorage.setItem('cart', JSON.stringify(currentCart));
+                console.log('Add to cart request:', request);
 
-    //         useAlertStore.getState().showAlert({
-    //             severity: 'success',
-    //             message:
-    //                 'Thêm sản phẩm vào giỏ hàng thành công (chưa đăng nhập)!',
-    //         });
-    //     }
+                await addCartApi(request).unwrap();
+                useAlertStore.getState().showAlert({
+                    severity: 'success',
+                    message: 'Thêm sản phẩm vào giỏ hàng thành công!',
+                });
+            } catch (error) {
+                useAlertStore.getState().showAlert({
+                    severity: 'error',
+                    message: 'Thêm giỏ hàng thất bại!',
+                });
+            }
+        } else {
+            // Handle non-logged-in user
+            const stored = localStorage.getItem('cart');
+            const currentCart: CartGroup[] = stored ? JSON.parse(stored) : [];
 
-    //     // dispatch(addItem(item));
-    // };
+            // Find or create shop in cart
+            let shopIndex = currentCart.findIndex(
+                (s) => s.shop.id === product.shop?.id,
+            );
+            if (shopIndex === -1) {
+                currentCart.push({
+                    shop: {
+                        id: product.shop?.id || '',
+                        name: product.shop?.name || '',
+                        avatarUrl: product.shop?.logoUrl || '',
+                    },
+                    items: [],
+                });
+                shopIndex = currentCart.length - 1;
+            }
+
+            // Add or update item in shop
+            const existingItemIndex = currentCart[shopIndex].items.findIndex(
+                (i) => i.productVariantId === newItem.productVariantId,
+            );
+
+            if (existingItemIndex !== -1) {
+                currentCart[shopIndex].items[existingItemIndex].quantity +=
+                    newItem.quantity;
+            } else {
+                currentCart[shopIndex].items.push(newItem);
+            }
+
+            localStorage.setItem('cart', JSON.stringify(currentCart));
+
+            useAlertStore.getState().showAlert({
+                severity: 'success',
+                message:
+                    'Thêm sản phẩm vào giỏ hàng thành công (chưa đăng nhập)!',
+            });
+        }
+
+        dispatch(addItem(newItem));
+    };
 
     return (
         <div className="bg-white shadow rounded p-4 flex flex-col md:flex-row gap-6">
@@ -521,13 +576,21 @@ const ProductInfo = ({
                 </div>
                 <div className="flex gap-4">
                     <button
-                        // onClick={() =>
-                        //     handleAddToCart({
-                        //         id: product.productId,
-                        //         name: product.name,
-                        //         quantity: 1,
-                        //     })
-                        // }
+                        onClick={() =>
+                            handleAddToCart({
+                                id: uuidv4(),
+                                name: product.name,
+                                productVariantId:
+                                    selectedVariant?.productVariantId ||
+                                    product.variants?.[0].productVariantId ||
+                                    '',
+                                price: price,
+                                image:
+                                    selectedVariant?.imageVariant ||
+                                    product.defaultImage,
+                                quantity: quantity,
+                            })
+                        }
                         className="bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700"
                     >
                         <AddShoppingCartIcon className="mr-2" />
@@ -535,7 +598,7 @@ const ProductInfo = ({
                     </button>
                     <button className="bg-red-600 text-white px-6 rounded hover:bg-red-700">
                         <span>
-                            <p>Mua với Voucher</p>
+                            <p>Mua ngay</p>
                             {/* <p>đ{product.price}</p> */}
                         </span>
                     </button>
