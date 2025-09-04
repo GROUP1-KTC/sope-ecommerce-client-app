@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import VariantGroupInput from './VariantGroupInput';
-import type {
-    Attribute,
-    ProductVariantFormData,
-} from '~/types/products';
+import type { Attribute, Dimension, ProductVariantFormData } from '~/types/products';
+import { ProductFormDataWithMedia } from './RightSideBar';
 interface SalesInfoProps {
     onPriceChange: (price: number) => void;
     onStockChange: (stock: number) => void;
-    onVariantsChange?: (variants: ProductVariantFormData[]) => void; // NEW
+    onDimensionChange: (dimension: Dimension) => void;
+    onWeightChange: (weight: number) => void;
+    onVariantsChange: (variants: ProductVariantFormData[]) => void;
+    productData: ProductFormDataWithMedia;
 }
 
-const SalesInfo = ({ onPriceChange, onStockChange, onVariantsChange }: SalesInfoProps) => {
+const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightChange, onVariantsChange, productData }: SalesInfoProps) => {
     const [showVariant1, setShowVariant1] = useState(false);
     const [showVariant2, setShowVariant2] = useState(false);
 
@@ -21,7 +22,16 @@ const SalesInfo = ({ onPriceChange, onStockChange, onVariantsChange }: SalesInfo
     const [variant2Options, setVariant2Options] = useState<string[]>([]);
 
     const [variantCombinations, setVariantCombinations] = useState<
-        { key: string; option1: string; option2?: string; price: number; stock: number; image?: File }[]
+        {
+            key: string;
+            option1: string;
+            option2?: string;
+            price: number;
+            stock: number;
+            weight: number;
+            dimension: { length: number; width: number; height: number };
+            image?: File
+        }[]
     >([]);
 
     const [imageVariant, setImageVariant] = useState<{ [optionImage: string]: File }>({});
@@ -45,7 +55,6 @@ const SalesInfo = ({ onPriceChange, onStockChange, onVariantsChange }: SalesInfo
     const [duplicateVariantName, setDuplicateVariantName] = useState(false);
 
     useEffect(() => {
-        // Kiểm tra tên phân loại có trùng không (phân biệt chữ hoa thường)
         setDuplicateVariantName(
             variant1.trim().toLowerCase() !== '' &&
             variant2.trim().toLowerCase() !== '' &&
@@ -60,7 +69,9 @@ const SalesInfo = ({ onPriceChange, onStockChange, onVariantsChange }: SalesInfo
                     key: opt,
                     option1: opt,
                     price: 0,
-                    stock: 0
+                    stock: 0,
+                    weight: 0,
+                    dimension: { length: 0, width: 0, height: 0 }
                 }))
             );
         } else if (variant1Options.length && variant2Options.length) {
@@ -72,7 +83,9 @@ const SalesInfo = ({ onPriceChange, onStockChange, onVariantsChange }: SalesInfo
                         option1: opt1,
                         option2: opt2,
                         price: 0,
-                        stock: 0
+                        stock: 0,
+                        weight: 0,
+                        dimension: { length: 0, width: 0, height: 0 }
                     });
                 });
             });
@@ -82,7 +95,7 @@ const SalesInfo = ({ onPriceChange, onStockChange, onVariantsChange }: SalesInfo
 
     useEffect(() => {
         const variantData: ProductVariantFormData[] = variantCombinations.map((combo) => {
-            const imageFile = imageVariant[combo.option1]; // mỗi nhóm option1 chia sẻ ảnh
+            const imageFile = imageVariant[combo.option1];
 
             const attributes: Attribute[] = [
                 {
@@ -104,6 +117,8 @@ const SalesInfo = ({ onPriceChange, onStockChange, onVariantsChange }: SalesInfo
                 price: combo.price,
                 stock: combo.stock,
                 imageVariant: imageFile ?? null,
+                weight: combo.weight,
+                dimension: combo.dimension,
                 attributes,
             };
         });
@@ -122,6 +137,22 @@ const SalesInfo = ({ onPriceChange, onStockChange, onVariantsChange }: SalesInfo
         if (stock < 0) return;
         setVariantCombinations(prev =>
             prev.map(c => (c.key === key ? { ...c, stock } : c))
+        );
+    };
+
+    const handleDimensionChangeVariant = (
+        key: string,
+        dimension: { length: number; width: number; height: number }
+    ) => {
+        setVariantCombinations(prev =>
+            prev.map(c => (c.key === key ? { ...c, dimension } : c))
+        );
+    };
+
+    const handleWeightChangeVariant = (key: string, weight: number) => {
+        if (weight < 0) return;
+        setVariantCombinations(prev =>
+            prev.map(c => (c.key === key ? { ...c, weight } : c))
         );
     };
 
@@ -155,26 +186,80 @@ const SalesInfo = ({ onPriceChange, onStockChange, onVariantsChange }: SalesInfo
                     </button>
 
                     <div className='mt-4'>
-                        <label className="block font-medium mb-1">* Giá</label>
+                        <label className="block font-medium mb-1">* Giá (đồng)</label>
                         <input
-                            type="number"
+                            type="text"
                             placeholder="Nhập vào"
-                            min="0"
                             className="border rounded p-2 w-full"
-                            // value={price}
+                            value={productData.variants[0]?.price ?? ""}
                             onChange={(e) => onPriceChange(Number(e.target.value))}
                         />
                     </div>
                     <div className='mt-4'>
-                        <label className="block font-medium mb-1">* Kho hàng</label>
+                        <label className="block font-medium mb-1">* Kho hàng (số lượng)</label>
                         <input
-                            type="number"
+                            type="text"
                             className="border rounded p-2 w-full"
-                            min="0"
-                            // value={stock}
+                            value={productData.variants[0]?.stock ?? ""}
                             onChange={(e) => onStockChange(Number(e.target.value))}
                         />
                     </div>
+                    {/* Dimension */}
+                    <div className="mt-4 grid grid-cols-3 gap-2">
+                        <div>
+                            <label className="block font-medium mb-1">Dài (cm)</label>
+                            <input
+                                type="number"
+                                className="border rounded p-2 w-full"
+                                value={productData.variants[0]?.dimension?.length ?? ""}
+                                onChange={(e) =>
+                                    onDimensionChange?.({
+                                        ...productData.variants[0]?.dimension,
+                                        length: Number(e.target.value),
+                                    } as Dimension)
+                                }
+                            />
+                        </div>
+                        <div>
+                            <label className="block font-medium mb-1">Rộng (cm)</label>
+                            <input
+                                type="number"
+                                className="border rounded p-2 w-full"
+                                value={productData.variants[0]?.dimension?.width ?? ""}
+                                onChange={(e) =>
+                                    onDimensionChange?.({
+                                        ...productData.variants[0]?.dimension,
+                                        width: Number(e.target.value),
+                                    } as Dimension)
+                                }
+                            />
+                        </div>
+                        <div>
+                            <label className="block font-medium mb-1">Cao (cm)</label>
+                            <input
+                                type="number"
+                                className="border rounded p-2 w-full"
+                                value={productData.variants[0]?.dimension?.height ?? ""}
+                                onChange={(e) =>
+                                    onDimensionChange?.({
+                                        ...productData.variants[0]?.dimension,
+                                        height: Number(e.target.value),
+                                    } as Dimension)
+                                }
+                            />
+                        </div>
+                    </div>
+                    {/* Weight */}
+                    <div className="mt-4">
+                        <label className="block font-medium mb-1">Cân nặng (gram)</label>
+                        <input
+                            type="number"
+                            className="border rounded p-2 w-full"
+                            value={productData.variants[0]?.weight ?? ""}
+                            onChange={(e) => onWeightChange?.(Number(e.target.value))}
+                        />
+                    </div>
+
                 </>
             ) : (
                 <VariantGroupInput
@@ -234,11 +319,12 @@ const SalesInfo = ({ onPriceChange, onStockChange, onVariantsChange }: SalesInfo
                             {variant2 && variant2Options && (
                                 <th className="border px-2 py-1">{variant2}</th>
                             )}
-                            <th className="border px-2 py-1">Giá</th>
-                            <th className="border px-2 py-1">Kho hàng</th>
+                            <th className="border px-2 py-1">Giá </th>
+                            <th className="border px-2 py-1">Kho hàng </th>
+                            <th className="border px-2 py-1">Kích thước (cm) </th>
+                            <th className="border px-2 py-1">Cân nặng (gram)</th>
                         </tr>
                     </thead>
-
 
                     <tbody>
                         {Object.entries(groupedCombinations).map(([option1, combos]) => (
@@ -277,8 +363,7 @@ const SalesInfo = ({ onPriceChange, onStockChange, onVariantsChange }: SalesInfo
                                     )}
                                     <td className="border px-2 py-1">
                                         <input
-                                            type="number"
-                                            min="0"
+                                            type="text"
                                             value={combo.price}
                                             onChange={(e) => handlePriceChangeVariant(combo.key, Number(e.target.value))}
                                             className="border rounded p-1 w-full"
@@ -286,22 +371,71 @@ const SalesInfo = ({ onPriceChange, onStockChange, onVariantsChange }: SalesInfo
                                     </td>
                                     <td className="border px-2 py-1">
                                         <input
-                                            type="number"
-                                            min="0"
+                                            type="text"
                                             value={combo.stock}
                                             onChange={(e) => handleStockChangeVariant(combo.key, Number(e.target.value))}
+                                            className="border rounded p-1 w-full"
+                                        />
+                                    </td>
+
+                                    {/* Dimension (dài, rộng, cao) */}
+                                    <td className="border px-2 py-1">
+                                        <div className="grid grid-cols-3 gap-1">
+                                            <input
+                                                type="number"
+                                                placeholder="D"
+                                                value={combo.dimension?.length ?? ""}
+                                                onChange={(e) =>
+                                                    handleDimensionChangeVariant(combo.key, {
+                                                        ...combo.dimension,
+                                                        length: Number(e.target.value),
+                                                    })
+                                                }
+                                                className="border rounded p-1 w-full"
+                                            />
+                                            <input
+                                                type="number"
+                                                placeholder="R"
+                                                value={combo.dimension?.width ?? ""}
+                                                onChange={(e) =>
+                                                    handleDimensionChangeVariant(combo.key, {
+                                                        ...combo.dimension,
+                                                        width: Number(e.target.value),
+                                                    })
+                                                }
+                                                className="border rounded p-1 w-full"
+                                            />
+                                            <input
+                                                type="number"
+                                                placeholder="C"
+                                                value={combo.dimension?.height ?? ""}
+                                                onChange={(e) =>
+                                                    handleDimensionChangeVariant(combo.key, {
+                                                        ...combo.dimension,
+                                                        height: Number(e.target.value),
+                                                    })
+                                                }
+                                                className="border rounded p-1 w-full"
+                                            />
+                                        </div>
+                                    </td>
+
+                                    <td className="border px-2 py-1">
+                                        <input
+                                            type="text"
+                                            value={combo.weight}
+                                            onChange={(e) => handleWeightChangeVariant(combo.key, Number(e.target.value))}
                                             className="border rounded p-1 w-full"
                                         />
                                     </td>
                                 </tr>
                             ))
                         ))}
-                    </tbody>
-                </table>
+                    </tbody >
+                </table >
             )}
 
-
-        </div>
+        </div >
     );
 };
 

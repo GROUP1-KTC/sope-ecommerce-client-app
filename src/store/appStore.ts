@@ -6,7 +6,7 @@ import userReducer from '~/features/user/userSlice';
 
 import authReducer from '~/features/auth/authSlice';
 import { userApi } from '~/features/user/userApi';
-
+import { elasticApi } from '~/features/products/elasticApi';
 import cartReducer from '~/features/cart/cartSlice';
 
 import checkoutReducer from '~/features/orders/checkoutSlice';
@@ -16,6 +16,7 @@ export const appStore = configureStore({
         [apiSlice.reducerPath]: apiSlice.reducer,
         [authApi.reducerPath]: authApi.reducer,
         [userApi.reducerPath]: userApi.reducer,
+        [elasticApi.reducerPath]: elasticApi.reducer,
         chat: chatReducer,
         auth: authReducer,
         user: userReducer,
@@ -31,6 +32,7 @@ export const appStore = configureStore({
             apiSlice.middleware,
             authApi.middleware,
             userApi.middleware,
+            elasticApi.middleware,
         ]),
     devTools: process.env.NODE_ENV !== 'production',
 });

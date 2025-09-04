@@ -4,10 +4,17 @@ export interface ProductVariantFormData {
     price: number;
     stock: number;
     imageVariant?: File | null;
-    attributes: Attribute[];
+    attributes?: Attribute[];
+    dimension?: Dimension;
+    weight?: number;
 }
 
-// For API response
+export interface Dimension {
+    length?: number;
+    width?: number;
+    height?: number;
+}
+
 export interface ProductVariantResponse {
     productVariantId: string;
     price: number;
@@ -15,6 +22,8 @@ export interface ProductVariantResponse {
     sold: number;
     createdAt?: string;
     updatedAt?: string;
-    imageVariant?: string; // Optional - independent for each variant
+    imageVariant?: string;
     attributes?: Attribute[];
+    dimension?: Dimension;
+    weight?: number;
 }

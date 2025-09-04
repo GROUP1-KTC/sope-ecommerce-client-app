@@ -47,8 +47,8 @@ const ProductDetail = () => {
                 breadcrumb={breadcrumb}
             />
 
-            {/* Product Reviews Component */}
-            <ProductReviews reviews={reviews} />
+            {/* Product Reviews Component
+            <ProductReviews reviews={reviews} /> */}
 
             {/* Others Products */}
             <ProductList

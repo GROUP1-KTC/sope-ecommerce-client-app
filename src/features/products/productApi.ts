@@ -13,7 +13,7 @@ export const productApi = apiSlice.injectEndpoints({
         }),
         createProduct: builder.mutation<ProductResponse, FormData>({
             query: (data) => ({
-                url: 'products',
+                url: `v1/products`,
                 method: 'POST',
                 body: data,
                 credentials: 'omit',

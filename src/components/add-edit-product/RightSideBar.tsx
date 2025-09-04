@@ -43,12 +43,10 @@ const RightSideBar = ({ productData }: RightSideBarProps) => {
             productData.imagesList,
       ]);
 
-      // 👉 KẸP CHỈ SỐ NGAY TRONG LÚC RENDER (tránh crash trước khi effect chạy)
       const maxIndex = mediaList.length - 1;
       const safeIndex = maxIndex >= 0 ? Math.min(currentIndex, maxIndex) : 0;
       const currentItem = mediaList.length > 0 ? mediaList[safeIndex] : null;
 
-      // (Tuỳ chọn) Đồng bộ state nếu đang out-of-range để lần sau bấm nút không lệch
       useEffect(() => {
             if (mediaList.length === 0 && currentIndex !== 0) {
                   setCurrentIndex(0);
@@ -57,7 +55,6 @@ const RightSideBar = ({ productData }: RightSideBarProps) => {
             }
       }, [mediaList.length, safeIndex, currentIndex]);
 
-      // Handlers kẹp chỉ số luôn cho chắc
       const goPrev = () => setCurrentIndex((i) => Math.max(0, i - 1));
       const goNext = () => setCurrentIndex((i) => Math.min(maxIndex, i + 1));
 

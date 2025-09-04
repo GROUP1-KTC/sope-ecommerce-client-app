@@ -36,6 +36,7 @@ export default function VariantGroupInput({
                               type="button"
                               className="text-gray-400 hover:text-red-500"
                               onClick={onRemove}
+                              tabIndex={-1}
                         >
                               <X size={32} />
                         </button>

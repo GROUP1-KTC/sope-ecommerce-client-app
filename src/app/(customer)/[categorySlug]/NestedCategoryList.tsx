@@ -18,7 +18,7 @@ const CategoryNode = ({
     openCategories: Record<string, boolean>;
     toggleOpen: (id: string) => void;
 }) => {
-    const children = categories.filter((cat) => cat.parent?.id === category.id);
+    const children = categories.filter((cat) => cat.parentId === category.id);
 
     const params = useParams();
     const currentSlug = params?.categorySlug;

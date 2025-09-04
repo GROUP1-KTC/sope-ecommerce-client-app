@@ -7,13 +7,21 @@ import Link from "next/link";
 import { useGetProductBySlugQuery } from '~/features/products/productApi';
 import { useGetBreadcrumbCategoryQuery } from '~/features/categories/categoryApi';
 import ProductInfo from '~/components/product-detail/ProductInfo';
+import ProductReviews from '~/components/product-detail/ProductReviews';
+import { useGetReviewByProductQuery } from '~/features/reviews/reviewApi';
 
 const ProductBySlug = () => {
     const params = useParams();
     const slug = params?.productSlug as string;
 
     const { data: product, isLoading, isError } = useGetProductBySlugQuery(slug);
+
+    const { data: reviews } = useGetReviewByProductQuery(product?.productId ?? '');
+
+    console.log('check review', reviews)
+
     const [categoryId, setCategoryId] = useState<string | null>(null);
+
 
     useEffect(() => {
         if (product?.category?.id) {
@@ -28,7 +36,7 @@ const ProductBySlug = () => {
     const attributeMap = useMemo(() => {
         const map = new Map<string, Set<string>>();
         product?.variants?.forEach((variant) => {
-            variant.attributes.forEach((attr) => {
+            variant?.attributes?.forEach((attr) => {
                 if (!map.has(attr.name)) map.set(attr.name, new Set());
                 map.get(attr.name)?.add(attr.value);
             });
@@ -51,16 +59,24 @@ const ProductBySlug = () => {
     const selectedVariant = useMemo(() => {
         if (Object.keys(selectedAttributes).length === 0) return undefined;
         return product?.variants?.find((variant) =>
-            variant.attributes.every(
+            variant?.attributes?.every(
                 (attr) => selectedAttributes[attr.name] === attr.value,
             ),
         );
     }, [product, selectedAttributes]);
 
-
     const minPrice = useMemo(() => {
         if (!product?.variants || product.variants.length === 0) return 0;
-        return Math.min(...product.variants.map(v => v.price));
+
+        // lọc ra các variant có giá > 0
+        const validPrices = product.variants
+            .map(v => v.price)
+            .filter(price => price > 0);
+
+        // nếu không có giá hợp lệ thì return 0
+        if (validPrices.length === 0) return 0;
+
+        return Math.min(...validPrices);
     }, [product]);
 
     const displayedPrice = selectedVariant?.price ?? minPrice;
@@ -108,6 +124,10 @@ const ProductBySlug = () => {
                 price={displayedPrice}
                 stock={displayedStock}
             />
+
+            <ProductReviews reviews={reviews ?? []} />
+
+
 
         </div>
     );
