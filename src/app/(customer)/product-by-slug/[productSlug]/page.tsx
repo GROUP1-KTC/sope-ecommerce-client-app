@@ -32,7 +32,7 @@ const ProductBySlug = () => {
     const attributeMap = useMemo(() => {
         const map = new Map<string, Set<string>>();
         product?.variants?.forEach((variant) => {
-            variant.attributes.forEach((attr) => {
+            variant.attributes?.forEach((attr) => {
                 if (!map.has(attr.name)) map.set(attr.name, new Set());
                 map.get(attr.name)?.add(attr.value);
             });
@@ -57,7 +57,7 @@ const ProductBySlug = () => {
     const selectedVariant = useMemo(() => {
         if (Object.keys(selectedAttributes).length === 0) return undefined;
         return product?.variants?.find((variant) =>
-            variant.attributes.every(
+            variant.attributes?.every(
                 (attr) => selectedAttributes[attr.name] === attr.value,
             ),
         );

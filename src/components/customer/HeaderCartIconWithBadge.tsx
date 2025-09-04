@@ -12,7 +12,15 @@ const HeaderCartIconWithBadge = ({
     setMenuOpen: (v: boolean) => void;
 }) => {
     const cartCount = useSelector((state: RootState) =>
-        state.cart.items.reduce((sum, item) => sum + item.quantity, 0),
+        state.cart.groups.reduce(
+            (sum, group) =>
+                sum +
+                group.items.reduce(
+                    (groupSum, item) => groupSum + item.quantity,
+                    0,
+                ),
+            0,
+        ),
     );
 
     return (
