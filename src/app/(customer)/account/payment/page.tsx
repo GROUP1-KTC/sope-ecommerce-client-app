@@ -3,55 +3,30 @@ import type { FormEvent } from 'react';
 import { useState } from 'react';
 import PaymentList from '~/components/payment/PaymentList';
 import AddPaymentCardDialog from '~/components/payment/AddPaymentCardDialog';
+import { PaymentCard, PaymentCardData } from '~/types/payment';
+import { useAddCardMutation, useDeleteCardMutation, useGetCardsQuery } from '~/features/paymentCard/paymentCardApi';
 
-type Card = {
-    id: number;
-    number: string;
-    expiry: string;
-    name: string;
-    type: string;
-    logo: string;
-};
-
-type CardData = {
-    number: string;
-    expiry: string;
-    name: string;
-    cvc: string;
-    focused?: string;
-};
 
 const PaymentManagementPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [cardData, setCardData] = useState<CardData>({
+    const [cardData, setCardData] = useState<PaymentCardData>({
         number: '',
         expiry: '',
         name: '',
         cvc: '',
         focused: '',
+        cardType: '',
     });
 
-    const [storedCards, setStoredCards] = useState<Card[]>([
-        {
-            id: 1,
-            number: '1231231331234',
-            expiry: '12/25',
-            name: 'Pham',
-            type: 'Mastercard',
-            logo: 'https://down-vn.img.susercontent.com/file/d4bbea4570b93bfd5fc652ca82a262a8',
-        },
-        {
-            id: 2,
-            number: '1231231335678',
-            expiry: '06/26',
-            name: 'Pham',
-            type: 'VCB',
-            logo: 'https://antt.mediacdn.vn/83577812655439872/2024/12/26/vietcombank-1735202958516527402000.jpg',
-        },
-    ]);
+    const { data: cards = [], isLoading } = useGetCardsQuery();
+    const [addCard, { isLoading: isAdding }] = useAddCardMutation();
+    const [deleteCard] = useDeleteCardMutation();
 
-    const handleAddCard = (e: FormEvent<HTMLFormElement>) => {
+
+    const handleAddCard = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        // validate đơn giản
         if (!/^\d{16}$/.test(cardData.number.replace(/\s/g, ''))) {
             alert('Số thẻ phải có đúng 16 chữ số!');
             return;
@@ -65,24 +40,38 @@ const PaymentManagementPage = () => {
             return;
         }
 
-        const newCard: Card = {
-            id: Date.now(),
-            number: cardData.number,
-            expiry: cardData.expiry,
-            name: cardData.name,
-            type: determineCardType(cardData.number),
-            logo: 'https://via.placeholder.com/40',
-        };
-        setStoredCards([...storedCards, newCard]);
-        setCardData({ number: '', expiry: '', name: '', cvc: '', focused: '' });
-        setIsModalOpen(false);
+        try {
+            await addCard({
+                cardNumber: cardData.number,
+                cardHolderName: cardData.name,
+                expiryDate: `20${cardData.expiry.split('/')[1]}-${cardData.expiry.split('/')[0]}-01`,
+                cardType: cardData.cardType as "VISA" | "MASTERCARD" | "AMEX" | "JCB",
+                cvc: cardData.cvc,
+            }).unwrap();
+
+            // Reset form + đóng modal
+            setCardData({
+                number: '',
+                expiry: '',
+                name: '',
+                cvc: '',
+                focused: '',
+                cardType: '',
+            });
+            setIsModalOpen(false);
+        } catch (error) {
+            console.error('Add card failed:', error);
+            alert('Thêm thẻ thất bại!');
+        }
     };
 
-    const determineCardType = (number: string): string => {
-        const cleanedNumber = number.replace(/\s/g, '');
-        if (/^4/.test(cleanedNumber)) return 'Visa';
-        if (/^5[1-5]/.test(cleanedNumber)) return 'Mastercard';
-        return 'Unknown';
+    const handleDeleteCard = async (id: string) => {
+        try {
+            await deleteCard(id).unwrap(); // 👈 gọi mutation deleteCard
+        } catch (err) {
+            console.error('Delete card failed:', err);
+            alert('Xoá thẻ thất bại!');
+        }
     };
 
     return (
@@ -103,7 +92,7 @@ const PaymentManagementPage = () => {
                         <hr className="my-4 border-gray-300" />
 
                         <div className="px-0 sm:px-4 md:px-8">
-                            <PaymentList cards={storedCards} />
+                            <PaymentList cards={cards} onDelete={handleDeleteCard} />
                         </div>
                     </div>
                 </div>
