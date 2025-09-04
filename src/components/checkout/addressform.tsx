@@ -3,7 +3,9 @@ import React from 'react';
 type AddressFormData = {
     fullName: string;
     phone: string;
-    cityDistrict: string;
+    city: string;
+    district: string;
+    ward: string;
     address: string;
     type: string;
 };
@@ -19,17 +21,19 @@ export default function AddressForm({
     setAddressFormData,
     setShowAddressForm,
 }: AddressFormProps) {
-    const handleAddressChange = (
+    const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     ) => {
         const { name, value } = e.target;
         setAddressFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmitAddress = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const { fullName, phone, cityDistrict, address } = addressFormData;
-        if (!fullName || !phone || !cityDistrict || !address) {
+        const { fullName, phone, city, district, ward, address } =
+            addressFormData;
+
+        if (!fullName || !phone || !city || !district || !ward || !address) {
             alert('Vui lòng điền đầy đủ thông tin địa chỉ.');
             return;
         }
@@ -37,17 +41,19 @@ export default function AddressForm({
             alert('Số điện thoại phải có 10 chữ số.');
             return;
         }
+
         setShowAddressForm(false);
     };
 
     return (
-        <form onSubmit={handleSubmitAddress} className="mt-4 space-y-4">
+        <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+            {/* Họ tên & SĐT */}
             <div className="flex space-x-4">
                 <input
                     type="text"
                     name="fullName"
                     value={addressFormData.fullName}
-                    onChange={handleAddressChange}
+                    onChange={handleChange}
                     className="w-1/2 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="Họ và tên"
                     required
@@ -56,38 +62,61 @@ export default function AddressForm({
                     type="text"
                     name="phone"
                     value={addressFormData.phone}
-                    onChange={handleAddressChange}
+                    onChange={handleChange}
                     className="w-1/2 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="Số điện thoại"
                     required
                 />
             </div>
-            <select
-                name="cityDistrict"
-                value={addressFormData.cityDistrict}
-                onChange={handleAddressChange}
-                className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-                required
-            >
-                <option value="">Tỉnh/Thành phố, Quận/Huyện, Phường/Xã</option>
-                <option value="HCM">
-                    TP. Hồ Chí Minh, Quận Bình Thạnh, Phường 25
-                </option>
-            </select>
+
+            {/* City / District / Ward */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <input
+                    type="text"
+                    name="city"
+                    value={addressFormData.city}
+                    onChange={handleChange}
+                    className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    placeholder="Tỉnh/Thành phố"
+                    required
+                />
+                <input
+                    type="text"
+                    name="district"
+                    value={addressFormData.district}
+                    onChange={handleChange}
+                    className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    placeholder="Quận/Huyện"
+                    required
+                />
+                <input
+                    type="text"
+                    name="ward"
+                    value={addressFormData.ward}
+                    onChange={handleChange}
+                    className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    placeholder="Phường/Xã"
+                    required
+                />
+            </div>
+
+            {/* Địa chỉ cụ thể */}
             <input
                 type="text"
                 name="address"
                 value={addressFormData.address}
-                onChange={handleAddressChange}
+                onChange={handleChange}
                 className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-                placeholder="Địa chỉ cụ thể"
+                placeholder="Địa chỉ cụ thể (số nhà, tên đường...)"
                 required
             />
+
+            {/* Type & Button vị trí */}
             <div className="flex space-x-4">
                 <select
                     name="type"
                     value={addressFormData.type}
-                    onChange={handleAddressChange}
+                    onChange={handleChange}
                     className="w-1/2 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
                     <option value="Nhà Riêng">Nhà Riêng</option>
@@ -100,6 +129,8 @@ export default function AddressForm({
                     + Thêm vị trí
                 </button>
             </div>
+
+            {/* Action Buttons */}
             <div className="flex justify-end space-x-4">
                 <button
                     type="button"
@@ -110,7 +141,7 @@ export default function AddressForm({
                 </button>
                 <button
                     type="submit"
-                    className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-red-600 cursor-pointer"
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 cursor-pointer"
                 >
                     Hoàn tất
                 </button>
