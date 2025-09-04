@@ -5,17 +5,17 @@ import chatReducer from '~/features/chat/chatSlice';
 import userReducer from '~/features/user/userSlice';
 
 import authReducer from '~/features/auth/authSlice';
-import { userApi } from '~/features/user/userApi';
 
 import cartReducer from '~/features/cart/cartSlice';
 
 import checkoutReducer from '~/features/orders/checkoutSlice';
+import { addressApi } from '~/features/address/addressApi';
 
 export const appStore = configureStore({
     reducer: {
         [apiSlice.reducerPath]: apiSlice.reducer,
         [authApi.reducerPath]: authApi.reducer,
-        [userApi.reducerPath]: userApi.reducer,
+        [addressApi.reducerPath]: addressApi.reducer,
         chat: chatReducer,
         auth: authReducer,
         user: userReducer,
@@ -30,7 +30,7 @@ export const appStore = configureStore({
         }).concat([
             apiSlice.middleware,
             authApi.middleware,
-            userApi.middleware,
+            addressApi.middleware,
         ]),
     devTools: process.env.NODE_ENV !== 'production',
 });

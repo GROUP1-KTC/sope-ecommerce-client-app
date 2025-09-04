@@ -3,20 +3,14 @@ import type { FormEvent } from 'react';
 import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import type { Focused } from 'react-credit-cards-2/dist/es/types';
+import { PaymentCardData } from '~/types/payment';
 
-interface CardData {
-    number: string;
-    expiry: string;
-    name: string;
-    cvc: string;
-    focused?: string;
-}
 
 interface AddPaymentCardDialogProps {
     isOpen: boolean;
     onClose: () => void;
-    cardData: CardData;
-    setCardData: React.Dispatch<React.SetStateAction<CardData>>;
+    cardData: PaymentCardData;
+    setCardData: React.Dispatch<React.SetStateAction<PaymentCardData>>;
     onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
 
@@ -27,7 +21,9 @@ const AddPaymentCardDialog: React.FC<AddPaymentCardDialogProps> = ({
     setCardData,
     onSubmit,
 }) => {
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) => {
         const { name, value } = e.target;
         if (name === 'number' && value.length > 16) return;
         if (name === 'cvc' && value.length > 4) return;
@@ -75,7 +71,7 @@ const AddPaymentCardDialog: React.FC<AddPaymentCardDialogProps> = ({
                                 {
                                     label: 'Tên trên thẻ',
                                     name: 'name',
-                                    placeholder: 'Pham',
+                                    placeholder: 'Nguyen Van A',
                                 },
                                 {
                                     label: 'Ngày hết hạn',
@@ -94,13 +90,13 @@ const AddPaymentCardDialog: React.FC<AddPaymentCardDialogProps> = ({
                                     {field.label}
                                 </label>
                                 <input
-                                    className="w-2/3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                    className="w-2/3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                                     type="text"
                                     name={field.name}
                                     placeholder={field.placeholder}
                                     value={
                                         cardData[
-                                            field.name as keyof CardData
+                                            field.name as keyof PaymentCardData
                                         ] as string
                                     }
                                     onChange={handleInputChange}
@@ -109,10 +105,30 @@ const AddPaymentCardDialog: React.FC<AddPaymentCardDialogProps> = ({
                                 />
                             </div>
                         ))}
+
+                        <div className="flex items-center">
+                            <label className="block text-gray-700 text-sm font-bold w-1/3">
+                                Loại thẻ
+                            </label>
+                            <select
+                                className="w-2/3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                name="cardType"
+                                value={cardData.cardType}
+                                onChange={handleInputChange}
+                                required
+                            >
+                                <option value="">-- Chọn loại thẻ --</option>
+                                <option value="VISA">Visa</option>
+                                <option value="MASTERCARD">MasterCard</option>
+                                <option value="AMEX">American Express</option>
+                                <option value="JCB">JCB</option>
+                            </select>
+                        </div>
+
                         <div className="flex justify-end">
                             <button
                                 type="submit"
-                                className="bg-green-500 text-white p-2 rounded hover:bg-green-600 w-1/6 hover:shadow-lg transition cursor-pointer"
+                                className="bg-red-500 text-white p-2 rounded hover:bg-red-600 w-1/6 hover:shadow-lg transition cursor-pointer"
                             >
                                 Thêm
                             </button>

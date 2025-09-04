@@ -1,6 +1,7 @@
 'use client';
 import type { FormEvent } from 'react';
 import { useState, useEffect } from 'react';
+import { useAddAddressMutation } from '~/features/address/addressApi';
 
 type Province = { code: number; name: string };
 type District = { code: number; name: string };
@@ -90,37 +91,36 @@ const AddressFormModal = ({
         }));
     };
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const provinceName =
-            provinces.find((p) => p.code === parseInt(addressData.province))
-                ?.name || '';
-        const districtName =
-            districts.find((d) => d.code === parseInt(addressData.district))
-                ?.name || '';
-        const wardName =
-            wards.find((w) => w.code === parseInt(addressData.ward))?.name ||
-            '';
-        const fullAddress = `${addressData.detailedAddress}, ${wardName}, ${districtName}, ${provinceName}`;
+    // call api
+    const [addAddress] = useAddAddressMutation();
 
-        const newAddress = {
-            id: Math.floor(Math.random() * 1000) + 1,
-            name: addressData.name,
-            phone: addressData.phone,
-            address: fullAddress,
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const provinceName =
+            provinces.find((p) => p.code === parseInt(addressData.province))?.name || "";
+        const districtName =
+            districts.find((d) => d.code === parseInt(addressData.district))?.name || "";
+        const wardName =
+            wards.find((w) => w.code === parseInt(addressData.ward))?.name || "";
+
+        const request = {
+            recipientName: addressData.name,
+            phoneNumber: addressData.phone,
+            street: addressData.detailedAddress,
+            ward: wardName,
+            district: districtName,
+            city: provinceName,
+            country: "Vietnam",
             isDefault: addressData.isDefault,
         };
 
-        onSubmit(newAddress);
-        setAddressData({
-            name: '',
-            phone: '',
-            province: '',
-            district: '',
-            ward: '',
-            detailedAddress: '',
-            isDefault: false,
-        });
+        try {
+            await addAddress(request).unwrap();
+            onClose();
+        } catch (err) {
+            console.error("Lỗi khi thêm địa chỉ:", err);
+        }
     };
 
     if (!isOpen) return null;

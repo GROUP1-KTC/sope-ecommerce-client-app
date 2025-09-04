@@ -7,23 +7,15 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import WarningIcon from '@mui/icons-material/Warning';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import Image from 'next/image';
+import { PaymentCard } from '~/types/payment';
 
-type Card = {
-    id: number;
-    number: string;
-    expiry: string;
-    name: string;
-    type: string;
-    logo: string;
-};
 
-const PaymentCard = ({
+const PaymentCardItem = ({
     card,
     onDelete,
 }: {
-    card: Card;
-    onDelete: (id: number) => void;
+    card: PaymentCard;
+    onDelete: (id: string) => void;
 }) => {
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [openSuccessModal, setOpenSuccessModal] = useState(false);
@@ -59,13 +51,7 @@ const PaymentCard = ({
         <div className="p-4 bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center space-x-2">
-                    <Image
-                        width={40}
-                        height={40}
-                        src={card.logo}
-                        alt={card.type}
-                        className="h-10 w-10 object-contain"
-                    />
+                    <p>{card.cardType}</p>
                 </div>
                 <button
                     className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
@@ -74,11 +60,11 @@ const PaymentCard = ({
                     Xóa
                 </button>
             </div>
-            <div className="text-gray-700 font-semibold mb-1">{card.name}</div>
+            <div className="text-gray-700 font-semibold mb-1">{card.cardHolderName}</div>
             <div className="text-sm text-gray-500 mb-1">
-                Số thẻ: **** **** **** {card.number.slice(-4)}
+                Số thẻ: **** **** **** {card.last4Digits}
             </div>
-            <div className="text-sm text-gray-500">Hết hạn: {card.expiry}</div>
+            <div className="text-sm text-gray-500">Hết hạn: {card.expiryDate}</div>
             {/* Modal xác nhận xóa */}
             <Dialog
                 open={openDeleteModal}
@@ -162,4 +148,4 @@ const PaymentCard = ({
     );
 };
 
-export default PaymentCard;
+export default PaymentCardItem;
