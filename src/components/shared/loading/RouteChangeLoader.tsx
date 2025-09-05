@@ -6,11 +6,11 @@ import Loading from './Loading';
 
 const RouteChangeLoader: React.FC = () => {
     const [loading, setLoading] = useState(false);
-    const pathname = usePathname(); 
+    const pathname = usePathname();
 
     useEffect(() => {
-        setLoading(true); 
-        const timeout = setTimeout(() => setLoading(false), 300); 
+        setLoading(true);
+        const timeout = setTimeout(() => setLoading(false), 300);
         return () => clearTimeout(timeout);
     }, [pathname]);
 

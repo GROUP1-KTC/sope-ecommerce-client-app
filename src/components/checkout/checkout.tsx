@@ -9,7 +9,7 @@ import AddressSection from './AddressSection';
 import OrderItemRow from './OrderItemRow';
 import PaymentMethodSection from './PaymentMethod';
 import TempAddressSection from './TempAddressSection';
-import { TempAddress } from '~/types/address';
+import type { TempAddress } from '~/types/address';
 
 type CartItem = {
     id: number;
@@ -43,13 +43,13 @@ export default function Checkout() {
 
     const [voucher, setVoucher] = useState<Voucher | null>(null);
     const [addressFormData, setAddressFormData] = useState<TempAddress>({
-    fullName: '',
-    phone: '',
-    province: '',
-    district: '',
-    ward: '',
-    detailedAddress: '',
-});
+        fullName: '',
+        phone: '',
+        province: '',
+        district: '',
+        ward: '',
+        detailedAddress: '',
+    });
     const [showAddressForm, setShowAddressForm] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState<string>('cod');
     const [isLoading, setIsLoading] = useState(false);
@@ -221,7 +221,6 @@ export default function Checkout() {
                             <tbody>
                                 {cartItems.map((item) => (
                                     <OrderItemRow key={item.id} item={item} />
-
                                 ))}
                             </tbody>
                         </table>

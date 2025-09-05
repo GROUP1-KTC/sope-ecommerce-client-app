@@ -7,8 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import WarningIcon from '@mui/icons-material/Warning';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { PaymentCard } from '~/types/payment';
-
+import type { PaymentCard } from '~/types/payment';
 
 const PaymentCardItem = ({
     card,
@@ -60,11 +59,15 @@ const PaymentCardItem = ({
                     Xóa
                 </button>
             </div>
-            <div className="text-gray-700 font-semibold mb-1">{card.cardHolderName}</div>
+            <div className="text-gray-700 font-semibold mb-1">
+                {card.cardHolderName}
+            </div>
             <div className="text-sm text-gray-500 mb-1">
                 Số thẻ: **** **** **** {card.last4Digits}
             </div>
-            <div className="text-sm text-gray-500">Hết hạn: {card.expiryDate}</div>
+            <div className="text-sm text-gray-500">
+                Hết hạn: {card.expiryDate}
+            </div>
             {/* Modal xác nhận xóa */}
             <Dialog
                 open={openDeleteModal}

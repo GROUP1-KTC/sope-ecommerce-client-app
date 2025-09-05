@@ -5,7 +5,10 @@ import type { UpdateCartItemRequest } from '~/types/cart/UpdateCartItemReques';
 
 export const orderApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        checkout: builder.mutation<void, { cartItems: CartItem[]; address: string; paymentMethod: string }>({
+        checkout: builder.mutation<
+            void,
+            { cartItems: CartItem[]; address: string; paymentMethod: string }
+        >({
             query: (data) => ({
                 url: 'orders',
                 method: 'POST',
@@ -15,6 +18,4 @@ export const orderApi = apiSlice.injectEndpoints({
     }),
 });
 
-export const {
-    useCheckoutMutation,
-} = orderApi;
+export const { useCheckoutMutation } = orderApi;

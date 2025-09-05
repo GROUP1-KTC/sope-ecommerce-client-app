@@ -3,8 +3,7 @@ import type { FormEvent } from 'react';
 import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import type { Focused } from 'react-credit-cards-2/dist/es/types';
-import { PaymentCardData } from '~/types/payment';
-
+import type { PaymentCardData } from '~/types/payment';
 
 interface AddPaymentCardDialogProps {
     isOpen: boolean;
@@ -22,7 +21,7 @@ const AddPaymentCardDialog: React.FC<AddPaymentCardDialogProps> = ({
     onSubmit,
 }) => {
     const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     ) => {
         const { name, value } = e.target;
         if (name === 'number' && value.length > 16) return;

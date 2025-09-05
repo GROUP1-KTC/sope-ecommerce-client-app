@@ -54,4 +54,6 @@ export interface GuestOrderCreateRequest extends BaseOrderCreateRequest {
 }
 
 // Union type
-export type OrderCreateRequest = UserOrderCreateRequest | GuestOrderCreateRequest;
+export type OrderCreateRequest =
+    | UserOrderCreateRequest
+    | GuestOrderCreateRequest;

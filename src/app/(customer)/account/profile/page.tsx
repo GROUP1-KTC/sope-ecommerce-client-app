@@ -4,19 +4,23 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useGetProfileQuery, useUpdateProfileMutation } from '~/features/user/userApi';
+import {
+    useGetProfileQuery,
+    useUpdateProfileMutation,
+} from '~/features/user/userApi';
 import { setUser, updateUser } from '~/features/user/userSlice';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 
 const ProfilePage = () => {
-
     const [updateProfile] = useUpdateProfileMutation();
 
     const handleSave = async () => {
         try {
-            const storedUser = sessionStorage.getItem("authUser");
+            const storedUser = sessionStorage.getItem('authUser');
             if (!storedUser) {
-                alert("Không tìm thấy thông tin người dùng, vui lòng đăng nhập lại!");
+                alert(
+                    'Không tìm thấy thông tin người dùng, vui lòng đăng nhập lại!',
+                );
                 return;
             }
 
@@ -24,15 +28,15 @@ const ProfilePage = () => {
             const userId = parsedUser?.id;
 
             if (!userId) {
-                alert("Thiếu userId, vui lòng đăng nhập lại!");
+                alert('Thiếu userId, vui lòng đăng nhập lại!');
                 return;
             }
 
-            console.log("Updating profile with data:", {
+            console.log('Updating profile with data:', {
                 id: userId,
                 name: user.name,
                 gender: user.gender,
-                birthday: birthDate?.toISOString().split("T")[0],
+                birthday: birthDate?.toISOString().split('T')[0],
                 avatarUrl: user.avatarUrl,
             });
 
@@ -41,26 +45,24 @@ const ProfilePage = () => {
                 body: {
                     name: user.name,
                     gender: user.gender,
-                    birthday: birthDate?.toISOString().split("T")[0],
+                    birthday: birthDate?.toISOString().split('T')[0],
                     avatarUrl: user.avatarUrl,
                 },
             }).unwrap();
 
             dispatch(updateUser(res));
-            alert("Cập nhật thành công!");
+            alert('Cập nhật thành công!');
         } catch (error) {
             console.error(error);
-            alert("Có lỗi xảy ra khi cập nhật!");
+            alert('Có lỗi xảy ra khi cập nhật!');
         }
     };
-
 
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.user);
     const { data, isLoading } = useGetProfileQuery();
 
-    console.log("Profile API result:", { data, isLoading });
-
+    console.log('Profile API result:', { data, isLoading });
 
     const [birthDate, setBirthDate] = useState<Date | null>(new Date());
 
@@ -104,7 +106,12 @@ const ProfilePage = () => {
                                         type="text"
                                         value={user.name || ''}
                                         onChange={(e) =>
-                                            dispatch(setUser({ ...user, name: e.target.value }))
+                                            dispatch(
+                                                setUser({
+                                                    ...user,
+                                                    name: e.target.value,
+                                                }),
+                                            )
                                         }
                                     />
                                 </div>
@@ -159,8 +166,15 @@ const ProfilePage = () => {
                                                 type="radio"
                                                 name="gender"
                                                 value="MALE"
-                                                checked={user.gender === "MALE"}
-                                                onChange={() => dispatch(setUser({ ...user, gender: "MALE" }))}
+                                                checked={user.gender === 'MALE'}
+                                                onChange={() =>
+                                                    dispatch(
+                                                        setUser({
+                                                            ...user,
+                                                            gender: 'MALE',
+                                                        }),
+                                                    )
+                                                }
                                                 className="form-radio"
                                             />
                                             <span className="ml-2">Nam</span>
@@ -170,8 +184,17 @@ const ProfilePage = () => {
                                                 type="radio"
                                                 name="gender"
                                                 value="FEMALE"
-                                                checked={user.gender === "FEMALE"}
-                                                onChange={() => dispatch(setUser({ ...user, gender: "FEMALE" }))}
+                                                checked={
+                                                    user.gender === 'FEMALE'
+                                                }
+                                                onChange={() =>
+                                                    dispatch(
+                                                        setUser({
+                                                            ...user,
+                                                            gender: 'FEMALE',
+                                                        }),
+                                                    )
+                                                }
                                                 className="form-radio"
                                             />
                                             <span className="ml-2">Nữ</span>
@@ -181,8 +204,17 @@ const ProfilePage = () => {
                                                 type="radio"
                                                 name="gender"
                                                 value="OTHER"
-                                                checked={user.gender === "OTHER"}
-                                                onChange={() => dispatch(setUser({ ...user, gender: "OTHER" }))}
+                                                checked={
+                                                    user.gender === 'OTHER'
+                                                }
+                                                onChange={() =>
+                                                    dispatch(
+                                                        setUser({
+                                                            ...user,
+                                                            gender: 'OTHER',
+                                                        }),
+                                                    )
+                                                }
                                                 className="form-radio"
                                             />
                                             <span className="ml-2">Khác</span>
@@ -213,7 +245,8 @@ const ProfilePage = () => {
                                     <label className="block text-gray-700 text-sm font-bold w-1/4"></label>
                                     <button
                                         onClick={handleSave}
-                                        className="w-1/6 bg-red-500 text-white p-2 rounded cursor-pointer hover:bg-red-600 transition-colors duration-200">
+                                        className="w-1/6 bg-red-500 text-white p-2 rounded cursor-pointer hover:bg-red-600 transition-colors duration-200"
+                                    >
                                         Lưu
                                     </button>
                                 </div>

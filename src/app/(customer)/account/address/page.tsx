@@ -9,7 +9,11 @@ import {
 } from '~/features/address/addressApi';
 
 const AddressManagementPage = () => {
-    const { data: storedAddresses = [], error, isLoading } = useGetUserAddressesQuery();
+    const {
+        data: storedAddresses = [],
+        error,
+        isLoading,
+    } = useGetUserAddressesQuery();
     const [setDefault] = useSetDefaultAddressMutation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteAddress] = useDeleteAddressMutation();
@@ -21,9 +25,9 @@ const AddressManagementPage = () => {
     const handleDeleteAddress = async (id: string) => {
         try {
             await deleteAddress(id).unwrap();
-            console.log("Deleted address", id);
+            console.log('Deleted address', id);
         } catch (err) {
-            console.error("Failed to delete address", err);
+            console.error('Failed to delete address', err);
         }
     };
 
@@ -55,7 +59,7 @@ const AddressManagementPage = () => {
             <AddressFormModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                onSubmit={() => { }}
+                onSubmit={() => {}}
             />
         </div>
     );

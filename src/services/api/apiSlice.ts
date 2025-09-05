@@ -17,7 +17,10 @@ const baseQuery = fetchBaseQuery({
             try {
                 const parsedUser = JSON.parse(storedUser);
                 if (parsedUser.accessToken) {
-                    headers.set('Authorization', `Bearer ${parsedUser.accessToken}`);
+                    headers.set(
+                        'Authorization',
+                        `Bearer ${parsedUser.accessToken}`,
+                    );
                 }
             } catch (e) {
                 console.error('Lỗi parse sessionStorage authUser:', e);
@@ -26,7 +29,6 @@ const baseQuery = fetchBaseQuery({
 
         return headers;
     },
-
 });
 
 const baseQueryWithReauth: BaseQueryFn<

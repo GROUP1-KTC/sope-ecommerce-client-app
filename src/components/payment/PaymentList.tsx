@@ -1,9 +1,15 @@
 'use client';
 
-import { PaymentCard } from "~/types/payment";
-import PaymentCardItem from "./PaymentCard";
+import type { PaymentCard } from '~/types/payment';
+import PaymentCardItem from './PaymentCard';
 
-const PaymentList = ({ cards, onDelete }: { cards: PaymentCard[]; onDelete: (id: string) => void }) => {
+const PaymentList = ({
+    cards,
+    onDelete,
+}: {
+    cards: PaymentCard[];
+    onDelete: (id: string) => void;
+}) => {
     return (
         <div className="mb-6">
             <h2 className="text-lg font-semibold mb-4">Thẻ đã thêm</h2>
@@ -13,7 +19,7 @@ const PaymentList = ({ cards, onDelete }: { cards: PaymentCard[]; onDelete: (id:
                         <PaymentCardItem
                             key={card.id}
                             card={card}
-                            onDelete={onDelete} 
+                            onDelete={onDelete}
                         />
                     ))}
                 </div>

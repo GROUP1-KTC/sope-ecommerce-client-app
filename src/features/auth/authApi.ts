@@ -35,13 +35,15 @@ export const authApi = apiSlice.injectEndpoints({
             }),
         }),
 
-        verifyOtp: builder.mutation<ServerResponse<string>, VerifyEmailRequest>({
-            query: (body) => ({
-                url: '/auth/verify-otp',
-                method: 'POST',
-                body,
-            }),
-        }),
+        verifyOtp: builder.mutation<ServerResponse<string>, VerifyEmailRequest>(
+            {
+                query: (body) => ({
+                    url: '/auth/verify-otp',
+                    method: 'POST',
+                    body,
+                }),
+            },
+        ),
 
         register: builder.mutation<ServerResponse<string>, RegisterRequest>({
             query: (body) => ({
@@ -51,7 +53,10 @@ export const authApi = apiSlice.injectEndpoints({
             }),
         }),
 
-        changePassword: builder.mutation<ServerResponse<string>, ChangePasswordRequest>({
+        changePassword: builder.mutation<
+            ServerResponse<string>,
+            ChangePasswordRequest
+        >({
             query: (body) => ({
                 url: '/auth/change-password',
                 method: 'POST',

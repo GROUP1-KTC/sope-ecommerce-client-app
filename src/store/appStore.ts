@@ -25,9 +25,7 @@ export const appStore = configureStore({
             serializableCheck: {
                 ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
             },
-        }).concat([
-            apiSlice.middleware,
-        ]),
+        }).concat([apiSlice.middleware]),
     devTools: process.env.NODE_ENV !== 'production',
 });
 

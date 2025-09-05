@@ -20,7 +20,6 @@ const ChangePasswordPage = () => {
     const [message, setMessage] = useState('');
     const [changePassword] = useChangePasswordMutation();
 
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -170,10 +169,11 @@ const ChangePasswordPage = () => {
 
                             {message && (
                                 <p
-                                    className={`text-sm ${message.startsWith('✅')
+                                    className={`text-sm ${
+                                        message.startsWith('✅')
                                             ? 'text-green-600'
                                             : 'text-red-600'
-                                        }`}
+                                    }`}
                                 >
                                     {message}
                                 </p>

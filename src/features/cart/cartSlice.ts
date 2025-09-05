@@ -19,9 +19,20 @@ export const cartSlice = createSlice({
             state.groups = action.payload;
         },
         // Add a new item to the appropriate shop group
-        addItem: (state, action: PayloadAction<CartItem & { shopId: string; shopName: string; shopAvatar?: string }>) => {
+        addItem: (
+            state,
+            action: PayloadAction<
+                CartItem & {
+                    shopId: string;
+                    shopName: string;
+                    shopAvatar?: string;
+                }
+            >,
+        ) => {
             const { shopId, shopName, shopAvatar, ...item } = action.payload;
-            const shopIndex = state.groups.findIndex((g) => g.shop.id === shopId);
+            const shopIndex = state.groups.findIndex(
+                (g) => g.shop.id === shopId,
+            );
             const cartItem = { ...item, name: item.name || 'Unknown Product' };
 
             if (shopIndex === -1) {
@@ -36,7 +47,9 @@ export const cartSlice = createSlice({
                 });
             } else {
                 // Add or update item in existing shop group
-                const existingItem = state.groups[shopIndex].items.find((i) => i.id === item.id);
+                const existingItem = state.groups[shopIndex].items.find(
+                    (i) => i.id === item.id,
+                );
                 if (existingItem) {
                     existingItem.quantity += item.quantity;
                 } else {
@@ -49,7 +62,9 @@ export const cartSlice = createSlice({
             state.groups = state.groups
                 .map((group) => ({
                     ...group,
-                    items: group.items.filter((item) => item.id !== action.payload),
+                    items: group.items.filter(
+                        (item) => item.id !== action.payload,
+                    ),
                 }))
                 .filter((group) => group.items.length > 0); // Remove empty groups
         },
@@ -58,12 +73,17 @@ export const cartSlice = createSlice({
             state.groups = state.groups
                 .map((group) => ({
                     ...group,
-                    items: group.items.filter((item) => !action.payload.includes(item.id)),
+                    items: group.items.filter(
+                        (item) => !action.payload.includes(item.id),
+                    ),
                 }))
                 .filter((group) => group.items.length > 0); // Remove empty groups
         },
         // Update quantity of a specific item
-        updateQuantity: (state, action: PayloadAction<{ id: string; quantity: number }>) => {
+        updateQuantity: (
+            state,
+            action: PayloadAction<{ id: string; quantity: number }>,
+        ) => {
             const { id, quantity } = action.payload;
             if (quantity < 1) return; // Prevent invalid quantities
             for (const group of state.groups) {
