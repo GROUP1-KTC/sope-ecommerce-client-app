@@ -23,7 +23,7 @@ const baseQuery = fetchBaseQuery({
                 console.error('Lỗi parse sessionStorage authUser:', e);
             }
         }
-        headers.set('Authorization', `Bearer eyJhbGciOiJSUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIiwiU0VMTEVSIl0sInVzZXJJZCI6IjM0ZjI2YzBkLTNjOGUtNDA0ZS1hNDUzLWU4ZDViZjhhOWFlOSIsInN1YiI6InVzZXIiLCJpYXQiOjE3NTY4OTEzNjcsImV4cCI6MTc1Njg5NDk2N30.FbyGY2_Lp2XkqffaOs5bqMmjDlONyUtHghinDko-RZkauEeQuvppTzluBbVVRwpFmRGEMWemqFHmLU5gcur9Rn0g5ORtq_6oWmCH-Wbda1nF_k9sFuH_E9hu1DbsBAEYP3Ia3VxXKVzxCMQRuEIffTtL1PjOZxsN7Ov-XvFl-tom8znMlXHr5w-E4UTdh76NOM1lV3R2FZWZnkouH_lyhXBzVjFpbAWgUmBdC4gche26kyF-uTdA7N4Qj_7f4WMmOoJ7sXe3hFJUXb6yufnAAqk6jZSiziDQy37fNMUQTaUI4Bb5kSLPPIYVxWKb5rLJS5FEKttrH82z0w7RlGrdKw`);
+        headers.set('Authorization', `Bearer eyJhbGciOiJSUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIiwiU0VMTEVSIl0sInVzZXJJZCI6IjM0ZjI2YzBkLTNjOGUtNDA0ZS1hNDUzLWU4ZDViZjhhOWFlOSIsInN1YiI6InVzZXIiLCJpYXQiOjE3NTY5NTg5MTksImV4cCI6MTc1Njk2MjUxOX0.upF6sLHwDI0iDSM32oZUH_Scv7_BvZeH-qQqR6rhxXNPtxfnH3E5suYUOU1UrNqfkcbOY6Ox2Au3Jlj1VFGgRrpAq2Vc1Erz4zIBKPst9yntzZXsJyqDw8v8CJm7vnfx4v8CoOyyw9J3SUDpzqoVA6flcUGC6GUxM3Pf3NH3fg8fNK8uJKdvTakHjJAIY0B2R2cEFTBWuakPhtBUpivJLBfJKzo78TZLw_26WrgSlfj0kRXT7sLHdVbxiDSbA7wdmB7z66wETMP62oFKbFA1jBeDPM-hIHxo76-UEn9t3F8PM2wRbmf8XH9AkPWY0LexB8zSwA9WelHTlbiHsTvmmg`);
 
 
         return headers;
