@@ -21,3 +21,13 @@ export interface AddressCreateRequest {
   country: string;
   isDefault: boolean;
 }
+
+export type TempAddress = {
+  fullName: string;
+  phone: string;
+  province: string;        // code tỉnh/thành
+  district: string;        // code quận/huyện
+  ward: string;            // code phường/xã
+  detailedAddress: string; // số nhà, tên đường
+  isDefault?: boolean;     // optional, nếu sau này muốn cho guest set mặc định
+};

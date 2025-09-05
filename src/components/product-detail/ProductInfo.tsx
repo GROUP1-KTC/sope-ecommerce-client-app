@@ -43,9 +43,21 @@ const ProductInfo = ({
     const [showVoucherModal, setShowVoucherModal] = useState(false);
     const [showPolicyModal, setShowPolicyModal] = useState(false);
     const [addCartApi] = useAddCartMutation();
-    // const token = useAppSelector((state) => state.auth.accessToken);
-    const token =
-        'Bearer eyJhbGciOiJSUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIiwiU0VMTEVSIl0sInVzZXJJZCI6IjM0ZjI2YzBkLTNjOGUtNDA0ZS1hNDUzLWU4ZDViZjhhOWFlOSIsInN1YiI6InVzZXIiLCJpYXQiOjE3NTY5NTg5MTksImV4cCI6MTc1Njk2MjUxOX0.upF6sLHwDI0iDSM32oZUH_Scv7_BvZeH-qQqR6rhxXNPtxfnH3E5suYUOU1UrNqfkcbOY6Ox2Au3Jlj1VFGgRrpAq2Vc1Erz4zIBKPst9yntzZXsJyqDw8v8CJm7vnfx4v8CoOyyw9J3SUDpzqoVA6flcUGC6GUxM3Pf3NH3fg8fNK8uJKdvTakHjJAIY0B2R2cEFTBWuakPhtBUpivJLBfJKzo78TZLw_26WrgSlfj0kRXT7sLHdVbxiDSbA7wdmB7z66wETMP62oFKbFA1jBeDPM-hIHxo76-UEn9t3F8PM2wRbmf8XH9AkPWY0LexB8zSwA9WelHTlbiHsTvmmg';
+    const [token, setToken] = useState<string | null>(null);
+
+     useEffect(() => {
+         const storedUser = sessionStorage.getItem('authUser');
+         if (storedUser) {
+             try {
+                 const parsedUser = JSON.parse(storedUser);
+                 if (parsedUser.accessToken) {
+                     setToken(`Bearer ${parsedUser.accessToken}`);
+                 }
+             } catch (e) {
+                 console.error('Lỗi parse sessionStorage authUser:', e);
+             }
+         }
+     }, []);
 
     const dispatch = useAppDispatch();
 

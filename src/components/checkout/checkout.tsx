@@ -2,16 +2,14 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import AddressForm from '~/components/checkout/addressform';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 import { clearCheckoutItems } from '~/features/orders/checkoutSlice';
-import { Box, Button, Switch, Typography } from '@mui/material';
-import DiscountIcon from '@mui/icons-material/Discount';
 import VoucherSection from '../cart/VoucherSection';
 import AddressSection from './AddressSection';
+import OrderItemRow from './OrderItemRow';
+import PaymentMethodSection from './PaymentMethod';
+import TempAddressSection from './TempAddressSection';
+import { TempAddress } from '~/types/address';
 
 type CartItem = {
     id: number;
@@ -44,22 +42,26 @@ export default function Checkout() {
     const userCoins = 12;
 
     const [voucher, setVoucher] = useState<Voucher | null>(null);
-    const [addressFormData, setAddressFormData] = useState<AddressFormData>({
-        fullName: '',
-        phone: '',
-        district: '',
-        city: '',
-        ward: '',
-        address:
-            'Phạm Thiện Cõ (+84) 852150879, 167/14, Đường Nguyễn Văn Thường, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh',
-        type: 'Nhà Riêng',
-    });
+    const [addressFormData, setAddressFormData] = useState<TempAddress>({
+    fullName: '',
+    phone: '',
+    province: '',
+    district: '',
+    ward: '',
+    detailedAddress: '',
+});
     const [showAddressForm, setShowAddressForm] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState<string>('cod');
     const [isLoading, setIsLoading] = useState(false);
     const [orderSuccess, setOrderSuccess] = useState(false);
     const [useCoin, setUseCoin] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const storedUser = sessionStorage.getItem('authUser');
+        setIsLoggedIn(!!storedUser);
+    }, []);
 
     useEffect(() => {
         if (cartItems.length === 0 && !orderSuccess) {
@@ -95,9 +97,9 @@ export default function Checkout() {
             !addressFormData.fullName ||
             !addressFormData.phone ||
             !addressFormData.district ||
-            !addressFormData.city ||
+            !addressFormData.province ||
             !addressFormData.ward ||
-            !addressFormData.address
+            !addressFormData.detailedAddress
         ) {
             setErrorMessage('Vui lòng cập nhật thông tin địa chỉ.');
             setShowAddressForm(true);
@@ -199,12 +201,11 @@ export default function Checkout() {
     return (
         <div className="bg-gradient-to-b from-gray-200 to-gray-50 min-h-screen py-4">
             <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-xl p-6 mt-4">
-                <AddressSection
-                    addressFormData={addressFormData}
-                    setAddressFormData={setAddressFormData}
-                    showAddressForm={showAddressForm}
-                    setShowAddressForm={setShowAddressForm}
-                />
+                {isLoggedIn ? (
+                    <AddressSection />
+                ) : (
+                    <TempAddressSection onChange={setAddressFormData} />
+                )}
 
                 <div className="mb-6">
                     <div className="overflow-x-auto">
@@ -219,38 +220,8 @@ export default function Checkout() {
                             </thead>
                             <tbody>
                                 {cartItems.map((item) => (
-                                    <tr
-                                        key={item.id}
-                                        className=" hover:bg-gray-50"
-                                    >
-                                        <td className="flex items-center gap-3 py-2">
-                                            <img
-                                                src={
-                                                    item.image ||
-                                                    '/placeholder.png'
-                                                }
-                                                alt={item.name}
-                                                className="w-16 h-16 object-cover  rounded shadow-md"
-                                                loading="lazy"
-                                            />
-                                            <div className="font-medium line-clamp-2">
-                                                {item.name}
-                                            </div>
-                                        </td>
-                                        <td className="py-2">
-                                            ₫
-                                            {item.price.toLocaleString('vi-VN')}
-                                        </td>
-                                        <td className="py-2">
-                                            {item.quantity}
-                                        </td>
-                                        <td className="py-2 text-red-500 font-semibold">
-                                            ₫
-                                            {(
-                                                item.price * item.quantity
-                                            ).toLocaleString('vi-VN')}
-                                        </td>
-                                    </tr>
+                                    <OrderItemRow key={item.id} item={item} />
+
                                 ))}
                             </tbody>
                         </table>
@@ -267,65 +238,10 @@ export default function Checkout() {
                     }}
                 />
 
-                <div className="mb-6 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg shadow-md">
-                    <h3 className="text-lg font-semibold mb-2 drop-shadow-sm">
-                        Phương thức thanh toán
-                    </h3>
-                    <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
-                        <label className="flex items-center cursor-pointer">
-                            <input
-                                type="radio"
-                                name="paymentMethod"
-                                value="cod"
-                                checked={paymentMethod === 'cod'}
-                                onChange={(e) =>
-                                    setPaymentMethod(e.target.value)
-                                }
-                                className="mr-2 accent-red-500"
-                            />
-                            Thanh toán khi nhận hàng
-                        </label>
-                        <label className="flex items-center cursor-pointer">
-                            <input
-                                type="radio"
-                                name="paymentMethod"
-                                value="card"
-                                checked={paymentMethod === 'card'}
-                                onChange={(e) =>
-                                    setPaymentMethod(e.target.value)
-                                }
-                                className="mr-2 accent-red-500"
-                            />
-                            Thẻ tín dụng / thẻ ghi nợ
-                        </label>
-                        <label className="flex items-center cursor-pointer">
-                            <input
-                                type="radio"
-                                name="paymentMethod"
-                                value="e-wallet"
-                                checked={paymentMethod === 'e-wallet'}
-                                onChange={(e) =>
-                                    setPaymentMethod(e.target.value)
-                                }
-                                className="mr-2 accent-red-500"
-                            />
-                            Ví điện tử
-                        </label>
-                        <label className="flex items-center cursor-pointer">
-                            <input
-                                type="radio"
-                                name="paymentMethod"
-                                value="bank-account"
-                                checked={paymentMethod === 'bank-account'}
-                                onChange={(e) =>
-                                    setPaymentMethod(e.target.value)
-                                }
-                                className="mr-2 accent-red-500"
-                            />
-                            Tài khoản ngân hàng
-                        </label>
-                    </div>
-                </div>
+                <PaymentMethodSection
+                    paymentMethod={paymentMethod}
+                    onChangeAction={setPaymentMethod}
+                />
 
                 <div className="mb-6 p-4  bg-gradient-to-r from-gray-50 to-gray-100 shadow-md">
                     <div className="space-y-2 text-sm">
