@@ -1,22 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { apiSlice } from "~/services/api/apiSlice";
 import type { Address, AddressCreateRequest } from "~/types/address";
 
-export const addressApi = createApi({
-  reducerPath: "addressApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL_V3,
-    prepareHeaders: (headers) => {
-      const storedUser = sessionStorage.getItem("authUser");
-      if (storedUser) {
-        const parsedUser = JSON.parse(storedUser);
-        if (parsedUser.accessToken) {
-          headers.set("Authorization", `Bearer ${parsedUser.accessToken}`);
-        }
-      }
-      return headers;
-    },
-  }),
-  tagTypes: ["Address"],
+export const addressApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUserAddresses: builder.query<Address[], void>({
       query: () => "/addresses",

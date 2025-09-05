@@ -1,7 +1,8 @@
 // src/features/auth/authApi.ts
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { apiSlice } from '~/services/api/apiSlice';
 import type { ServerResponse } from '~/types/serverReponse';
 import type {
+    ChangePasswordRequest,
     EmailRequest,
     LoginInput,
     LoginResponse,
@@ -9,28 +10,14 @@ import type {
     VerifyEmailRequest,
 } from '~/types/auth/auth';
 
-export const authApi = createApi({
-    reducerPath: 'authApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL_V3,
-        prepareHeaders: (headers, { getState }) => {
-            const token = (getState() as any).auth?.accessToken;
-            if (token) {
-                headers.set('Authorization', `Bearer ${token}`);
-            }
-            return headers;
-        },
-    }),
+export const authApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         login: builder.mutation<ServerResponse<LoginResponse>, LoginInput>({
-            query: (body) => {
-                const url = '/auth/login';
-                return {
-                    url,
-                    method: 'POST',
-                    body,
-                };
-            },
+            query: (body) => ({
+                url: '/auth/login',
+                method: 'POST',
+                body,
+            }),
         }),
 
         logout: builder.mutation<{ message: string }, void>({
@@ -40,7 +27,6 @@ export const authApi = createApi({
             }),
         }),
 
-        // send OTP
         sendOtp: builder.mutation<ServerResponse<string>, EmailRequest>({
             query: (body) => ({
                 url: '/auth/send-otp',
@@ -49,16 +35,13 @@ export const authApi = createApi({
             }),
         }),
 
-        // verify OTP
-        verifyOtp: builder.mutation<ServerResponse<string>, VerifyEmailRequest>(
-            {
-                query: (body) => ({
-                    url: '/auth/verify-otp',
-                    method: 'POST',
-                    body,
-                }),
-            },
-        ),
+        verifyOtp: builder.mutation<ServerResponse<string>, VerifyEmailRequest>({
+            query: (body) => ({
+                url: '/auth/verify-otp',
+                method: 'POST',
+                body,
+            }),
+        }),
 
         register: builder.mutation<ServerResponse<string>, RegisterRequest>({
             query: (body) => ({
@@ -67,7 +50,16 @@ export const authApi = createApi({
                 body,
             }),
         }),
+
+        changePassword: builder.mutation<ServerResponse<string>, ChangePasswordRequest>({
+            query: (body) => ({
+                url: '/auth/change-password',
+                method: 'POST',
+                body,
+            }),
+        }),
     }),
+    overrideExisting: false,
 });
 
 export const {
@@ -76,4 +68,5 @@ export const {
     useSendOtpMutation,
     useVerifyOtpMutation,
     useRegisterMutation,
+    useChangePasswordMutation,
 } = authApi;
