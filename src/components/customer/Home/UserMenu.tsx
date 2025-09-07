@@ -22,9 +22,9 @@ const UserMenu = () => {
 
     const handleLogout = async () => {
         try {
-            await logoutApi(); 
+            await logoutApi();
         } catch (err) {
-            console.error("Logout API error:", err);
+            console.error('Logout API error:', err);
         }
 
         sessionStorage.removeItem('authUser');

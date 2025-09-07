@@ -15,9 +15,19 @@ interface LiveStreamCardProps {
     link: string;
 }
 
-const LiveStreamCard: React.FC<LiveStreamCardProps> = ({ title, streamer, description, viewers, thumbnail, link }) => {
+const LiveStreamCard: React.FC<LiveStreamCardProps> = ({
+    title,
+    streamer,
+    description,
+    viewers,
+    thumbnail,
+    link,
+}) => {
     return (
-        <Link href={link} className="flex flex-col items-center mx-4 cursor-pointer w-60">
+        <Link
+            href={link}
+            className="flex flex-col items-center mx-4 cursor-pointer w-60"
+        >
             <div className="w-60 h-80 relative rounded-lg overflow-hidden border border-gray-200 shadow">
                 <div className="w-full h-full transition-transform duration-150 hover:scale-105">
                     <Image
@@ -36,15 +46,20 @@ const LiveStreamCard: React.FC<LiveStreamCardProps> = ({ title, streamer, descri
                     <VisibilityIcon className="!w-4 !h-4" />
                 </span>
 
-                <div className="absolute bottom-0 w-full px-2 py-1 flex flex-col" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                    <span className="font-medium text-sm text-white truncate">{title}</span>
+                <div
+                    className="absolute bottom-0 w-full px-2 py-1 flex flex-col"
+                    style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+                >
+                    <span className="font-medium text-sm text-white truncate">
+                        {title}
+                    </span>
                     <span className="truncate mt-1 text-white">{streamer}</span>
-                    <span className="text-xs mt-1 text-white w-full truncate">{description}</span>
+                    <span className="text-xs mt-1 text-white w-full truncate">
+                        {description}
+                    </span>
                 </div>
-
             </div>
         </Link>
-
     );
 };
 

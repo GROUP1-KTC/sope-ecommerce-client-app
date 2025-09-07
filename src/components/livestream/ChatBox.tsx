@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import SendIcon from '@mui/icons-material/Send';
-import { Comment } from '~/types/comment';
+import type { Comment } from '~/types/comment';
 
 interface ChatBoxProps {
     comments: Comment[];
@@ -14,7 +14,7 @@ const ChatBox = ({ comments }: ChatBoxProps) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // Tạm thời  log, sau này connect websocket
-        if(input.trim()) console.log('Comment sent:', input);
+        if (input.trim()) console.log('Comment sent:', input);
         setInput('');
     };
 

@@ -63,7 +63,6 @@ export interface ProductResponseByCategory {
 // Legacy Product type for backward compatibility
 export type Product = ProductFormData;
 
-
 // Collapse for livestream cart
 export interface CollapseProduct {
     id: number;
@@ -76,14 +75,14 @@ export interface CollapseProduct {
 }
 
 export type SellerLiveProduct = {
-  id: number;
-  name: string;
-  image: string;
-  originalPrice: number;
-  price: number;
-  sold: number; 
-  onPin?: boolean;
-  flashSaleActive?: boolean;
-  highlightActive?: boolean;
-  stock: number;
+    id: number;
+    name: string;
+    image: string;
+    originalPrice: number;
+    price: number;
+    sold: number;
+    onPin?: boolean;
+    flashSaleActive?: boolean;
+    highlightActive?: boolean;
+    stock: number;
 };

@@ -61,7 +61,11 @@ const LiveStreamSection: React.FC<LiveStreamSectionProps> = ({ streams }) => {
                     <div
                         ref={containerRef}
                         className="flex overflow-x-auto px-4"
-                        style={{ scrollBehavior: 'smooth', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                        style={{
+                            scrollBehavior: 'smooth',
+                            scrollbarWidth: 'none',
+                            msOverflowStyle: 'none',
+                        }}
                     >
                         {streams.map((stream) => (
                             <LiveStreamCard

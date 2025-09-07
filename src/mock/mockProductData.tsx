@@ -662,8 +662,31 @@ export const mostSearchProducts = [
 ];
 
 export const streams = [
-    { title: 'Siêu Sale 9/9', streamer: 'Hùng Du Mặc', description: 'Xả lỗ, siêu hời ...!', viewers: 1200, thumbnail: 'https://image.plo.vn/1200x630/Uploaded/2025/ymzmf/2024_12_23/ban-hang-qua-livestream-3-4800-9014-8683.png', link: '/live/1' },
-    { title: 'Gaming Stream', streamer: 'GamerX', description: 'Watch GamerX play the latest games live!', viewers: 3400, thumbnail: 'https://image.plo.vn/1200x630/Uploaded/2025/ymzmf/2024_12_23/ban-hang-qua-livestream-3-4800-9014-8683.png', link: '/live/2' },
-    { title: 'Music Session', streamer: 'DJ Mike', description: 'Chill out with DJ Mike in this live music session!', viewers: 890, thumbnail: 'https://image.plo.vn/1200x630/Uploaded/2025/ymzmf/2024_12_23/ban-hang-qua-livestream-3-4800-9014-8683.png', link: '/live/3' },
+    {
+        title: 'Siêu Sale 9/9',
+        streamer: 'Hùng Du Mặc',
+        description: 'Xả lỗ, siêu hời ...!',
+        viewers: 1200,
+        thumbnail:
+            'https://image.plo.vn/1200x630/Uploaded/2025/ymzmf/2024_12_23/ban-hang-qua-livestream-3-4800-9014-8683.png',
+        link: '/live/1',
+    },
+    {
+        title: 'Gaming Stream',
+        streamer: 'GamerX',
+        description: 'Watch GamerX play the latest games live!',
+        viewers: 3400,
+        thumbnail:
+            'https://image.plo.vn/1200x630/Uploaded/2025/ymzmf/2024_12_23/ban-hang-qua-livestream-3-4800-9014-8683.png',
+        link: '/live/2',
+    },
+    {
+        title: 'Music Session',
+        streamer: 'DJ Mike',
+        description: 'Chill out with DJ Mike in this live music session!',
+        viewers: 890,
+        thumbnail:
+            'https://image.plo.vn/1200x630/Uploaded/2025/ymzmf/2024_12_23/ban-hang-qua-livestream-3-4800-9014-8683.png',
+        link: '/live/3',
+    },
 ];
-
