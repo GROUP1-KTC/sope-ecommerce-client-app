@@ -111,14 +111,14 @@ export default function MerchantSidebar() {
     };
 
     return (
-        <aside className="w-66 bg-white p-4 border-r border-gray-200 overflow-auto">
+        <aside className="w-60 bg-white py-4 border-r border-gray-200 overflow-auto">
             <nav>
                 <ul>
                     {navItems.map((item, index) => (
                         <li key={index} className="mb-2">
                             <button
                                 onClick={() => toggleItem(index)}
-                                className="w-full flex items-center justify-between py-2 px-3 rounded-md text-gray-700 hover:bg-gray-100 hover:text-red-500"
+                                className="w-full flex items-center justify-between py-2 px-3 rounded-md text-gray-700 hover:bg-gray-100 hover:text-red-500 cursor-pointer" 
                             >
                                 <span className="flex items-center">
                                     {item.icon}

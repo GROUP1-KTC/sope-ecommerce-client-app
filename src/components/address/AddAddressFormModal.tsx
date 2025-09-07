@@ -98,11 +98,14 @@ const AddressFormModal = ({
         e.preventDefault();
 
         const provinceName =
-            provinces.find((p) => p.code === parseInt(addressData.province))?.name || "";
+            provinces.find((p) => p.code === parseInt(addressData.province))
+                ?.name || '';
         const districtName =
-            districts.find((d) => d.code === parseInt(addressData.district))?.name || "";
+            districts.find((d) => d.code === parseInt(addressData.district))
+                ?.name || '';
         const wardName =
-            wards.find((w) => w.code === parseInt(addressData.ward))?.name || "";
+            wards.find((w) => w.code === parseInt(addressData.ward))?.name ||
+            '';
 
         const request = {
             recipientName: addressData.name,
@@ -111,7 +114,7 @@ const AddressFormModal = ({
             ward: wardName,
             district: districtName,
             city: provinceName,
-            country: "Vietnam",
+            country: 'Vietnam',
             isDefault: addressData.isDefault,
         };
 
@@ -119,7 +122,7 @@ const AddressFormModal = ({
             await addAddress(request).unwrap();
             onClose();
         } catch (err) {
-            console.error("Lỗi khi thêm địa chỉ:", err);
+            console.error('Lỗi khi thêm địa chỉ:', err);
         }
     };
 

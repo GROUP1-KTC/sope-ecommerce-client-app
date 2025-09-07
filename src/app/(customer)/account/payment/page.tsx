@@ -3,9 +3,13 @@ import type { FormEvent } from 'react';
 import { useState } from 'react';
 import PaymentList from '~/components/payment/PaymentList';
 import AddPaymentCardDialog from '~/components/payment/AddPaymentCardDialog';
-import { PaymentCard, PaymentCardData } from '~/types/payment';
-import { useAddCardMutation, useDeleteCardMutation, useGetCardsQuery } from '~/features/paymentCard/paymentCardApi';
-
+import type { PaymentCardData } from '~/types/payment';
+import { PaymentCard } from '~/types/payment';
+import {
+    useAddCardMutation,
+    useDeleteCardMutation,
+    useGetCardsQuery,
+} from '~/features/paymentCard/paymentCardApi';
 
 const PaymentManagementPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +25,6 @@ const PaymentManagementPage = () => {
     const { data: cards = [], isLoading } = useGetCardsQuery();
     const [addCard, { isLoading: isAdding }] = useAddCardMutation();
     const [deleteCard] = useDeleteCardMutation();
-
 
     const handleAddCard = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -45,7 +48,11 @@ const PaymentManagementPage = () => {
                 cardNumber: cardData.number,
                 cardHolderName: cardData.name,
                 expiryDate: `20${cardData.expiry.split('/')[1]}-${cardData.expiry.split('/')[0]}-01`,
-                cardType: cardData.cardType as "VISA" | "MASTERCARD" | "AMEX" | "JCB",
+                cardType: cardData.cardType as
+                    | 'VISA'
+                    | 'MASTERCARD'
+                    | 'AMEX'
+                    | 'JCB',
                 cvc: cardData.cvc,
             }).unwrap();
 
@@ -92,7 +99,10 @@ const PaymentManagementPage = () => {
                         <hr className="my-4 border-gray-300" />
 
                         <div className="px-0 sm:px-4 md:px-8">
-                            <PaymentList cards={cards} onDelete={handleDeleteCard} />
+                            <PaymentList
+                                cards={cards}
+                                onDelete={handleDeleteCard}
+                            />
                         </div>
                     </div>
                 </div>

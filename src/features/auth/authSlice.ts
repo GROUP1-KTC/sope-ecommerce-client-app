@@ -2,28 +2,36 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface AuthState {
-  id: string | null;
-  username: string | null;
-  roles: string[];
-  accessToken: string | null;
+    id: string | null;
+    username: string | null;
+    roles: string[];
+    accessToken: string | null;
 }
 
 const initialState: AuthState = {
-  id: null,
-  username: null,
-  roles: [],
-  accessToken: null,
+    id: null,
+    username: null,
+    roles: [],
+    accessToken: null,
 };
 
 const authSlice = createSlice({
-  name: "auth",
-  initialState,
-  reducers: {
-    setCredentials: (state, action: PayloadAction<{ id: string, username: string; roles: string[], accessToken: string | null }>) => {
-      state.id = action.payload.id;
-      state.username = action.payload.username;
-      state.roles = action.payload.roles;
-      state.accessToken = action.payload.accessToken;
+    name: 'auth',
+    initialState,
+    reducers: {
+        setCredentials: (
+            state,
+            action: PayloadAction<{
+                id: string;
+                username: string;
+                roles: string[];
+                accessToken: string | null;
+            }>,
+        ) => {
+            state.id = action.payload.id;
+            state.username = action.payload.username;
+            state.roles = action.payload.roles;
+            state.accessToken = action.payload.accessToken;
 
             sessionStorage.setItem('authUser', JSON.stringify(action.payload));
         },

@@ -7,14 +7,17 @@ import {
     categories,
     flashSales,
     mostSearchProducts,
+    streams,
 } from '~/mock/mockProductData';
 import CategoryList from '~/components/customer/CategoryList';
+import LiveStreamSection from '~/components/customer/Home/LiveStreamSection';
 const title = 'TÌM KIẾM NHIỀU NHẤT';
 
 const HomeCustomer = () => (
     <div>
         <Banner />
         <CategorySection categories={categories} />
+        <LiveStreamSection streams={streams} />
         <FlashSaleSection items={flashSales} initialSeconds={3600 + 55} />
         <MostSearch products={mostSearchProducts} title={title} />
         <SuggestedProductsSection products={mostSearchProducts} />

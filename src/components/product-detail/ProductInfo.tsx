@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useAlertStore } from '~/store/zustand/alertStore';
 import type { CartItem } from '~/app/(customer)/cart/page';
-import { ProductResponse, ProductVariantResponse } from '~/types/products';
+import type { ProductResponse, ProductVariantResponse } from '~/types/products';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 import { useAddCartMutation } from '~/features/cart/cartApiSlice';
 interface ProductInfoProps {
@@ -45,19 +45,19 @@ const ProductInfo = ({
     const [addCartApi] = useAddCartMutation();
     const [token, setToken] = useState<string | null>(null);
 
-     useEffect(() => {
-         const storedUser = sessionStorage.getItem('authUser');
-         if (storedUser) {
-             try {
-                 const parsedUser = JSON.parse(storedUser);
-                 if (parsedUser.accessToken) {
-                     setToken(`Bearer ${parsedUser.accessToken}`);
-                 }
-             } catch (e) {
-                 console.error('Lỗi parse sessionStorage authUser:', e);
-             }
-         }
-     }, []);
+    useEffect(() => {
+        const storedUser = sessionStorage.getItem('authUser');
+        if (storedUser) {
+            try {
+                const parsedUser = JSON.parse(storedUser);
+                if (parsedUser.accessToken) {
+                    setToken(`Bearer ${parsedUser.accessToken}`);
+                }
+            } catch (e) {
+                console.error('Lỗi parse sessionStorage authUser:', e);
+            }
+        }
+    }, []);
 
     const dispatch = useAppDispatch();
 

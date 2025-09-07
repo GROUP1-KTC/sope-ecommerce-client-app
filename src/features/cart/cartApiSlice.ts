@@ -7,7 +7,8 @@ export const cartApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getCart: builder.query<CartGroup[], void>({
             query: () => 'cart',
-            transformResponse: (response: { data: CartGroup[] }) => response.data,
+            transformResponse: (response: { data: CartGroup[] }) =>
+                response.data,
             providesTags: ['Cart'],
         }),
 
