@@ -10,6 +10,13 @@ export interface Address {
     isDefault: boolean;
 }
 
+export interface ShopAddress {
+    street: string;
+    ward: string;
+    district: string;
+    city: string;
+}
+
 export interface AddressCreateRequest {
     recipientName: string;
     phoneNumber: string;
