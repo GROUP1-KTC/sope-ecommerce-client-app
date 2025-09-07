@@ -1,16 +1,19 @@
 'use client';
+import type { on } from 'events';
 import React, { useState } from 'react';
+import type { PaymentMethod, PaymentProvider } from '~/types/orders/order';
 
 interface PaymentMethodSectionProps {
-    paymentMethod: string;
-    onChangeAction: (method: string) => void;
+    paymentMethod: PaymentMethod;
+    onChangeAction: (method: PaymentMethod) => void;
+    onChangeProvider?: (provider: PaymentProvider) => void;
 }
 
 const PAYMENT_OPTIONS = [
-    { value: 'cod', label: 'Thanh toán khi nhận hàng' },
-    { value: 'card', label: 'Thẻ tín dụng / thẻ ghi nợ' },
-    { value: 'e-wallet', label: 'Ví điện tử' },
-    { value: 'bank-account', label: 'Tài khoản ngân hàng' },
+    { value: 'COD', label: 'Thanh toán khi nhận hàng' },
+    { value: 'CREDIT_CARD', label: 'Thẻ tín dụng / thẻ ghi nợ' },
+    { value: 'E_WALLET', label: 'Ví điện tử' },
+    { value: 'BANK_TRANSFER', label: 'Tài khoản ngân hàng' },
 ];
 
 const E_WALLETS = [
@@ -43,6 +46,7 @@ const BANK_CARDS = [
 export default function PaymentMethodSection({
     paymentMethod,
     onChangeAction,
+    onChangeProvider,
 }: PaymentMethodSectionProps) {
     const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
     const [selectedBankCard, setSelectedBankCard] = useState<string | null>(
@@ -51,7 +55,7 @@ export default function PaymentMethodSection({
 
     const renderRightContent = () => {
         switch (paymentMethod) {
-            case 'cod':
+            case 'COD':
                 return (
                     <p>
                         Thanh toán khi nhận hàng, giao tận nơi và thanh toán khi
@@ -59,7 +63,7 @@ export default function PaymentMethodSection({
                     </p>
                 );
 
-            case 'card':
+            case 'CREDIT_CARD':
                 return (
                     <div className="flex flex-col gap-2 mt-2">
                         <p>Thanh toán bằng thẻ tín dụng hoặc thẻ ghi nợ.</p>
@@ -85,7 +89,7 @@ export default function PaymentMethodSection({
                     </div>
                 );
 
-            case 'e-wallet':
+            case 'E_WALLET':
                 return (
                     <div className="flex flex-col gap-2 mt-2">
                         {E_WALLETS.map((wallet) => {
@@ -98,9 +102,13 @@ export default function PaymentMethodSection({
                                             ? 'bg-green-100 border-green-500'
                                             : ''
                                     }`}
-                                    onClick={() =>
-                                        setSelectedWallet(wallet.name)
-                                    }
+                                    onClick={() => {
+                                        setSelectedWallet(wallet.name);
+                                        onChangeProvider &&
+                                            onChangeProvider(
+                                                wallet.name.toUpperCase() as PaymentProvider,
+                                            );
+                                    }}
                                 >
                                     <div className="flex items-center">
                                         <img
@@ -118,7 +126,7 @@ export default function PaymentMethodSection({
                     </div>
                 );
 
-            case 'bank-account':
+            case 'BANK_TRANSFER':
                 return (
                     <div className="flex flex-col gap-2 mt-2">
                         {BANK_CARDS.map((card) => {
@@ -173,7 +181,11 @@ export default function PaymentMethodSection({
                                 name="paymentMethod"
                                 value={option.value}
                                 checked={paymentMethod === option.value}
-                                onChange={(e) => onChangeAction(e.target.value)}
+                                onChange={(e) =>
+                                    onChangeAction(
+                                        e.target.value as PaymentMethod,
+                                    )
+                                }
                                 className="mr-2 accent-red-500"
                             />
                             {option.label}

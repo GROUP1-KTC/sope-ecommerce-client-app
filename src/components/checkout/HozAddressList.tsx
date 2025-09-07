@@ -8,55 +8,19 @@ import AddressFormModal from '../address/AddAddressFormModal';
 type HozAddressListProps = {
     setAddressFormData: (data: any) => void;
     setShowListAddress: (show: boolean) => void;
+    addresses?: Address[];
 };
 
 const HozAddressList = ({
     setAddressFormData,
     setShowListAddress,
+    addresses,
 }: HozAddressListProps) => {
-    // Mock data
-    const [addresses, setAddresses] = useState<Address[]>([
-        {
-            id: '1',
-            recipientName: 'Nguyễn Văn A',
-            phoneNumber: '0909123456',
-            street: '123 Nguyễn Trãi',
-            ward: 'Phường 5',
-            district: 'Quận 1',
-            city: 'TP.HCM',
-            country: 'Việt Nam',
-            isDefault: true,
-        },
-        {
-            id: '2',
-            recipientName: 'Trần Thị B',
-            phoneNumber: '0988777666',
-            street: '456 Lê Lợi',
-            ward: 'Phường 7',
-            district: 'Quận 3',
-            city: 'TP.HCM',
-            country: 'Việt Nam',
-            isDefault: false,
-        },
-    ]);
-
     const [openModal, setOpenModal] = useState(false);
 
-    const handleSelect = (id: string) => {
-        const selected = addresses.find((a) => a.id === id);
-        if (selected) {
-            // Map sang AddressFormData
-            setAddressFormData({
-                fullName: selected.recipientName,
-                phone: selected.phoneNumber,
-                address: selected.street,
-                ward: selected.ward,
-                district: selected.district,
-                city: selected.city,
-                type: selected.isDefault ? 'default' : 'other',
-            });
-            setShowListAddress(false);
-        }
+    const handleSelectAddress = (address: Address) => {
+        setAddressFormData(address);
+        setShowListAddress(false);
     };
 
     // Hàm khi thêm địa chỉ thành công
@@ -67,29 +31,26 @@ const HozAddressList = ({
         address: string;
         isDefault: boolean;
     }) => {
-        setAddresses((prev) => [
-            ...prev,
-            {
-                id: newAddress.id.toString(),
-                recipientName: newAddress.name,
-                phoneNumber: newAddress.phone,
-                street: newAddress.address,
-                ward: '',
-                district: '',
-                city: '',
-                country: 'Việt Nam',
-                isDefault: newAddress.isDefault,
-            },
-        ]);
+        addresses?.push({
+            id: newAddress.id.toString(),
+            recipientName: newAddress.name,
+            phoneNumber: newAddress.phone,
+            street: newAddress.address,
+            ward: '',
+            district: '',
+            city: '',
+            country: 'Việt Nam',
+            isDefault: newAddress.isDefault,
+        });
     };
 
     return (
         <div className="mt-3 space-y-3">
-            {addresses.map((address) => (
+            {addresses?.map((address) => (
                 <HorizontalAddressCard
                     key={address.id}
                     address={address}
-                    onSelect={handleSelect}
+                    onSelect={() => handleSelectAddress(address)}
                 />
             ))}
 

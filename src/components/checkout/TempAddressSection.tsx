@@ -1,25 +1,20 @@
 'use client';
 import { useEffect, useState } from 'react';
-import type { TempAddress } from '~/types/address';
+import {
+    setAddress,
+    updateAddressField,
+} from '~/features/address/tempAddressSlice';
+import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
+import { TempAddress } from '~/types/address';
 
-type Province = { code: number; name: string };
-type District = { code: number; name: string };
-type Ward = { code: number; name: string };
+export type Province = { code: number; name: string };
+export type District = { code: number; name: string };
+export type Ward = { code: number; name: string };
 
-type TempAddressSectionProps = {
-    onChange: (address: TempAddress) => void;
-};
+const TempAddressSection = () => {
+    const dispatch = useAppDispatch();
 
-const TempAddressSection = ({ onChange }: TempAddressSectionProps) => {
-    const [addressData, setAddressData] = useState<TempAddress>({
-        fullName: '',
-        phone: '',
-        province: '',
-        district: '',
-        ward: '',
-        detailedAddress: '',
-        isDefault: false,
-    });
+    const addressData = useAppSelector((state) => state.tempAddress);
 
     const [provinces, setProvinces] = useState<Province[]>([]);
     const [districts, setDistricts] = useState<District[]>([]);
@@ -35,12 +30,19 @@ const TempAddressSection = ({ onChange }: TempAddressSectionProps) => {
     useEffect(() => {
         if (addressData.province) {
             fetch(
-                `https://provinces.open-api.vn/api/p/${addressData.province}?depth=2`,
+                `https://provinces.open-api.vn/api/p/${addressData.province.code}?depth=2`,
             )
                 .then((res) => res.json())
                 .then((data) => setDistricts(data.districts || []))
                 .catch((err) => console.error('Lỗi khi lấy quận/huyện:', err));
-            setAddressData((prev) => ({ ...prev, district: '', ward: '' }));
+
+            dispatch(
+                setAddress({
+                    ...addressData,
+                    district: null,
+                    ward: null,
+                }),
+            );
             setDistricts([]);
             setWards([]);
         }
@@ -49,28 +51,49 @@ const TempAddressSection = ({ onChange }: TempAddressSectionProps) => {
     useEffect(() => {
         if (addressData.district) {
             fetch(
-                `https://provinces.open-api.vn/api/d/${addressData.district}?depth=2`,
+                `https://provinces.open-api.vn/api/d/${addressData.district.code}?depth=2`,
             )
                 .then((res) => res.json())
                 .then((data) => setWards(data.wards || []))
                 .catch((err) => console.error('Lỗi khi lấy phường/xã:', err));
-            setAddressData((prev) => ({ ...prev, ward: '' }));
+
+            dispatch(setAddress({ ...addressData, ward: null }));
             setWards([]);
         }
     }, [addressData.district]);
-
-    useEffect(() => {
-        onChange(addressData);
-    }, [addressData]);
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     ) => {
         const { name, value, type, checked } = e.target as HTMLInputElement;
-        setAddressData((prev) => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value,
-        }));
+
+        if (name === 'province') {
+            const province = provinces.find((p) => p.code === Number(value));
+            dispatch(
+                updateAddressField({
+                    key: 'province',
+                    value: province || null,
+                }),
+            );
+        } else if (name === 'district') {
+            const district = districts.find((d) => d.code === Number(value));
+            dispatch(
+                updateAddressField({
+                    key: 'district',
+                    value: district || null,
+                }),
+            );
+        } else if (name === 'ward') {
+            const ward = wards.find((w) => w.code === Number(value));
+            dispatch(updateAddressField({ key: 'ward', value: ward || null }));
+        } else {
+            dispatch(
+                updateAddressField({
+                    key: name as keyof TempAddress,
+                    value: type === 'checkbox' ? checked : value,
+                }),
+            );
+        }
     };
 
     return (
@@ -108,6 +131,20 @@ const TempAddressSection = ({ onChange }: TempAddressSectionProps) => {
                     />
                 </div>
 
+                {/* Email */}
+                <div className="flex items-center">
+                    <label className="w-1/4 text-sm font-bold">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={addressData.email}
+                        onChange={handleInputChange}
+                        placeholder="Nhập email"
+                        className="w-3/4 p-2 border border-gray-300 rounded focus:border-black"
+                        required
+                    />
+                </div>
+
                 {/* Province */}
                 <div className="flex items-center">
                     <label className="w-1/4 text-sm font-bold">
@@ -115,7 +152,7 @@ const TempAddressSection = ({ onChange }: TempAddressSectionProps) => {
                     </label>
                     <select
                         name="province"
-                        value={addressData.province}
+                        value={addressData.province?.code}
                         onChange={handleInputChange}
                         className="w-3/4 p-2 border border-gray-300 rounded focus:border-black"
                         required
@@ -136,7 +173,7 @@ const TempAddressSection = ({ onChange }: TempAddressSectionProps) => {
                     </label>
                     <select
                         name="district"
-                        value={addressData.district}
+                        value={addressData.district?.code}
                         onChange={handleInputChange}
                         disabled={!addressData.province}
                         className="w-3/4 p-2 border border-gray-300 rounded focus:border-black"
@@ -156,7 +193,7 @@ const TempAddressSection = ({ onChange }: TempAddressSectionProps) => {
                     <label className="w-1/4 text-sm font-bold">Phường/Xã</label>
                     <select
                         name="ward"
-                        value={addressData.ward}
+                        value={addressData.ward?.code}
                         onChange={handleInputChange}
                         disabled={!addressData.district}
                         className="w-3/4 p-2 border border-gray-300 rounded focus:border-black"

@@ -1,24 +1,24 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import type { CartItem } from '~/app/(customer)/cart/page';
+import type { CartGroup, CartItem } from '~/app/(customer)/cart/page';
 
 interface CheckoutState {
-    items: CartItem[];
+    shopOrders: CartGroup[];
 }
 
 const initialState: CheckoutState = {
-    items: [],
+    shopOrders: [],
 };
 
 const checkoutSlice = createSlice({
     name: 'checkout',
     initialState,
     reducers: {
-        setCheckoutItems(state, action: PayloadAction<CartItem[]>) {
-            state.items = action.payload;
+        setCheckoutItems(state, action: PayloadAction<CartGroup[]>) {
+            state.shopOrders = action.payload;
         },
         clearCheckoutItems(state) {
-            state.items = [];
+            state.shopOrders = [];
         },
     },
 });
