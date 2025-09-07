@@ -5,8 +5,6 @@ import { Box, Container, Typography, Paper } from '@mui/material';
 import CartTable from '~/components/cart/CartTable';
 import CartSummary from '~/components/cart/CartSummary';
 import ProductSuggestions from '~/components/cart/ProductSuggestions';
-import VoucherSection from '~/components/cart/VoucherSection';
-import VoucherModal, { type Voucher } from '~/components/cart/VoucherModal';
 import {
     useDeleteItemsMutation,
     useDeleteItemMutation,
@@ -25,6 +23,7 @@ import {
 import { setCheckoutItems } from '~/features/orders/checkoutSlice';
 import { useRouter } from 'next/navigation';
 import { useAlertStore } from '~/store/zustand/alertStore';
+import type { AddressCreateRequest } from '~/types/address';
 
 export interface CartItem {
     id: string;
@@ -40,6 +39,7 @@ export interface CartGroup {
         id: string;
         name: string;
         avatarUrl: string;
+        address: AddressCreateRequest;
     };
     items: CartItem[];
 }
@@ -56,12 +56,18 @@ const products: Product[] = [];
 const Cart: React.FC = () => {
     const router = useRouter();
     // const token = useAppSelector((state) => state.auth.accessToken);
-    const token = 'znb';
+
+    const [isLoggedIn] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return !!sessionStorage.getItem('authUser');
+        }
+        return false;
+    });
 
     const { groups: cartGroups } = useAppSelector((state) => state.cart);
 
     const { data: cartItemsFromApi, isLoading } = useGetCartQuery(undefined, {
-        skip: !token,
+        skip: !isLoggedIn,
     });
     const [deleteItemApi] = useDeleteItemMutation();
     const [deleteItemsApi] = useDeleteItemsMutation();
@@ -70,28 +76,25 @@ const Cart: React.FC = () => {
     const dispatch = useAppDispatch();
 
     const [selected, setSelected] = useState<string[]>([]);
-    const [voucher, setVoucher] = useState<Voucher | null>(null);
-    const [showVoucherModal, setShowVoucherModal] = useState(false);
 
     // Memoize grouped cart from API
     const groupedCart = useMemo(() => {
-        if (!token || !cartItemsFromApi?.length) return null;
-
-        console.log('Cart items from API:', cartItemsFromApi);
+        if (!isLoggedIn || !cartItemsFromApi?.length) return null;
 
         return cartItemsFromApi;
-    }, [cartItemsFromApi, token]);
+    }, [cartItemsFromApi, isLoggedIn]);
 
     // Sync Redux store with API or localStorage
     useEffect(() => {
-        if (token && groupedCart) {
+        if (isLoggedIn && groupedCart) {
             dispatch(setCart(groupedCart));
-        } else if (!token && typeof window !== 'undefined') {
+        } else if (!isLoggedIn && typeof window !== 'undefined') {
             const stored = localStorage.getItem('cart');
             const localCart = stored ? JSON.parse(stored) || [] : [];
+            console.log('Local cart:', localCart);
             dispatch(setCart(localCart));
         }
-    }, [groupedCart, token, dispatch]);
+    }, [groupedCart, isLoggedIn, dispatch]);
 
     const handleSelect = (id: string) => {
         setSelected((prev) =>
@@ -123,10 +126,9 @@ const Cart: React.FC = () => {
 
     const handleDelete = async (id: string) => {
         try {
-            if (token) {
+            if (isLoggedIn) {
                 await deleteItemApi(id).unwrap();
-            }
-            if (!token) {
+            } else {
                 const newCartGroups = cartGroups
                     .map((group) => ({
                         ...group,
@@ -158,10 +160,9 @@ const Cart: React.FC = () => {
             return;
         }
         try {
-            if (token) {
+            if (isLoggedIn) {
                 await deleteItemsApi(selected).unwrap();
-            }
-            if (!token) {
+            } else {
                 const newCartGroups = cartGroups
                     .map((group) => ({
                         ...group,
@@ -188,7 +189,7 @@ const Cart: React.FC = () => {
     };
 
     const handleIncrease = async (id: string) => {
-        if (!token) {
+        if (!isLoggedIn) {
             const newCartGroups = cartGroups
                 .map((group) => ({
                     ...group,
@@ -229,7 +230,7 @@ const Cart: React.FC = () => {
     };
 
     const handleDecrease = async (id: string) => {
-        if (!token) {
+        if (!isLoggedIn) {
             const newCartGroups = cartGroups
                 .map((group) => ({
                     ...group,
@@ -268,7 +269,7 @@ const Cart: React.FC = () => {
 
     const handleQuantityChange = async (id: string, quantity: number) => {
         if (quantity < 1) return;
-        if (!token) {
+        if (!isLoggedIn) {
             const newCartGroups = cartGroups
                 .map((group) => ({
                     ...group,
@@ -317,10 +318,8 @@ const Cart: React.FC = () => {
             alert('Vui lòng chọn ít nhất một sản phẩm để mua.');
             return;
         }
-        const items = cartGroups
-            .flatMap((g) => g.items)
-            .filter((item) => selected.includes(item.id));
-        dispatch(setCheckoutItems(items));
+
+        dispatch(setCheckoutItems(cartGroups));
         router.push('/checkout');
     };
 

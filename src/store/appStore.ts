@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { apiSlice } from '~/services/api/apiSlice';
-import { authApi } from '~/features/auth/authApi';
 import chatReducer from '~/features/chat/chatSlice';
 import userReducer from '~/features/user/userSlice';
 
@@ -9,7 +8,8 @@ import authReducer from '~/features/auth/authSlice';
 import cartReducer from '~/features/cart/cartSlice';
 
 import checkoutReducer from '~/features/orders/checkoutSlice';
-import { addressApi } from '~/features/address/addressApi';
+
+import tempAddressReducer from '~/features/address/tempAddressSlice';
 
 export const appStore = configureStore({
     reducer: {
@@ -19,6 +19,7 @@ export const appStore = configureStore({
         user: userReducer,
         cart: cartReducer,
         checkout: checkoutReducer,
+        tempAddress: tempAddressReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

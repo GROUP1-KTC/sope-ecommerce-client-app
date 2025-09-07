@@ -3,30 +3,26 @@
 import React, { useState } from 'react';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import HozAddressList from './HozAddressList';
+import type { Address } from '~/types/address';
+import { add } from 'lodash';
 
-type AddressFormData = {
-    fullName: string;
-    phone: string;
-    city: string;
-    district: string;
-    ward: string;
-    address: string;
-    type: string;
+type AddressSectionProps = {
+    selectedAddress: Address | null;
+    setSelectedAddress: (addr: any) => void;
+    userAddresses?: Address[];
 };
 
-export default function AddressSection() {
-    // Mock dữ liệu mặc định
-    const [addressFormData, setAddressFormData] = useState<AddressFormData>({
-        fullName: 'Nguyễn Văn A',
-        phone: '0909123456',
-        city: 'TP.HCM',
-        district: 'Quận 1',
-        ward: 'Phường 5',
-        address: '123 Nguyễn Trãi',
-        type: 'default',
-    });
-
+export default function AddressSection({
+    selectedAddress,
+    setSelectedAddress,
+    userAddresses,
+}: AddressSectionProps) {
     const [showListAddress, setShowListAddress] = useState(false);
+
+    const handleSelect = (address: Address) => {
+        setSelectedAddress(address);
+        setShowListAddress(false);
+    };
 
     return (
         <div className="w-full mx-auto mb-6 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg shadow-md">
@@ -47,16 +43,17 @@ export default function AddressSection() {
 
             {showListAddress ? (
                 <HozAddressList
-                    setAddressFormData={setAddressFormData}
+                    setAddressFormData={handleSelect}
                     setShowListAddress={setShowListAddress}
+                    addresses={userAddresses || []}
                 />
             ) : (
                 <div>
                     <p className="mt-2 text-gray-700 drop-shadow-sm">
-                        {`${addressFormData.fullName} (${addressFormData.phone})`}
+                        {`${selectedAddress?.recipientName} (${selectedAddress?.phoneNumber})`}
                     </p>
                     <p className=" text-gray-700 drop-shadow-sm">
-                        {`${addressFormData.address}, ${addressFormData.ward}, ${addressFormData.district}, ${addressFormData.city}`}
+                        {`${selectedAddress?.street}, ${selectedAddress?.ward}, ${selectedAddress?.district}, ${selectedAddress?.city}`}
                     </p>
                 </div>
             )}

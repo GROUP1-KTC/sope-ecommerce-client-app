@@ -1,27 +1,66 @@
-import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Button, Chip } from '@mui/material';
 import DiscountIcon from '@mui/icons-material/Discount';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-
-interface Voucher {
-    discount: number;
-}
+import VoucherModal from '../checkout/VoucherModal';
+import type { Discount, DiscountScope } from '~/types/discount/discount';
 
 interface Props {
-    voucher?: Voucher | null;
+    vouchers: Discount[];
     userCoins: number;
+    total: number;
     useCoin: boolean;
     setUseCoin: (value: boolean) => void;
-    onSelectVoucher: () => void;
+    onApplyVouchers: (codes: string[]) => void;
 }
 
+type AppliedVoucherMap = {
+    PLATFORM: string | null;
+    FREESHIP: string | null;
+    COIN_BACK: string | null;
+};
+
 const VoucherSection: React.FC<Props> = ({
-    voucher,
+    vouchers,
     userCoins,
+    total,
     useCoin,
     setUseCoin,
-    onSelectVoucher,
+    onApplyVouchers,
 }) => {
+    const [isVoucherOpen, setIsVoucherOpen] = useState(false);
+    const [appliedVouchers, setAppliedVouchers] = useState<AppliedVoucherMap>({
+        PLATFORM: null,
+        FREESHIP: null,
+        COIN_BACK: null,
+    });
+
+    const handleApply = (selected: AppliedVoucherMap) => {
+        setAppliedVouchers(selected);
+
+        const codes = Object.values(selected).filter((c): c is string => !!c);
+        onApplyVouchers(codes);
+        setIsVoucherOpen(false);
+    };
+
+    const discountValue = (d: Discount) => {
+        let discountValue = 0;
+
+        if (d.discountType === 'PERCENTAGE') {
+            discountValue = (total * (d.value || 0)) / 100;
+        }
+
+        if (d.discountType === 'FIXED_AMOUNT') {
+            discountValue = d.value || 0;
+        }
+
+        if (d.maxDiscountValue && discountValue > d.maxDiscountValue) {
+            discountValue = d.maxDiscountValue;
+        }
+
+        return discountValue;
+    };
+
     return (
         <Box
             sx={{
@@ -45,26 +84,27 @@ const VoucherSection: React.FC<Props> = ({
                     <DiscountIcon color="error" />
                     <Typography fontWeight="medium">Shopee Voucher</Typography>
                 </Box>
-                <Button
-                    // variant="outlined"
-                    color="primary"
-                    onClick={onSelectVoucher}
-                >
+                <Button color="primary" onClick={() => setIsVoucherOpen(true)}>
                     Chọn hoặc nhập mã
                 </Button>
             </Box>
 
-            {voucher && (
-                <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    className="drop-shadow-sm"
-                >
-                    Đã áp dụng voucher: ₫
-                    {voucher.discount.toLocaleString('vi-VN')}
-                </Typography>
+            {/* Hiển thị voucher đã chọn */}
+            {Object.values(appliedVouchers).some((c) => !!c) && (
+                <Box display="flex" flexWrap="wrap" gap={1}>
+                    {Object.entries(appliedVouchers).map(([scope, code]) => {
+                        const voucher = vouchers.find((v) => v.code === code);
+                        return voucher ? (
+                            <Chip
+                                key={voucher.code}
+                                label={`${scope}: ${voucher.code} - ₫${discountValue(voucher).toLocaleString('vi-VN')}`}
+                                color="success"
+                                variant="outlined"
+                            />
+                        ) : null;
+                    })}
+                </Box>
             )}
-
             {/* Coin section */}
             <Box
                 display="flex"
@@ -88,6 +128,15 @@ const VoucherSection: React.FC<Props> = ({
                     <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out peer-checked:translate-x-5" />
                 </label>
             </Box>
+
+            {/* Modal chọn voucher theo scope */}
+            <VoucherModal
+                isOpen={isVoucherOpen}
+                onClose={() => setIsVoucherOpen(false)}
+                vouchers={vouchers}
+                onApply={handleApply}
+                scopes={['PLATFORM', 'FREESHIP', 'COIN_BACK']}
+            />
         </Box>
     );
 };

@@ -1,15 +1,6 @@
-export enum PaymentMethod {
-    COD = 'cod',
-    CARD = 'card',
-    E_WALLET = 'e-wallet',
-    BANK_ACCOUNT = 'bank-account',
-}
+export type PaymentMethod = 'COD' | 'CREDIT_CARD' | 'E_WALLET' | 'BANK_TRANSFER';
 
-export enum PaymentProvider {
-    VN_PAY = 'vn-pay',
-    MOMO = 'momo',
-    PAYPAL = 'paypal',
-}
+export type PaymentProvider = 'MOMO' | 'VNPAY' | 'ZALO_PAY' | 'PAYPAL' | 'STRIPE' | 'BANK';
 
 // types.ts
 export interface ShopOrderRequest {
@@ -20,6 +11,8 @@ export interface ShopOrderRequest {
     }[];
     note?: string;
     discountCodes?: string[];
+    shippingCharge?: number;
+    shippingRateId: string;
 }
 
 // Guest information
@@ -55,3 +48,20 @@ export interface GuestOrderCreateRequest extends BaseOrderCreateRequest {
 
 // Union type
 export type OrderCreateRequest = UserOrderCreateRequest | GuestOrderCreateRequest;
+
+
+
+export interface ShopOrderResponse {
+    orderId: string;
+    orderNumber: string;
+    totalAmount: number;
+    paymentMethod: PaymentMethod;
+    paymentProvider: PaymentProvider;
+}
+
+
+
+export interface OrderCreateResponse {
+    paymentId: string;
+    order: ShopOrderResponse;
+}
