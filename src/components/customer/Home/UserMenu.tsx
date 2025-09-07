@@ -5,10 +5,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CustomLink from '~/components/shared/loading/CustomLink';
+import { useLogoutMutation } from '~/features/auth/authApi';
 
 const UserMenu = () => {
     const [username, setUsername] = useState<string | null>(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [logoutApi] = useLogoutMutation();
 
     useEffect(() => {
         const storedUser = sessionStorage.getItem('authUser');
@@ -18,7 +20,14 @@ const UserMenu = () => {
         }
     }, []);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        try {
+            await logoutApi(); 
+        } catch (err) {
+            console.error("Logout API error:", err);
+        }
+
+        sessionStorage.removeItem('authUser');
         localStorage.removeItem('authUser');
         setUsername(null);
         setDropdownOpen(false);

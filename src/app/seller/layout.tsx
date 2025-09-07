@@ -35,21 +35,6 @@ export default function SellerLayout({
         <div className="flex flex-col h-screen">
             <SellerHeaderHome />
 
-            <div className="md:hidden flex justify-between px-4 py-2 bg-white border-b border-gray-200">
-                <button
-                    onClick={() => setShowLeftSidebar(!showLeftSidebar)}
-                    className="text-gray-700"
-                >
-                    {showLeftSidebar ? <CloseIcon /> : <MenuIcon />}
-                </button>
-                <button
-                    onClick={() => setShowRightSidebar(!showRightSidebar)}
-                    className="text-gray-700"
-                >
-                    {showRightSidebar ? <CloseIcon /> : <MenuIcon />}
-                </button>
-            </div>
-
             <div className="flex flex-1 overflow-hidden">
                 <aside
                     className={`
