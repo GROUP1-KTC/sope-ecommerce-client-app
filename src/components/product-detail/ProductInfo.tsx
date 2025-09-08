@@ -80,8 +80,6 @@ const ProductInfo = ({
     const [selectedImage, setSelectedImage] = useState(product.defaultImage);
 
     const handleAddToCart = async (item: CartItem) => {
-        console.log('Adding to cart:', item);
-
         const newItem = {
             id: uuidv4(),
             name: item.name,
@@ -103,8 +101,6 @@ const ProductInfo = ({
                     image: item.image || null,
                 };
 
-                console.log('Add to cart request:', request);
-
                 await addCartApi(request).unwrap();
                 useAlertStore.getState().showAlert({
                     severity: 'success',
@@ -125,6 +121,7 @@ const ProductInfo = ({
             let shopIndex = currentCart.findIndex(
                 (s) => s.shop.id === product.shop?.id,
             );
+
             if (shopIndex === -1) {
                 currentCart.push({
                     shop: {

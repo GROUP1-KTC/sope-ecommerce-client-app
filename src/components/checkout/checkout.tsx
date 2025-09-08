@@ -392,6 +392,8 @@ export default function Checkout() {
         shopOrders.forEach((group) => {
             const shopId = group.shop.id;
 
+            console.log('shop address:', group.shop.address);
+
             const originCity = cityString(
                 group.shop.address?.city || 'Hồ Chí Minh',
             );
