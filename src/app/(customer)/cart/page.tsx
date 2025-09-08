@@ -37,13 +37,15 @@ export interface CartItem {
     quantity: number;
 }
 
+export interface ShopInfo {
+    id: string;
+    name: string;
+    avatarUrl: string | null;
+    address: ShopAddress;
+}
+
 export interface CartGroup {
-    shop: {
-        id: string;
-        name: string;
-        avatarUrl: string;
-        address: ShopAddress;
-    };
+    shop: ShopInfo;
     items: CartItem[];
 }
 

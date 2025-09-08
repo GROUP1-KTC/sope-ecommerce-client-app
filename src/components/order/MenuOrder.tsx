@@ -1,60 +1,39 @@
 import React from 'react';
+import type { OrderStatus } from '~/types/orders/order';
 
 interface MenuOrderProps {
-    selectedMenu: 'all' | 'delivered' | 'processing' | 'canceled';
-    setSelectedMenu: (
-        menu: 'all' | 'delivered' | 'processing' | 'canceled',
-    ) => void;
+    selectedMenu: OrderStatus | 'all';
+    setSelectedMenu: (menu: OrderStatus | 'all') => void;
 }
+
+const ORDER_STATUS_OPTIONS: { key: OrderStatus | 'all'; label: string }[] = [
+    { key: 'all', label: 'Tất cả' },
+    { key: 'PENDING', label: 'Chờ thanh toán' },
+    { key: 'CONFIRMED', label: 'Đã xác nhận' },
+    { key: 'SHIPPING', label: 'Đang giao' },
+    { key: 'DELIVERED', label: 'Đã giao' },
+    { key: 'CANCELLED', label: 'Đã hủy' },
+];
 
 const MenuOrder: React.FC<MenuOrderProps> = ({
     selectedMenu,
     setSelectedMenu,
 }) => {
     return (
-        <div className="flex space-x-4 mb-4 bg-white p-2 rounded-lg shadow-md">
-            <button
-                className={`px-4 py-2 rounded cursor-pointer ${selectedMenu === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                onClick={() => setSelectedMenu('all')}
-            >
-                Tất cả
-            </button>
-            <button
-                className={`px-4 py-2 rounded cursor-pointer ${selectedMenu === 'delivered' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                onClick={() => setSelectedMenu('delivered')}
-            >
-                Chờ thanh toán
-            </button>
-            <button
-                className={`px-4 py-2 rounded cursor-pointer ${selectedMenu === 'processing' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                onClick={() => setSelectedMenu('processing')}
-            >
-                Vận chuyển
-            </button>
-            <button
-                className={`px-4 py-2 rounded cursor-pointer ${selectedMenu === 'canceled' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                onClick={() => setSelectedMenu('canceled')}
-            >
-                Chờ giao hàng
-            </button>
-            <button
-                className={`px-4 py-2 rounded cursor-pointer ${selectedMenu === 'canceled' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                onClick={() => setSelectedMenu('canceled')}
-            >
-                Hoàn thành
-            </button>
-            <button
-                className={`px-4 py-2 rounded cursor-pointer ${selectedMenu === 'canceled' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                onClick={() => setSelectedMenu('canceled')}
-            >
-                Đã hủy
-            </button>
-            <button
-                className={`px-4 py-2 rounded cursor-pointer ${selectedMenu === 'canceled' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                onClick={() => setSelectedMenu('canceled')}
-            >
-                Trả hàng/Hoàn tiền
-            </button>
+        <div className="flex flex-wrap gap-2 mb-4 bg-white p-2 rounded-lg shadow-md">
+            {ORDER_STATUS_OPTIONS.map((item) => (
+                <button
+                    key={item.key}
+                    className={`px-4 py-2 rounded cursor-pointer transition ${
+                        selectedMenu === item.key
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-gray-200 hover:bg-gray-300'
+                    }`}
+                    onClick={() => setSelectedMenu(item.key)}
+                >
+                    {item.label}
+                </button>
+            ))}
         </div>
     );
 };
