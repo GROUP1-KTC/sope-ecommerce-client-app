@@ -60,7 +60,6 @@ const OptionInputGroup = ({ options, onOptionsChange }: OptionInputGroupProps) =
                                 </span>
                                 {val.trim() !== '' && (
                                     <>
-                                        {/* <GripVertical className="w-4 h-4 text-gray-400 cursor-move mr-2" /> */}
                                         <Trash2
                                             className="w-4 h-4 text-red-400 cursor-pointer"
                                             onClick={() => handleDelete(idx)}

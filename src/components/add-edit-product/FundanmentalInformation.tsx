@@ -7,6 +7,7 @@ import { ProductFormDataWithMedia } from "./RightSideBar";
 import VideoTrimModal from "./VideoTrimModal";
 
 interface FundanmentalInformationProps {
+	mode: "add" | "edit";
 	productData: ProductFormDataWithMedia;
 	setProductData: (data: any) => void;
 	removeProductImage: (index: number) => void;
@@ -23,6 +24,7 @@ interface FundanmentalInformationProps {
 }
 
 const FundanmentalInformation: React.FC<FundanmentalInformationProps> = ({
+	mode,
 	productData,
 	setProductData,
 	removeProductImage,
@@ -47,18 +49,6 @@ const FundanmentalInformation: React.FC<FundanmentalInformationProps> = ({
 			{/* Hình ảnh sản phẩm */}
 			<div className="mb-6">
 				<label className="block font-medium mb-2">* Hình ảnh sản phẩm</label>
-
-				<div className="flex items-center space-x-6 mb-2">
-					<label className="flex items-center space-x-2">
-						<input type="radio" name="aspect" defaultChecked />
-						<span>Hình ảnh tỷ lệ 1:1</span>
-					</label>
-					<label className="flex items-center space-x-2">
-						<input type="radio" name="aspect" />
-						<span>Hình ảnh tỷ lệ 3:4</span>
-					</label>
-				</div>
-
 				<div className="flex flex-wrap gap-4">
 					{productData?.imagesList?.map((img: any, index: number) => (
 						<div
@@ -197,8 +187,7 @@ const FundanmentalInformation: React.FC<FundanmentalInformationProps> = ({
 					)}
 
 					<p className="text-xs text-gray-500 max-w-xs">
-						* Kích thước tối đa 30Mb, độ phân giải không
-						vượt quá 1280x1280px
+						* Kích thước tối đa 31Mb, độ phân giải không vượt quá 1280x1280px
 						<br />
 						* Độ dài: 10s–60s.
 						<br />
@@ -223,9 +212,9 @@ const FundanmentalInformation: React.FC<FundanmentalInformationProps> = ({
 				<label className="block font-medium mb-2">* Tên sản phẩm</label>
 				<input
 					type="text"
-					className="w-full border rounded px-3 py-2"
-					placeholder="Tên sản phẩm"
-					maxLength={120}
+					disabled={mode === "edit"}  // 👈 check bằng prop mode
+					className={`w-full border rounded px-3 py-2 ${mode === "edit" ? "bg-gray-100 cursor-not-allowed" : ""
+						}`}
 					value={productData.name}
 					onChange={(e) =>
 						setProductData({
@@ -235,7 +224,7 @@ const FundanmentalInformation: React.FC<FundanmentalInformationProps> = ({
 					}
 				/>
 				<div className="text-xs text-gray-400 text-right mt-1">
-					{productData.name.length}/120
+					{productData.name.length}/100
 				</div>
 			</div>
 
@@ -265,6 +254,12 @@ const FundanmentalInformation: React.FC<FundanmentalInformationProps> = ({
 			{/* Mô tả sản phẩm */}
 			<div className="mb-6">
 				<label className="block font-medium mb-2">Mô tả sản phẩm</label>
+
+				{/* <CustomEditor
+					value={productData.description || ''}
+					onChange={(html) => onChangeDescription(html)}
+				/> */}
+
 				<RichTextEditor
 					content={productData.description}
 					onChangeDescription={onChangeDescription}

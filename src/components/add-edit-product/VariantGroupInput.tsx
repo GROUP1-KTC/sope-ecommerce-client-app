@@ -1,4 +1,3 @@
-// VariantGroupInput.tsx
 import { X } from 'lucide-react';
 import OptionInputGroup from './OptionInputGroup';
 
@@ -8,7 +7,7 @@ interface VariantGroupInputProps {
       setVariantName: (value: string) => void;
       options: string[];
       setOptions: (options: string[]) => void;
-      onRemove: () => void;
+      onRemove?: () => void;
 }
 
 export default function VariantGroupInput({

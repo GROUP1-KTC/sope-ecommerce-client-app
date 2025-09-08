@@ -62,7 +62,7 @@ export default function Sidebar() {
             )}
 
             <div
-                className=" right-0 w-16 bg-white shadow-lg flex flex-col gap-4 p-4"
+                className="w-12 bg-white shadow-lg flex flex-col gap-4 "
                 style={{
                     top: `${headerHeight}px`,
                     height: `calc(100% - ${headerHeight}px)`,

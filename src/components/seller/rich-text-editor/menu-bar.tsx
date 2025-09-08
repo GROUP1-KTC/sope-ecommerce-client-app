@@ -14,6 +14,7 @@ import {
     Underline,
     Undo,
     Redo,
+    ImagePlus
 } from 'lucide-react';
 import type { Editor } from '@tiptap/react';
 
@@ -101,16 +102,34 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
             icon: <Redo className="size-4" />,
             onClick: () => editor.chain().focus().redo().run(),
         },
+        {
+            icon: <ImagePlus className="size-4" />,
+            onClick: () => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.onchange = () => {
+                    const file = input.files?.[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const src = reader.result as string;
+                        editor.chain().focus().insertContent(`<img src="${src}" alt="image" />`).run();
+                    };
+                    reader.readAsDataURL(file);
+                };
+                input.click();
+            },
+            pressed: false,
+        }
     ];
 
-    // 👉 Nút emoji riêng
     const EmojiOptions = emojiList.map((emoji) => ({
         icon: <span>{emoji}</span>,
         onClick: () => editor.chain().focus().insertContent(emoji).run(),
         pressed: false,
     }));
 
-    // 👉 Gộp 2 nhóm nút lại
     const AllOptions = [...Options, ...EmojiOptions];
 
     return (

@@ -1,12 +1,9 @@
-import type {
-    ProductVariantFormData,
-    ProductVariantResponse,
-} from './product_variant';
+import type { ProductVariant } from './product_variant';
 import type { Shop } from '../users/shop';
 import type { ProductDetail } from './product_detail';
 import type { Image } from './image';
-
-export type StatusProduct = 'PENDING' | 'APPROVED' | 'REJECTED';
+import { MediaItem } from '~/components/add-edit-product/RightSideBar';
+import { StatusProduct } from './enum/StatusProduct';
 
 export interface BaseProduct {
     name: string;
@@ -22,7 +19,18 @@ export interface ProductFormData extends BaseProduct {
     defaultImage: File | null;
     defaultVideoIntro?: File | null;
     imagesList?: File[];
-    variants: ProductVariantFormData[];
+    variants: ProductVariant[];
+}
+
+export interface ProductUpdateData {
+    description: string;
+    hidden: boolean;
+    categoryId: string;
+    variants: ProductVariant[];
+    defaultImage: MediaItem | null;
+    defaultVideoIntro?: MediaItem | null;
+    imagesList: MediaItem[];
+    productDetails: ProductDetail[];
 }
 
 export interface ProductResponse extends BaseProduct {
@@ -40,7 +48,7 @@ export interface ProductResponse extends BaseProduct {
     createdAt: string;
     updatedAt?: string;
     shop: Shop;
-    variants: ProductVariantResponse[];
+    variants: ProductVariant[];
 }
 
 export interface ProductVariantByCategory {
@@ -90,6 +98,14 @@ export interface ElasticSearchResponse<T> {
         max_score: number;
         hits: ElasticSearchHit<T>[];
     };
+}
+
+export interface PageResponse<T> {
+    content: T[];
+    totalElements: number;
+    totalPages: number;
+    number: number; // current page
+    size: number; // page size
 }
 
 export type Product = ProductFormData;

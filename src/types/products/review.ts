@@ -1,10 +1,10 @@
 import { User } from '../users';
-import { ProductVariantResponse } from './product_variant';
+import { ProductVariant } from './product_variant';
 import { ReviewMedia } from './review_media';
 
 export interface Review {
     reviewId: string;
-    productVariant: ProductVariantResponse;
+    productVariant: ProductVariant;
     user: User;
     rating: number;
     content?: string;

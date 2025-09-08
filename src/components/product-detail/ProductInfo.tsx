@@ -6,11 +6,11 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useAlertStore } from '~/store/zustand/alertStore';
 import { useModalStore } from '~/store/zustand/modalStore';
 import type { CartItem } from '~/app/(customer)/cart/page';
-import { ProductResponse, ProductVariantResponse } from "../../types/products";
+import { ProductResponse, ProductVariant } from "../../types/products";
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 interface ProductInfoProps {
     product: ProductResponse;
-    selectedVariant?: ProductVariantResponse;
+    selectedVariant?: ProductVariant;
     attributeMap?: Map<string, Set<string>>;
     selectedAttributes?: Record<string, string>;
     handleAttributeSelect?: (name: string, value: string) => void;

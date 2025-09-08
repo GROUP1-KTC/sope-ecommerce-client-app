@@ -1,19 +1,27 @@
 import { useState, useEffect } from 'react';
 import VariantGroupInput from './VariantGroupInput';
-import type { Attribute, Dimension, ProductVariantFormData } from '~/types/products';
+import type { Attribute, ProductVariant } from '~/types/products';
 import { ProductFormDataWithMedia } from './RightSideBar';
+import { handleNumberKeyDown } from '~/utils/keyboard';
 interface SalesInfoProps {
-    onPriceChange: (price: number) => void;
-    onStockChange: (stock: number) => void;
-    onDimensionChange: (dimension: Dimension) => void;
-    onWeightChange: (weight: number) => void;
-    onVariantsChange: (variants: ProductVariantFormData[]) => void;
+    onVariantsChange: (variants: ProductVariant[]) => void;
     productData: ProductFormDataWithMedia;
 }
 
-const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightChange, onVariantsChange, productData }: SalesInfoProps) => {
+const SalesInfo = ({ onVariantsChange, productData }: SalesInfoProps) => {
     const [showVariant1, setShowVariant1] = useState(false);
     const [showVariant2, setShowVariant2] = useState(false);
+
+    console.log('check productData', productData)
+
+    const [simpleVariant, setSimpleVariant] = useState<ProductVariant>({
+        price: productData.variants[0]?.price ?? 0,
+        stock: productData.variants[0]?.stock ?? 0,
+        weight: productData.variants[0]?.weight ?? 0,
+        dimension: productData.variants[0]?.dimension ?? { length: 0, width: 0, height: 0 },
+        imageVariant: null,
+        attributes: [],
+    });
 
     const [variant1, setVariant1] = useState('');
     const [variant1Options, setVariant1Options] = useState<string[]>([]);
@@ -43,6 +51,12 @@ const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightCh
         const nonEmpty = arr.filter((item) => item.trim() !== '');
         return new Set(nonEmpty).size !== nonEmpty.length;
     };
+
+    useEffect(() => {
+        if (!showVariant1 && !showVariant2) {
+            onVariantsChange([simpleVariant]);
+        }
+    }, [simpleVariant, showVariant1, showVariant2]);
 
     useEffect(() => {
         setDuplicateOptionsInV1(hasDuplicates(variant1Options));
@@ -94,7 +108,7 @@ const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightCh
     }, [variant1Options, variant2Options]);
 
     useEffect(() => {
-        const variantData: ProductVariantFormData[] = variantCombinations.map((combo) => {
+        const variantData: ProductVariant[] = variantCombinations.map((combo) => {
             const imageFile = imageVariant[combo.option1];
 
             const attributes: Attribute[] = [
@@ -171,6 +185,17 @@ const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightCh
         return acc;
     }, {} as Record<string, typeof variantCombinations>);
 
+    const handleRemoveVariant1 = () => {
+        setShowVariant1(false);
+        setShowVariant2(false);
+        setVariant1("");
+        setVariant1Options([]);
+        setVariant2("");
+        setVariant2Options([]);
+        setVariantCombinations([]);
+        onVariantsChange([simpleVariant]);
+    };
+
     return (
         <div className="bg-white rounded shadow p-6 mb-8">
             <h2 className="text-lg font-semibold mb-4">Thông tin bán hàng</h2>
@@ -180,84 +205,133 @@ const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightCh
                 <>
                     <button
                         onClick={() => setShowVariant1(true)}
-                        className="border border-dashed border-orange-400 text-orange-500 px-4 py-2  rounded"
+                        className="border border-dashed border-orange-400 text-orange-500 px-4 py-2 cursor-pointer rounded"
                     >
                         + Thêm nhóm phân loại
                     </button>
 
-                    <div className='mt-4'>
-                        <label className="block font-medium mb-1">* Giá (đồng)</label>
-                        <input
-                            type="text"
-                            placeholder="Nhập vào"
-                            className="border rounded p-2 w-full"
-                            value={productData.variants[0]?.price ?? ""}
-                            onChange={(e) => onPriceChange(Number(e.target.value))}
-                        />
-                    </div>
-                    <div className='mt-4'>
-                        <label className="block font-medium mb-1">* Kho hàng (số lượng)</label>
-                        <input
-                            type="text"
-                            className="border rounded p-2 w-full"
-                            value={productData.variants[0]?.stock ?? ""}
-                            onChange={(e) => onStockChange(Number(e.target.value))}
-                        />
+                    {/* Price, Stock, Weight */}
+                    <div className="mt-4 grid grid-cols-3 gap-2">
+                        <div>
+                            <label className="block font-medium mb-1">* Giá</label>
+                            <div className="relative">
+                                <input
+                                    type="number"
+                                    placeholder="Nhập vào"
+                                    className="border rounded p-2 w-full pr-10"
+                                    value={simpleVariant.price}
+                                    onChange={(e) => setSimpleVariant({ ...simpleVariant, price: Number(e.target.value) })}
+                                    onKeyDown={handleNumberKeyDown}
+                                />
+                                <span className="absolute inset-y-0 right-2 flex items-center text-gray-500 text-sm">
+                                    ₫
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <label className="block font-medium mb-1">* Kho hàng</label>
+                            <div className="relative">
+                                <input
+                                    type="number"
+                                    className="border rounded p-2 w-full pr-10"
+                                    value={simpleVariant.stock}
+                                    onChange={(e) => setSimpleVariant({ ...simpleVariant, stock: Number(e.target.value) })}
+                                    onKeyDown={handleNumberKeyDown}
+                                />
+                                <span className="absolute inset-y-0 right-2 flex items-center text-gray-500 text-sm">
+                                    cái
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <label className="block font-medium mb-1">Cân nặng</label>
+                            <div className="relative">
+                                <input
+                                    type="number"
+                                    className="border rounded p-2 w-full pr-12"
+                                    value={simpleVariant.weight}
+                                    onChange={(e) => setSimpleVariant({ ...simpleVariant, weight: Number(e.target.value) })}
+                                    onKeyDown={handleNumberKeyDown}
+                                />
+                                <span className="absolute inset-y-0 right-2 flex items-center text-gray-500 text-sm">
+                                    gram
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     {/* Dimension */}
                     <div className="mt-4 grid grid-cols-3 gap-2">
                         <div>
-                            <label className="block font-medium mb-1">Dài (cm)</label>
-                            <input
-                                type="number"
-                                className="border rounded p-2 w-full"
-                                value={productData.variants[0]?.dimension?.length ?? ""}
-                                onChange={(e) =>
-                                    onDimensionChange?.({
-                                        ...productData.variants[0]?.dimension,
-                                        length: Number(e.target.value),
-                                    } as Dimension)
-                                }
-                            />
+                            <label className="block font-medium mb-1">Dài</label>
+                            <div className="relative">
+                                <input
+                                    type="number"
+                                    className="border rounded p-2 w-full pr-10"
+                                    value={simpleVariant.dimension?.length ?? ""}
+                                    onChange={(e) =>
+                                        setSimpleVariant({
+                                            ...simpleVariant,
+                                            dimension: {
+                                                ...(simpleVariant.dimension ?? { length: 0, width: 0, height: 0 }),
+                                                length: Number(e.target.value),
+                                            },
+                                        })
+                                    }
+                                    onKeyDown={handleNumberKeyDown}
+                                />
+                                <span className="absolute inset-y-0 right-2 flex items-center text-gray-500 text-sm">
+                                    cm
+                                </span>
+                            </div>
                         </div>
+
                         <div>
-                            <label className="block font-medium mb-1">Rộng (cm)</label>
-                            <input
-                                type="number"
-                                className="border rounded p-2 w-full"
-                                value={productData.variants[0]?.dimension?.width ?? ""}
-                                onChange={(e) =>
-                                    onDimensionChange?.({
-                                        ...productData.variants[0]?.dimension,
-                                        width: Number(e.target.value),
-                                    } as Dimension)
-                                }
-                            />
+                            <label className="block font-medium mb-1">Rộng</label>
+                            <div className="relative">
+                                <input
+                                    type="number"
+                                    className="border rounded p-2 w-full pr-10"
+                                    value={simpleVariant.dimension?.width ?? ""}
+                                    onChange={(e) =>
+                                        setSimpleVariant({
+                                            ...simpleVariant,
+                                            dimension: {
+                                                ...(simpleVariant.dimension ?? { length: 0, width: 0, height: 0 }),
+                                                width: Number(e.target.value),
+                                            },
+                                        })
+                                    }
+                                    onKeyDown={handleNumberKeyDown}
+                                />
+                                <span className="absolute inset-y-0 right-2 flex items-center text-gray-500 text-sm">
+                                    cm
+                                </span>
+                            </div>
                         </div>
+
                         <div>
-                            <label className="block font-medium mb-1">Cao (cm)</label>
-                            <input
-                                type="number"
-                                className="border rounded p-2 w-full"
-                                value={productData.variants[0]?.dimension?.height ?? ""}
-                                onChange={(e) =>
-                                    onDimensionChange?.({
-                                        ...productData.variants[0]?.dimension,
-                                        height: Number(e.target.value),
-                                    } as Dimension)
-                                }
-                            />
+                            <label className="block font-medium mb-1">Cao</label>
+                            <div className="relative">
+                                <input
+                                    type="number"
+                                    className="border rounded p-2 w-full pr-10"
+                                    value={simpleVariant.dimension?.height ?? ""}
+                                    onChange={(e) =>
+                                        setSimpleVariant({
+                                            ...simpleVariant,
+                                            dimension: {
+                                                ...(simpleVariant.dimension ?? { length: 0, width: 0, height: 0 }),
+                                                height: Number(e.target.value),
+                                            },
+                                        })
+                                    }
+                                    onKeyDown={handleNumberKeyDown}
+                                />
+                                <span className="absolute inset-y-0 right-2 flex items-center text-gray-500 text-sm">
+                                    cm
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    {/* Weight */}
-                    <div className="mt-4">
-                        <label className="block font-medium mb-1">Cân nặng (gram)</label>
-                        <input
-                            type="number"
-                            className="border rounded p-2 w-full"
-                            value={productData.variants[0]?.weight ?? ""}
-                            onChange={(e) => onWeightChange?.(Number(e.target.value))}
-                        />
                     </div>
 
                 </>
@@ -268,11 +342,7 @@ const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightCh
                     setVariantName={setVariant1}
                     options={variant1Options}
                     setOptions={setVariant1Options}
-                    onRemove={() => {
-                        setShowVariant1(false);
-                        setShowVariant2(false)
-                    }
-                    }
+                    onRemove={handleRemoveVariant1}
                 />
             )}
 
@@ -280,7 +350,7 @@ const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightCh
             {showVariant1 && !showVariant2 && (
                 <button
                     onClick={() => setShowVariant2(true)}
-                    className="mt-4 border border-dashed border-orange-400 text-orange-500 px-4 py-2 rounded"
+                    className="mt-4 border border-dashed border-orange-400 text-orange-500 px-4 py-2 rounded cursor-pointer"
                 >
                     + Thêm nhóm phân loại 2
                 </button>
@@ -312,17 +382,17 @@ const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightCh
             )}
 
             {showVariant1 && (
-                <table className="table-auto border-collapse border border-gray-300 mt-4 w-full">
+                <table className="table-auto border-separate border-spacing-1.5 border border-gray-300 rounded overflow-hidden mt-4 w-full">
                     <thead>
                         <tr>
-                            <th className="border px-2 py-1">{variant1}</th>
+                            <th className="border border-gray-200  px-2 py-1">{variant1}</th>
                             {variant2 && variant2Options && (
-                                <th className="border px-2 py-1">{variant2}</th>
+                                <th className="border border-gray-200  px-2 py-1">{variant2}</th>
                             )}
-                            <th className="border px-2 py-1">Giá </th>
-                            <th className="border px-2 py-1">Kho hàng </th>
-                            <th className="border px-2 py-1">Kích thước (cm) </th>
-                            <th className="border px-2 py-1">Cân nặng (gram)</th>
+                            <th className="border border-gray-200  px-2 py-1">Giá </th>
+                            <th className="border border-gray-200  px-2 py-1">Kho hàng </th>
+                            <th className="border border-gray-200  px-2 py-1">Kích thước (cm) </th>
+                            <th className="border border-gray-200  px-2 py-1">Cân nặng (gram)</th>
                         </tr>
                     </thead>
 
@@ -331,7 +401,7 @@ const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightCh
                             combos.map((combo, index) => (
                                 <tr key={combo.key}>
                                     {index === 0 && (
-                                        <td className="border px-2 py-1" rowSpan={combos.length}>
+                                        <td className="border border-gray-200  px-2 py-1" rowSpan={combos.length}>
                                             <div className="flex flex-col items-center space-y-1">
                                                 <span>{option1}</span>
 
@@ -359,27 +429,27 @@ const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightCh
                                         </td>
                                     )}
                                     {variant2 && variant2Options && (
-                                        <td className="border items-center justify-center align-middle px-2 py-1">{combo.option2}</td>
+                                        <td className="border border-gray-200 text-center justify-center align-middle px-2 py-1">{combo.option2}</td>
                                     )}
-                                    <td className="border px-2 py-1">
+                                    <td className="border border-gray-200  px-2 py-1">
                                         <input
                                             type="text"
                                             value={combo.price}
                                             onChange={(e) => handlePriceChangeVariant(combo.key, Number(e.target.value))}
-                                            className="border rounded p-1 w-full"
+                                            className="border border-gray-400 rounded p-1 w-full"
                                         />
                                     </td>
-                                    <td className="border px-2 py-1">
+                                    <td className="border border-gray-200  px-2 py-1">
                                         <input
                                             type="text"
                                             value={combo.stock}
                                             onChange={(e) => handleStockChangeVariant(combo.key, Number(e.target.value))}
-                                            className="border rounded p-1 w-full"
+                                            className="border border-gray-400 rounded p-1 w-full"
                                         />
                                     </td>
 
                                     {/* Dimension (dài, rộng, cao) */}
-                                    <td className="border px-2 py-1">
+                                    <td className="border border-gray-200  px-2 py-1">
                                         <div className="grid grid-cols-3 gap-1">
                                             <input
                                                 type="number"
@@ -391,7 +461,7 @@ const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightCh
                                                         length: Number(e.target.value),
                                                     })
                                                 }
-                                                className="border rounded p-1 w-full"
+                                                className="border border-gray-400 rounded p-1 w-full"
                                             />
                                             <input
                                                 type="number"
@@ -403,7 +473,7 @@ const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightCh
                                                         width: Number(e.target.value),
                                                     })
                                                 }
-                                                className="border rounded p-1 w-full"
+                                                className="border border-gray-400 rounded p-1 w-full"
                                             />
                                             <input
                                                 type="number"
@@ -415,17 +485,17 @@ const SalesInfo = ({ onPriceChange, onStockChange, onDimensionChange, onWeightCh
                                                         height: Number(e.target.value),
                                                     })
                                                 }
-                                                className="border rounded p-1 w-full"
+                                                className="border border-gray-400 rounded p-1 w-full"
                                             />
                                         </div>
                                     </td>
 
-                                    <td className="border px-2 py-1">
+                                    <td className="border border-gray-200  px-2 py-1">
                                         <input
                                             type="text"
                                             value={combo.weight}
                                             onChange={(e) => handleWeightChangeVariant(combo.key, Number(e.target.value))}
-                                            className="border rounded p-1 w-full"
+                                            className="border border-gray-400 rounded p-1 w-full"
                                         />
                                     </td>
                                 </tr>
