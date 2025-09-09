@@ -1,6 +1,12 @@
+import { ShopInfo } from '~/app/(customer)/cart/page';
+import { Address } from './address';
+
+
 export type PaymentMethod = 'COD' | 'CREDIT_CARD' | 'E_WALLET' | 'BANK_TRANSFER';
 
 export type PaymentProvider = 'MOMO' | 'VNPAY' | 'ZALO_PAY' | 'PAYPAL' | 'STRIPE' | 'BANK';
+
+export type OrderStatus = 'PENDING' | 'CONFIRMED' | 'SHIPPING' | 'DELIVERED' | 'CANCELLED' | 'RETURNED';
 
 // types.ts
 export interface ShopOrderRequest {
@@ -64,4 +70,48 @@ export interface ShopOrderResponse {
 export interface OrderCreateResponse {
     paymentId: string;
     order: ShopOrderResponse;
+}
+
+
+
+
+
+
+export interface OrderItemProduct {
+    productVariantId: string;
+    quantity: number;
+    price: number;
+    imageUrl: string;
+    productName: string;
+}
+
+export interface OrderStatusHistory {
+    status: string;
+    timestamp: string;
+}
+
+export interface OrderDetail {
+    shopInfo: ShopInfo;
+    orderId: string;
+    orderNumber: string;
+    shippingCharges: number;
+    subTotal: number | null;
+    totalAmount: number;
+    status: OrderStatus;
+    cancelReason: string | null;
+    note: string | null;
+    orderDiscounts: any[];
+    items: OrderItemProduct[];
+    paymentMethod: string;
+    paymentProvider: string | null;
+    paymentStatus: string;
+    statusHistory: OrderStatusHistory[];
+    createdAt: string;
+}
+
+
+export interface OrderGroupShop {
+    paymentId: string;
+    shippingAddress: Address;
+    order: OrderDetail;
 }

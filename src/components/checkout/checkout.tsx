@@ -56,6 +56,7 @@ export default function Checkout() {
 
     const userCoins = 0;
     const shopOrders = useAppSelector((state) => state.checkout.shopOrders);
+    const isFormCart = useAppSelector((state) => state.checkout.isFormCart);
 
     const [idempotencyKey] = useState(() => crypto.randomUUID());
 
@@ -245,8 +246,6 @@ export default function Checkout() {
 
         setIsLoading(true);
 
-        console.log('Selected Address:', selectedAddress);
-
         try {
             const orderData: OrderCreateRequest = {
                 idempotencyKey: idempotencyKey,
@@ -261,7 +260,7 @@ export default function Checkout() {
                     ? {
                           orderType: 'user',
                           shippingAddressId: selectedAddress.id,
-                          isOrderedFromCart: false,
+                          isOrderedFromCart: isFormCart ?? false,
                       }
                     : {
                           orderType: 'guest',
@@ -392,6 +391,8 @@ export default function Checkout() {
 
         shopOrders.forEach((group) => {
             const shopId = group.shop.id;
+
+            console.log('shop address:', group.shop.address);
 
             const originCity = cityString(
                 group.shop.address?.city || 'Hồ Chí Minh',

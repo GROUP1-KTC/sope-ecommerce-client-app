@@ -20,10 +20,13 @@ import {
     setCart,
     updateQuantity,
 } from '~/features/cart/cartSlice';
-import { setCheckoutItems } from '~/features/orders/checkoutSlice';
+import {
+    setCheckoutItems,
+    setIsFormCart,
+} from '~/features/orders/checkoutSlice';
 import { useRouter } from 'next/navigation';
 import { useAlertStore } from '~/store/zustand/alertStore';
-import type { AddressCreateRequest } from '~/types/address';
+import type { ShopAddress } from '~/types/address';
 
 export interface CartItem {
     id: string;
@@ -34,13 +37,15 @@ export interface CartItem {
     quantity: number;
 }
 
+export interface ShopInfo {
+    id: string;
+    name: string;
+    avatarUrl: string | null;
+    address: ShopAddress;
+}
+
 export interface CartGroup {
-    shop: {
-        id: string;
-        name: string;
-        avatarUrl: string;
-        address: AddressCreateRequest;
-    };
+    shop: ShopInfo;
     items: CartItem[];
 }
 
@@ -320,6 +325,7 @@ const Cart: React.FC = () => {
         }
 
         dispatch(setCheckoutItems(cartGroups));
+        dispatch(setIsFormCart(true));
         router.push('/checkout');
     };
 

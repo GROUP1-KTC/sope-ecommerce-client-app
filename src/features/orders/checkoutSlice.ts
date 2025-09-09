@@ -4,10 +4,12 @@ import type { CartGroup, CartItem } from '~/app/(customer)/cart/page';
 
 interface CheckoutState {
     shopOrders: CartGroup[];
+    isFormCart: boolean | null;
 }
 
 const initialState: CheckoutState = {
     shopOrders: [],
+    isFormCart: null,
 };
 
 const checkoutSlice = createSlice({
@@ -17,11 +19,15 @@ const checkoutSlice = createSlice({
         setCheckoutItems(state, action: PayloadAction<CartGroup[]>) {
             state.shopOrders = action.payload;
         },
+        setIsFormCart(state, action: PayloadAction<boolean | null>) {
+            state.isFormCart = action.payload;
+        },
         clearCheckoutItems(state) {
             state.shopOrders = [];
+            state.isFormCart = null;
         },
     },
 });
 
-export const { setCheckoutItems, clearCheckoutItems } = checkoutSlice.actions;
+export const { setCheckoutItems, clearCheckoutItems, setIsFormCart } = checkoutSlice.actions;
 export default checkoutSlice.reducer;

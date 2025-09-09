@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useAlertStore } from '~/store/zustand/alertStore';
-import type { CartItem } from '~/app/(customer)/cart/page';
+import type { CartGroup, CartItem } from '~/app/(customer)/cart/page';
 import type { ProductResponse, ProductVariantResponse } from '~/types/products';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 import { useAddCartMutation } from '~/features/cart/cartApiSlice';
@@ -21,15 +21,11 @@ interface ProductInfoProps {
 import { v4 as uuidv4 } from 'uuid';
 import { addItem } from '~/features/cart/cartSlice';
 import type { AddToCartRequest } from '~/types/cart/AddToCartRequest';
-
-interface CartGroup {
-    shop: {
-        id: string;
-        name: string;
-        avatarUrl: string;
-    };
-    items: CartItem[];
-}
+import { useRouter } from 'next/navigation';
+import {
+    setCheckoutItems,
+    setIsFormCart,
+} from '~/features/orders/checkoutSlice';
 
 const ProductInfo = ({
     product,
@@ -44,6 +40,7 @@ const ProductInfo = ({
     const [showPolicyModal, setShowPolicyModal] = useState(false);
     const [addCartApi] = useAddCartMutation();
     const [token, setToken] = useState<string | null>(null);
+    const router = useRouter();
 
     useEffect(() => {
         const storedUser = sessionStorage.getItem('authUser');
@@ -83,8 +80,6 @@ const ProductInfo = ({
     const [selectedImage, setSelectedImage] = useState(product.defaultImage);
 
     const handleAddToCart = async (item: CartItem) => {
-        console.log('Adding to cart:', item);
-
         const newItem = {
             id: uuidv4(),
             name: item.name,
@@ -106,8 +101,6 @@ const ProductInfo = ({
                     image: item.image || null,
                 };
 
-                console.log('Add to cart request:', request);
-
                 await addCartApi(request).unwrap();
                 useAlertStore.getState().showAlert({
                     severity: 'success',
@@ -128,12 +121,19 @@ const ProductInfo = ({
             let shopIndex = currentCart.findIndex(
                 (s) => s.shop.id === product.shop?.id,
             );
+
             if (shopIndex === -1) {
                 currentCart.push({
                     shop: {
                         id: product.shop?.id || '',
                         name: product.shop?.name || '',
                         avatarUrl: product.shop?.logoUrl || '',
+                        address: {
+                            street: product.shop?.address?.street || '',
+                            ward: product.shop?.address?.ward || '',
+                            district: product.shop?.address?.district || '',
+                            city: product.shop?.address?.city || '',
+                        },
                     },
                     items: [],
                 });
@@ -162,6 +162,43 @@ const ProductInfo = ({
         }
 
         dispatch(addItem(newItem));
+    };
+
+    const handleCheckout = () => {
+        const cartGroups: CartGroup[] = [
+            {
+                shop: {
+                    id: product.shop?.id || '',
+                    name: product.shop?.name || '',
+                    avatarUrl: product.shop?.logoUrl || '',
+                    address: {
+                        street: product.shop?.address?.street || '',
+                        ward: product.shop?.address?.ward || '',
+                        district: product.shop?.address?.district || '',
+                        city: product.shop?.address?.city || '',
+                    },
+                },
+                items: [
+                    {
+                        id: uuidv4(),
+                        name: product.name,
+                        productVariantId:
+                            selectedVariant?.productVariantId ||
+                            product.variants?.[0].productVariantId ||
+                            '',
+                        price: price,
+                        image:
+                            selectedVariant?.imageVariant ||
+                            product.defaultImage,
+                        quantity: quantity,
+                    },
+                ],
+            },
+        ];
+
+        dispatch(setCheckoutItems(cartGroups));
+        dispatch(setIsFormCart(false));
+        router.push('/checkout');
     };
 
     return (
@@ -608,10 +645,14 @@ const ProductInfo = ({
                         <AddShoppingCartIcon className="mr-2" />
                         Thêm vào giỏ hàng
                     </button>
-                    <button className="bg-red-600 text-white px-6 rounded hover:bg-red-700">
+                    <button
+                        onClick={() => {
+                            handleCheckout();
+                        }}
+                        className="bg-red-600 text-white px-6 rounded hover:bg-red-700"
+                    >
                         <span>
                             <p>Mua ngay</p>
-                            {/* <p>đ{product.price}</p> */}
                         </span>
                     </button>
                 </div>
