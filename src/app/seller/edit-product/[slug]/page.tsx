@@ -1,21 +1,30 @@
-'use client';
-import { useParams } from 'next/navigation';
-import { useState } from 'react';
+"use client";
+
+import { useParams } from "next/navigation";
+import ProductForm from '~/components/add-edit-product/ProductForm';
 import { useGetCategoriesQuery } from '~/features/categories/categoryApi';
-import { useCreateProductMutation } from '~/features/products/productApi';
-import type {
-    Category,
-    ProductFormData,
-    ProductVariantFormData,
-} from '~/types/products';
+import { useUpdateProductMutation, useGetProductBySlugQuery } from '~/features/products/productApi';
+
 const EditProduct = () => {
+    const { data: categories = [] } = useGetCategoriesQuery();
+
+    const [updateProduct] = useUpdateProductMutation();
     const params = useParams();
-    const slug = params.slug;
+    const productSlug = params?.slug as string;
+    const { data: product, isLoading, error } = useGetProductBySlugQuery(productSlug);
+
+    if (isLoading) return <div>Đang tải sản phẩm...</div>;
+    if (error || !product) return <div>Không tìm thấy sản phẩm</div>;
 
     return (
-        <>
-            <h1>Edit Product: {slug}</h1>
-        </>
+        <ProductForm
+            mode="edit"
+            initialData={product}
+            categories={categories}
+            onUpdate={async (slug, formData) => {
+                await updateProduct({ slug: productSlug, data: formData }).unwrap();
+            }}
+        />
     );
 };
 

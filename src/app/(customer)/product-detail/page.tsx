@@ -48,7 +48,7 @@ const ProductDetail = () => {
             />
 
             {/* Product Reviews Component */}
-            <ProductReviews reviews={reviews} />
+            {/* <ProductReviews reviews={reviews} /> */}
 
             {/* Others Products */}
             <ProductList

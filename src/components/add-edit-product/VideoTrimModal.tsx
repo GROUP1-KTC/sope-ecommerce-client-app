@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import Slider from 'rc-slider';
-import 'rc-slider/assets/index.css';
+// import Slider from 'rc-slider';
+// import 'rc-slider/assets/index.css';
 
 interface VideoTrimModalProps {
     videoUrl: string;
@@ -81,14 +81,14 @@ const VideoTrimModal = ({
                 </div>
 
                 <div className="mb-4 px-2">
-                    <Slider
+                    {/* <Slider
                         range
                         min={0}
                         max={duration}
                         defaultValue={range}
                         value={range}
                         onChange={handleSliderChange}
-                    />
+                    /> */}
                     <div className="text-right text-xs mt-1 text-gray-500">
                         00:00 / {Math.floor(duration / 60)}:
                         {String(duration % 60).padStart(2, '0')}
@@ -104,11 +104,10 @@ const VideoTrimModal = ({
                     </button>
                     <button
                         onClick={handleConfirm}
-                        className={`px-4 py-2 rounded text-white ${
-                            range[1] - range[0] >= 10
-                                ? 'bg-orange-500 hover:bg-orange-600'
-                                : 'bg-gray-300 cursor-not-allowed'
-                        }`}
+                        className={`px-4 py-2 rounded text-white ${range[1] - range[0] >= 10
+                            ? 'bg-orange-500 hover:bg-orange-600'
+                            : 'bg-gray-300 cursor-not-allowed'
+                            }`}
                         disabled={range[1] - range[0] < 10}
                     >
                         Xác nhận
