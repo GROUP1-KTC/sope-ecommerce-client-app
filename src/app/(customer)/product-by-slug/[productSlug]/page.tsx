@@ -15,23 +15,9 @@ const ProductBySlug = () => {
     const slug = params?.productSlug as string;
 
     const { data: product, isLoading, isError } = useGetProductBySlugQuery(slug);
-
     const { data: reviews } = useGetReviewByProductQuery(product?.productId ?? '');
-
-    console.log('check review', reviews)
-
-    const [categoryId, setCategoryId] = useState<string | null>(null);
-
-
-    useEffect(() => {
-        if (product?.category?.id) {
-            setCategoryId(product.category.id);
-        }
-    }, [product]);
-
-    const { data: breadcrumb } = useGetBreadcrumbCategoryQuery(categoryId!, {
-        skip: !categoryId,
-    });
+    const categoryId = product?.categoryId;
+    const { data: breadcrumb } = useGetBreadcrumbCategoryQuery(categoryId!, { skip: !categoryId, });
 
     const attributeMap = useMemo(() => {
         const map = new Map<string, Set<string>>();
@@ -68,12 +54,10 @@ const ProductBySlug = () => {
     const minPrice = useMemo(() => {
         if (!product?.variants || product.variants.length === 0) return 0;
 
-        // lọc ra các variant có giá > 0
         const validPrices = product.variants
             .map(v => v.price)
             .filter(price => price > 0);
 
-        // nếu không có giá hợp lệ thì return 0
         if (validPrices.length === 0) return 0;
 
         return Math.min(...validPrices);
@@ -88,10 +72,8 @@ const ProductBySlug = () => {
 
     return (
         <div className="w-4/5 mx-auto ">
-            {/* PRODUCT LINK */}
             <div className="text-base text-gray-600 mb-4 mt-4">
                 <nav className="flex items-center flex-wrap gap-1">
-                    {/* Shopee */}
                     <Link href="/" className="text-blue-600  hover:underline">
                         Shopee
                     </Link>
@@ -110,7 +92,6 @@ const ProductBySlug = () => {
                         </React.Fragment>
                     ))}
 
-                    {/* Product name */}
                     <span className="text-gray-800 font-medium">{product.name}</span>
                 </nav>
             </div>

@@ -8,6 +8,8 @@ interface VariantGroupInputProps {
       options: string[];
       setOptions: (options: string[]) => void;
       onRemove?: () => void;
+      otherVariantName?: string;
+      mode: "add" | "edit";
 }
 
 export default function VariantGroupInput({
@@ -16,8 +18,16 @@ export default function VariantGroupInput({
       setVariantName,
       options,
       setOptions,
-      onRemove
+      onRemove,
+      otherVariantName,
+      mode
 }: VariantGroupInputProps) {
+
+      const isDuplicate =
+            otherVariantName &&
+            variantName.trim() !== "" &&
+            variantName.trim().toLowerCase() === otherVariantName.trim().toLowerCase();
+
       return (
             <div className="bg-gray-200 py-2 px-1">
                   <div className="flex justify-between items-center p-2">
@@ -26,16 +36,23 @@ export default function VariantGroupInput({
                               <input
                                     type="text"
                                     placeholder="Phân loại (ví dụ: Màu sắc, Size...)"
-                                    className="w-3/4 border rounded p-1"
+                                    className={`w-3/4 border rounded p-1 ${isDuplicate ? "border-red-500" : "border-gray-300"
+                                          }`}
                                     value={variantName}
                                     onChange={(e) => setVariantName(e.target.value)}
                               />
                         </div>
+                        {isDuplicate && (
+                              <p className="text-red-500 text-xs mt-1">
+                                    Tên phân loại này đã tồn tại, vui lòng nhập khác
+                              </p>
+                        )}
                         <button
                               type="button"
-                              className="text-gray-400 hover:text-red-500"
+                              className={`text-gray-400 ${mode === "edit" ? "cursor-not-allowed opacity-50" : "hover:text-red-500"}`}
                               onClick={onRemove}
                               tabIndex={-1}
+                              disabled={mode === "edit"}
                         >
                               <X size={32} />
                         </button>

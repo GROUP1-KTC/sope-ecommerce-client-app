@@ -32,26 +32,12 @@ export const productApi = apiSlice.injectEndpoints({
             ProductResponse,
             { slug: string; data: FormData }
         >({
-            query: ({ slug, data }) => {
-                console.log('🔗 PATCH URL:', `v1/products/${slug}`);
-                console.log('📤 FormData gửi đi:', data);
-
-                console.log('📤 FormData gửi đi:');
-                (data as FormData).forEach((v, k) => {
-                    console.log('   ', k, v);
-                });
-
-                for (const [key, value] of data.entries()) {
-                    console.log('   ', key, value);
-                }
-
-                return {
-                    url: `v1/products/${slug}`,
-                    method: 'PATCH',
-                    body: data,
-                    credentials: 'omit',
-                };
-            },
+            query: ({ slug, data }) => ({
+                url: `v1/products/${slug}`,
+                method: 'PATCH',
+                body: data,
+                credentials: 'omit',
+            }),
             invalidatesTags: ['Product'],
             onQueryStarted: async (_arg, { queryFulfilled }) => {
                 try {

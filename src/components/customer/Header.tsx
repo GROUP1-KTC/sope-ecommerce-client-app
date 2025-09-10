@@ -57,7 +57,7 @@ const Header = () => {
         const timeout = setTimeout(() => {
             const trimmed = inputValue.trim();
             setSearchTerm(trimmed);
-        }, 100);
+        }, 500);
         return () => clearTimeout(timeout);
     }, [inputValue]);
 

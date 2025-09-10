@@ -49,7 +49,6 @@ const SearchPage = () => {
 			: skipToken
 	);
 
-	console.log('check products', products)
 
 	const mappedProducts = products.map((p: any) => ({
 		productId: p.product_id,

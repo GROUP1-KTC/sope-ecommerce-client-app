@@ -369,7 +369,7 @@ const ProductInfo = ({
                     {attributeEntries.map(([name, values], index) => (
                         <div className="flex items-center mt-4" key={name}>
                             <span className="w-32 font-semibold">Chọn {name}</span>
-                            <div className="flex gap-2 flex-wrap">
+                            <div className="flex gap-2 flex-wrap ">
                                 {Array.from(values).map((value) => {
                                     const matchingVariants = product.variants?.filter((variant) =>
                                         variant?.attributes?.every((attr) => {
@@ -394,7 +394,7 @@ const ProductInfo = ({
                                             onClick={() => !isOutOfStock && handleAttributeSelect?.(name, value)}
                                             disabled={isOutOfStock}
                                             className={`
-                                                    relative flex items-center gap-2 px-3 py-2 rounded border text-sm font-medium
+                                                    cursor-pointer relative flex items-center gap-2 px-3 py-2 rounded border text-sm font-medium
                                                     transition-colors
                                                     ${selectedAttributes?.[name] === value
                                                     ? 'border-red-500 text-red-500 bg-red-50'

@@ -26,8 +26,6 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
 	const [sort, setSort] = useState<string>('default');
 	const [page, setPage] = useState<number>(1);
 
-	console.log('check products', products)
-
 	// sort sản phẩm (mock cứng)
 	const sortedProducts = [...products].sort((a, b) => {
 		if (sort === 'price_asc') return a.defaultPrice - b.defaultPrice;
@@ -43,7 +41,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
 	});
 
 	// phân trang
-	const pageSize = 12;
+	const pageSize = 20;
 	const paginatedProducts = sortedProducts.slice(
 		(page - 1) * pageSize,
 		page * pageSize

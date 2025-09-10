@@ -138,7 +138,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, selecte
                                 onSelect([]);
                                 onClose();
                             }}
-                            className="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-100"
+                            className="px-4 py-2 cursor-pointer border rounded-lg text-gray-600 hover:bg-gray-100"
                         >
                             Đóng
                         </button>
@@ -150,7 +150,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, selecte
                                 }
                             }}
                             disabled={!isValidSelection}
-                            className={`px-4 py-2 rounded-lg text-white ${isValidSelection
+                            className={`px-4 py-2 rounded-lg text-white cursor-pointer ${isValidSelection
                                 ? "bg-orange-500 hover:bg-orange-600"
                                 : "bg-gray-300 cursor-not-allowed"
                                 }`}

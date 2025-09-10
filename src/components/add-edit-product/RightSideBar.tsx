@@ -166,7 +166,6 @@ const RightSideBar = ({ productData, categories }: RightSideBarProps) => {
                         </div>
                   )}
 
-
                   {/* Shop info */}
                   <div className="mt-4 flex items-center justify-between pt-4">
                         <div className="flex items-center gap-2">

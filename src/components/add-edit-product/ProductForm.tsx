@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import type { Category, Image, ProductDetail, ProductResponse, ProductUpdateData, ProductVariant } from '~/types/products';
 import SalesInfo from '~/components/add-edit-product/SalesInfo';
 import DetailInfo from '~/components/add-edit-product/DetailInfo';
@@ -132,7 +132,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 					label: '',
 					data: '',
 					priority: (prev.productDetails?.length || 0) + 1,
-					productId: '' // sẽ set khi gửi API
+					productId: ''
 				}
 			]
 		}));
@@ -208,12 +208,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 		});
 	};
 
-	const handleVariantsChange = (updatedVariants: ProductVariant[]) => {
-		setProductData((prev) => ({
-			...prev,
-			variants: updatedVariants,
-		}));
-	};
+	const handleVariantsChange = useCallback((updated: ProductVariant[]) => {
+		setProductData(prev => ({ ...prev, variants: updated }));
+	}, []);
 
 	const buildFormData = (): FormData => {
 		const formData = new FormData();
@@ -260,7 +257,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 				}
 			});
 
-
 			data.variants?.forEach(v => {
 				if (v.imageVariant instanceof File) {
 					formData.append('variantFiles', v.imageVariant);
@@ -273,21 +269,45 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 				description: data.description,
 				hidden: data.hidden,
 				categoryId: data.categoryId,
-				variants: data.variants
+				variants: data.variants.map(v => ({
+					productVariantId: v.productVariantId,
+					price: Number(v.price) || 0,
+					stock: Number(v.stock) || 0,
+					attributes: v.attributes || [],
+					imageVariant: typeof v.imageVariant === 'string'
+						? v.imageVariant
+						: v.imageVariant?.name ?? null,
+					dimension: {
+						length: Number(v.dimension?.length) || 0,
+						width: Number(v.dimension?.width) || 0,
+						height: Number(v.dimension?.height) || 0,
+					},
+					weight: Number(v.weight) || 0,
+				})),
+				imageUrlsToKeep: data.imagesList
+					.filter(img => !img.file)
+					.map(img => img.preview),
 			};
+
+			data.variants?.forEach(v => {
+				if (v.imageVariant instanceof File) {
+					formData.append("variantFiles", v.imageVariant);
+				}
+			});
 
 			formData.append('product', new Blob([JSON.stringify(updatePayload)], { type: 'application/json' }));
 
-			if (data.defaultImage instanceof File) {
-				formData.append('defaultImage', data.defaultImage);
+			if (data.defaultImage?.file) {
+				formData.append('defaultImage', data.defaultImage.file);
 			}
-			if (data.defaultVideoIntro instanceof File) {
-				formData.append('defaultVideoIntro', data.defaultVideoIntro);
+
+			if (data.defaultVideoIntro?.file) {
+				formData.append('defaultVideoIntro', data.defaultVideoIntro.file);
 			}
 
 			data.imagesList?.forEach(img => {
-				if (img instanceof File) {
-					formData.append('productImages', img);
+				if (img.file) {
+					formData.append('productImages', img.file);
 				}
 			});
 		}
@@ -319,8 +339,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 					defaultVideoIntro: null,
 					imagesList: [],
 				});
+				setSelectedCategories([]);
 			}
-
 			if (mode === 'edit' && onUpdate && initialData) {
 				await onUpdate(initialData.productId, formData);
 				alert('🎉 Sửa sản phẩm thành công!');
@@ -332,6 +352,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 			setIsSubmitting(false);
 		}
 	};
+
+	console.log('check productData', productData)
+
 
 	return (
 		<div className="relative min-h-screen bg-gray-50">
@@ -419,6 +442,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 					<SalesInfo
 						onVariantsChange={handleVariantsChange}
 						productData={productData as ProductFormDataWithMedia}
+						mode={mode}
 					/>
 				</div>
 
@@ -430,16 +454,16 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 
 				<div className="fixed bottom-0 w-[55%] mx-auto bg-white py-4 pr-20 flex items-center justify-between z-30 shadow-[0_-4px_8px_rgba(0,0,0,0.1)] rounded-t-lg">
 					<div className="space-x-2 mx-4">
-						<button className="px-4 py-2 border rounded">Hủy</button>
+						<button className="px-4 py-2 border rounded cursor-pointer ">Hủy</button>
 						<button
-							className="px-4 py-2 border rounded"
+							className="px-4 py-2 border rounded cursor-pointer"
 							onClick={() => handleSubmit(true)}
 							disabled={isSubmitting}
 						>
 							Lưu & Ẩn
 						</button>
 						<button
-							className="px-4 py-2 bg-orange-500 text-white rounded"
+							className="px-4 py-2 bg-orange-500 text-white rounded cursor-pointer"
 							onClick={() => handleSubmit(false)}
 							disabled={isSubmitting}
 						>
@@ -452,7 +476,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 			<RightSideBar
 				productData={productData as ProductFormDataWithMedia}
 				categories={categories}
-
 			/>
 		</div>
 	);

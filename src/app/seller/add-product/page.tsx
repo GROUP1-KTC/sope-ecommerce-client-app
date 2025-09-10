@@ -6,7 +6,10 @@ import { useCreateProductMutation } from '~/features/products/productApi';
 
 const AddProduct = () => {
     const { data: categories = [] } = useGetCategoriesQuery();
-    const [createProduct] = useCreateProductMutation();
+    // const [createProduct] = useCreateProductMutation();
+    const [createProduct, { data, error, isLoading, isSuccess }] = useCreateProductMutation();
+
+    console.log({ data, error, isLoading, isSuccess });
 
     return (
         <ProductForm

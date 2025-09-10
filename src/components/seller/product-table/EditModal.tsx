@@ -70,7 +70,7 @@ export default function EditModal({ product, type, onClose, onSave }: EditModalP
 					/>
 					<button
 						onClick={applyToAll}
-						className="border border-orange-500 text-orange-500 px-3 py-1 rounded hover:bg-orange-50 text-sm transition"
+						className="border cursor-pointer  border-orange-500 text-orange-500 px-3 py-1 rounded hover:bg-orange-50 text-sm transition"
 					>
 						Áp dụng cho tất cả phân loại
 					</button>
@@ -119,8 +119,8 @@ export default function EditModal({ product, type, onClose, onSave }: EditModalP
 				</div>
 
 				<div className="flex justify-end gap-2 mt-4">
-					<button onClick={onClose} className="px-4 py-2 border rounded">Hủy</button>
-					<button onClick={handleSave} className="px-4 py-2 bg-orange-500 text-white rounded">Cập nhật</button>
+					<button onClick={onClose} className="px-4 py-2 cursor-pointer  border rounded">Hủy</button>
+					<button onClick={handleSave} className="px-4 py-2 cursor-pointer  bg-orange-500 text-white rounded">Cập nhật</button>
 				</div>
 			</div>
 		</div>

@@ -255,11 +255,6 @@ const FundanmentalInformation: React.FC<FundanmentalInformationProps> = ({
 			<div className="mb-6">
 				<label className="block font-medium mb-2">Mô tả sản phẩm</label>
 
-				{/* <CustomEditor
-					value={productData.description || ''}
-					onChange={(html) => onChangeDescription(html)}
-				/> */}
-
 				<RichTextEditor
 					content={productData.description}
 					onChangeDescription={onChangeDescription}

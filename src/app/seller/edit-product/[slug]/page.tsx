@@ -22,7 +22,7 @@ const EditProduct = () => {
 			initialData={product}
 			categories={categories}
 			onUpdate={async (slug, formData) => {
-				await updateProduct({ slug, data: formData }).unwrap();
+				await updateProduct({ slug: productSlug, data: formData }).unwrap();
 			}}
 		/>
 	);
