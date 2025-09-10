@@ -6,7 +6,7 @@ import ChatFloatButton from '../chat/ChatFloatButton';
 import { usePathname } from 'next/navigation';
 
 const GlobalComponent = () => {
-    const location = usePathname();
+    const location = usePathname() || '/';
 
     const allowedPrefixes = [
         '/seller',
