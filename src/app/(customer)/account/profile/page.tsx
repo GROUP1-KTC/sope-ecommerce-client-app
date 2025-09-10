@@ -1,13 +1,63 @@
 'use client';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useGetProfileQuery } from '~/features/user/userApi';
-import { setUser } from '~/features/user/userSlice';
+import {
+    useGetProfileQuery,
+    useUpdateProfileMutation,
+} from '~/features/user/userApi';
+import { setUser, updateUser } from '~/features/user/userSlice';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 
 const ProfilePage = () => {
+    const [updateProfile] = useUpdateProfileMutation();
+
+    const handleSave = async () => {
+        try {
+            const storedUser = sessionStorage.getItem('authUser');
+            if (!storedUser) {
+                alert(
+                    'Không tìm thấy thông tin người dùng, vui lòng đăng nhập lại!',
+                );
+                return;
+            }
+
+            const parsedUser = JSON.parse(storedUser);
+            const userId = parsedUser?.id;
+
+            if (!userId) {
+                alert('Thiếu userId, vui lòng đăng nhập lại!');
+                return;
+            }
+
+            console.log('Updating profile with data:', {
+                id: userId,
+                name: user.name,
+                gender: user.gender,
+                birthday: birthDate?.toISOString().split('T')[0],
+                avatarUrl: user.avatarUrl,
+            });
+
+            const res = await updateProfile({
+                id: userId,
+                body: {
+                    name: user.name,
+                    gender: user.gender,
+                    birthday: birthDate?.toISOString().split('T')[0],
+                    avatarUrl: user.avatarUrl,
+                },
+            }).unwrap();
+
+            dispatch(updateUser(res));
+            alert('Cập nhật thành công!');
+        } catch (error) {
+            console.error(error);
+            alert('Có lỗi xảy ra khi cập nhật!');
+        }
+    };
+
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.user);
     const { data, isLoading } = useGetProfileQuery();
@@ -54,7 +104,15 @@ const ProfilePage = () => {
                                     <input
                                         className="w-2/3 p-2 border rounded"
                                         type="text"
-                                        defaultValue={user.name || ''}
+                                        value={user.name || ''}
+                                        onChange={(e) =>
+                                            dispatch(
+                                                setUser({
+                                                    ...user,
+                                                    name: e.target.value,
+                                                }),
+                                            )
+                                        }
                                     />
                                 </div>
                                 <div className="mb-4 flex items-center">
@@ -70,12 +128,12 @@ const ProfilePage = () => {
                                                 )}
                                             </div>
                                         </div>
-                                        <a
-                                            href="#"
+                                        <Link
+                                            href="/account/profile/change-email"
                                             className="ml-2 text-sm cursor-pointer text-blue-500 underline"
                                         >
                                             Thay Đổi
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                                 <div className="mb-4 flex items-center">
@@ -90,12 +148,12 @@ const ProfilePage = () => {
                                                 '$1******$3',
                                             )}
                                         </div>
-                                        <a
-                                            href="#"
+                                        <Link
+                                            href="/account/profile/change-phone"
                                             className="ml-2 text-sm cursor-pointer text-blue-500 underline"
                                         >
                                             Thay Đổi
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                                 <div className="mb-4 flex items-center">
@@ -107,7 +165,16 @@ const ProfilePage = () => {
                                             <input
                                                 type="radio"
                                                 name="gender"
-                                                value="Nam"
+                                                value="MALE"
+                                                checked={user.gender === 'MALE'}
+                                                onChange={() =>
+                                                    dispatch(
+                                                        setUser({
+                                                            ...user,
+                                                            gender: 'MALE',
+                                                        }),
+                                                    )
+                                                }
                                                 className="form-radio"
                                             />
                                             <span className="ml-2">Nam</span>
@@ -116,7 +183,18 @@ const ProfilePage = () => {
                                             <input
                                                 type="radio"
                                                 name="gender"
-                                                value="Nữ"
+                                                value="FEMALE"
+                                                checked={
+                                                    user.gender === 'FEMALE'
+                                                }
+                                                onChange={() =>
+                                                    dispatch(
+                                                        setUser({
+                                                            ...user,
+                                                            gender: 'FEMALE',
+                                                        }),
+                                                    )
+                                                }
                                                 className="form-radio"
                                             />
                                             <span className="ml-2">Nữ</span>
@@ -125,13 +203,25 @@ const ProfilePage = () => {
                                             <input
                                                 type="radio"
                                                 name="gender"
-                                                value="Khác"
+                                                value="OTHER"
+                                                checked={
+                                                    user.gender === 'OTHER'
+                                                }
+                                                onChange={() =>
+                                                    dispatch(
+                                                        setUser({
+                                                            ...user,
+                                                            gender: 'OTHER',
+                                                        }),
+                                                    )
+                                                }
                                                 className="form-radio"
                                             />
                                             <span className="ml-2">Khác</span>
                                         </label>
                                     </div>
                                 </div>
+
                                 <div className="mb-4 flex items-center">
                                     <label className="block text-gray-700 text-sm font-bold w-1/4">
                                         Ngày sinh
@@ -153,7 +243,10 @@ const ProfilePage = () => {
                                 </div>
                                 <div className="mb-4 flex items-center">
                                     <label className="block text-gray-700 text-sm font-bold w-1/4"></label>
-                                    <button className="w-1/6 bg-red-500 text-white p-2 rounded cursor-pointer hover:bg-red-600 transition-colors duration-200">
+                                    <button
+                                        onClick={handleSave}
+                                        className="w-1/6 bg-red-500 text-white p-2 rounded cursor-pointer hover:bg-red-600 transition-colors duration-200"
+                                    >
                                         Lưu
                                     </button>
                                 </div>

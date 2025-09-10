@@ -9,6 +9,7 @@ export interface LoginErrors {
 }
 
 export interface LoginResponse {
+    id: string;
     username: string;
     roles: string[];
     accessToken: string;
@@ -47,4 +48,9 @@ export interface RegisterResponse {
     accessToken: string;
     refreshToken: string;
     roles: string[];
+}
+
+export interface ChangePasswordRequest {
+    oldPassword: string;
+    newPassword: string;
 }

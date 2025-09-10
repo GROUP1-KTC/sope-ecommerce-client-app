@@ -1,48 +1,131 @@
-// cartSlice.ts
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import type { CartItem } from '~/app/(customer)/cart/page';
+import type { CartItem, CartGroup } from '~/app/(customer)/cart/page';
 
 interface CartState {
-    items: CartItem[];
+    groups: CartGroup[];
 }
 
 const initialState: CartState = {
-    items: [],
+    groups: [],
 };
 
 export const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        setCart: (state, action: PayloadAction<CartItem[]>) => {
-            state.items = action.payload;
+        // Set the entire cart with grouped items
+        setCart: (state, action: PayloadAction<CartGroup[]>) => {
+            state.groups = action.payload;
         },
-        addItem: (state, action: PayloadAction<CartItem>) => {
-            const existing = state.items.find(
-                (i) => i.id === action.payload.id,
+        // Add a new item to the appropriate shop group
+        addItem: (
+            state,
+            action: PayloadAction<
+                CartItem & {
+                    shopId: string;
+                    shopName: string;
+                    shopAvatar?: string;
+                }
+            >,
+        ) => {
+            const { shopId, shopName, shopAvatar, ...item } = action.payload;
+            const shopIndex = state.groups.findIndex(
+                (g) => g.shop.id === shopId,
             );
-            if (existing) existing.quantity += action.payload.quantity;
-            else state.items.push(action.payload);
+            const cartItem = { ...item, name: item.name || 'Unknown Product' };
+
+            if (shopIndex === -1) {
+                // Create new shop group if it doesn't exist
+                state.groups.push({
+                    shop: {
+                        id: shopId,
+                        name: shopName || `Shop ${shopId}`,
+                        avatarUrl: shopAvatar || '/default-shop-avatar.png',
+                        address: { street: '', ward: '', district: '', city: '' }
+                    },
+                    items: [cartItem],
+                });
+            } else {
+                // Add or update item in existing shop group
+                const existingItem = state.groups[shopIndex].items.find(
+                    (i) => i.id === item.id,
+                );
+                if (existingItem) {
+                    existingItem.quantity += item.quantity;
+                } else {
+                    state.groups[shopIndex].items.push(cartItem);
+                }
+            }
         },
-        removeItem: (state, action: PayloadAction<number>) => {
-            state.items = state.items.filter((i) => i.id !== action.payload);
+        // Remove a single item by ID
+        removeItem: (state, action: PayloadAction<string>) => {
+            state.groups = state.groups
+                .map((group) => ({
+                    ...group,
+                    items: group.items.filter(
+                        (item) => item.id !== action.payload,
+                    ),
+                }))
+                .filter((group) => group.items.length > 0); // Remove empty groups
         },
-        removeItems: (state, action: PayloadAction<number[]>) => {
-            state.items = state.items.filter(
-                (i) => !action.payload.includes(i.id),
-            );
+        // Remove multiple items by IDs
+        removeItems: (state, action: PayloadAction<string[]>) => {
+            state.groups = state.groups
+                .map((group) => ({
+                    ...group,
+                    items: group.items.filter(
+                        (item) => !action.payload.includes(item.id),
+                    ),
+                }))
+                .filter((group) => group.items.length > 0); // Remove empty groups
         },
+        // Update quantity of a specific item
         updateQuantity: (
             state,
-            action: PayloadAction<{ id: number; quantity: number }>,
+            action: PayloadAction<{ id: string; quantity: number }>,
         ) => {
-            const item = state.items.find((i) => i.id === action.payload.id);
-            if (item) item.quantity = action.payload.quantity;
+            const { id, quantity } = action.payload;
+            if (quantity < 1) return; // Prevent invalid quantities
+            for (const group of state.groups) {
+                const item = group.items.find((i) => i.id === id);
+                if (item) {
+                    item.quantity = quantity;
+                    break;
+                }
+            }
+        },
+        // Increase quantity of a specific item
+        increaseQuantity: (state, action: PayloadAction<string>) => {
+            for (const group of state.groups) {
+                const item = group.items.find((i) => i.id === action.payload);
+                if (item) {
+                    item.quantity += 1;
+                    break;
+                }
+            }
+        },
+        // Decrease quantity of a specific item (prevent going below 1)
+        decreaseQuantity: (state, action: PayloadAction<string>) => {
+            for (const group of state.groups) {
+                const item = group.items.find((i) => i.id === action.payload);
+                if (item && item.quantity > 1) {
+                    item.quantity -= 1;
+                    break;
+                }
+            }
         },
     },
 });
 
-export const { setCart, addItem, removeItem, removeItems, updateQuantity } =
-    cartSlice.actions;
+export const {
+    setCart,
+    addItem,
+    removeItem,
+    removeItems,
+    updateQuantity,
+    increaseQuantity,
+    decreaseQuantity,
+} = cartSlice.actions;
+
 export default cartSlice.reducer;

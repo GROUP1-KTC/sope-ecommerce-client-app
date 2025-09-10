@@ -1,136 +1,267 @@
-import React from 'react';
+import React, { useState } from 'react';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import Image from 'next/image';
+import type {
+    OrderGroupShop,
+    OrderStatus,
+    OrderStatusHistory,
+} from '~/types/orders/order';
+import { useCancelOrderMutation } from '~/features/orders/orderApiSlide';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControlLabel,
+    Radio,
+    RadioGroup,
+    TextField,
+} from '@mui/material';
 
-type Order = {
-    id: number;
-    customer: string;
-    date: string;
-    status: string;
-    total: number | string;
-    received: boolean;
-    shop: {
-        name: string;
-        address: string;
-    };
-    product: {
-        name: string;
-        quantity: number;
-        imageUrl: string;
-    };
-};
-
-interface OrderItemProps {
-    order: Order;
+interface Props {
+    orderGroup: OrderGroupShop;
+    refetchOrders: () => void;
 }
 
-const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
+const statusColors: Record<OrderStatus, string> = {
+    PENDING: 'text-yellow-600',
+    CONFIRMED: 'text-blue-600',
+    SHIPPING: 'text-purple-600',
+    DELIVERED: 'text-green-600',
+    CANCELLED: 'text-red-600',
+    RETURNED: 'text-gray-600',
+};
+
+const cancelReasons = [
+    'Tôi muốn thay đổi sản phẩm',
+    'Tìm thấy giá rẻ hơn ở nơi khác',
+    'Thời gian giao hàng quá lâu',
+    'Đặt nhầm sản phẩm',
+];
+
+const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
+    const order = orderGroup.order;
+    const shop = order.shopInfo;
+    const [showHistory, setShowHistory] = useState(false);
+
+    const [openCancelDialog, setOpenCancelDialog] = useState(false);
+    const [selectedReason, setSelectedReason] = useState('');
+    const [customReason, setCustomReason] = useState('');
+    const [cancelOrder, { isLoading }] = useCancelOrderMutation();
+
+    const handleConfirmCancel = async () => {
+        const reason = customReason || selectedReason || 'Không rõ lý do';
+        try {
+            await cancelOrder({ orderId: order.orderId, reason }).unwrap();
+            setOpenCancelDialog(false);
+            setSelectedReason('');
+            setCustomReason('');
+            refetchOrders();
+        } catch (e) {
+            console.error('Cancel order failed', e);
+        }
+    };
+
     return (
-        <div className=" p-6 mb-4 rounded-lg shadow-sm bg-white">
+        <div className="p-6 mb-4 rounded-lg shadow bg-white border">
+            {/* Shop header */}
             <div className="mb-4 flex items-center space-x-6">
-                <StorefrontOutlinedIcon className="text-gray-600 mr-2" />
-
-                <div className="flex space-x-6">
-                    <p className="text-black font-semibold">
-                        {order.shop.name}
-                    </p>
-                </div>
-                <div className="flex items-center">
-                    <button className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600 transition cursor-pointer flex items-center">
-                        <span className="flex items-center">
-                            <ChatOutlinedIcon
-                                className="mr-1"
-                                style={{ fontSize: 16 }}
-                            />
-                        </span>
-                        Chat
-                    </button>
-                </div>
-                <div className="flex items-center">
-                    <button className="bg-white border text-gray-500 text-xs px-3 py-1 rounded hover:bg-gray-200 transition cursor-pointer flex items-center">
-                        <span className="flex items-center">
-                            <StorefrontOutlinedIcon
-                                className="mr-1"
-                                style={{ fontSize: 16 }}
-                            />
-                        </span>
-                        Xem Shop
-                    </button>
-                </div>
-
-                <div className="ml-auto">
-                    <p className="text-green-600 font-semibold">
-                        {order.status}
-                    </p>
-                </div>
+                <StorefrontOutlinedIcon className="text-gray-600" />
+                <p className="text-black font-semibold">
+                    {shop?.name ?? 'Không rõ shop'}
+                </p>
+                <button className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600 transition flex items-center ml-auto">
+                    <ChatOutlinedIcon className="mr-1" fontSize="small" />
+                    Chat
+                </button>
+                <p
+                    className={`ml-4 font-semibold ${statusColors[order.status]}`}
+                >
+                    {order.status}
+                </p>
             </div>
 
             <hr className="my-4 border-t border-gray-300" />
 
-            <div className="mb-4 flex items-center justify-between space-x-4">
-                <div className="flex items-center space-x-4">
-                    <div>
+            {/* Order items */}
+            {order.items.map((item) => (
+                <div
+                    key={item.productVariantId}
+                    className="flex items-center justify-between mb-4"
+                >
+                    <div className="flex items-center space-x-4">
                         <Image
-                            width={40}
-                            height={40}
-                            src={order.product.imageUrl}
-                            alt={order.product.name}
+                            width={96}
+                            height={96}
+                            src={item.imageUrl || '/placeholder.png'}
+                            alt={order.orderNumber}
                             className="w-24 h-24 object-cover rounded-md"
                         />
+                        <div>
+                            <p className="text-black font-semibold">
+                                Sản phẩm: {item.productName}
+                            </p>
+                            <p className="text-gray-600">
+                                Số lượng: {item.quantity}
+                            </p>
+                            <p className="text-gray-600">
+                                Giá: {item.price.toLocaleString()} đ
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <p className="text-black font-semibold ">
-                            Sản phẩm: {order.product.name}
-                        </p>
-                        <p className="text-gray-600">
-                            Số lượng: {order.product.quantity}
-                        </p>
-                        <p className="text-gray-600">Ngày đặt: {order.date}</p>
-                    </div>
-                </div>
-                <div>
-                    <p className="text-gray-800 font-normal text-right">
-                        {order.total}
+                    <p className="text-gray-800 font-medium">
+                        {item.price * item.quantity} đ
                     </p>
                 </div>
-            </div>
+            ))}
 
             <hr className="my-4 border-t border-gray-300" />
 
-            <div className="flex mb-6 space-x-4 justify-end items-center">
-                <p className="text-gray-600 flex items-center">
-                    Thành tiền:
-                    <span className="font-semibold text-red-500 text-2xl ml-2">
-                        {order.total}
+            {/* Tổng tiền */}
+            <div className="flex justify-end mb-4">
+                <p className="text-gray-600">
+                    Thành tiền:{' '}
+                    <span className="font-semibold text-red-500 text-xl">
+                        {order.totalAmount.toLocaleString()} đ
                     </span>
                 </p>
             </div>
 
-            <div className="flex space-x-4 justify-end">
-                {order.received ? (
+            {/* Action buttons */}
+            <div className="flex justify-end space-x-3">
+                {order.status === 'PENDING' && (
+                    <button
+                        onClick={() => setOpenCancelDialog(true)}
+                        className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
+                    >
+                        Hủy đơn hàng
+                    </button>
+                )}
+
+                {order.status === 'SHIPPING' && (
                     <>
-                        <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-700 cursor-pointer transition">
-                            Mua lại
-                        </button>
-                        <button className="bg-white border border-gray-400 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 cursor-pointer transition">
-                            Liên hệ người bán
-                        </button>
-                    </>
-                ) : (
-                    <>
-                        <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-700 cursor-pointer transition">
+                        <button className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">
                             Đã nhận được hàng
                         </button>
-                        <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 cursor-pointer transition">
+                        <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300">
                             Yêu cầu trả hàng / hoàn tiền
-                        </button>
-                        <button className="bg-white border border-gray-400 text-gray-800 px-6 py-2 rounded hover:bg-gray-300 cursor-pointer transition">
-                            Liên hệ người bán
                         </button>
                     </>
                 )}
+
+                {order.status === 'DELIVERED' && (
+                    <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300">
+                        Viết đánh giá
+                    </button>
+                )}
+
+                {(order.status === 'CANCELLED' ||
+                    order.status === 'RETURNED') && (
+                    <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
+                        Mua lại
+                    </button>
+                )}
             </div>
+
+            {/* Status history toggle */}
+            <div className="mt-4">
+                <button
+                    onClick={() => setShowHistory(!showHistory)}
+                    className="flex items-center text-blue-600 hover:underline"
+                >
+                    <HistoryOutlinedIcon fontSize="small" className="mr-1" />
+                    {showHistory
+                        ? 'Ẩn lịch sử trạng thái'
+                        : 'Xem lịch sử trạng thái'}
+                </button>
+
+                {showHistory && (
+                    <ul className="mt-2 border border-gray-200 rounded p-3 bg-gray-50 space-y-2">
+                        {order.statusHistory.map(
+                            (h: OrderStatusHistory, idx: number) => (
+                                <li
+                                    key={idx}
+                                    className="flex justify-between text-sm text-gray-700"
+                                >
+                                    <span>{h.status}</span>
+                                    <span>
+                                        {new Date(h.timestamp).toLocaleString(
+                                            'vi-VN',
+                                            {
+                                                year: 'numeric',
+                                                month: '2-digit',
+                                                day: '2-digit',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                            },
+                                        )}
+                                    </span>
+                                </li>
+                            ),
+                        )}
+                    </ul>
+                )}
+            </div>
+
+            {order.status === 'CANCELLED' && order.cancelReason && (
+                <p className="text-sm text-gray-600 mt-1">
+                    Lý do hủy:{' '}
+                    <span className="italic">{order.cancelReason}</span>
+                </p>
+            )}
+
+            {/* Cancel order dialog */}
+            <Dialog
+                open={openCancelDialog}
+                onClose={() => setOpenCancelDialog(false)}
+                maxWidth="sm"
+                fullWidth
+            >
+                <DialogTitle>Lý do hủy đơn hàng</DialogTitle>
+                <DialogContent>
+                    <RadioGroup
+                        value={selectedReason}
+                        onChange={(e) => setSelectedReason(e.target.value)}
+                    >
+                        {cancelReasons.map((r) => (
+                            <FormControlLabel
+                                key={r}
+                                value={r}
+                                control={<Radio />}
+                                label={r}
+                            />
+                        ))}
+                    </RadioGroup>
+                    <TextField
+                        label="Lý do khác"
+                        fullWidth
+                        multiline
+                        rows={3}
+                        value={customReason}
+                        onChange={(e) => setCustomReason(e.target.value)}
+                        className="mt-3"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => setOpenCancelDialog(false)}
+                        disabled={isLoading}
+                    >
+                        Hủy
+                    </Button>
+                    <Button
+                        onClick={handleConfirmCancel}
+                        variant="contained"
+                        color="error"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Đang xử lý...' : 'Xác nhận hủy'}
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };

@@ -21,8 +21,13 @@ const CategoryPage = () => {
         useGetProductsByCategoryQuery(slug);
 
     const mappedProducts = products.map((p) => {
-        const minPrice = Math.min(...p.variantsByCategory.map(v => Number(v.price)));
-        const totalSold = p.variantsByCategory.reduce((acc, v) => acc + v.sold, 0);
+        const minPrice = Math.min(
+            ...p.variantsByCategory.map((v) => Number(v.price)),
+        );
+        const totalSold = p.variantsByCategory.reduce(
+            (acc, v) => acc + v.sold,
+            0,
+        );
 
         return {
             productId: p.productId,

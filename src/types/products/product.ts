@@ -109,3 +109,27 @@ export interface PageResponse<T> {
 }
 
 export type Product = ProductFormData;
+
+// Collapse for livestream cart
+export interface CollapseProduct {
+    id: number;
+    name: string;
+    originalPrice: number;
+    price: number;
+    image: string;
+    rating: number;
+    sold: number | string;
+}
+
+export type SellerLiveProduct = {
+    id: number;
+    name: string;
+    image: string;
+    originalPrice: number;
+    price: number;
+    sold: number;
+    onPin?: boolean;
+    flashSaleActive?: boolean;
+    highlightActive?: boolean;
+    stock: number;
+};

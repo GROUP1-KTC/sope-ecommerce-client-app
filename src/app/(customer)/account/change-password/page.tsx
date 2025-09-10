@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useChangePasswordMutation } from '~/features/auth/authApi';
 
 const ChangePasswordPage = () => {
     const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ const ChangePasswordPage = () => {
     });
 
     const [message, setMessage] = useState('');
+    const [changePassword] = useChangePasswordMutation();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -27,20 +29,30 @@ const ChangePasswordPage = () => {
         setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setMessage('');
 
         if (formData.newPassword !== formData.confirmPassword) {
             setMessage('Mật khẩu mới và xác nhận không khớp.');
             return;
         }
 
-        setMessage('Đổi mật khẩu thành công!');
-        setFormData({
-            currentPassword: '',
-            newPassword: '',
-            confirmPassword: '',
-        });
+        try {
+            await changePassword({
+                oldPassword: formData.currentPassword,
+                newPassword: formData.newPassword,
+            }).unwrap();
+
+            setMessage('Đổi mật khẩu thành công!');
+            setFormData({
+                currentPassword: '',
+                newPassword: '',
+                confirmPassword: '',
+            });
+        } catch (err: any) {
+            setMessage(err?.data?.message || 'Đổi mật khẩu thất bại.');
+        }
     };
 
     return (

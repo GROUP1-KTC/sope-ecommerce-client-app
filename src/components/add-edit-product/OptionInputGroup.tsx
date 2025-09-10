@@ -6,7 +6,10 @@ interface OptionInputGroupProps {
     onOptionsChange: (options: string[]) => void;
 }
 
-const OptionInputGroup = ({ options, onOptionsChange }: OptionInputGroupProps) => {
+const OptionInputGroup = ({
+    options,
+    onOptionsChange,
+}: OptionInputGroupProps) => {
     const [localOptions, setLocalOptions] = useState([...options, '']);
     const [errorIndex, setErrorIndex] = useState<number | null>(null);
 

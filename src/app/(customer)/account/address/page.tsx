@@ -1,63 +1,35 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddressList from '~/components/address/AddressList';
 import AddressFormModal from '~/components/address/AddAddressFormModal';
-
-type Address = {
-    id: number;
-    name: string;
-    phone: string;
-    address: string;
-    isDefault: boolean;
-};
+import {
+    useDeleteAddressMutation,
+    useGetUserAddressesQuery,
+    useSetDefaultAddressMutation,
+} from '~/features/address/addressApi';
 
 const AddressManagementPage = () => {
-    const [storedAddresses, setStoredAddresses] = useState<Address[]>([
-        {
-            id: 1,
-            name: 'Pham',
-            phone: '0901234567',
-            address: '123 Đường ABC, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh',
-            isDefault: true,
-        },
-        {
-            id: 2,
-            name: 'Nguyen',
-            phone: '0912345678',
-            address: '456 Đường XYZ, Phường 3, Quận 3, TP. Hồ Chí Minh',
-            isDefault: false,
-        },
-    ]);
-
+    const {
+        data: storedAddresses = [],
+        error,
+        isLoading,
+    } = useGetUserAddressesQuery();
+    const [setDefault] = useSetDefaultAddressMutation();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [deleteAddress] = useDeleteAddressMutation();
 
-    const handleAddAddress = (newAddress: Address) => {
-        if (newAddress.isDefault) {
-            setStoredAddresses((prev) => [
-                ...prev.map((addr) => ({ ...addr, isDefault: false })),
-                newAddress,
-            ]);
-        } else {
-            setStoredAddresses((prev) => [...prev, newAddress]);
+    const handleSetDefault = async (id: string) => {
+        await setDefault(id);
+    };
+
+    const handleDeleteAddress = async (id: string) => {
+        try {
+            await deleteAddress(id).unwrap();
+            console.log('Deleted address', id);
+        } catch (err) {
+            console.error('Failed to delete address', err);
         }
-        setIsModalOpen(false);
     };
-
-    const handleSetDefault = (id: number) => {
-        setStoredAddresses((prev) =>
-            prev.map((addr) => ({
-                ...addr,
-                isDefault: addr.id === id ? true : false,
-            })),
-        );
-    };
-
-    const handleDeleteAddress = (id: number) => {
-        setStoredAddresses((prev) => prev.filter((addr) => addr.id !== id));
-    };
-
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
 
     return (
         <div className="order-detail-page">
@@ -68,7 +40,7 @@ const AddressManagementPage = () => {
                             <span>Quản lý địa chỉ</span>
                             <button
                                 className="bg-red-600 text-white text-sm px-4 py-2 rounded hover:bg-red-700 transition hover:shadow-lg cursor-pointer"
-                                onClick={openModal}
+                                onClick={() => setIsModalOpen(true)}
                             >
                                 + Thêm địa chỉ
                             </button>
@@ -86,8 +58,8 @@ const AddressManagementPage = () => {
             </div>
             <AddressFormModal
                 isOpen={isModalOpen}
-                onClose={closeModal}
-                onSubmit={handleAddAddress}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={() => {}}
             />
         </div>
     );

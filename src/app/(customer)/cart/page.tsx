@@ -1,28 +1,52 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Container, Typography, Paper } from '@mui/material';
 import CartTable from '~/components/cart/CartTable';
 import CartSummary from '~/components/cart/CartSummary';
 import ProductSuggestions from '~/components/cart/ProductSuggestions';
-import VoucherSection from '~/components/cart/VoucherSection';
-import VoucherModal, { type Voucher } from '~/components/cart/VoucherModal';
 import {
     useDeleteItemsMutation,
     useDeleteItemMutation,
     useGetCartQuery,
+    useUpdateCartMutation,
 } from '~/features/cart/cartApiSlice';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
-import { removeItem, removeItems } from '~/features/cart/cartSlice';
-import { setCheckoutItems } from '~/features/orders/checkoutSlice';
+import {
+    decreaseQuantity,
+    increaseQuantity,
+    removeItem,
+    removeItems,
+    setCart,
+    updateQuantity,
+} from '~/features/cart/cartSlice';
+import {
+    setCheckoutItems,
+    setIsFormCart,
+} from '~/features/orders/checkoutSlice';
 import { useRouter } from 'next/navigation';
+import { useAlertStore } from '~/store/zustand/alertStore';
+import type { ShopAddress } from '~/types/address';
 
 export interface CartItem {
-    id: number;
+    id: string;
+    productVariantId: string;
     name: string;
-    image: string;
+    image: string | null;
     price: number;
     quantity: number;
+}
+
+export interface ShopInfo {
+    id: string;
+    name: string;
+    avatarUrl: string | null;
+    address: ShopAddress;
+}
+
+export interface CartGroup {
+    shop: ShopInfo;
+    items: CartItem[];
 }
 
 export interface Product {
@@ -32,99 +56,52 @@ export interface Product {
     price: number;
 }
 
-const products: Product[] = [
-    {
-        id: 101,
-        name: 'Dép lỗ đi trong nhà tắm',
-        image: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-m0cgbhue08od57@resize_w160_nl.webp',
-        price: 20900,
-    },
-    {
-        id: 102,
-        name: 'Thẻ Nhớ Micro 16GB',
-        image: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQe42ZXWwPudaJhV7R_FllhgDf3grwZ9QnVKFZ3vq9mgITZCuaYwUkTnTEpWqK1oxdHHMrVlWLzvAjgRdhH0MXRw3n1qHD3HpGNEOiZTrLapkQPc-jMt0Wv',
-        price: 19779,
-    },
-    {
-        id: 103,
-        name: 'Sữa Rửa Mặt Senka Perfect Whip',
-        image: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn=RN4fZLY68H9tW_5H0U56PLyrrQDnPI_OdCnnrwoZMUpPqF5fhFiz_VkUho0vUWiF3qYYMpF0bI7JcniGIkXER15S5JtfpyTr9909e76ui9lLpStKqDwAsrzYDybhMpy7B3Rn5Glw',
-        price: 22900,
-    },
-    {
-        id: 104,
-        name: 'Ốp lưng viền vuông iPhone',
-        image: 'https://lh5.googleusercontent.com/proxy/anOm5cTCWfO5wDbMJp-mFxBSJ73jasabf3WKBxVQmlNBHDRZavndHwtLJWE2SuaX7MDYt-ZPJ20vy0qunLXBHJZQPRhqI5ei-YF7Iw4sqWqf9dScAM7Mgb1qWllvFwPPKySJXhWaYIRc7AM2Zi9d3kYf7R6wQ_YOWPoovivAVtfLHUi1xAn8SRRleb79Ef5x-6xCv1m7heP0CBE',
-        price: 5000,
-    },
-    {
-        id: 105,
-        name: 'Bộ 3 quần lót nam',
-        image: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-m0cgbhue08od57@resize_w160_nl.webp',
-        price: 15000,
-    },
-    {
-        id: 106,
-        name: 'Bộ 3 quần lót nam',
-        image: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-m0cgbhue08od57@resize_w160_nl.webp',
-        price: 15000,
-    },
-    {
-        id: 107,
-        name: 'Bộ 3 quần lót nam',
-        image: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-m0cgbhue08od57@resize_w160_nl.webp',
-        price: 15000,
-    },
-    {
-        id: 108,
-        name: 'Bộ 3 quần lót nam',
-        image: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-m0cgbhue08od57@resize_w160_nl.webp',
-        price: 15000,
-    },
-    {
-        id: 109,
-        name: 'Bộ 3 quần lót nam',
-        image: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-m0cgbhue08od57@resize_w160_nl.webp',
-        price: 15000,
-    },
-];
+const products: Product[] = [];
 
 const Cart: React.FC = () => {
     const router = useRouter();
-    const token = useAppSelector((state) => state.auth.token);
+    // const token = useAppSelector((state) => state.auth.accessToken);
 
-    const { data: cartItemFromApi = [], isLoading } = useGetCartQuery(
-        undefined,
-        {
-            skip: !token,
-        },
-    );
+    const [isLoggedIn] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return !!sessionStorage.getItem('authUser');
+        }
+        return false;
+    });
 
+    const { groups: cartGroups } = useAppSelector((state) => state.cart);
+
+    const { data: cartItemsFromApi, isLoading } = useGetCartQuery(undefined, {
+        skip: !isLoggedIn,
+    });
     const [deleteItemApi] = useDeleteItemMutation();
     const [deleteItemsApi] = useDeleteItemsMutation();
 
+    const [updateCartApi] = useUpdateCartMutation();
     const dispatch = useAppDispatch();
 
-    const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-        if (typeof window === 'undefined') return [];
-        if (token) return [];
+    const [selected, setSelected] = useState<string[]>([]);
 
-        const stored = localStorage.getItem('cart');
+    // Memoize grouped cart from API
+    const groupedCart = useMemo(() => {
+        if (!isLoggedIn || !cartItemsFromApi?.length) return null;
 
-        return stored ? JSON.parse(stored) || [] : [];
-    });
+        return cartItemsFromApi;
+    }, [cartItemsFromApi, isLoggedIn]);
 
+    // Sync Redux store with API or localStorage
     useEffect(() => {
-        if (token && cartItemFromApi.length) {
-            setCartItems(cartItemFromApi);
+        if (isLoggedIn && groupedCart) {
+            dispatch(setCart(groupedCart));
+        } else if (!isLoggedIn && typeof window !== 'undefined') {
+            const stored = localStorage.getItem('cart');
+            const localCart = stored ? JSON.parse(stored) || [] : [];
+            console.log('Local cart:', localCart);
+            dispatch(setCart(localCart));
         }
-    }, [cartItemFromApi, token]);
+    }, [groupedCart, isLoggedIn, dispatch]);
 
-    const [selected, setSelected] = useState<number[]>([]);
-    const [voucher, setVoucher] = useState<Voucher | null>(null);
-    const [showVoucherModal, setShowVoucherModal] = useState(false);
-
-    const handleSelect = (id: number) => {
+    const handleSelect = (id: string) => {
         setSelected((prev) =>
             prev.includes(id)
                 ? prev.filter((item) => item !== id)
@@ -132,46 +109,54 @@ const Cart: React.FC = () => {
         );
     };
 
+    const handleSelectGroup = (shopId: string) => {
+        const shopItems =
+            cartGroups.find((g) => g.shop.id === shopId)?.items || [];
+        const shopItemIds = shopItems.map((item) => item.id);
+        const allSelected = shopItemIds.every((id) => selected.includes(id));
+        setSelected((prev) =>
+            allSelected
+                ? prev.filter((id) => !shopItemIds.includes(id))
+                : [...prev, ...shopItemIds.filter((id) => !prev.includes(id))],
+        );
+    };
+
     const handleSelectAll = () => {
-        setSelected(
-            selected.length === cartItems.length
-                ? []
-                : cartItems.map((item) => item.id),
+        const allItems = cartGroups.flatMap((g) =>
+            g.items.map((item) => item.id),
         );
+        const allSelected = allItems.every((id) => selected.includes(id));
+        setSelected(allSelected ? [] : allItems);
     };
 
-    const handleDelete = (id: number) => {
-        if (token) {
-            deleteItemApi(id);
-        } else {
-            const stored = localStorage.getItem('cart');
-            const cart: CartItem[] = stored ? JSON.parse(stored) : [];
-            const newCart = cart.filter((item) => item.id !== id);
-            localStorage.setItem('cart', JSON.stringify(newCart));
+    const handleDelete = async (id: string) => {
+        try {
+            if (isLoggedIn) {
+                await deleteItemApi(id).unwrap();
+            } else {
+                const newCartGroups = cartGroups
+                    .map((group) => ({
+                        ...group,
+                        items: group.items.filter((item) => item.id !== id),
+                    }))
+                    .filter((group) => group.items.length > 0);
+
+                localStorage.setItem('cart', JSON.stringify(newCartGroups));
+            }
+            dispatch(removeItem(id));
+
+            useAlertStore.getState().showAlert({
+                severity: 'success',
+                message: 'Xóa sản phẩm thành công!',
+            });
+            setSelected((prev) => prev.filter((item) => item !== id));
+        } catch (err) {
+            console.error('Failed to delete item:', err);
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: 'Xóa sản phẩm thất bại!',
+            });
         }
-        dispatch(removeItem(id));
-        setCartItems((prev) => prev.filter((item) => item.id !== id));
-        setSelected((prev) => prev.filter((item) => item !== id));
-    };
-
-    const handleIncrease = (id: number) => {
-        setCartItems((prev) =>
-            prev.map((item) =>
-                item.id === id
-                    ? { ...item, quantity: item.quantity + 1 }
-                    : item,
-            ),
-        );
-    };
-
-    const handleDecrease = (id: number) => {
-        setCartItems((prev) =>
-            prev.map((item) =>
-                item.id === id && item.quantity > 1
-                    ? { ...item, quantity: item.quantity - 1 }
-                    : item,
-            ),
-        );
     };
 
     const handleDeleteSelected = async () => {
@@ -179,29 +164,145 @@ const Cart: React.FC = () => {
             alert('Vui lòng chọn sản phẩm để xóa.');
             return;
         }
-
-        // 1️⃣ Xóa state global
-
-        // 2️⃣ Xóa backend nếu login
-        if (token) {
-            try {
+        try {
+            if (isLoggedIn) {
                 await deleteItemsApi(selected).unwrap();
-            } catch (err) {
-                console.error(err);
+            } else {
+                const newCartGroups = cartGroups
+                    .map((group) => ({
+                        ...group,
+                        items: group.items.filter(
+                            (item) => !selected.includes(item.id),
+                        ),
+                    }))
+                    .filter((group) => group.items.length > 0);
+                localStorage.setItem('cart', JSON.stringify(newCartGroups));
             }
-        } else {
-            // 3️⃣ Sync localStorage nếu chưa login
-            const stored = localStorage.getItem('cart');
-            let cart: CartItem[] = stored ? JSON.parse(stored) : [];
-            cart = cart.filter((i) => !selected.includes(i.id));
-            localStorage.setItem('cart', JSON.stringify(cart));
+            dispatch(removeItems(selected));
+            useAlertStore.getState().showAlert({
+                severity: 'success',
+                message: 'Xóa các sản phẩm thành công!',
+            });
+            setSelected([]);
+        } catch (err) {
+            console.error('Failed to delete selected items:', err);
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: 'Xóa các sản phẩm thất bại!',
+            });
         }
-        dispatch(removeItems(selected));
+    };
 
-        setCartItems((prev) =>
-            prev.filter((item) => !selected.includes(item.id)),
-        );
-        setSelected([]);
+    const handleIncrease = async (id: string) => {
+        if (!isLoggedIn) {
+            const newCartGroups = cartGroups
+                .map((group) => ({
+                    ...group,
+                    items: group.items.map((item) =>
+                        item.id === id
+                            ? { ...item, quantity: item.quantity + 1 }
+                            : item,
+                    ),
+                }))
+                .filter((group) => group.items.length > 0);
+            localStorage.setItem('cart', JSON.stringify(newCartGroups));
+            dispatch(increaseQuantity(id));
+
+            return;
+        }
+        const item = cartGroups
+            .flatMap((group) => group.items)
+            .find((item) => item.id === id);
+        if (!item) return;
+
+        try {
+            await updateCartApi({
+                id,
+                newVariantId: null,
+                quantity: item.quantity + 1,
+            }).unwrap();
+
+            console.log('Cart updated successfully');
+
+            dispatch(increaseQuantity(id));
+        } catch (err: any) {
+            console.error('Failed to update cart:', err);
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: err.data?.errors[0] || 'Cập nhật giỏ hàng thất bại!',
+            });
+        }
+    };
+
+    const handleDecrease = async (id: string) => {
+        if (!isLoggedIn) {
+            const newCartGroups = cartGroups
+                .map((group) => ({
+                    ...group,
+                    items: group.items.map((item) =>
+                        item.id === id && item.quantity > 1
+                            ? { ...item, quantity: item.quantity - 1 }
+                            : item,
+                    ),
+                }))
+                .filter((group) => group.items.length > 0);
+            localStorage.setItem('cart', JSON.stringify(newCartGroups));
+            dispatch(decreaseQuantity(id));
+            return;
+        }
+        const item = cartGroups
+            .flatMap((group) => group.items)
+            .find((item) => item.id === id);
+        if (!item) return;
+
+        try {
+            await updateCartApi({
+                id,
+                newVariantId: null,
+                quantity: item.quantity - 1,
+            }).unwrap();
+
+            dispatch(decreaseQuantity(id));
+        } catch (err: any) {
+            console.error('Failed to update cart:', err);
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: err.data?.errors[0] || 'Cập nhật giỏ hàng thất bại!',
+            });
+        }
+    };
+
+    const handleQuantityChange = async (id: string, quantity: number) => {
+        if (quantity < 1) return;
+        if (!isLoggedIn) {
+            const newCartGroups = cartGroups
+                .map((group) => ({
+                    ...group,
+                    items: group.items.map((item) =>
+                        item.id === id ? { ...item, quantity } : item,
+                    ),
+                }))
+                .filter((group) => group.items.length > 0);
+            localStorage.setItem('cart', JSON.stringify(newCartGroups));
+            dispatch(updateQuantity({ id, quantity }));
+        } else {
+            try {
+                await updateCartApi({
+                    id,
+                    newVariantId: null,
+                    quantity,
+                }).unwrap();
+
+                dispatch(updateQuantity({ id, quantity }));
+            } catch (err: any) {
+                console.error('Failed to update cart:', err);
+                useAlertStore.getState().showAlert({
+                    severity: 'error',
+                    message:
+                        err.data?.errors[0] || 'Cập nhật giỏ hàng thất bại!',
+                });
+            }
+        }
     };
 
     const handleSaveToFavorites = () => {
@@ -209,7 +310,8 @@ const Cart: React.FC = () => {
             alert('Vui lòng chọn sản phẩm để lưu vào mục Đã thích.');
             return;
         }
-        const favorites = cartItems
+        const favorites = cartGroups
+            .flatMap((g) => g.items)
             .filter((item) => selected.includes(item.id))
             .map((item) => item.name)
             .join(', ');
@@ -222,13 +324,13 @@ const Cart: React.FC = () => {
             return;
         }
 
-        const items = cartItems.filter((item) => selected.includes(item.id));
-        dispatch(setCheckoutItems(items));
-
+        dispatch(setCheckoutItems(cartGroups));
+        dispatch(setIsFormCart(true));
         router.push('/checkout');
     };
 
-    const total = cartItems
+    const total = cartGroups
+        .flatMap((g) => g.items)
         .filter((item) => selected.includes(item.id))
         .reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -236,44 +338,12 @@ const Cart: React.FC = () => {
         <Box sx={{ bgcolor: '#fafafa', minHeight: '100vh', py: 4 }}>
             <Container maxWidth="lg">
                 <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
-                    <Typography variant="h5" fontWeight="bold" mb={3}>
+                    <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
                         Giỏ Hàng
                     </Typography>
-                    <CartTable
-                        cartItems={cartItems}
-                        selected={selected}
-                        handleSelect={handleSelect}
-                        handleSelectAll={handleSelectAll}
-                        handleDelete={handleDelete}
-                        handleIncrease={handleIncrease}
-                        handleDecrease={handleDecrease}
-                        handleQuantityChange={(id, quantity) =>
-                            setCartItems((prev) =>
-                                prev.map((item) =>
-                                    item.id === id
-                                        ? { ...item, quantity }
-                                        : item,
-                                ),
-                            )
-                        }
-                    />
-                    {token && (
-                        <VoucherSection
-                            onSelectVoucher={() => setShowVoucherModal(true)}
-                            voucher={voucher}
-                        />
-                    )}
-                    {cartItems.length > 0 ? (
-                        <CartSummary
-                            cartItems={cartItems}
-                            selected={selected}
-                            total={total}
-                            handleSelectAll={handleSelectAll}
-                            handleDeleteSelected={handleDeleteSelected}
-                            handleSaveToFavorites={handleSaveToFavorites}
-                            handleCheckout={handleCheckout}
-                        />
-                    ) : (
+                    {isLoading ? (
+                        <Typography>Loading...</Typography>
+                    ) : cartGroups.length === 0 ? (
                         <Box
                             sx={{
                                 py: 6,
@@ -290,16 +360,38 @@ const Cart: React.FC = () => {
                                 Bạn chưa có sản phẩm nào trong giỏ hàng.
                             </Typography>
                         </Box>
+                    ) : (
+                        <>
+                            {cartGroups.map((group) => (
+                                <Box key={group.shop.id} sx={{ mb: 4 }}>
+                                    <CartTable
+                                        cartGroups={[group]}
+                                        selected={selected}
+                                        handleSelect={handleSelect}
+                                        handleSelectGroup={handleSelectGroup}
+                                        handleDelete={handleDelete}
+                                        handleIncrease={handleIncrease}
+                                        handleDecrease={handleDecrease}
+                                        handleQuantityChange={
+                                            handleQuantityChange
+                                        }
+                                    />
+                                </Box>
+                            ))}
+
+                            <CartSummary
+                                cartGroups={cartGroups}
+                                selected={selected}
+                                handleSelectAll={handleSelectAll}
+                                handleDeleteSelected={handleDeleteSelected}
+                                handleSaveToFavorites={handleSaveToFavorites}
+                                handleCheckout={handleCheckout}
+                                total={total}
+                            />
+                        </>
                     )}
                 </Paper>
                 <ProductSuggestions products={products} />
-
-                <VoucherModal
-                    visible={showVoucherModal}
-                    onClose={() => setShowVoucherModal(false)}
-                    onSelect={(v) => setVoucher(v)}
-                    selectedVoucher={voucher}
-                />
             </Container>
         </Box>
     );

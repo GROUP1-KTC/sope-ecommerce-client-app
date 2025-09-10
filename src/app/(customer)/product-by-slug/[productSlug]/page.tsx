@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 // import Image from 'next/image';
-import Link from "next/link";
+import Link from 'next/link';
 import { useGetProductBySlugQuery } from '~/features/products/productApi';
 import { useGetBreadcrumbCategoryQuery } from '~/features/categories/categoryApi';
 import ProductInfo from '~/components/product-detail/ProductInfo';
@@ -30,7 +30,9 @@ const ProductBySlug = () => {
         return map;
     }, [product]);
 
-    const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
+    const [selectedAttributes, setSelectedAttributes] = useState<
+        Record<string, string>
+    >({});
 
     const handleAttributeSelect = (name: string, value: string) => {
         setSelectedAttributes((prev) => {
@@ -93,8 +95,8 @@ const ProductBySlug = () => {
                     ))}
 
                     <span className="text-gray-800 font-medium">{product.name}</span>
-                </nav>
-            </div>
+                </nav >
+            </div >
 
             <ProductInfo
                 product={product}
@@ -109,8 +111,7 @@ const ProductBySlug = () => {
             <ProductReviews reviews={reviews ?? []} />
 
 
-
-        </div>
+        </div >
     );
 };
 

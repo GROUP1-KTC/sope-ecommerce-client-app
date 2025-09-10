@@ -61,6 +61,13 @@ export default function VariantGroupInput({
                         <label className="mr-2 whitespace-nowrap">Tùy chọn</label>
                         <OptionInputGroup options={options} onOptionsChange={setOptions} />
                   </div>
+                  <div className="p-2 flex mb-3">
+                        <label className="mr-2 whitespace-nowrap">Tùy chọn</label>
+                        <OptionInputGroup
+                              options={options}
+                              onOptionsChange={setOptions}
+                        />
+                  </div>
             </div>
       );
 }

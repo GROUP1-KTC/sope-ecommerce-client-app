@@ -10,11 +10,21 @@ import { clearCredentials, setCredentials } from '~/features/auth/authSlice';
 const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL_V3,
     credentials: 'include',
-    prepareHeaders: (headers, { getState }) => {
-        const token = (getState() as { auth?: { token?: string } }).auth?.token;
+    prepareHeaders: (headers) => {
+        const storedUser = sessionStorage.getItem('authUser');
 
-        if (token) {
-            headers.set('Authorization', `Bearer ${token}`);
+        if (storedUser) {
+            try {
+                const parsedUser = JSON.parse(storedUser);
+                if (parsedUser.accessToken) {
+                    headers.set(
+                        'Authorization',
+                        `Bearer ${parsedUser.accessToken}`,
+                    );
+                }
+            } catch (e) {
+                console.error('Lỗi parse sessionStorage authUser:', e);
+            }
         }
 
         return headers;
@@ -29,10 +39,9 @@ const baseQueryWithReauth: BaseQueryFn<
     let result = await baseQuery(args, api, extraOptions);
 
     if (result.error && result.error.status === 401) {
-        // Gọi refresh token (cookie HttpOnly sẽ tự gửi)
         const refreshResult = await baseQuery(
             {
-                url: '/refresh-token',
+                url: '/auth/refresh-token',
                 method: 'POST',
             },
             api,
@@ -72,6 +81,8 @@ export const apiSlice = createApi({
         'Conversation',
         'Message',
         'Cart',
+        'PaymentCard',
+        'Address',
     ],
     endpoints: () => ({}),
 });

@@ -1,8 +1,8 @@
 'use client';
 
 import { SearchIcon } from 'lucide-react';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import StorefrontIcon from '@mui/icons-material/Storefront';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import MenuIcon from '@mui/icons-material/Menu';

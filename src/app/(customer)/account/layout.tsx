@@ -30,7 +30,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         <div className="order-detail-page bg-gray-50 px-4 lg:px-16 min-h-screen">
             <div className="flex min-h-screen">
                 {/* Mobile menu button */}
-                <div className="lg:hidden py-4 pl-4">
+                <div className="lg:hidden py-4 pl-2">
                     <button
                         onClick={toggleSidebar}
                         className="flex items-center gap-2 text-gray-800 cursor-pointer hover:text-gray-600 transition"
