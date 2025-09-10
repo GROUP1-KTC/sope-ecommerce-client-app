@@ -663,6 +663,14 @@ export const mostSearchProducts = [
 
 export const streams = [
     {
+        id: 'shop1',
+        title: 'Live thời trang',
+        streamer: 'Amazing Shop',
+        viewers: 120,
+        thumbnail: '/images/live1.jpg',
+        link: '/live/viewer/shop1/viewer-guest',
+    },
+    {
         title: 'Siêu Sale 9/9',
         streamer: 'Hùng Du Mặc',
         description: 'Xả lỗ, siêu hời ...!',

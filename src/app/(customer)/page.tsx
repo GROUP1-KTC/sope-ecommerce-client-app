@@ -17,7 +17,7 @@ const HomeCustomer = () => (
     <div>
         <Banner />
         <CategorySection categories={categories} />
-        <LiveStreamSection streams={streams} />
+        <LiveStreamSection />
         <FlashSaleSection items={flashSales} initialSeconds={3600 + 55} />
         <MostSearch products={mostSearchProducts} title={title} />
         <SuggestedProductsSection products={mostSearchProducts} />
