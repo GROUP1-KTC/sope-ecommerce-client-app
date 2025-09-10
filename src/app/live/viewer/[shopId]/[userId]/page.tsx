@@ -9,13 +9,14 @@ import {
     joinLiveKitRoom,
 } from '~/utils/livekit';
 import { RoomEvent, type Participant } from 'livekit-client';
-import toast from 'react-hot-toast';
 import ChatBox from '~/components/livestream/ChatBox';
 import CartModal from '~/components/livestream/CartModal';
 import type { CollapseProduct } from '~/types/products';
 import type { Comment } from '~/types/comment';
 import { ShoppingBagIcon } from 'lucide-react';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { useAppDispatch } from '~/hooks/useTypes';
+import { useAlertStore } from '~/store/zustand/alertStore';
 
 const mockProducts: CollapseProduct[] = [
     {
@@ -50,10 +51,24 @@ const mockProducts: CollapseProduct[] = [
 export default function ViewerPage() {
     const { shopId, userId } = useParams<{ shopId: string; userId: string }>();
     const videoRef = useRef<HTMLVideoElement>(null);
+    const audioRef = useRef<HTMLAudioElement>(null);
     const [room, setRoom] = useState<Room | null>(null);
     const [showCart, setShowCart] = useState(false);
+    const dispatch = useAppDispatch();
+
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const [chat, setChat] = useState<Comment[]>([]);
+
+    useEffect(() => {
+        if (errorMessage) {
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: errorMessage,
+            });
+            setErrorMessage(null);
+        }
+    }, [errorMessage]);
 
     const attachTracks = (participant: Participant) => {
         if (!videoRef.current) return;
@@ -69,7 +84,7 @@ export default function ViewerPage() {
                 }
                 if (track.kind === 'audio') {
                     track.detach();
-                    track.attach();
+                    track.attach(audioRef.current!);
                 }
             } catch (err) {
                 console.warn('Attach track failed:', err);
@@ -113,7 +128,7 @@ export default function ViewerPage() {
                     },
                 );
             } catch (err) {
-                toast.error('Failed to connect livestream');
+                setErrorMessage('Failed to connect livestream');
             }
         };
         connect();
@@ -141,7 +156,7 @@ export default function ViewerPage() {
     const sendMessage = async (msg: string) => {
         if (!room || !msg.trim()) return;
         if (msg.length > 500) {
-            toast.error('Message too long');
+            setErrorMessage('Message too long');
             return;
         }
 
@@ -160,7 +175,7 @@ export default function ViewerPage() {
             };
             setChat((prev) => [...prev, newMsg]);
         } catch (error) {
-            toast.error('Failed to send message');
+            setErrorMessage('Failed to send message');
         }
     };
 
@@ -175,6 +190,8 @@ export default function ViewerPage() {
                         playsInline
                         className="w-full h-full object-cover"
                     />
+
+                    <audio ref={audioRef} autoPlay playsInline />
 
                     <div
                         className="absolute top-0 w-full px-2 py-2 flex items-center justify-between text-white"

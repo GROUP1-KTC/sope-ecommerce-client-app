@@ -9,13 +9,14 @@ import {
     joinLiveKitRoom,
 } from '~/utils/livekit';
 import { RoomEvent } from 'livekit-client';
-import toast from 'react-hot-toast';
 import LeftPanel from '~/components/livestream/seller/LeftPannel';
 import CenterPanel from '~/components/livestream/seller/CenterPannel';
 import RightPanel from '~/components/livestream/seller/RightPannel';
 import SellerLiveLayout from './layout';
 import type { SellerLiveProduct } from '~/types/products';
 import type { Comment } from '~/types/comment';
+import { title } from 'process';
+import { useAlertStore } from '~/store/zustand/alertStore';
 
 const mockProducts: SellerLiveProduct[] = [
     {
@@ -55,6 +56,7 @@ export default function SellerPage() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [room, setRoom] = useState<Room | null>(null);
     const [isConnected, setIsConnected] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const [chat, setChat] = useState<Comment[]>([]);
 
@@ -69,7 +71,7 @@ export default function SellerPage() {
             }
         } catch (err) {
             console.error('Preview failed:', err);
-            toast.error('Không thể mở camera preview');
+            setErrorMessage('Không thể mở camera preview');
         }
     };
 
@@ -85,7 +87,21 @@ export default function SellerPage() {
         };
     }, []);
 
-    const handleStartLive = async () => {
+    useEffect(() => {
+        if (errorMessage) {
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: errorMessage,
+            });
+            setErrorMessage(null);
+        }
+    }, [errorMessage]);
+
+    const handleStartLive = async (data: {
+        title: string;
+        description: string;
+        thumbnail: string;
+    }) => {
         try {
             const token = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/livekit/token?room=${shopId}&identity=seller&isPublisher=true`,
@@ -111,13 +127,24 @@ export default function SellerPage() {
                 }
                 await r.localParticipant.publishTrack(t);
             }
+
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/livestream/start`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    shopId,
+                    title: data.title,
+                    description: data.description,
+                    thumbnail: data.thumbnail,
+                }),
+            });
         } catch (err) {
             console.error(err);
-            toast.error('Không thể bắt đầu livestream');
+            setErrorMessage('Không thể bắt đầu livestream');
         }
     };
 
-    const handleEndLive = () => {
+    const handleEndLive = async () => {
         if (room) {
             room.disconnect();
             setRoom(null);
@@ -130,6 +157,14 @@ export default function SellerPage() {
             .then((stream) => {
                 if (videoRef.current) videoRef.current.srcObject = stream;
             });
+
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/livestream/end`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ shopId }),
+        }).catch(() =>
+            setErrorMessage('Không thể cập nhật trạng thái end live'),
+        );
     };
 
     useEffect(() => {

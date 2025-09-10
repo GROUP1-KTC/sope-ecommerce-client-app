@@ -20,7 +20,7 @@ export async function joinLiveKitRoom(wsUrl: string, token: string): Promise<Roo
 
             videoCaptureDefaults: {
                 facingMode: 'user',
-                resolution: VideoPresets.h1080.resolution,
+                resolution: VideoPresets.h1440.resolution,
             },
 
         });

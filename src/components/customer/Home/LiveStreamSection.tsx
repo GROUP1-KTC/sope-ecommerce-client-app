@@ -4,8 +4,14 @@ import React, { useRef, useState, useEffect } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import LiveStreamCard from '~/components/livestream/LiveStreamCard';
+import stompClient, {
+    connectSocket,
+    disconnectSocket,
+} from '~/services/socket/socket.service';
 
-interface LiveStream {
+export interface LiveStream {
+    id: number;
+    shopId: number;
     title: string;
     streamer: string;
     description?: string;
@@ -14,11 +20,107 @@ interface LiveStream {
     link: string;
 }
 
-interface LiveStreamSectionProps {
-    streams: LiveStream[];
-}
+interface LiveStreamSectionProps {}
 
-const LiveStreamSection: React.FC<LiveStreamSectionProps> = ({ streams }) => {
+const LiveStreamSection: React.FC<LiveStreamSectionProps> = () => {
+    const [streams, setStreams] = useState<LiveStream[]>([]);
+
+    const [userId] = useState(`viewer-${Math.floor(Math.random() * 1000)}`);
+
+    useEffect(() => {
+        let subscription: any;
+
+        const initData = async () => {
+            try {
+                // 1. Gọi API lấy danh sách livestream đang active
+                const res = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/livestream/active`,
+                );
+                if (res.ok) {
+                    const json = await res.json();
+
+                    console.log('📺 Active streams response:', json);
+                    const activeStreams: LiveStream[] = json.data;
+
+                    console.log('📺 Active streams:', activeStreams);
+
+                    setStreams(
+                        activeStreams.map((s) => ({
+                            id: s.id,
+                            shopId: s.shopId,
+                            title: s.title,
+                            streamer: s.streamer ?? 'Unknown',
+                            description: s.description,
+                            thumbnail: s.thumbnail,
+                            viewers: s.viewers ?? 0,
+                            link: `/live/viewer/${s.shopId}/${userId}`,
+                        })),
+                    );
+                }
+
+                // 2. Kết nối socket
+                await connectSocket();
+
+                subscription = stompClient.subscribe(
+                    '/topic/livestreams',
+                    (message) => {
+                        if (message.body) {
+                            const event = JSON.parse(message.body);
+                            const stream = event.payload;
+
+                            setStreams((prev) => {
+                                if (event.type === 'LIVE_STARTED') {
+                                    // Thêm hoặc update
+
+                                    console.log('📺 New live stream:', stream);
+
+                                    const updated = prev.filter(
+                                        (s) => s.id !== stream.id,
+                                    );
+                                    return [
+                                        ...updated,
+                                        {
+                                            id: stream.id,
+                                            shopId: stream.shopId,
+                                            title: stream.title,
+                                            streamer: stream.streamer,
+                                            thumbnail: stream.thumbnail,
+                                            viewers: stream.viewers ?? 0,
+                                            description: stream.description,
+                                            link: `/live/viewer/${stream.shopId}/${userId}`,
+                                        },
+                                    ];
+                                } else if (event.type === 'LIVE_ENDED') {
+                                    // Xóa khỏi danh sách
+                                    console.log(
+                                        '📺 Ended live stream:',
+                                        stream,
+                                    );
+                                    return prev.filter(
+                                        (s) => s.id !== stream.id,
+                                    );
+                                }
+                                return prev;
+                            });
+                        }
+                    },
+                );
+            } catch (error) {
+                console.error(
+                    '❌ Failed to load livestreams or connect WebSocket',
+                    error,
+                );
+            }
+        };
+
+        initData();
+
+        return () => {
+            subscription?.unsubscribe();
+            disconnectSocket();
+        };
+    }, []);
+
     const containerRef = useRef<HTMLDivElement>(null);
     const [atStart, setAtStart] = useState(true);
     const [atEnd, setAtEnd] = useState(false);
