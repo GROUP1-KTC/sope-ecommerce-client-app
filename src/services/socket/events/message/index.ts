@@ -16,24 +16,26 @@ const OnNewMessage = ({
         (message: IFrame) => {
             if (message.body) {
                 const receivedMessage: Message = JSON.parse(message.body);
-                if (receivedMessage.conversationId === conversationId) {
-                    dispatch(
-                        addMessage({
-                            conversationId: conversationId,
-                            message: {
-                                id: receivedMessage.id || `${Date.now()}`,
-                                sender: receivedMessage.sender,
-                                content: receivedMessage.content,
-                                timestamp:
-                                    receivedMessage.timestamp ||
-                                    new Date().toLocaleTimeString([], {
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                    }),
-                            },
-                        }),
-                    );
-                }
+
+                dispatch(
+                    addMessage({
+                        conversationId: conversationId,
+                        message: {
+                            id: receivedMessage.id || `${Date.now()}`,
+                            senderId: receivedMessage.senderId,
+                            type: receivedMessage.type,
+                            content: receivedMessage.content,
+                            imageUrl: receivedMessage.imageUrl || null,
+                            width: receivedMessage.width || null,
+                            height: receivedMessage.height || null,
+                            fileUrl: receivedMessage.fileUrl || null,
+                            fileName: receivedMessage.fileName || null,
+                            fileType: receivedMessage.fileType || null,
+                            fileSize: receivedMessage.fileSize || null,
+                            sentAt: receivedMessage.sentAt || new Date().toISOString(),
+                        },
+                    }),
+                );
             }
         },
     );

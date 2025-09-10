@@ -2,7 +2,7 @@ import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 
 const SOCKET_URL =
-    process.env.NEXT_PUBLIC_SOCKET_BASE_URL || 'http://localhost:8080/ws';
+    process.env.NEXT_PUBLIC_SOCKET_BASE_URL || 'http://localhost:8082/ws';
 
 const stompClient = new Client({
     webSocketFactory: () => new SockJS(SOCKET_URL),

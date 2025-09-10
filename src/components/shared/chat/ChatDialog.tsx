@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useGetConversationsQuery } from '~/features/chat/conversation/ConversationApi';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
-import { setConversations } from '~/features/chat/chatSlice';
+import { setConversations, setSelectedConversationId } from '~/features/chat/chatSlice';
 
 import ChatMessages from './ChatMessages';
 import ConversationListBar from './ConversationListBar';
@@ -24,19 +24,17 @@ const ChatDialog: React.FC<{ open: boolean; onClose: () => void }> = ({
     const { data: ConversationsData } = useGetConversationsQuery();
     const conversations = useAppSelector((state) => state.chat.conversations);
 
-    const [selectedId, setSelectedId] = useState<string | null>(null);
-
-    const selected =
-        conversations?.find((conv: Conversation) => conv.id === selectedId) ||
-        null;
-
     const filteredConversations = conversations?.filter((c: Conversation) =>
         c.name.toLowerCase().includes(search.toLowerCase()),
     );
 
+    const selectedId = useAppSelector(state => state.chat.selectedConversationId);
+    const selected = conversations?.find(conv => conv.conversationId === selectedId) || null;
+
     const handleBack = () => {
-        setSelectedId(null);
+        dispatch(setSelectedConversationId(null));
     };
+
 
     useEffect(() => {
         if (ConversationsData) {
@@ -66,16 +64,18 @@ const ChatDialog: React.FC<{ open: boolean; onClose: () => void }> = ({
                     search={search}
                     setSearch={setSearch}
                     filteredConversations={filteredConversations}
-                    setSelectedId={setSelectedId}
-                    selected={selected}
                 />
 
+
                 <ChatMessages
-                    selected={selected}
+                    conversationId={selected?.conversationId || null}
+                    name={selected?.name || ''}
+                    avatar={selected?.avatar || ''}
                     handleBack={handleBack}
                     onClose={onClose}
                     isMobile={isMobile}
                 />
+
             </DialogContent>
         </Dialog>
     );

@@ -1,21 +1,21 @@
-import type { Conversation } from '~/types/chat';
+import type { Conversation, Message } from '~/types/chat';
 import { apiSlice } from '~/services/api/apiSlice';
 
 export const ConversationsApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getConversations: builder.query<Conversation[], void>({
-            query: () => 'conversations',
+            query: () => '/conversations',
             providesTags: ['Conversation'],
         }),
-        getConversationById: builder.query<Conversation, string>({
-            query: (id) => `conversations/${id}`,
+        getConversationById: builder.query<Message[], string>({
+            query: (id) => `/messages/${id}`,
         }),
         updatedConversation: builder.mutation<
             Conversation,
             Partial<Conversation> & { id: string }
         >({
             query: ({ id, ...patch }) => ({
-                url: `conversations/${id}`,
+                url: `/conversations/${id}`,
                 method: 'PUT',
                 body: patch,
             }),
