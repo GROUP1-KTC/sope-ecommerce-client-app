@@ -3,12 +3,14 @@ import type { Conversation, Message } from '~/types/chat';
 
 interface ChatState {
     conversations: Conversation[];
+    messagesByConversationId: Record<string, Message[]>;
     selectedConversationId: string | null;
     status: 'idle' | 'sending' | 'error';
 }
 
 const initialState: ChatState = {
     conversations: [],
+    messagesByConversationId: {},
     selectedConversationId: null,
     status: 'idle',
 };
@@ -19,36 +21,42 @@ const chatSlice = createSlice({
     reducers: {
         setConversations(state, action: PayloadAction<Conversation[]>) {
             state.conversations = action.payload;
+            action.payload.forEach(conv => {
+                if (!state.messagesByConversationId[conv.conversationId]) {
+                    state.messagesByConversationId[conv.conversationId] = [];
+                }
+            });
         },
+
         addMessage(
             state,
-            action: PayloadAction<{ conversationId: string; message: Message }>,
+            action: PayloadAction<{ conversationId: string; message: Message }>
         ) {
             const { conversationId, message } = action.payload;
+
+            if (!state.messagesByConversationId[conversationId]) {
+                state.messagesByConversationId[conversationId] = [];
+            }
+            state.messagesByConversationId[conversationId].push(message);
+
             const conversation = state.conversations.find(
-                (conv) => conv.id === conversationId,
+                conv => conv.conversationId === conversationId
             );
             if (conversation) {
-                conversation.messages.push(message);
-                conversation.lastMessage = message.content;
-
-                console.log('Message added:', message);
-                console.log('Updated conversation:', conversation);
+                conversation.lastMessage = message;
             }
         },
+
+        clearMessages(state, action: PayloadAction<string>) {
+            state.messagesByConversationId[action.payload] = [];
+        },
+
         setSelectedConversationId(state, action: PayloadAction<string | null>) {
             state.selectedConversationId = action.payload;
         },
+
         setStatus(state, action: PayloadAction<'idle' | 'sending' | 'error'>) {
             state.status = action.payload;
-        },
-        clearMessages(state, action: PayloadAction<string>) {
-            const conversation = state.conversations.find(
-                (conv) => conv.id === action.payload,
-            );
-            if (conversation) {
-                conversation.messages = [];
-            }
         },
     },
 });
@@ -56,8 +64,9 @@ const chatSlice = createSlice({
 export const {
     setConversations,
     addMessage,
+    clearMessages,
     setSelectedConversationId,
     setStatus,
-    clearMessages,
 } = chatSlice.actions;
+
 export default chatSlice.reducer;

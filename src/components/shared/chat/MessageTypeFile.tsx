@@ -8,17 +8,15 @@ const imageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 const videoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
 
 const MessageTypeFile = (message: Message) => {
-    if (!message.file) return null;
+    if (!message.fileUrl) return null;
 
-    const { url, name, type } = message.file;
+    const url = message.fileUrl;
+    const name = message.fileName || 'Unknown';
+    const type = message.fileType || 'application/octet-stream';
 
     const getFileIcon = (type: string) => {
-        if (type === 'application/pdf') {
-            return <PictureAsPdfIcon fontSize="small" />;
-        }
-        if (type.startsWith('text/') || type.includes('document')) {
-            return <DescriptionIcon fontSize="small" />;
-        }
+        if (type === 'application/pdf') return <PictureAsPdfIcon fontSize="small" />;
+        if (type.startsWith('text/') || type.includes('document')) return <DescriptionIcon fontSize="small" />;
         return <InsertDriveFileIcon fontSize="small" />;
     };
 
@@ -33,8 +31,7 @@ const MessageTypeFile = (message: Message) => {
                     borderRadius: 2,
                     objectFit: 'contain',
                     cursor: 'pointer',
-                    alignSelf:
-                        message.sender === 'Me' ? 'flex-end' : 'flex-start',
+                    alignSelf: message.senderId === 'Me' ? 'flex-end' : 'flex-start',
                 }}
                 onClick={() => window.open(url, '_blank')}
             />
@@ -50,8 +47,7 @@ const MessageTypeFile = (message: Message) => {
                 sx={{
                     maxHeight: '300px',
                     borderRadius: 2,
-                    alignSelf:
-                        message.sender === 'Me' ? 'flex-end' : 'flex-start',
+                    alignSelf: message.senderId === 'Me' ? 'flex-end' : 'flex-start',
                 }}
             />
         );
@@ -64,16 +60,13 @@ const MessageTypeFile = (message: Message) => {
                 textDecoration: 'none',
                 gap: 1,
                 cursor: 'pointer',
-                alignSelf: message.sender === 'Me' ? 'flex-end' : 'flex-start',
+                alignSelf: message.senderId === 'Me' ? 'flex-end' : 'flex-start',
                 px: 2.5,
                 py: 1.5,
-                bgcolor: message.sender === 'Me' ? 'primary.main' : 'white',
-                color: message.sender === 'Me' ? 'white' : 'text.primary',
+                bgcolor: message.senderId === 'Me' ? 'primary.main' : 'white',
+                color: message.senderId === 'Me' ? 'white' : 'text.primary',
                 borderRadius: 2,
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                '&::before': {
-                    display: 'none',
-                },
             }}
             href={url}
             target="_blank"

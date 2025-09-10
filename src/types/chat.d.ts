@@ -1,21 +1,21 @@
 export interface Message {
-    id: string;
-    sender: string;
-    content: string;
-    timestamp: string;
-    conversationId?: string;
-    file?: {
-        url: string;
-
-        name: string;
-        type: string;
-    };
+  id: string;
+  senderId: string;
+  type: string;
+  content: string;
+  imageUrl?: string | null;
+  width?: number | null;
+  height?: number | null;
+  fileUrl?: string | null;
+  fileName?: string | null;
+  fileType?: string | null;
+  fileSize?: number | null;
+  sentAt: string;
 }
 
 export interface Conversation {
-    id: string;
+    conversationId: string;
     name: string;
-    lastMessage: string;
-    messages: Message[];
+    lastMessage: Message;
     avatar: string;
 }
