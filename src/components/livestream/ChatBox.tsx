@@ -6,31 +6,41 @@ import type { Comment } from '~/types/comment';
 
 interface ChatBoxProps {
     comments: Comment[];
+    onSendMessage: (message: string) => void;
 }
 
-const ChatBox = ({ comments }: ChatBoxProps) => {
+const ChatBox = ({ comments, onSendMessage }: ChatBoxProps) => {
     const [input, setInput] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Tạm thời  log, sau này connect websocket
-        if (input.trim()) console.log('Comment sent:', input);
-        setInput('');
+        if (input.trim()) {
+            onSendMessage(input);
+            setInput('');
+        }
     };
 
     return (
-        <div className="w-80 bg-gray-50 border-l border-gray-300 p-4 pb-2 flex flex-col overflow-y-auto">
+        <div className="w-80 bg-gray-50 border-l border-gray-300 p-4 pb-2 flex flex-col">
             <h2 className="font-bold mb-2">Live Chat</h2>
-            <div className="flex flex-col gap-2">
+
+            {/* Chat messages */}
+            <div className="flex-1 overflow-y-auto max-h-[500px] pr-2 border rounded-lg bg-white p-3 space-y-2">
                 {comments.map((c) => (
-                    <div key={c.id} className="mb-1">
-                        <span className="font-bold">{c.username}: </span>
-                        <span>{c.content}</span>
+                    <div
+                        key={c.id}
+                        className="bg-gray-100 px-3 py-2 rounded-md shadow-sm break-words"
+                    >
+                        <span className="font-bold text-blue-600">
+                            {c.username}:{' '}
+                        </span>
+                        <span className="text-gray-800">{c.content}</span>
                     </div>
                 ))}
             </div>
 
-            <form onSubmit={handleSubmit} className="flex gap-2 mt-auto">
+            {/* Input */}
+            <form onSubmit={handleSubmit} className="flex gap-2 mt-2">
                 <input
                     type="text"
                     placeholder="Nhập comment..."

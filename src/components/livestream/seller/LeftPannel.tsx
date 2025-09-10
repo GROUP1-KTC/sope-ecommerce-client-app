@@ -1,16 +1,18 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, type ReactNode } from 'react';
 
 type LeftPanelProps = {
     liveActive: boolean;
     onStart?: () => void;
     onEnd?: () => void;
+    children?: ReactNode;
 };
 
 export default function LeftPanel({
     liveActive,
     onStart,
     onEnd,
+    children,
 }: LeftPanelProps) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -19,7 +21,12 @@ export default function LeftPanel({
         <div className="w-1/4 flex flex-col border-r border-gray-300 p-2 gap-3">
             <h3 className="font-bold mb-1">Live Preview</h3>
             <div className="relative bg-black rounded flex items-center justify-center h-64 text-white text-xl">
-                {liveActive ? 'Live Preview' : 'Live Ended'}
+                {children}
+                {!children && (
+                    <span className="text-white text-xl">
+                        {liveActive ? 'Đang Live' : 'Live Ended'}
+                    </span>
+                )}
             </div>
 
             <hr className="border-gray-300" />
