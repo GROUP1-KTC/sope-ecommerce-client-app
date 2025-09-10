@@ -1,206 +1,127 @@
 import ChatInputBar from './ChatInputBar';
 import { Avatar, Box, IconButton, Typography } from '@mui/material';
 import MessageTypeFile from './MessageTypeFile';
-import CloseIcon from '@mui/icons-material/Close';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { formatMessageTimestamp } from '~/utils/date.utils';
-import { useEffect, useRef } from 'react';
-import type { Conversation } from '~/types/chat';
+import { useEffect, useRef, useState } from 'react';
 import type { StompSubscription } from '@stomp/stompjs';
 import { connectSocket } from '~/services/socket/socket.service';
-import { useAppDispatch } from '~/hooks/useTypes';
+import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 import { OnNewMessage } from '~/services/socket/events/message';
+import { useGetConversationByIdQuery } from '~/features/chat/conversation/ConversationApi';
+import { Message } from '~/types/chat';
 
 interface ChatMessagesProps {
-    selected: Conversation | null;
+    conversationId: string | null;
+    name: string;
+    avatar: string;
     handleBack: () => void;
     onClose: () => void;
     isMobile: boolean;
 }
 
 const ChatMessages = ({
-    selected,
+    conversationId,
+    name,
+    avatar,
     handleBack,
     onClose,
     isMobile,
 }: ChatMessagesProps) => {
+    const dispatch = useAppDispatch();
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    const dispatch = useAppDispatch();
-
-    const scrollToBottom = () => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
+    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
     useEffect(() => {
-        if (selected) {
-            scrollToBottom();
+        const storedUser = sessionStorage.getItem('authUser');
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setCurrentUserId(parsedUser.id);
         }
-    }, [selected]);
+    }, []);
+
+    const { data: oldMessages = [], isLoading } = useGetConversationByIdQuery(conversationId!, {
+        skip: !conversationId,
+    });
+
+    const newMessages = useAppSelector(
+        state => conversationId ? state.chat.messagesByConversationId[conversationId] || [] : []
+    );
+
+    const messages: Message[] = [...oldMessages, ...newMessages];
+
+    const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+
+    useEffect(() => scrollToBottom(), [messages]);
 
     useEffect(() => {
+        if (!conversationId) return;
         let subscription: StompSubscription | null = null;
 
-        const setupSubscription = async () => {
-            if (selected) {
-                try {
-                    await connectSocket();
-
-                    subscription = OnNewMessage({
-                        conversationId: selected.id,
-                        dispatch,
-                    });
-                } catch (error) {
-                    console.error('Failed to connect or subscribe:', error);
-                }
+        const setupSocket = async () => {
+            try {
+                await connectSocket();
+                subscription = OnNewMessage({ conversationId, dispatch });
+            } catch (err) {
+                console.error('Socket connection failed:', err);
             }
         };
 
-        setupSubscription();
+        setupSocket();
 
-        return () => {
-            if (subscription) {
-                subscription.unsubscribe();
-            }
-        };
-    }, [selected, dispatch]);
+        return () => subscription?.unsubscribe();
+    }, [conversationId, dispatch]);
+
+    if (!conversationId) return null;
 
     return (
-        <Box
-            sx={{
-                flex: 1,
-                display: { xs: selected ? 'flex' : 'none', md: 'flex' },
-                flexDirection: 'column',
-                bgcolor: '#fafafa',
-                transition: 'all 0.3s ease-in-out',
-            }}
-        >
-            {selected ? (
-                <>
-                    <Box
-                        sx={{
-                            p: 2,
-                            borderBottom: '1px solid #e0e0e0',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            bgcolor: 'background.paper',
-                            boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 1.5,
-                            }}
-                        >
-                            {isMobile && (
-                                <ArrowBackIosIcon
-                                    fontSize="medium"
-                                    onClick={handleBack}
-                                    sx={{
-                                        cursor: 'pointer',
-                                        color: 'text.primary',
-                                    }}
-                                />
-                            )}
-                            <Avatar
-                                src={selected.avatar}
-                                sx={{ width: 40, height: 40 }}
-                            />
-                            <Typography variant="h6" fontWeight="bold" noWrap>
-                                {selected.name}
-                            </Typography>
-                        </Box>
-                        <IconButton onClick={onClose} sx={{ p: 1.5 }}>
-                            <CloseIcon fontSize="medium" />
-                        </IconButton>
-                    </Box>
-                    <Box
-                        sx={{
-                            flex: 1,
-                            p: 3,
-                            overflowY: 'auto',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 2,
-                            bgcolor: '#f5f7fa',
-                        }}
-                    >
-                        {selected.messages.map((msg) => (
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', bgcolor: '#fafafa' }}>
+            {/* Messages */}
+            <Box sx={{ flex: 1, p: 3, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 2, bgcolor: '#f5f7fa' }}>
+                {messages.length === 0 ? (
+                    <Typography>No messages yet</Typography>
+                ) : (
+                    messages.map((msg) => {
+                        const isMine = msg.senderId === currentUserId;
+                        console.log(isMine + ' - ' + msg.senderId + ' - ' + currentUserId);
+                        return (
                             <Box
                                 key={msg.id}
                                 sx={{
-                                    alignSelf:
-                                        msg.sender === 'Me'
-                                            ? 'flex-end'
-                                            : 'flex-start',
+                                    alignSelf: isMine ? 'flex-end' : 'flex-start',
                                     maxWidth: '75%',
-                                    ...(msg.file
+                                    ...(msg.fileUrl
                                         ? {}
                                         : {
-                                              bgcolor:
-                                                  msg.sender === 'Me'
-                                                      ? 'primary.main'
-                                                      : 'white',
-                                              color:
-                                                  msg.sender === 'Me'
-                                                      ? 'white'
-                                                      : 'text.primary',
-                                              px: 2.5,
-                                              py: 1.5,
-                                              borderRadius: 2,
-                                              boxShadow:
-                                                  '0 1px 3px rgba(0,0,0,0.1)',
-                                          }),
+                                            bgcolor: isMine ? 'primary.main' : 'white',
+                                            color: isMine ? 'white' : 'text.primary',
+                                            px: 2.5,
+                                            py: 1.5,
+                                            borderRadius: 2,
+                                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                                        }),
                                 }}
                             >
-                                {msg.file ? (
-                                    <MessageTypeFile {...msg} />
-                                ) : (
-                                    <Typography variant="body1">
-                                        {msg.content}
-                                    </Typography>
-                                )}
+                                {msg.fileUrl ? <MessageTypeFile {...msg} /> : <Typography>{msg.content}</Typography>}
                                 <Typography
                                     variant="caption"
                                     sx={{
                                         mt: 0.5,
                                         opacity: 0.7,
                                         display: 'block',
-                                        textAlign:
-                                            msg.sender === 'Me'
-                                                ? 'right'
-                                                : 'left',
+                                        textAlign: isMine ? 'right' : 'left',
                                     }}
                                 >
-                                    {formatMessageTimestamp(msg.timestamp)}
+                                    {formatMessageTimestamp(msg.sentAt)}
                                 </Typography>
                             </Box>
-                        ))}
-                        <div ref={messagesEndRef} />
-                    </Box>
+                        );
+                    })
+                )}
+                <div ref={messagesEndRef} />
+            </Box>
 
-                    <ChatInputBar selected={selected} />
-                </>
-            ) : (
-                <Box
-                    sx={{
-                        flex: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        bgcolor: '#fafafa',
-                    }}
-                >
-                    <Typography variant="h6" color="text.secondary">
-                        Choose a conversation to start chatting
-                    </Typography>
-                </Box>
-            )}
+            <ChatInputBar />
         </Box>
     );
 };

@@ -15,24 +15,27 @@ import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 
 import type { Conversation } from '~/types/chat';
+import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
+import { setSelectedConversationId } from '~/features/chat/chatSlice';
 
 interface ConversationListBarProps {
     onClose: () => void;
     search: string;
     setSearch: (search: string) => void;
     filteredConversations: Conversation[];
-    setSelectedId: (id: string | null) => void;
-    selected: Conversation | null;
 }
+
 
 const ConversationListBar = ({
     onClose,
     search,
     setSearch,
     filteredConversations,
-    setSelectedId,
-    selected,
 }: ConversationListBarProps) => {
+    const dispatch = useAppDispatch();
+    const selectedId = useAppSelector(state => state.chat.selectedConversationId);
+    const selected = filteredConversations.find(c => c.conversationId === selectedId) || null;
+
     return (
         <Box
             sx={{
@@ -91,24 +94,24 @@ const ConversationListBar = ({
             >
                 {filteredConversations?.map((conv) => (
                     <ListItem
-                        key={conv.id}
-                        onClick={() => setSelectedId(conv.id)}
+                        key={conv.conversationId}
+                        onClick={() =>
+                            dispatch(setSelectedConversationId(conv.conversationId))
+                        }
                         sx={{
                             borderRadius: 2,
-                            mx: 1,
-                            my: 0.5,
-                            py: 1,
+
                             bgcolor:
-                                conv.id === selected?.id
+                                conv.conversationId === selected?.conversationId
                                     ? 'primary.light'
                                     : 'transparent',
                             color:
-                                conv.id === selected?.id
+                                conv.conversationId === selected?.conversationId
                                     ? 'primary.contrastText'
                                     : 'text.primary',
                             '&:hover': {
                                 bgcolor:
-                                    conv.id === selected?.id
+                                    conv.conversationId === selected?.conversationId
                                         ? 'primary.main'
                                         : 'action.hover',
                                 cursor: 'pointer',
@@ -126,7 +129,7 @@ const ConversationListBar = ({
                             primary={
                                 <Typography
                                     fontWeight={
-                                        conv.id === selected?.id
+                                        conv.conversationId === selected?.conversationId
                                             ? 'bold'
                                             : 'medium'
                                     }
@@ -140,12 +143,12 @@ const ConversationListBar = ({
                                     variant="body2"
                                     noWrap
                                     color={
-                                        conv.id === selected?.id
+                                        conv.conversationId === selected?.conversationId
                                             ? 'inherit'
                                             : 'text.secondary'
                                     }
                                 >
-                                    {conv.lastMessage}
+                                    {conv.lastMessage?.content ?? ''}
                                 </Typography>
                             }
                         />
