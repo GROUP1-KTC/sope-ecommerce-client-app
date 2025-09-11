@@ -18,7 +18,7 @@ const CategoryNode = ({
     openCategories: Record<string, boolean>;
     toggleOpen: (id: string) => void;
 }) => {
-    const children = categories.filter((cat) => cat.parent?.id === category.id);
+    const children = categories.filter((cat) => cat.parentId === category.id);
 
     const params = useParams();
     const currentSlug = params?.categorySlug;
@@ -28,11 +28,10 @@ const CategoryNode = ({
             <div className="flex justify-between items-center">
                 <Link
                     href={`/${category.slug}`}
-                    className={`flex-1 block rounded text-sm px-2 py-1 cursor-pointer ${
-                        currentSlug === category.slug
+                    className={`flex-1 block rounded text-sm px-2 py-1 cursor-pointer ${currentSlug === category.slug
                             ? 'border border-red-500 text-red-500 font-semibold bg-red-50'
                             : 'hover:bg-gray-100'
-                    }`}
+                        }`}
                 >
                     {category.name}
                 </Link>
