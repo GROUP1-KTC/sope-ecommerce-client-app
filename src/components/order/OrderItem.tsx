@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
@@ -20,6 +20,8 @@ import {
     RadioGroup,
     TextField,
 } from '@mui/material';
+import ReviewForm from './ReviewForm';
+
 
 interface Props {
     orderGroup: OrderGroupShop;
@@ -51,6 +53,28 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
     const [selectedReason, setSelectedReason] = useState('');
     const [customReason, setCustomReason] = useState('');
     const [cancelOrder, { isLoading }] = useCancelOrderMutation();
+
+    const [showReview, setShowReview] = useState(false);
+
+    const handleOpenReview = () => {
+        setShowReview(true);
+    };
+
+    const [selectedItem, setSelectedItem] = useState<any | null>(null);
+
+    const [userId, setId] = useState<string | null>(null);
+
+    useEffect(() => {
+        const storedUser = sessionStorage.getItem('authUser');
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setId(parsedUser.id);
+        }
+    }, []);
+
+    const handleCloseReview = () => {
+        setShowReview(false);
+    };
 
     const handleConfirmCancel = async () => {
         const reason = customReason || selectedReason || 'Không rõ lý do';
@@ -152,7 +176,7 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                     </>
                 )}
 
-                {order.status === 'DELIVERED' && (
+                {order.status === 'CONFIRMED' && (
                     <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300">
                         Viết đánh giá
                     </button>
@@ -160,23 +184,50 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
 
                 {(order.status === 'CANCELLED' ||
                     order.status === 'RETURNED') && (
-                    <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
-                        Mua lại
-                    </button>
-                )}
+                        <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
+                            Mua lại
+                        </button>
+                    )}
             </div>
 
             {/* Status history toggle */}
             <div className="mt-4">
-                <button
-                    onClick={() => setShowHistory(!showHistory)}
-                    className="flex items-center text-blue-600 hover:underline"
-                >
-                    <HistoryOutlinedIcon fontSize="small" className="mr-1" />
-                    {showHistory
-                        ? 'Ẩn lịch sử trạng thái'
-                        : 'Xem lịch sử trạng thái'}
-                </button>
+                <div className="flex justify-between items-center">
+                    <button
+                        onClick={() => setShowHistory(!showHistory)}
+                        className="flex items-center text-blue-600 hover:underline"
+                    >
+                        <HistoryOutlinedIcon fontSize="small" className="mr-1" />
+                        {showHistory
+                            ? 'Ẩn lịch sử trạng thái'
+                            : 'Xem lịch sử trạng thái'}
+                    </button>
+
+                    {order.items.map((item: any) => (
+                        <div key={item.productVariantId} >
+                            {order.status === 'DELIVERED' && (
+                                <button
+                                    onClick={() => {
+                                        setSelectedItem(item);
+                                        setShowReview(true);
+                                    }}
+                                    className="px-8 py-2 cursor-pointer bg-orange-500 text-white rounded hover:bg-orange-600"
+                                >
+                                    Đánh giá
+                                </button>
+                            )}
+                        </div>
+                    ))}
+
+                    {showReview && userId && selectedItem && (
+                        <ReviewForm
+                            itemInfo={selectedItem}
+                            userId={userId}
+                            onClose={handleCloseReview}
+                        />
+                    )}
+
+                </div>
 
                 {showHistory && (
                     <ul className="mt-2 border border-gray-200 rounded p-3 bg-gray-50 space-y-2">

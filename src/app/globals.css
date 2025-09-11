@@ -13,6 +13,10 @@
     }
 }
 
+.table-input {
+    @apply border border-gray-400 rounded px-4 py-2 text-center w-35 h-8 text-base;
+}
+
 /* :root {
   --background: #ffffff;
   --foreground: #171717;

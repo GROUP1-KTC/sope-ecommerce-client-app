@@ -7,32 +7,23 @@ import Link from 'next/link';
 import { useGetProductBySlugQuery } from '~/features/products/productApi';
 import { useGetBreadcrumbCategoryQuery } from '~/features/categories/categoryApi';
 import ProductInfo from '~/components/product-detail/ProductInfo';
+import ProductReviews from '~/components/product-detail/ProductReviews';
+import { useGetReviewByProductQuery, useCreateReviewMutation } from '~/features/reviews/reviewApi';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 const ProductBySlug = () => {
     const params = useParams();
     const slug = params?.productSlug as string;
 
-    const {
-        data: product,
-        isLoading,
-        isError,
-    } = useGetProductBySlugQuery(slug);
-    const [categoryId, setCategoryId] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (product?.category?.id) {
-            setCategoryId(product.category.id);
-        }
-    }, [product]);
-
-    const { data: breadcrumb } = useGetBreadcrumbCategoryQuery(categoryId!, {
-        skip: !categoryId,
-    });
+    const { data: product, isLoading, isError } = useGetProductBySlugQuery(slug);
+    const { data: reviews } = useGetReviewByProductQuery(product?.productId ?? skipToken);
+    const categoryId = product?.categoryId;
+    const { data: breadcrumb } = useGetBreadcrumbCategoryQuery(categoryId!, { skip: !categoryId, });
 
     const attributeMap = useMemo(() => {
         const map = new Map<string, Set<string>>();
         product?.variants?.forEach((variant) => {
-            variant.attributes?.forEach((attr) => {
+            variant?.attributes?.forEach((attr) => {
                 if (!map.has(attr.name)) map.set(attr.name, new Set());
                 map.get(attr.name)?.add(attr.value);
             });
@@ -57,7 +48,7 @@ const ProductBySlug = () => {
     const selectedVariant = useMemo(() => {
         if (Object.keys(selectedAttributes).length === 0) return undefined;
         return product?.variants?.find((variant) =>
-            variant.attributes?.every(
+            variant?.attributes?.every(
                 (attr) => selectedAttributes[attr.name] === attr.value,
             ),
         );
@@ -65,7 +56,14 @@ const ProductBySlug = () => {
 
     const minPrice = useMemo(() => {
         if (!product?.variants || product.variants.length === 0) return 0;
-        return Math.min(...product.variants.map((v) => v.price));
+
+        const validPrices = product.variants
+            .map(v => v.price)
+            .filter(price => price > 0);
+
+        if (validPrices.length === 0) return 0;
+
+        return Math.min(...validPrices);
     }, [product]);
 
     const displayedPrice = selectedVariant?.price ?? minPrice;
@@ -77,10 +75,8 @@ const ProductBySlug = () => {
 
     return (
         <div className="w-4/5 mx-auto ">
-            {/* PRODUCT LINK */}
             <div className="text-base text-gray-600 mb-4 mt-4">
                 <nav className="flex items-center flex-wrap gap-1">
-                    {/* Shopee */}
                     <Link href="/" className="text-blue-600  hover:underline">
                         Shopee
                     </Link>
@@ -99,12 +95,9 @@ const ProductBySlug = () => {
                         </React.Fragment>
                     ))}
 
-                    {/* Product name */}
-                    <span className="text-gray-800 font-medium">
-                        {product.name}
-                    </span>
-                </nav>
-            </div>
+                    <span className="text-gray-800 font-medium">{product.name}</span>
+                </nav >
+            </div >
 
             <ProductInfo
                 product={product}
@@ -115,7 +108,11 @@ const ProductBySlug = () => {
                 price={displayedPrice}
                 stock={displayedStock}
             />
-        </div>
+
+            <ProductReviews reviews={reviews ?? []} />
+
+
+        </div >
     );
 };
 

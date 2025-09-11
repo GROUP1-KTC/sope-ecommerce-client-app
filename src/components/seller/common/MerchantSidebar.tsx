@@ -111,14 +111,14 @@ export default function MerchantSidebar() {
     };
 
     return (
-        <aside className="w-60 bg-white py-4 border-r border-gray-200 overflow-auto">
+        <aside className="w-58 bg-white border-r border-gray-200 overflow-auto">
             <nav>
                 <ul>
                     {navItems.map((item, index) => (
                         <li key={index} className="mb-2">
                             <button
                                 onClick={() => toggleItem(index)}
-                                className="w-full flex items-center justify-between py-2 px-3 rounded-md text-gray-700 hover:bg-gray-100 hover:text-red-500 cursor-pointer"
+                                className="w-full flex items-center justify-between py-2 px-3 rounded-md text-gray-700 hover:bg-gray-100 hover:text-red-500"
                             >
                                 <span className="flex items-center">
                                     {item.icon}
@@ -133,11 +133,10 @@ export default function MerchantSidebar() {
                                         <li key={subIndex}>
                                             <a
                                                 href={sub.href}
-                                                className={`block py-1 px-2 text-sm rounded-md ${
-                                                    activePath === sub.href
-                                                        ? 'text-red-500 bg-orange-100'
-                                                        : 'text-gray-600 hover:text-red-500 hover:bg-gray-50'
-                                                }`}
+                                                className={`block py-1 px-2 text-sm rounded-md ${activePath === sub.href
+                                                    ? 'text-red-500 bg-orange-100'
+                                                    : 'text-gray-600 hover:text-red-500 hover:bg-gray-50'
+                                                    }`}
                                             >
                                                 {sub.label}
                                             </a>

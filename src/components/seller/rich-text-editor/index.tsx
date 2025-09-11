@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from "react";
 
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -9,6 +10,7 @@ import Highlight from '@tiptap/extension-highlight';
 import Underline from '@tiptap/extension-underline';
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
+import Image from '@tiptap/extension-image';
 
 interface RichTextEditorProps {
     content: string;
@@ -41,6 +43,10 @@ export default function RichTextEditor({
             TaskItem.configure({
                 nested: true,
             }),
+            Image.configure({
+                inline: false,
+                allowBase64: true,
+            }),
         ],
         content: content,
         immediatelyRender: false,
@@ -50,10 +56,15 @@ export default function RichTextEditor({
             },
         },
         onUpdate: ({ editor }) => {
-            // console.log(editor.getHTML());
             onChangeDescription(editor.getHTML());
         },
     });
+
+    useEffect(() => {
+        if (editor && content !== editor.getHTML()) {
+            editor.commands.setContent(content || "", { emitUpdate: false });
+        }
+    }, [content, editor]);
 
     return (
         <div>
