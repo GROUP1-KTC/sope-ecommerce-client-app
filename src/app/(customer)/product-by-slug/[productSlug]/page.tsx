@@ -8,14 +8,15 @@ import { useGetProductBySlugQuery } from '~/features/products/productApi';
 import { useGetBreadcrumbCategoryQuery } from '~/features/categories/categoryApi';
 import ProductInfo from '~/components/product-detail/ProductInfo';
 import ProductReviews from '~/components/product-detail/ProductReviews';
-import { useGetReviewByProductQuery } from '~/features/reviews/reviewApi';
+import { useGetReviewByProductQuery, useCreateReviewMutation } from '~/features/reviews/reviewApi';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 const ProductBySlug = () => {
     const params = useParams();
     const slug = params?.productSlug as string;
 
     const { data: product, isLoading, isError } = useGetProductBySlugQuery(slug);
-    const { data: reviews } = useGetReviewByProductQuery(product?.productId ?? '');
+    const { data: reviews } = useGetReviewByProductQuery(product?.productId ?? skipToken);
     const categoryId = product?.categoryId;
     const { data: breadcrumb } = useGetBreadcrumbCategoryQuery(categoryId!, { skip: !categoryId, });
 

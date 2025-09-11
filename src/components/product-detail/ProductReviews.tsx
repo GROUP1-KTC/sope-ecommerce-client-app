@@ -9,6 +9,8 @@ interface ProductReviewsProps {
 const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
     const [selectedFilter, setSelectedFilter] = useState<'all' | number>('all');
 
+    console.log('check reviews', reviews)
+
     const averageRating =
         reviews.length > 0
             ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
@@ -105,7 +107,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
                     <Comment
                         key={review.reviewId}
                         avatar={'https://res.cloudinary.com/dybo8zd4y123/image/upload/v1756883466/mqre9eovhxqpgo4z2pik.webp'}
-                        username={review.user.username}
+                        username={"Nguoi dung review"}
                         rating={review.rating}
                         content={review.content}
                         videoReviewUrl={review.videoReviewUrl}
