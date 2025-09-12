@@ -1,5 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import { clearAuthUser, loadAuthUser, saveAuthUser } from '~/utils/authCookie';
 
 interface AuthState {
     id: string | null;
@@ -33,21 +34,21 @@ const authSlice = createSlice({
             state.roles = action.payload.roles;
             state.accessToken = action.payload.accessToken;
 
-            sessionStorage.setItem('authUser', JSON.stringify(action.payload));
+            saveAuthUser(action.payload);
         },
         clearCredentials: (state) => {
             state.username = null;
             state.roles = [];
             state.accessToken = null;
-            sessionStorage.removeItem('authUser');
+            clearAuthUser();
         },
         loadCredentialsFromStorage: (state) => {
-            const storedUser = sessionStorage.getItem('authUser');
+            const storedUser = loadAuthUser();
             if (storedUser) {
-                const parsedUser = JSON.parse(storedUser);
-                state.username = parsedUser.username;
-                state.roles = parsedUser.roles;
-                state.accessToken = parsedUser.accessToken;
+                state.id = storedUser.id;
+                state.username = storedUser.username;
+                state.roles = storedUser.roles;
+                state.accessToken = storedUser.accessToken;
             }
         },
     },

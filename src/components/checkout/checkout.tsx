@@ -28,6 +28,7 @@ import { useGetUserAddressesQuery } from '~/features/address/addressApi';
 import type { Address } from '~/types/address';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { useAlertStore } from '~/store/zustand/alertStore';
+import Cookies from 'js-cookie';
 export default function Checkout() {
     const router = useRouter();
     const dispatch = useAppDispatch();
@@ -93,7 +94,7 @@ export default function Checkout() {
     const [createOrder] = useCheckoutMutation();
 
     useEffect(() => {
-        const storedUser = sessionStorage.getItem('authUser');
+        const storedUser = Cookies.get('authUser');
         setIsLoggedIn(!!storedUser);
     }, []);
 
@@ -206,9 +207,8 @@ export default function Checkout() {
         if (!appliedDiscounts || appliedDiscounts.length === 0) return 0;
 
         return appliedDiscounts.reduce((sum, d) => {
-            if (total < d.minOrderValue) {
-                return sum;
-            }
+            if (d.scope === 'FREESHIP') return sum;
+            if (total < d.minOrderValue) return sum;
 
             let discountValue = 0;
 
@@ -228,7 +228,40 @@ export default function Checkout() {
         }, 0);
     }, [appliedDiscounts, total]);
 
-    const finalTotal = Math.max(0, total + totalShippingFee - discountAmount);
+    const shippingDiscountAmount = useMemo(() => {
+        if (!appliedDiscounts || appliedDiscounts.length === 0) return 0;
+
+        return appliedDiscounts.reduce((sum, d) => {
+            if (d.scope !== 'FREESHIP') return sum;
+            if (total < d.minOrderValue) return sum;
+
+            let discountValue = 0;
+
+            if (d.discountType === 'PERCENTAGE') {
+                discountValue = (totalShippingFee * (d.value || 0)) / 100;
+            }
+
+            if (d.discountType === 'FIXED_AMOUNT') {
+                discountValue = d.value || 0;
+            }
+
+            if (d.maxDiscountValue && discountValue > d.maxDiscountValue) {
+                discountValue = d.maxDiscountValue;
+            }
+
+            return sum + discountValue;
+        }, 0);
+    }, [appliedDiscounts, totalShippingFee, total]);
+
+    const shippingDiscountApplied = Math.max(
+        0,
+        totalShippingFee - shippingDiscountAmount,
+    );
+
+    const finalTotal = Math.max(
+        0,
+        total - discountAmount + shippingDiscountApplied,
+    );
 
     // Handle order submission
     const handleSubmitOrder = async (e: React.FormEvent) => {
@@ -512,6 +545,7 @@ export default function Checkout() {
                     total={total}
                     shippingFee={totalShippingFee}
                     discount={discountAmount}
+                    shippingDiscount={shippingDiscountAmount}
                     finalTotal={finalTotal}
                     isLoading={isLoading}
                     onSubmit={handleSubmitOrder}

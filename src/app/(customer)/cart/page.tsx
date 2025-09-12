@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
+import Cookies from 'js-cookie';
 import { Box, Container, Typography, Paper } from '@mui/material';
 import CartTable from '~/components/cart/CartTable';
 import CartSummary from '~/components/cart/CartSummary';
@@ -64,7 +65,7 @@ const Cart: React.FC = () => {
 
     const [isLoggedIn] = useState(() => {
         if (typeof window !== 'undefined') {
-            return !!sessionStorage.getItem('authUser');
+            return !!Cookies.get('authUser');
         }
         return false;
     });

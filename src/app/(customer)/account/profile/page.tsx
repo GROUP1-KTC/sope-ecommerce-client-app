@@ -10,13 +10,14 @@ import {
 } from '~/features/user/userApi';
 import { setUser, updateUser } from '~/features/user/userSlice';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
+import { loadAuthUser } from '~/utils/authCookie';
 
 const ProfilePage = () => {
     const [updateProfile] = useUpdateProfileMutation();
 
     const handleSave = async () => {
         try {
-            const storedUser = sessionStorage.getItem('authUser');
+            const storedUser = loadAuthUser();
             if (!storedUser) {
                 alert(
                     'Không tìm thấy thông tin người dùng, vui lòng đăng nhập lại!',
@@ -24,8 +25,7 @@ const ProfilePage = () => {
                 return;
             }
 
-            const parsedUser = JSON.parse(storedUser);
-            const userId = parsedUser?.id;
+            const userId = storedUser.id;
 
             if (!userId) {
                 alert('Thiếu userId, vui lòng đăng nhập lại!');
