@@ -6,6 +6,7 @@ interface OrderSummaryProps {
     total: number;
     shippingFee: number;
     discount: number;
+    shippingDiscount: number;
     finalTotal: number;
     isLoading: boolean;
     onSubmit: (e: React.FormEvent) => void;
@@ -15,6 +16,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
     total,
     shippingFee,
     discount,
+    shippingDiscount,
     finalTotal,
     isLoading,
     onSubmit,
@@ -33,6 +35,11 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                 <div className="flex justify-between text-red-500">
                     <span>Combo khuyến mãi</span>
                     <span>-₫{discount.toLocaleString('vi-VN')}</span>
+                </div>
+
+                <div className="flex justify-between text-red-500">
+                    <span>Giảm giá vận chuyển</span>
+                    <span>-₫{shippingDiscount.toLocaleString('vi-VN')}</span>
                 </div>
                 <div className="flex justify-between font-semibold text-lg pt-2">
                     <span>Tổng thanh toán</span>

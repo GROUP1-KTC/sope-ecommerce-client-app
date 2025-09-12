@@ -21,7 +21,7 @@ import {
     TextField,
 } from '@mui/material';
 import ReviewForm from './ReviewForm';
-
+import { loadAuthUser } from '~/utils/authCookie';
 
 interface Props {
     orderGroup: OrderGroupShop;
@@ -65,10 +65,9 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
     const [userId, setId] = useState<string | null>(null);
 
     useEffect(() => {
-        const storedUser = sessionStorage.getItem('authUser');
+        const storedUser = loadAuthUser();
         if (storedUser) {
-            const parsedUser = JSON.parse(storedUser);
-            setId(parsedUser.id);
+            setId(storedUser.id);
         }
     }, []);
 
@@ -184,10 +183,10 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
 
                 {(order.status === 'CANCELLED' ||
                     order.status === 'RETURNED') && (
-                        <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
-                            Mua lại
-                        </button>
-                    )}
+                    <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
+                        Mua lại
+                    </button>
+                )}
             </div>
 
             {/* Status history toggle */}
@@ -197,14 +196,17 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                         onClick={() => setShowHistory(!showHistory)}
                         className="flex items-center text-blue-600 hover:underline"
                     >
-                        <HistoryOutlinedIcon fontSize="small" className="mr-1" />
+                        <HistoryOutlinedIcon
+                            fontSize="small"
+                            className="mr-1"
+                        />
                         {showHistory
                             ? 'Ẩn lịch sử trạng thái'
                             : 'Xem lịch sử trạng thái'}
                     </button>
 
                     {order.items.map((item: any) => (
-                        <div key={item.productVariantId} >
+                        <div key={item.productVariantId}>
                             {order.status === 'DELIVERED' && (
                                 <button
                                     onClick={() => {
@@ -226,7 +228,6 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                             onClose={handleCloseReview}
                         />
                     )}
-
                 </div>
 
                 {showHistory && (
