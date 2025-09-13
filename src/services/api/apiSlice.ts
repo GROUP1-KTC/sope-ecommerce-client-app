@@ -6,25 +6,20 @@ import {
     type FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
 import { clearCredentials, setCredentials } from '~/features/auth/authSlice';
+import { loadAuthUser } from '~/utils/authCookie';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL_V3,
     credentials: 'include',
     prepareHeaders: (headers) => {
-        const storedUser = sessionStorage.getItem('authUser');
+        const storedUser = loadAuthUser()
 
-        if (storedUser) {
-            try {
-                const parsedUser = JSON.parse(storedUser);
-                if (parsedUser.accessToken) {
-                    headers.set(
-                        'Authorization',
-                        `Bearer ${parsedUser.accessToken}`,
-                    );
-                }
-            } catch (e) {
-                console.error('Lỗi parse sessionStorage authUser:', e);
-            }
+        if (storedUser && storedUser.accessToken) {
+
+            headers.set(
+                'Authorization',
+                `Bearer ${storedUser.accessToken}`,
+            );
         }
 
         return headers;

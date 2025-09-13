@@ -6,17 +6,19 @@ import Link from 'next/link';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CustomLink from '~/components/shared/loading/CustomLink';
 import { useLogoutMutation } from '~/features/auth/authApi';
+import { clearAuthUser, loadAuthUser } from '~/utils/authCookie';
+import { useRouter } from 'next/navigation';
 
 const UserMenu = () => {
     const [username, setUsername] = useState<string | null>(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [logoutApi] = useLogoutMutation();
+    const router = useRouter();
 
     useEffect(() => {
-        const storedUser = sessionStorage.getItem('authUser');
+        const storedUser = loadAuthUser();
         if (storedUser) {
-            const parsedUser = JSON.parse(storedUser);
-            setUsername(parsedUser.username);
+            setUsername(storedUser.username);
         }
     }, []);
 
@@ -27,10 +29,10 @@ const UserMenu = () => {
             console.error('Logout API error:', err);
         }
 
-        sessionStorage.removeItem('authUser');
-        localStorage.removeItem('authUser');
+        clearAuthUser();
         setUsername(null);
         setDropdownOpen(false);
+        router.push('/');
     };
 
     if (!username) {
