@@ -4,28 +4,56 @@ import React, { useEffect, useRef, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Image from 'next/image';
-import Countdown from './Countdown';
+import { useGetActiveFlashSalesQuery } from "~/features/service-program/serviceprogramApi";
 
-interface FlashSaleItem {
-    name: string;
-    img: string;
-    price: number;
-    discount: number;
-    soldPercent: number;
-}
+import { FlashSaleProgramDTO } from '~/types/service-programs/serviceprogram';
+import FlashCountdown from './FlashCountdown';
+
+// Countdown riêng cho từng sản phẩm
+const ProductCountdown: React.FC<{ endDateTime: string }> = ({ endDateTime }) => {
+    const [timeLeft, setTimeLeft] = useState<string>("");
+
+    useEffect(() => {
+        const target = new Date(endDateTime).getTime();
+        const tick = () => {
+            const now = Date.now();
+            const diff = target - now;
+            if (diff <= 0) {
+                setTimeLeft("Hết hạn");
+                return;
+            }
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            setTimeLeft(`${hours.toString().padStart(2, "0")}:${minutes
+                .toString()
+                .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`);
+        };
+        tick();
+        const interval = setInterval(tick, 1000);
+        return () => clearInterval(interval);
+    }, [endDateTime]);
+
+    return (
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-500 text-white text-xs font-bold rounded px-2 py-1.5 shadow">
+            ⏳ {timeLeft}
+        </div>
+    );
+};
 
 interface FlashSaleSectionProps {
-    items: FlashSaleItem[];
     initialSeconds?: number;
 }
 
 const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
-    items,
     initialSeconds = 3600,
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [atStart, setAtStart] = useState(true);
     const [atEnd, setAtEnd] = useState(false);
+
+    // Gọi API lấy danh sách flash sale
+    const { data: flashSales = [], isLoading } = useGetActiveFlashSalesQuery();
 
     const handleScroll = (dir: 'left' | 'right') => {
         if (!containerRef.current) return;
@@ -49,7 +77,16 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
         return () => el?.removeEventListener('scroll', onScroll);
     }, []);
 
-    const formatPrice = (price: number) => `₫${price.toLocaleString('vi-VN')}`;
+    const formatPrice = (price: number) =>
+        `₫${price.toLocaleString('vi-VN')}`;
+
+    if (isLoading) {
+        return (
+            <div className="w-full flex justify-center py-6">
+                <p>Đang tải Flash Sale...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="w-full flex justify-center bg-gray-50 py-4">
@@ -57,9 +94,6 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
                 <div className="flex items-center mb-1 justify-between pb-2">
                     <h2 className="text-xl font-bold flex items-center text-red-500">
                         ⚡FLASH SALES siêu hot
-                        <span className="ml-4 text-black text-base font-medium rounded px-2 py-1">
-                            <Countdown initialSeconds={initialSeconds} />
-                        </span>
                     </h2>
                     <a
                         href="#"
@@ -89,41 +123,70 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
                         }}
                     >
                         <div className="flex min-w-max">
-                            {items.map((item, idx) => (
-                                <div
-                                    key={item.name + idx}
-                                    className="flex flex-col items-center shadow-xl rounded-lg m-2 p-2 w-48 min-w-[12rem] cursor-pointer hover:bg-orange-100 transition-colors duration-200"
-                                >
-                                    <div className="w-36 h-36 flex items-center justify-center bg-white mb-2 rounded overflow-hidden">
-                                        <Image
-                                            width={40}
-                                            height={40}
-                                            src={item.img}
-                                            alt={item.name}
-                                            className="w-full h-full object-contain"
-                                        />
+                            {flashSales.map((sale: FlashSaleProgramDTO) => {
+                                const { variantInfo, discountPercentage } =
+                                    sale;
+                                const nameWithAttrs = `${variantInfo.productName}${variantInfo.attributes?.length
+                                    ? ' (' +
+                                    variantInfo.attributes
+                                        .map((a) => a.value)
+                                        .join(', ') +
+                                    ')'
+                                    : ''
+                                    }`;
+
+                                // Giá sau khi giảm
+                                const discountedPrice =
+                                    variantInfo.price *
+                                    (1 - discountPercentage / 100);
+
+                                // % sold (đơn giản stock+sold)
+                                const total = variantInfo.stock + variantInfo.sold;
+                                const soldPercent =
+                                    total > 0
+                                        ? Math.round(
+                                            (variantInfo.sold / total) * 100
+                                        )
+                                        : 0;
+
+                                return (
+                                    <div
+                                        key={sale.id}
+                                        className="relative flex flex-col items-center shadow-xl rounded-lg m-2 p-2 w-48 min-w-[12rem] cursor-pointer hover:bg-orange-100 transition-colors duration-200"
+                                    >
+                                        <FlashCountdown endDateTime={`${sale.saleDate}T${sale.endTime}`} />
+
+                                        <div className="w-36 h-36 flex items-center justify-center bg-white mb-2 rounded overflow-hidden">
+                                            <Image
+                                                width={40}
+                                                height={40}
+                                                src={variantInfo.imageUrl}
+                                                alt={variantInfo.productName}
+                                                className="w-full h-full object-contain"
+                                            />
+                                        </div>
+                                        <div className="text-sm font-semibold text-gray-800 text-center mb-1 line-clamp-2 min-h-[2.5rem]">
+                                            {nameWithAttrs}
+                                        </div>
+                                        <div className="text-lg font-bold text-red-500 mb-1">
+                                            {formatPrice(discountedPrice)}
+                                        </div>
+                                        <div className="flex items-center justify-center mb-1">
+                                            <span className="bg-gradient-to-r from-orange-400 to-pink-400 text-white text-xs font-bold px-3 py-1 rounded-full">
+                                                -{discountPercentage}%
+                                            </span>
+                                        </div>
+                                        <div className="w-full h-2 bg-orange-100 rounded-full overflow-hidden mb-1">
+                                            <div
+                                                className="h-full bg-gradient-to-r from-orange-400 to-pink-400"
+                                                style={{
+                                                    width: `${soldPercent}%`,
+                                                }}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="text-sm font-semibold text-gray-800 text-center mb-1 line-clamp-2 min-h-[2.5rem]">
-                                        {item.name}
-                                    </div>
-                                    <div className="text-lg font-bold text-red-500 mb-1">
-                                        {formatPrice(item.price)}
-                                    </div>
-                                    <div className="flex items-center justify-center mb-1">
-                                        <span className="bg-gradient-to-r from-orange-400 to-pink-400 text-white text-xs font-bold px-3 py-1 rounded-full">
-                                            ĐANG BÁN CHẠY
-                                        </span>
-                                    </div>
-                                    <div className="w-full h-2 bg-orange-100 rounded-full overflow-hidden mb-1">
-                                        <div
-                                            className="h-full bg-gradient-to-r from-orange-400 to-pink-400"
-                                            style={{
-                                                width: `${item.soldPercent}%`,
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                     {!atEnd && (
