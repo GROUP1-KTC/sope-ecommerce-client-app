@@ -7,10 +7,18 @@ import { ChevronRight } from "lucide-react";
 import SmsIcon from '@mui/icons-material/Sms';
 import ProductList from '~/components/product-list/ProductList';
 import { useGetShopByIdQuery } from '~/features/shop/shopApi';
+import { useAppDispatch } from '~/hooks/useTypes';
+import { setSelectedConversationId } from '~/features/chat/chatSlice';
+import ChatDialog from '~/components/shared/chat/ChatDialog';
+import { useCreateConversationWithShopMutation } from '~/features/chat/conversation/ConversationApi';
 
 const ShopPage: React.FC = () => {
-  const { shopId } = useParams(); 
+  const { shopId } = useParams();
   const { data: shop, isLoading, error } = useGetShopByIdQuery(shopId as string);
+
+  const dispatch = useAppDispatch();
+  const [createConversationWithShop] = useCreateConversationWithShopMutation();
+  const [openChat, setOpenChat] = React.useState(false);
 
   if (isLoading) return <p>Đang tải cửa hàng...</p>;
   if (error) return <p>Có lỗi khi tải cửa hàng.</p>;
@@ -18,6 +26,26 @@ const ShopPage: React.FC = () => {
 
   const allProducts = shop.products || [];
   const suggestedProducts = allProducts.slice(0, 6);
+
+  const handleChatClick = async () => {
+    try {
+      const shopIdStr = shopId as string;
+      const conv = await createConversationWithShop({ shopId: shopIdStr }).unwrap();
+      dispatch(setSelectedConversationId(conv.conversationId));
+      setOpenChat(true);
+    } catch (err: any) {
+      // log đầy đủ
+      console.error("Không thể tạo cuộc trò chuyện", err);
+      if (err?.data) {
+        console.error("Response data:", err.data);
+      }
+      if (err?.status) {
+        console.error("Status:", err.status);
+      }
+    }
+
+  };
+
 
   return (
     <div className="max-w-[80%] w-full mx-auto p-4 space-y-6">
@@ -37,7 +65,10 @@ const ShopPage: React.FC = () => {
         <div className="flex-1 space-y-3">
           <h1 className="text-2xl font-bold text-gray-800">{shop.name}</h1>
           <p className="text-sm text-gray-600">{shop.description}</p>
-          <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition flex items-center gap-2 cursor-pointer">
+          <button
+            onClick={handleChatClick}
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition flex items-center gap-2 cursor-pointer"
+          >
             Chat <SmsIcon style={{ fontSize: 18 }} />
           </button>
         </div>
@@ -96,6 +127,9 @@ const ShopPage: React.FC = () => {
         <h2 className="font-semibold text-lg text-gray-800 mb-5">Tất cả sản phẩm</h2>
         <ProductList products={allProducts} />
       </div>
+
+      {/* Chat Dialog */}
+      <ChatDialog open={openChat} onClose={() => setOpenChat(false)} />
     </div>
   );
 };

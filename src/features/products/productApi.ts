@@ -24,7 +24,6 @@ export const productApi = apiSlice.injectEndpoints({
                     const { data } = await queryFulfilled;
                     console.log('✅ API createProduct thành công:', data);
                 } catch (err) {
-                    console.error('❌ API createProduct thất bại:', err);
                 }
             },
         }),
