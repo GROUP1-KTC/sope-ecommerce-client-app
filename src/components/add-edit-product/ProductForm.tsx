@@ -65,7 +65,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 				defaultVideoIntro: null,
 				hidden: false,
 				categoryId: '',
-				shopId: '4d3bb71f-860c-48cf-b96e-984b55b21822',
+				shopId: '315b38ef-a115-47df-a631-2ba758968327',
 				variants: [],
 				imagesList: [],
 				productDetails: []

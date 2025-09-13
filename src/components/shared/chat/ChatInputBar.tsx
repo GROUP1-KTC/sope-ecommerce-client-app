@@ -7,7 +7,11 @@ import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 
 import stompClient from '~/services/socket/socket.service';
-import { useAppSelector } from '~/hooks/useTypes';
+import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
+import { useSendMessageToBotMutation } from '~/features/chat/conversation/chatBotApi';
+import { BOT_CONVERSATION_ID, addMessage, setStatus } from '~/features/chat/chatSlice';
+import { Message } from '~/types/chat';
+
 
 
 const ChatInputBar = () => {
@@ -21,14 +25,14 @@ const ChatInputBar = () => {
     };
 
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-    
-        useEffect(() => {
-            const storedUser = sessionStorage.getItem('authUser');
-            if (storedUser) {
-                const parsedUser = JSON.parse(storedUser);
-                setCurrentUserId(parsedUser.id);
-            }
-        }, []);
+
+    useEffect(() => {
+        const storedUser = sessionStorage.getItem('authUser');
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setCurrentUserId(parsedUser.id);
+        }
+    }, []);
 
     const handleCloseEmojiPicker = () => setAnchorEl(null);
 
@@ -41,62 +45,103 @@ const ChatInputBar = () => {
 
     const selectedConversationId = useAppSelector(state => state.chat.selectedConversationId);
 
+    const dispatch = useAppDispatch();
+
     const handleSend = async () => {
-    if (!input.trim() || !selectedConversationId || !currentUserId) return;
+        if (!input.trim() || !selectedConversationId || !currentUserId) return;
 
-    try {
-        stompClient.publish({
-            destination: '/app/chat',
-            body: JSON.stringify({
-                conversationId: selectedConversationId,
+        if (selectedConversationId === BOT_CONVERSATION_ID) {
+            const userMessage: Message = {
+                id: Date.now().toString(),
                 senderId: currentUserId,
-                receiverId: null, // hoặc tùy logic của bạn
-                type: 'TEXT', // bắt buộc
                 content: input,
-                imageUrl: null,
-                width: null,
-                height: null,
-                fileUrl: null,
-                fileName: null,
-                fileType: null,
-                fileSize: null,
-            }),
-        });
-        setInput('');
-    } catch (error) {
-        console.error('Failed to send message:', error);
-    }
-};
+                type: 'TEXT',
+                sentAt: Date.now().toString(),
+            };
 
-const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0 || !selectedConversationId || !currentUserId) return;
+            dispatch(addMessage({ conversationId: BOT_CONVERSATION_ID, message: userMessage }));
+            setInput('');
 
-    const file = e.target.files[0];
-    const fileUrl = URL.createObjectURL(file);
+            try {
+                dispatch(setStatus('sending'));
+                const res = await sendToBot({ message: userMessage.content }).unwrap();
 
-    try {
-        stompClient.publish({
-            destination: '/app/chat',
-            body: JSON.stringify({
-                conversationId: selectedConversationId,
-                senderId: currentUserId,
-                receiverId: null,
-                type: 'FILE',
-                content: input || '', 
-                imageUrl: file.type.startsWith('image/') ? fileUrl : null,
-                width: null,
-                height: null,
-                fileUrl: fileUrl,
-                fileName: file.name,
-                fileType: file.type,
-                fileSize: file.size,
-            }),
-        });
-        setInput('');
-    } catch (error) {
-        console.error('Failed to upload file:', error);
-    }
-};
+                const botMessage: Message = {
+                    id: Date.now().toString() + '_bot',
+                    senderId: 'bot',
+                    content: res.data,
+                    type: 'BOT',
+                    sentAt: Date.now().toString(),
+                };
+
+                dispatch(addMessage({ conversationId: BOT_CONVERSATION_ID, message: botMessage }));
+                dispatch(setStatus('idle'));
+            } catch (err) {
+                console.error('Bot response error', err);
+                dispatch(setStatus('error'));
+            }
+            return;
+        }
+
+        // Nếu là người dùng khác, giữ nguyên logic cũ
+        try {
+            stompClient.publish({
+                destination: '/app/chat',
+                body: JSON.stringify({
+                    conversationId: selectedConversationId,
+                    senderId: currentUserId,
+                    receiverId: null, // hoặc tùy logic của bạn
+                    type: 'TEXT', // bắt buộc
+                    content: input,
+                    imageUrl: null,
+                    width: null,
+                    height: null,
+                    fileUrl: null,
+                    fileName: null,
+                    fileType: null,
+                    fileSize: null,
+                }),
+            });
+            setInput('');
+        } catch (error) {
+            console.error('Failed to send message:', error);
+        }
+    };
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files || e.target.files.length === 0 || !selectedConversationId || !currentUserId) return;
+
+        const file = e.target.files[0];
+        const fileUrl = URL.createObjectURL(file);
+
+        try {
+            stompClient.publish({
+                destination: '/app/chat',
+                body: JSON.stringify({
+                    conversationId: selectedConversationId,
+                    senderId: currentUserId,
+                    receiverId: null,
+                    type: 'FILE',
+                    content: input || '',
+                    imageUrl: file.type.startsWith('image/') ? fileUrl : null,
+                    width: null,
+                    height: null,
+                    fileUrl: fileUrl,
+                    fileName: file.name,
+                    fileType: file.type,
+                    fileSize: file.size,
+                }),
+            });
+            setInput('');
+        } catch (error) {
+            console.error('Failed to upload file:', error);
+        }
+    };
+
+    const [sendToBot] = useSendMessageToBotMutation();
+
+
+
 
 
     return (

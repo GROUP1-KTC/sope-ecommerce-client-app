@@ -14,7 +14,7 @@ const AllProductsByShop = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [viewMode, setViewMode] = useState<"list" | "grid">("list");
     const [activeTab, setActiveTab] = useState("all");
-    const { data, isLoading, isError } = useGetProductByShopQuery({ shopId: "4d3bb71f-860c-48cf-b96e-984b55b21822", page: currentPage, size: 20 });
+    const { data, isLoading, isError } = useGetProductByShopQuery({ shopId: "315b38ef-a115-47df-a631-2ba758968327", page: currentPage, size: 20 });
 
     const [searchText, setSearchText] = useState("");
     const [showCategorySelector, setShowCategorySelector] = useState(false);

@@ -1,14 +1,23 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-export function roleMiddleware(request: NextRequest) {
-    const pathname = request.nextUrl.pathname;
+export function roleMiddleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
 
-    const role = request.cookies.get('role')?.value;
+  const session = req.cookies.get('session')?.value; 
+  const userRole = session ? JSON.parse(session).role : null;
 
-    if (pathname.startsWith('/seller') && role !== 'seller') {
-        return NextResponse.redirect(new URL('/error?code=403', request.url));
-    }
+  if (pathname.startsWith('/admin') && userRole !== 'ADMIN') {
+    return NextResponse.redirect(new URL('/error?code=403', req.url));
+  }
 
-    return null;
+  if (pathname.startsWith('/seller') && userRole !== 'SELLER') {
+    return NextResponse.redirect(new URL('/error?code=403', req.url));
+  }
+
+  return NextResponse.next();
 }
+
+export const config = {
+  matcher: ['/admin/:path*', '/seller/:path*'],
+};
