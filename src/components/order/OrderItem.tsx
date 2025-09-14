@@ -29,7 +29,7 @@ interface Props {
     refetchOrders: () => void;
 }
 
-const statusColors: Record<OrderStatus, string> = {
+export const statusColors: Record<OrderStatus, string> = {
     PENDING: 'text-yellow-600',
     CONFIRMED: 'text-blue-600',
     SHIPPING: 'text-purple-600',
@@ -199,10 +199,10 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
 
                 {(order.status === 'CANCELLED' ||
                     order.status === 'RETURNED') && (
-                    <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
-                        Mua lại
-                    </button>
-                )}
+                        <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
+                            Mua lại
+                        </button>
+                    )}
             </div>
 
             {/* Status history toggle */}

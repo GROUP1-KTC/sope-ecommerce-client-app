@@ -6,6 +6,8 @@ import { Pencil, ChevronDown, ChevronUp } from "lucide-react";
 import EditModal from './EditModal';
 import { motion, AnimatePresence } from "framer-motion";
 import { useUpdateProductMutation } from '~/features/products/productApi';
+import Ads from '../ads-flashsale/Ads';
+import FlashSale from '../ads-flashsale/FlashSale';
 
 interface Props {
 	products: ProductResponse[];
@@ -22,12 +24,27 @@ export default function ProductTable({ products, viewMode }: Props) {
 
 	const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
+	const [openFlashSaleId, setOpenFlashSaleId] = useState<string | null>(null);
+
 	const openEditModal = (product: ProductResponse, type: "price" | "stock") => {
 		setEditModal({ product, type });
 	};
 
 	const closeEditModal = () => {
 		setEditModal({ type: null, product: null });
+	};
+
+	const [adsModal, setAdsModal] = useState<{
+		open: boolean;
+		productId: string | null;
+	}>({ open: false, productId: null });
+
+	const openAdsModal = (productId: string) => {
+		setAdsModal({ open: true, productId });
+	};
+
+	const closeAdsModal = () => {
+		setAdsModal({ open: false, productId: null });
 	};
 
 	const [sortBy, setSortBy] = useState<"price" | "stock" | "sold" | null>(null);
@@ -281,10 +298,26 @@ export default function ProductTable({ products, viewMode }: Props) {
 												>
 													Cập nhật
 												</Link>
-												<Link href="#" className="text-blue-600 hover:underline text-sm">Quảng cáo</Link>
+												<Link
+													href="#"
+													className="text-blue-600 hover:underline text-sm"
+													onClick={(e) => {
+														e.preventDefault();
+														openAdsModal(product.productId);
+													}}
+												>
+													Quảng cáo
+												</Link>
 												<Link href="#" className="text-blue-600 hover:underline text-sm">Xem thêm</Link>
 											</div>
 										</td>
+
+										<Ads
+											open={adsModal.open}
+											productId={adsModal.productId}
+											onClose={closeAdsModal}
+										/>
+
 									</tr>
 									{/* Row cho variants */}
 									{!isSimpleProduct && (
@@ -334,7 +367,28 @@ export default function ProductTable({ products, viewMode }: Props) {
 															variant.stock
 														)}
 													</td>
-													<td></td>
+													<td className="p-3 align-top text-center">
+														<button
+															onClick={() => setOpenFlashSaleId(variant.productVariantId as string)}
+															disabled={variant.stock < 10}
+															className={`px-3 py-1.5 text-sm font-medium rounded-lg shadow-sm transition-colors duration-200
+       															     ${variant.stock < 10
+																	? "bg-gray-300 text-gray-500 cursor-not-allowed"
+																	: "bg-gradient-to-r cursor-pointer from-pink-500 to-orange-500 text-white hover:from-pink-600 hover:to-orange-600"
+																}`}
+															title={variant.stock < 10 ? "" : "Đăng ký FlashSale"}
+														>
+															⚡ FlashSale
+														</button>
+
+														{openFlashSaleId === variant.productVariantId && (
+															<FlashSale
+																open={true}
+																onClose={() => setOpenFlashSaleId(null)}
+																productVariantId={variant.productVariantId}
+															/>
+														)}
+													</td>
 												</motion.tr>
 											))}
 										</AnimatePresence>

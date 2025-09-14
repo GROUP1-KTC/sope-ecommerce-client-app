@@ -1,6 +1,12 @@
-import { update } from 'lodash';
 import { apiSlice } from '~/services/api/apiSlice';
-import type { OrderCreateRequest, OrderCreateResponse, OrderGroupShop } from '~/types/orders/order';
+import type {
+    ApiResponse,
+    OrderCreateRequest,
+    OrderCreateResponse,
+    OrderGroupShop,
+    OrderStatus,
+    PageResponse,
+} from '~/types/orders/order';
 
 export const orderApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -10,24 +16,76 @@ export const orderApi = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data,
             }),
-            transformResponse: (response: { data: OrderCreateResponse[] }) => response.data,
+            transformResponse: (response: { data: OrderCreateResponse[] }) =>
+                response.data,
+        }),
+        getOrdersByShop: builder.query<
+            ApiResponse<PageResponse<OrderGroupShop>>,
+            { shopId: string; page?: number; size?: number }
+        >({
+            query: ({ shopId, page = 0, size = 20 }) => ({
+                url: `orders/shop/${shopId}?page=${page}&size=${size}`,
+                credentials: 'omit',
+            }),
+            providesTags: ['Order'],
+        }),
 
+        getPendingOrdersByShop: builder.query<
+            ApiResponse<PageResponse<OrderGroupShop>>,
+            { shopId: string; page?: number; size?: number }
+        >({
+            query: ({ shopId, page = 0, size = 20 }) => ({
+                url: `orders/shop/${shopId}/pending?page=${page}&size=${size}`,
+                credentials: 'omit',
+            }),
+            providesTags: ['Order'],
+        }),
+
+        getRevenueByShop: builder.query<
+            ApiResponse<OrderGroupShop[]>,
+            { shopId: string }
+        >({
+            query: ({ shopId }) => ({
+                url: `orders/revenue/${shopId}`,
+                credentials: 'omit',
+            }),
+            providesTags: ['Order'],
+        }),
+        getOrderDetail: builder.query<ApiResponse<OrderGroupShop>, string>({
+            query: (orderNumber) => ({
+                url: `orders/${orderNumber}`,
+                credentials: 'omit',
+            }),
+            providesTags: ['Order'],
         }),
         getOrders: builder.query<OrderGroupShop[], void>({
             query: () => ({
                 url: 'orders/user',
                 method: 'GET',
             }),
-            transformResponse: (response: { data: OrderGroupShop[] }) => response.data
-
+            transformResponse: (response: { data: OrderGroupShop[] }) =>
+                response.data,
         }),
-        cancelOrder: builder.mutation<void, { orderId: string; reason: string }>({
+        cancelOrder: builder.mutation<
+            void,
+            { orderId: string; reason: string }
+        >({
             query: ({ orderId, reason }) => ({
                 url: `orders/cancel/${orderId}`,
                 method: 'PATCH',
                 body: { reason },
             }),
+        }),
 
+        updateOrderStatus: builder.mutation<
+            void,
+            { orderId: string; status: OrderStatus }
+        >({
+            query: ({ orderId, status }) => ({
+                url: `orders/update-status`,
+                method: 'PATCH',
+                body: { status, orderId },
+            }),
         }),
     }),
 });
@@ -35,5 +93,10 @@ export const orderApi = apiSlice.injectEndpoints({
 export const {
     useCheckoutMutation,
     useGetOrdersQuery,
+    useGetOrdersByShopQuery,
+    useGetPendingOrdersByShopQuery,
+    useGetRevenueByShopQuery,
+    useGetOrderDetailQuery,
     useCancelOrderMutation,
+    useUpdateOrderStatusMutation,
 } = orderApi;

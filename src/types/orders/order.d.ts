@@ -1,12 +1,27 @@
 import { ShopInfo } from '~/app/(customer)/cart/page';
 import { Address } from '~/types/address';
 
+export type PaymentMethod =
+    | 'COD'
+    | 'CREDIT_CARD'
+    | 'E_WALLET'
+    | 'BANK_TRANSFER';
 
-export type PaymentMethod = 'COD' | 'CREDIT_CARD' | 'E_WALLET' | 'BANK_TRANSFER';
+export type PaymentProvider =
+    | 'MOMO'
+    | 'VNPAY'
+    | 'ZALO_PAY'
+    | 'PAYPAL'
+    | 'STRIPE'
+    | 'BANK';
 
-export type PaymentProvider = 'MOMO' | 'VNPAY' | 'ZALO_PAY' | 'PAYPAL' | 'STRIPE' | 'BANK';
-
-export type OrderStatus = 'PENDING' | 'CONFIRMED' | 'SHIPPING' | 'DELIVERED' | 'CANCELLED' | 'RETURNED';
+export type OrderStatus =
+    | 'PENDING'
+    | 'CONFIRMED'
+    | 'SHIPPING'
+    | 'DELIVERED'
+    | 'CANCELLED'
+    | 'RETURNED';
 
 // types.ts
 export interface ShopOrderRequest {
@@ -53,9 +68,9 @@ export interface GuestOrderCreateRequest extends BaseOrderCreateRequest {
 }
 
 // Union type
-export type OrderCreateRequest = UserOrderCreateRequest | GuestOrderCreateRequest;
-
-
+export type OrderCreateRequest =
+    | UserOrderCreateRequest
+    | GuestOrderCreateRequest;
 
 export interface ShopOrderResponse {
     orderId: string;
@@ -65,17 +80,10 @@ export interface ShopOrderResponse {
     paymentProvider: PaymentProvider;
 }
 
-
-
 export interface OrderCreateResponse {
     paymentId: string;
     order: ShopOrderResponse;
 }
-
-
-
-
-
 
 export interface OrderItemProduct {
     productVariantId: string;
@@ -83,6 +91,8 @@ export interface OrderItemProduct {
     price: number;
     imageUrl: string;
     productName: string;
+    attributes?: Attribute[];
+    commissionFeePercent: number;
 }
 
 export interface OrderStatusHistory {
@@ -95,6 +105,7 @@ export interface OrderDetail {
     orderId: string;
     orderNumber: string;
     shippingCharges: number;
+    shippingRateId: string;
     subTotal: number | null;
     totalAmount: number;
     status: OrderStatus;
@@ -110,9 +121,34 @@ export interface OrderDetail {
     paymentPayUrl?: string;
 }
 
-
 export interface OrderGroupShop {
     paymentId: string;
     shippingAddress: Address;
     order: OrderDetail;
+}
+
+interface ApiResponse<T> {
+    success: boolean;
+    message: string;
+    data: T;
+    errors: any;
+    statusCode: number;
+    timestamp: string;
+}
+
+export interface PageResponse<T> {
+    content: T[];
+    totalElements: number;
+    totalPages: number;
+    number: number;
+    size: number;
+    first: boolean;
+    last: boolean;
+}
+
+export interface PayoutSummaryResult {
+    unpaid: number;
+    week: number;
+    month: number;
+    total: number;
 }

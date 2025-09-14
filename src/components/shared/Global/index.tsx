@@ -24,6 +24,9 @@ const GlobalComponent = () => {
         '/shipping-policy',
         '/return-policy',
         '/refund-policy',
+        '/shipper',
+        '/admin',
+        '/create-shop'
     ];
 
     const shouldRender = allowedPrefixes.some((prefix) =>
