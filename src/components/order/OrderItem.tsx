@@ -22,6 +22,7 @@ import {
 } from '@mui/material';
 import ReviewForm from './ReviewForm';
 import { loadAuthUser } from '~/utils/authCookie';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     orderGroup: OrderGroupShop;
@@ -53,6 +54,8 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
     const [selectedReason, setSelectedReason] = useState('');
     const [customReason, setCustomReason] = useState('');
     const [cancelOrder, { isLoading }] = useCancelOrderMutation();
+
+    const router = useRouter();
 
     const [showReview, setShowReview] = useState(false);
 
@@ -155,6 +158,19 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
 
             {/* Action buttons */}
             <div className="flex justify-end space-x-3">
+                {order.paymentMethod !== 'COD' &&
+                    order.paymentStatus === 'PENDING' &&
+                    order.paymentPayUrl && (
+                        <button
+                            onClick={() =>
+                                router.push(order.paymentPayUrl || '')
+                            }
+                            className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
+                        >
+                            Vui lòng thanh toán
+                        </button>
+                    )}
+
                 {order.status === 'PENDING' && (
                     <button
                         onClick={() => setOpenCancelDialog(true)}

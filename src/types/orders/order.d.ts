@@ -107,6 +107,7 @@ export interface OrderDetail {
     paymentStatus: string;
     statusHistory: OrderStatusHistory[];
     createdAt: string;
+    paymentPayUrl?: string;
 }
 
 
