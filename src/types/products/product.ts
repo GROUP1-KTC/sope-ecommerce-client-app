@@ -5,6 +5,12 @@ import type { Image } from './image';
 import { MediaItem } from '~/components/add-edit-product/RightSideBar';
 import { StatusProduct } from './enum/StatusProduct';
 
+export interface ProductAdsDTO {
+    name: string;
+    variants: ProductVariant[];
+    defaultImage: string;
+    slug: string;
+}
 export interface BaseProduct {
     name: string;
     brand: string;
