@@ -77,7 +77,12 @@ const Login = () => {
             console.log('Response from server:', res.data);
 
             dispatch(setCredentials(res.data));
-            router.push('/');
+            const roles = res.data.roles;
+            if (roles.includes('ADMIN')) {
+                router.push('/admin');
+            } else {
+                router.push('/');
+            }
         } catch (err: any) {
             console.error('Full error object:', err);
 

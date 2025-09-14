@@ -8,6 +8,7 @@ import LeftSideBar from '~/components/add-edit-product/LeftSideBar';
 import RightSideBar, { ProductFormDataWithMedia, MediaItem } from '~/components/add-edit-product/RightSideBar';
 import FundanmentalInformation from '~/components/add-edit-product/FundanmentalInformation';
 import { buildCategoryPath } from '~/utils/buildCategoryPath';
+import ErrorModal from './ErrorModal';
 
 type ProductFormMode = 'add' | 'edit';
 
@@ -26,6 +27,11 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 	const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
 	const [showModal, setShowModal] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	// Error modal states
+	const [errorMessage, setErrorMessage] = useState<string | string[]>('');
+	const [showErrorModal, setShowErrorModal] = useState(false);
+
 
 	const infoRef = useRef<HTMLDivElement | null>(null);
 	const detailRef = useRef<HTMLDivElement | null>(null);
@@ -65,7 +71,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 				defaultVideoIntro: null,
 				hidden: false,
 				categoryId: '',
-				shopId: '4d3bb71f-860c-48cf-b96e-984b55b21822',
+				shopId: '315b38ef-a115-47df-a631-2ba758968327',
 				variants: [],
 				imagesList: [],
 				productDetails: []
@@ -323,8 +329,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 
 			if (mode === 'add' && onCreate) {
 				await onCreate(formData);
-				alert('🎉 Tạo sản phẩm thành công!');
-
+				alert('Tạo sản phẩm thành công!');
 				setProductData({
 					mode: 'add',
 					name: "",
@@ -346,12 +351,23 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 				alert('🎉 Sửa sản phẩm thành công!');
 			}
 		} catch (err: any) {
-			console.error('Error:', err);
-			alert(err.message || 'Có lỗi xảy ra.');
+
+			let msg = 'Có lỗi xảy ra';
+			if (err?.data?.message) {
+				msg = err.data.message;
+			} else if (typeof err?.data === 'string') {
+				msg = err.data;
+			} else if (err?.error) {
+				msg = err.error;
+			}
+
+			setErrorMessage(msg);
+			setShowErrorModal(true);
 		} finally {
 			setIsSubmitting(false);
 		}
 	};
+
 
 	return (
 		<div className="relative min-h-screen bg-gray-50">
@@ -474,6 +490,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, categories
 				productData={productData as ProductFormDataWithMedia}
 				categories={categories}
 			/>
+			<ErrorModal
+				isOpen={showErrorModal}
+				onClose={() => setShowErrorModal(false)}
+				title="Lỗi tạo sản phẩm"
+				message={errorMessage}
+			/>
+
 		</div>
 	);
 };

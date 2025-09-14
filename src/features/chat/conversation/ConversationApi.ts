@@ -21,12 +21,12 @@ export const ConversationsApi = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Conversation'],
         }),
-        createConversation: builder.mutation<
+        createConversationWithShop: builder.mutation<
             Conversation,
-            Partial<Conversation>
+            { shopId: string }
         >({
             query: (data) => ({
-                url: 'conversations',
+                url: 'conversations/with-shop',
                 method: 'POST',
                 body: data,
             }),
@@ -45,7 +45,7 @@ export const ConversationsApi = apiSlice.injectEndpoints({
 export const {
     useGetConversationsQuery,
     useGetConversationByIdQuery,
-    useCreateConversationMutation,
     useUpdatedConversationMutation,
     useDeleteConversationMutation,
+    useCreateConversationWithShopMutation,
 } = ConversationsApi;

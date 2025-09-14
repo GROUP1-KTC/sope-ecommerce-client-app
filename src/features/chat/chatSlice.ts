@@ -1,3 +1,4 @@
+// chatSlice.ts
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Conversation, Message } from '~/types/chat';
 
@@ -8,19 +9,43 @@ interface ChatState {
     status: 'idle' | 'sending' | 'error';
 }
 
+export const BOT_CONVERSATION_ID = 'chatbot';
+
+const botIntroMessage: Message = {
+    id: 'welcome',
+    content: 'Xin chào 👋, mình là Chatbot AI! Bạn đang quan tâm đến sản phẩm nào nhỉ ?',
+    senderId: 'bot',
+    sentAt: Date.now().toString(),
+    type: 'BOT',
+};
+
+const initialBotConversation: Conversation = {
+    conversationId: BOT_CONVERSATION_ID,
+    name: 'Sope Chatbot',
+    avatar: '/bot-avatar.png',
+    lastMessage: botIntroMessage,
+};
+
 const initialState: ChatState = {
-    conversations: [],
-    messagesByConversationId: {},
-    selectedConversationId: null,
+    conversations: [initialBotConversation],
+    messagesByConversationId: {
+        [BOT_CONVERSATION_ID]: [botIntroMessage],  
+    },
+    selectedConversationId: BOT_CONVERSATION_ID,
     status: 'idle',
 };
+
 
 const chatSlice = createSlice({
     name: 'chat',
     initialState,
     reducers: {
         setConversations(state, action: PayloadAction<Conversation[]>) {
-            state.conversations = action.payload;
+            const others = action.payload.filter(
+                c => c.conversationId !== BOT_CONVERSATION_ID
+            );
+            state.conversations = [initialBotConversation, ...others];
+
             action.payload.forEach(conv => {
                 if (!state.messagesByConversationId[conv.conversationId]) {
                     state.messagesByConversationId[conv.conversationId] = [];
@@ -51,6 +76,15 @@ const chatSlice = createSlice({
             state.messagesByConversationId[action.payload] = [];
         },
 
+        resetAllMessages(state) {
+            // clear hết nhưng giữ lại bot conv
+            state.messagesByConversationId = {
+                [BOT_CONVERSATION_ID]: [],
+            };
+            state.conversations = [initialBotConversation];
+            state.selectedConversationId = BOT_CONVERSATION_ID;
+        },
+
         setSelectedConversationId(state, action: PayloadAction<string | null>) {
             state.selectedConversationId = action.payload;
         },
@@ -65,6 +99,7 @@ export const {
     setConversations,
     addMessage,
     clearMessages,
+    resetAllMessages,
     setSelectedConversationId,
     setStatus,
 } = chatSlice.actions;
