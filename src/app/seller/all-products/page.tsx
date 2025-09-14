@@ -103,13 +103,7 @@ const AllProductsByShop = () => {
 
             <div className="text-lg font-semibold mb-6 flex items-center justify-between  gap-2">
                 <div>PRODUCTS</div>
-                <div className="flex gap-2 items-center">
-                    <select className="border border-gray-400 px-3 py-1.5 rounded text-sm text-gray-500">
-                        <option> Cài đặt sản phẩm </option>
-                    </select>
-                    <select className="border border-gray-400 px-3 py-1.5 rounded text-sm text-gray-500">
-                        <option> Công cụ xử lý hàng loạt </option>
-                    </select>
+                <div className="flex gap-2 p-2 items-center">
                     <Link
                         target="_blank"
                         rel="noopener noreferrer"
