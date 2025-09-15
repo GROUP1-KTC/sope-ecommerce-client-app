@@ -7,6 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import {
     useGetProfileQuery,
     useUpdateProfileMutation,
+    useUploadAvatarMutation,
 } from '~/features/user/userApi';
 import { setUser, updateUser } from '~/features/user/userSlice';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
@@ -14,6 +15,7 @@ import { loadAuthUser } from '~/utils/authCookie';
 
 const ProfilePage = () => {
     const [updateProfile] = useUpdateProfileMutation();
+    const [uploadAvatar] = useUploadAvatarMutation();
 
     const handleSave = async () => {
         try {
@@ -55,6 +57,35 @@ const ProfilePage = () => {
         } catch (error) {
             console.error(error);
             alert('Có lỗi xảy ra khi cập nhật!');
+        }
+    };
+
+    const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (!event.target.files || event.target.files.length === 0) return;
+
+        const file = event.target.files[0];
+        if (file.size > 1024 * 1024) {
+            alert("Dung lượng file tối đa 1MB!");
+            return;
+        }
+
+        const storedUser = loadAuthUser();
+        if (!storedUser) {
+            alert("Vui lòng đăng nhập lại!");
+            return;
+        }
+
+        try {
+            const res = await uploadAvatar({
+                id: storedUser.id,
+                file,
+            }).unwrap();
+
+            dispatch(updateUser(res));
+            alert("Cập nhật avatar thành công!");
+        } catch (error) {
+            console.error(error);
+            alert("Có lỗi khi upload avatar!");
         }
     };
 
@@ -266,9 +297,19 @@ const ProfilePage = () => {
                                             className="w-full h-full object-cover"
                                         />
                                     </div>
-                                    <button className="w-full bg-green-500 text-white p-2 rounded cursor-pointer hover:bg-green-600 transition-colors duration-200">
+                                    <input
+                                        type="file"
+                                        accept="image/jpeg,image/png"
+                                        id="avatarUpload"
+                                        className="hidden"
+                                        onChange={handleAvatarChange}
+                                    />
+                                    <label
+                                        htmlFor="avatarUpload"
+                                        className="w-full bg-green-500 text-white p-2 rounded cursor-pointer hover:bg-green-600 transition-colors duration-200 text-center"
+                                    >
                                         Chọn Ảnh
-                                    </button>
+                                    </label>
                                 </div>
                                 <div className="text-gray-500 text-sm text-center">
                                     Dung lượng file tối đa 1 MB. Định dạng:

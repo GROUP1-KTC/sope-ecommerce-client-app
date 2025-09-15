@@ -4,16 +4,29 @@ import { NextResponse } from 'next/server';
 export function authMiddleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  const authHeader = req.headers.get('Authorization'); 
-  const token = authHeader?.split(' ')[1]; 
-
   const protectedRoutes = ['/account', '/admin', '/seller', '/create-shop'];
   const requiresAuth = protectedRoutes.some((route) =>
-    pathname.startsWith(route),
+    pathname.startsWith(route)
   );
 
-  if (requiresAuth && !token) {
-    return NextResponse.redirect(new URL('/login', req.url));
+  if (!requiresAuth) {
+    return NextResponse.next(); 
+  }
+
+  const sessionCookie = req.cookies.get('session')?.value;
+  let token: string | null = null;
+
+  if (sessionCookie) {
+    try {
+      const session = JSON.parse(sessionCookie);
+      token = session.token ?? null; 
+    } catch {
+      token = null;
+    }
+  }
+
+  if (!token) {
+    return NextResponse.redirect('/login'); 
   }
 
   return NextResponse.next();
@@ -22,4 +35,3 @@ export function authMiddleware(req: NextRequest) {
 export const config = {
   matcher: ['/account/:path*', '/admin/:path*', '/seller/:path*', '/create-shop/:path*'],
 };
-
