@@ -4,6 +4,7 @@ import type {
     OrderCreateRequest,
     OrderCreateResponse,
     OrderGroupShop,
+    OrderStatus,
     PageResponse,
 } from '~/types/orders/order';
 
@@ -28,6 +29,18 @@ export const orderApi = apiSlice.injectEndpoints({
             }),
             providesTags: ['Order'],
         }),
+
+        getPendingOrdersByShop: builder.query<
+            ApiResponse<PageResponse<OrderGroupShop>>,
+            { shopId: string; page?: number; size?: number }
+        >({
+            query: ({ shopId, page = 0, size = 20 }) => ({
+                url: `orders/shop/${shopId}/pending?page=${page}&size=${size}`,
+                credentials: 'omit',
+            }),
+            providesTags: ['Order'],
+        }),
+
         getRevenueByShop: builder.query<
             ApiResponse<OrderGroupShop[]>,
             { shopId: string }
@@ -63,6 +76,17 @@ export const orderApi = apiSlice.injectEndpoints({
                 body: { reason },
             }),
         }),
+
+        updateOrderStatus: builder.mutation<
+            void,
+            { orderId: string; status: OrderStatus }
+        >({
+            query: ({ orderId, status }) => ({
+                url: `orders/update-status`,
+                method: 'PATCH',
+                body: { status, orderId },
+            }),
+        }),
     }),
 });
 
@@ -70,7 +94,9 @@ export const {
     useCheckoutMutation,
     useGetOrdersQuery,
     useGetOrdersByShopQuery,
+    useGetPendingOrdersByShopQuery,
     useGetRevenueByShopQuery,
     useGetOrderDetailQuery,
     useCancelOrderMutation,
+    useUpdateOrderStatusMutation,
 } = orderApi;

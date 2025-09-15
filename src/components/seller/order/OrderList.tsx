@@ -3,7 +3,7 @@
 import OrderCard from './OrderCard';
 import { OrderGroupShop } from '~/types/orders/order';
 
-interface OrderListProps {
+export interface OrderListProps {
     allOrder: {
         content: OrderGroupShop[];
         totalElements?: number;
@@ -13,6 +13,7 @@ interface OrderListProps {
         first?: boolean;
         last?: boolean;
     };
+    isFromPendingOrder?: boolean;
     isLoading: boolean;
     isError: boolean;
     page: number;
@@ -24,6 +25,7 @@ export default function OrderList({
     isLoading,
     isError,
     page,
+    isFromPendingOrder,
     setPage,
 }: OrderListProps) {
     if (isLoading) return <div>Loading...</div>;
@@ -45,7 +47,11 @@ export default function OrderList({
             </div>
 
             {allOrder?.content?.map((group) => (
-                <OrderCard key={group.paymentId} order={group} />
+                <OrderCard
+                    key={group.paymentId}
+                    order={group}
+                    isFromPendingOrder={isFromPendingOrder}
+                />
             ))}
 
             <div className="flex justify-center text-center items-center gap-2 mt-4">
