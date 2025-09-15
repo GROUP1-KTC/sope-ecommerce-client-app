@@ -6,7 +6,7 @@ interface ChatState {
     conversations: Conversation[];
     messagesByConversationId: Record<string, Message[]>;
     selectedConversationId: string | null;
-    status: 'idle' | 'sending' | 'error';
+    status: 'idle' | 'sending' | 'error' | 'typing';
 }
 
 export const BOT_CONVERSATION_ID = 'chatbot';
@@ -22,7 +22,7 @@ const botIntroMessage: Message = {
 const initialBotConversation: Conversation = {
     conversationId: BOT_CONVERSATION_ID,
     name: 'Sope Chatbot',
-    avatar: '/bot-avatar.png',
+    avatar: 'https://img.freepik.com/premium-photo/flat-style-avatar-representing-chatbot-support-services-robot-logo-chat-bot-support-service_1257429-74807.jpg',
     lastMessage: botIntroMessage,
 };
 
@@ -89,7 +89,7 @@ const chatSlice = createSlice({
             state.selectedConversationId = action.payload;
         },
 
-        setStatus(state, action: PayloadAction<'idle' | 'sending' | 'error'>) {
+        setStatus(state, action: PayloadAction<'idle' | 'sending' | 'error' | 'typing'>) {
             state.status = action.payload;
         },
     },

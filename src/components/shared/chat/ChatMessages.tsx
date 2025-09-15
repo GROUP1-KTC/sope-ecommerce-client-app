@@ -1,7 +1,6 @@
 import ChatInputBar from './ChatInputBar';
 import { Avatar, Box, IconButton, Typography } from '@mui/material';
 import MessageTypeFile from './MessageTypeFile';
-import { formatMessageTimestamp } from '~/utils/date.utils';
 import { useEffect, useRef, useState } from 'react';
 import type { StompSubscription } from '@stomp/stompjs';
 import { connectSocket } from '~/services/socket/socket.service';
@@ -30,6 +29,8 @@ const ChatMessages = ({
 }: ChatMessagesProps) => {
     const dispatch = useAppDispatch();
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    const botStatus = useAppSelector(state => state.chat.status);
 
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
@@ -108,10 +109,10 @@ const ChatMessages = ({
                         const isMine = msg.senderId === currentUserId;
                         console.log(
                             isMine +
-                                ' - ' +
-                                msg.senderId +
-                                ' - ' +
-                                currentUserId,
+                            ' - ' +
+                            msg.senderId +
+                            ' - ' +
+                            currentUserId,
                         );
                         return (
                             <Box
@@ -124,18 +125,18 @@ const ChatMessages = ({
                                     ...(msg.fileUrl
                                         ? {}
                                         : {
-                                              bgcolor: isMine
-                                                  ? 'primary.main'
-                                                  : 'white',
-                                              color: isMine
-                                                  ? 'white'
-                                                  : 'text.primary',
-                                              px: 2.5,
-                                              py: 1.5,
-                                              borderRadius: 2,
-                                              boxShadow:
-                                                  '0 1px 3px rgba(0,0,0,0.1)',
-                                          }),
+                                            bgcolor: isMine
+                                                ? 'primary.main'
+                                                : 'white',
+                                            color: isMine
+                                                ? 'white'
+                                                : 'text.primary',
+                                            px: 2.5,
+                                            py: 1.5,
+                                            borderRadius: 2,
+                                            boxShadow:
+                                                '0 1px 3px rgba(0,0,0,0.1)',
+                                        }),
                                 }}
                             >
                                 {msg.fileUrl ? (
@@ -152,11 +153,26 @@ const ChatMessages = ({
                                         textAlign: isMine ? 'right' : 'left',
                                     }}
                                 >
-                                    {formatMessageTimestamp(msg.sentAt)}
+                                    <span>{new Date().toLocaleString()}</span>
                                 </Typography>
                             </Box>
                         );
                     })
+                )}
+                {botStatus === 'typing' && (
+                    <Box
+                        sx={{
+                            alignSelf: 'flex-start',
+                            maxWidth: '50%',
+                            bgcolor: 'grey.200',
+                            px: 2,
+                            py: 1,
+                            borderRadius: 2,
+                            fontStyle: 'italic',
+                        }}
+                    >
+                        Bot is typing...
+                    </Box>
                 )}
                 <div ref={messagesEndRef} />
             </Box>

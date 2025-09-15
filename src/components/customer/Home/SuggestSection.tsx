@@ -2,18 +2,10 @@
 
 import React, { useState } from 'react';
 import ProductCard from '~/components/product-detail/ProductCard';
-
-interface Product {
-    id: number;
-    name: string;
-    price: number;
-    image: string;
-    rating: number;
-    sold: string;
-}
+import { ProductSummary } from '~/types/products';
 
 interface SuggestSectionProps {
-    products: Product[];
+    products: ProductSummary[];
     title?: string;
 }
 
@@ -43,7 +35,7 @@ const SuggestSection: React.FC<SuggestSectionProps> = ({
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     {visibleProducts.map((product) => (
-                        <ProductCard key={product.id} product={product} />
+                        <ProductCard key={product.productId} product={product} />
                     ))}
                 </div>
 

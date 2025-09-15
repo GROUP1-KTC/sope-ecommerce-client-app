@@ -2,12 +2,10 @@ import Banner from '~/components/customer/Home/Banner';
 import CategorySection from '~/components/customer/Home/CategorySection';
 import FlashSaleSection from '~/components/customer/Home/FlashSaleSection';
 import MostSearch from '~/components/customer/Home/MostSearchSection';
-import SuggestedProductsSection from '~/components/customer/Home/SuggestSection';
+import SuggestSectionContainer from '~/components/customer/Home/SuggestSectionContainer';
 import {
     categories,
-    flashSales,
     mostSearchProducts,
-    streams,
 } from '~/mock/mockProductData';
 import CategoryList from '~/components/customer/CategoryList';
 import LiveStreamSection from '~/components/customer/Home/LiveStreamSection';
@@ -18,9 +16,9 @@ const HomeCustomer = () => (
         <Banner />
         <CategorySection categories={categories} />
         <LiveStreamSection />
-        <FlashSaleSection items={flashSales} initialSeconds={3600 + 55} />
+        <FlashSaleSection/>
         <MostSearch products={mostSearchProducts} title={title} />
-        <SuggestedProductsSection products={mostSearchProducts} />
+        <SuggestSectionContainer />
         <CategoryList />
     </div>
 );
