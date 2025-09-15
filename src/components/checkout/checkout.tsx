@@ -39,11 +39,8 @@ export default function Checkout() {
     const { data: userAddresses, isLoading: isAddressesLoading } =
         useGetUserAddressesQuery(undefined);
 
-    const {
-        data: getDiscountsPlatform,
-        isLoading: isDiscountLoading,
-        error,
-    } = useGetPlatformDiscountQuery();
+    const { data: getDiscountsPlatform, isLoading: isLoadingDiscounts } =
+        useGetPlatformDiscountQuery();
 
     const [shippingRatesByShop, setShippingRatesByShop] = useState<
         Record<string, ShippingRate[]>

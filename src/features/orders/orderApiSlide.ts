@@ -66,6 +66,24 @@ export const orderApi = apiSlice.injectEndpoints({
             transformResponse: (response: { data: OrderGroupShop[] }) =>
                 response.data,
         }),
+
+        getAllOrders: builder.query<OrderGroupShop[], void>({
+            query: () => ({
+                url: 'orders',
+                method: 'GET',
+            }),
+            transformResponse: (response: { data: OrderGroupShop[] }) =>
+                response.data,
+        }),
+
+        getOrdersForShipper: builder.query<PageResponse<OrderGroupShop>, { status: string; page?: number; size?: number }>({
+            query: ({ status, page = 0, size = 20 }) => ({
+                url: `orders/shipper?status=${status}&page=${page}&size=${size}`,
+                credentials: 'omit',
+            }),
+            transformResponse: (response: { data: PageResponse<OrderGroupShop> }) =>
+                response.data,
+        }),
         cancelOrder: builder.mutation<
             void,
             { orderId: string; reason: string }
@@ -93,10 +111,12 @@ export const orderApi = apiSlice.injectEndpoints({
 export const {
     useCheckoutMutation,
     useGetOrdersQuery,
+    useGetAllOrdersQuery,
     useGetOrdersByShopQuery,
     useGetPendingOrdersByShopQuery,
     useGetRevenueByShopQuery,
     useGetOrderDetailQuery,
     useCancelOrderMutation,
     useUpdateOrderStatusMutation,
+    useGetOrdersForShipperQuery,
 } = orderApi;

@@ -5,7 +5,7 @@ import type { Shop } from './shop';
 
 export interface User {
     userId: string;
-    fullName: string;
+    name: string;
     dateOfBirth?: string;
     gender?: Gender;
     email: string;
