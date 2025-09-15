@@ -12,10 +12,11 @@ export default function SellerLayout({ children }: Readonly<{ children: React.Re
     const pathname = usePathname();
     const isAddProductPage = pathname?.includes('/seller/add-product');
     const isEidtProductPage = pathname?.includes('/seller/edit-product');
+    const isOrderDetail = pathname?.includes('/seller/orders');
     const [showLeftSidebar, setShowLeftSidebar] = useState(false);
     const [showRightSidebar, setShowRightSidebar] = useState(false);
 
-    if (isAddProductPage || isEidtProductPage) {
+    if (isAddProductPage || isEidtProductPage || isOrderDetail) {
         return (
             <>
                 <div className="fixed top-0 left-0 w-full z-50">

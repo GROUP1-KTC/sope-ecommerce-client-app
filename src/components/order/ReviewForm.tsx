@@ -94,22 +94,44 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ itemInfo, userId, onClose }) =>
 					</div>
 				</div>
 
-				<div className="mb-4 justify-between">
-					<p className="text-sm font-medium mb-1">Chất lượng sản phẩm</p>
+				<div className="mb-4 flex justify-between">
+					<p className="text-2sm font-medium mb-1">Chất lượng sản phẩm</p>
 					<div className="flex gap-1">
-						{[1, 2, 3, 4, 5].map((star) => (
-							<button
-								key={star}
-								type="button"
-								onClick={() => setRating(star)}
-								className={`text-2xl ${star <= rating ? 'text-yellow-400' : 'text-gray-300'
-									}`}
-							>
-								★
-							</button>
-						))}
+						{[1, 2, 3, 4, 5].map((star) => {
+							const filled = star <= rating;
+							return (
+								<button
+									key={star}
+									type="button"
+									onClick={() => setRating(star)}
+									className="w-8 h-8 cursor-pointer"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 24 24"
+										fill={filled ? "url(#grad)" : "none"}
+										stroke={filled ? "none" : "url(#grad)"}
+										strokeWidth="2"
+										className="w-8 h-8"
+									>
+										<defs>
+											<linearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
+												<stop offset="0%" stopColor="#FFD700" />
+												<stop offset="100%" stopColor="#FFA500" />
+											</linearGradient>
+										</defs>
+										<path
+											d="M12 .587l3.668 7.429 8.2 1.193-5.934 5.782 
+              1.402 8.172L12 18.896l-7.336 3.867 
+              1.402-8.172L.132 9.209l8.2-1.193z"
+										/>
+									</svg>
+								</button>
+							);
+						})}
 					</div>
 				</div>
+
 
 				{/* Content */}
 				<div className="mb-4">

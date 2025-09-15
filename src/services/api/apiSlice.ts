@@ -12,14 +12,10 @@ const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL_V3,
     credentials: 'include',
     prepareHeaders: (headers) => {
-        const storedUser = loadAuthUser()
+        const storedUser = loadAuthUser();
 
         if (storedUser && storedUser.accessToken) {
-
-            headers.set(
-                'Authorization',
-                `Bearer ${storedUser.accessToken}`,
-            );
+            headers.set('Authorization', `Bearer ${storedUser.accessToken}`);
         }
 
         return headers;
@@ -79,6 +75,8 @@ export const apiSlice = createApi({
         'PaymentCard',
         'Address',
         'Shop',
+        'Revenue',
+        'ServiceProgram',
     ],
     endpoints: () => ({}),
 });
