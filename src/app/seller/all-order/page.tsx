@@ -16,7 +16,7 @@ type Filters = {
     orderNumber: string;
 };
 export default function AllOrder({ shopIdProp }: { shopIdProp?: string }) {
-    const shopId = shopIdProp ?? '190e754a-20d1-42e9-81ce-fa1bc282caa9';
+    const shopId = shopIdProp ?? '8696366f-9402-48f9-84a2-9cd2599e72a0';
 
     const [activeTab, setActiveTab] = useState(0);
     const [page, setPage] = useState(0);

@@ -87,6 +87,8 @@ const Cart: React.FC = () => {
     const groupedCart = useMemo(() => {
         if (!isLoggedIn || !cartItemsFromApi?.length) return null;
 
+        console.log('Cart from API:', cartItemsFromApi);
+
         return cartItemsFromApi;
     }, [cartItemsFromApi, isLoggedIn]);
 
