@@ -1,7 +1,8 @@
+import { ProductSummary } from '~/types/products';
 import ProductCard from './ProductCard';
 
 interface Product {
-    id: number;
+    id: string;
     name: string;
     price: number;
     image: string;
@@ -14,7 +15,7 @@ const ProductList = ({
     products,
 }: {
     title: string;
-    products: Product[];
+    products: ProductSummary[];
 }) => {
     return (
         <div className="container mx-auto mt-4 p-4 border border-gray-200 rounded-lg">
@@ -23,7 +24,7 @@ const ProductList = ({
             </h2>
             <div className="flex flex-wrap gap-9 justify-center">
                 {products.map((product) => (
-                    <div key={product.id} className="w-[200px]">
+                    <div key={product.productId} className="w-[200px]">
                         <ProductCard product={product} />
                     </div>
                 ))}

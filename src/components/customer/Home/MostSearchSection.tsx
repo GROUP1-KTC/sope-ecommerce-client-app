@@ -4,18 +4,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ProductCard from '~/components/product-detail/ProductCard';
+import { ProductSummary } from '~/types/products/product';
 
-interface Product {
-    id: number;
-    name: string;
-    price: number;
-    image: string;
-    rating: number;
-    sold: string;
-}
 
 interface MostSearchProps {
-    products: Product[];
+    products: ProductSummary[];
     title?: string;
 }
 
@@ -78,7 +71,7 @@ const MostSearch: React.FC<MostSearchProps> = ({ products, title }) => {
                         <div className="flex gap-4 min-w-max">
                             {products.map((product) => (
                                 <div
-                                    key={product.id}
+                                    key={product.productId}
                                     className="w-48 min-w-[12rem]"
                                 >
                                     <ProductCard product={product} />

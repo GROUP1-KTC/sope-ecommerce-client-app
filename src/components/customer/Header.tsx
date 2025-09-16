@@ -5,7 +5,6 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import CloseIcon from '@mui/icons-material/Close';
-import GroupsIcon from '@mui/icons-material/Groups';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import HelpIcon from '@mui/icons-material/Help';
@@ -20,6 +19,7 @@ import HeaderCartIconWithBadge from './HeaderCartIconWithBadge';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { useSearchSuggestQuery } from '~/features/products/elasticApi';
 import { useRouter } from "next/navigation";
+import { useAppSelector } from '~/hooks/useTypes';
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -27,6 +27,12 @@ const Header = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isFocused, setIsFocused] = useState(false);
     const router = useRouter();
+
+    const roles = useAppSelector((state) => state.auth.roles);
+
+    const isSeller = roles.includes("SELLER");
+
+    console.log("isSeller", isSeller);
 
     const { data: products = [], isLoading } = useSearchSuggestQuery(
         searchTerm
@@ -95,9 +101,13 @@ const Header = () => {
             {/* Top bar - only show on desktop */}
             <div className="hidden sm:flex flex-col md:flex-row justify-between items-center px-4 sm:px-8 md:px-20 lg:px-40 py-1 text-xs sm:text-sm">
                 <div className="flex gap-3 items-center">
-                    <Link href="#" className="hover:text-yellow-200 transition">
-                        Trở thành Người bán Sope
+                    <Link
+                        href={isSeller ? "/seller" : "/create-shop"}
+                        className="hover:text-yellow-200 transition"
+                    >
+                        {isSeller ? "Trang Bán Hàng" : "Trở thành Người bán Sope"}
                     </Link>
+
                     <span>|</span>
                     <Link href="#" className="hover:text-yellow-200 transition">
                         Tải ứng dụng
@@ -257,12 +267,12 @@ const Header = () => {
                     Trang chủ Sope
                 </Link>
                 <Link
-                    href="#"
-                    className="hover:bg-white/10 rounded px-2 py-1 transition"
+                    href={isSeller ? "/seller" : "create-shop"}
+                    className="hover:text-yellow-200 transition"
                 >
-                    {' '}
-                    <GroupsIcon className="mr-6" /> Trở thành Người bán
+                    {isSeller ? "Trang Bán Hàng" : "Trở thành Người bán Sope"}
                 </Link>
+
                 <Link
                     href="#"
                     className="hover:bg-white/10 rounded px-2 py-1 transition"

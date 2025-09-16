@@ -1,23 +1,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { ProductSummary } from '~/types/products';
 
-interface Product {
-    id: number;
-    name: string;
-    price: number;
-    image: string;
-    rating: number;
-    sold: string;
-}
 
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = ({ product }: { product: ProductSummary }) => {
     return (
-        <Link href={`/product/${product.id}`}>
+        <Link href={`/product-by-slug/${product.slug}`}>
             <div className="bg-white mb-1 shadow-sm rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300 w-[192px] min-w-[192px] min-h-[240px] hover:scale-105">
                 <Image
                     width={192}
                     height={144}
-                    src={product.image}
+                    src={product.defaultImage}
                     alt={product.name}
                     className="w-full h-36 object-cover"
                 />
@@ -38,13 +31,14 @@ const ProductCard = ({ product }: { product: Product }) => {
                     </h3>
 
                     <p className="text-red-500 font-bold text-xs mb-1">
-                        ₫{product.price.toLocaleString('vi-VN')}
+                        ₫{(product.minPrice ?? 0).toLocaleString('vi-VN')}
                     </p>
                     <div className="flex items-center gap-1 text-xs text-gray-600">
-                        <span>⭐ {product.rating}</span>
+                        <span>⭐ {product.averageRating ?? 0}</span>
                         <span>|</span>
-                        <span>{product.sold} Đã bán</span>
+                        <span>{(product.totalSold ?? 0).toLocaleString('vi-VN')} Đã bán</span>
                     </div>
+
                 </div>
             </div>
         </Link>

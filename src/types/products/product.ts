@@ -139,3 +139,14 @@ export type SellerLiveProduct = {
     highlightActive?: boolean;
     stock: number;
 };
+
+export interface ProductSummary {
+  productId: string;  
+  name: string;
+  slug: string;
+  minPrice: number;
+  defaultImage: string;
+  totalStock: number;
+  totalSold: number;
+  averageRating: number | null;
+}

@@ -1,4 +1,4 @@
-import type { PageResponse, ProductResponse } from '../../types/products';
+import type { PageResponse, Product, ProductResponse, ProductSummary } from '../../types/products';
 
 import { apiSlice } from '~/services/api/apiSlice';
 
@@ -22,7 +22,7 @@ export const productApi = apiSlice.injectEndpoints({
             onQueryStarted: async (_arg, { queryFulfilled }) => {
                 try {
                     const { data } = await queryFulfilled;
-                    console.log('✅ API createProduct thành công:', data);
+                    console.log('API createProduct thành công:', data);
                 } catch (err) {
                 }
             },
@@ -41,9 +41,9 @@ export const productApi = apiSlice.injectEndpoints({
             onQueryStarted: async (_arg, { queryFulfilled }) => {
                 try {
                     const { data } = await queryFulfilled;
-                    console.log('✅ API updateProduct thành công:', data);
+                    console.log('API updateProduct thành công:', data);
                 } catch (err) {
-                    console.error('❌ API updateProduct thất bại:', err);
+                    console.error('API updateProduct thất bại:', err);
                 }
             },
         }),
@@ -58,6 +58,33 @@ export const productApi = apiSlice.injectEndpoints({
             }),
             providesTags: ['Product'],
         }),
+        getInitProducts: builder.query<ProductSummary[], void>({
+            query: () => ({
+                url: 'v1/products/init',
+                method: 'GET',
+                credentials: 'omit',
+            }),
+            providesTags: ['Product'],
+        }),
+        getSuggestedProducts: builder.query<ProductSummary[], { productId: string; limit?: number }>({
+            query: ({ productId, limit = 10 }) => `v1/products/suggested/${productId}?limit=${limit}`,
+            providesTags: ['Product'],
+        }),
+
+        getSimilarProducts: builder.query<ProductSummary[], { productId: string; limit?: number }>({
+            query: ({ productId, limit = 5 }) => `v1/products/similar/${productId}?limit=${limit}`,
+            providesTags: ['Product'],
+        }),
+
+        getInitProductsForGuest: builder.query<ProductSummary[], void>({
+            query: () => ({
+                url: 'v1/products/initforguest',
+                method: 'GET',
+                credentials: 'omit',
+            }),
+            providesTags: ['Product'],
+        }),
+
     }),
 });
 
@@ -66,4 +93,8 @@ export const {
     useGetProductBySlugQuery,
     useGetProductByShopQuery,
     useUpdateProductMutation,
+    useGetInitProductsQuery,
+    useGetSuggestedProductsQuery,
+    useGetSimilarProductsQuery,
+    useGetInitProductsForGuestQuery,
 } = productApi;

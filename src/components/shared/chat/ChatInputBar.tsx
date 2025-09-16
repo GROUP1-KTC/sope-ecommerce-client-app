@@ -48,6 +48,7 @@ const ChatInputBar = () => {
     );
 
     const dispatch = useAppDispatch();
+    
 
     const handleSend = async () => {
         if (!input.trim() || !selectedConversationId || !currentUserId) return;
@@ -63,6 +64,8 @@ const ChatInputBar = () => {
 
             dispatch(addMessage({ conversationId: BOT_CONVERSATION_ID, message: userMessage }));
             setInput('');
+            
+            dispatch(setStatus('typing'));
 
             try {
                 dispatch(setStatus('sending'));

@@ -4,12 +4,13 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 // import Image from 'next/image';
 import Link from 'next/link';
-import { useGetProductBySlugQuery } from '~/features/products/productApi';
+import { useGetProductBySlugQuery, useGetSimilarProductsQuery, useGetSuggestedProductsQuery } from '~/features/products/productApi';
 import { useGetBreadcrumbCategoryQuery } from '~/features/categories/categoryApi';
 import ProductInfo from '~/components/product-detail/ProductInfo';
 import ProductReviews from '~/components/product-detail/ProductReviews';
 import { useGetReviewByProductQuery, useCreateReviewMutation } from '~/features/reviews/reviewApi';
 import { skipToken } from '@reduxjs/toolkit/query';
+import ProductList from '~/components/product-detail/ProductList';
 
 const ProductBySlug = () => {
     const params = useParams();
@@ -19,6 +20,14 @@ const ProductBySlug = () => {
     const { data: reviews } = useGetReviewByProductQuery(product?.productId ?? skipToken);
     const categoryId = product?.categoryId;
     const { data: breadcrumb } = useGetBreadcrumbCategoryQuery(categoryId!, { skip: !categoryId, });
+
+    const { data: suggestedProducts } = useGetSuggestedProductsQuery(
+        product?.productId ? { productId: product.productId, limit: 5 } : skipToken
+    );
+
+    const { data: similarProducts } = useGetSimilarProductsQuery(
+        product?.productId ? { productId: product.productId, limit: 5 } : skipToken
+    );
 
     const attributeMap = useMemo(() => {
         const map = new Map<string, Set<string>>();
@@ -108,6 +117,14 @@ const ProductBySlug = () => {
                 price={displayedPrice}
                 stock={displayedStock}
             />
+
+            {suggestedProducts && suggestedProducts.length > 0 && (
+                <ProductList title="Sản phẩm gợi ý" products={suggestedProducts} />
+            )}
+
+            {similarProducts && similarProducts.length > 0 && (
+                <ProductList title="Sản phẩm tương tự" products={similarProducts} />
+            )}
 
             <ProductReviews reviews={reviews ?? []} />
 
