@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, JSX } from 'react';
 import { usePathname } from 'next/navigation';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
@@ -8,7 +8,18 @@ import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 import StoreOutlinedIcon from '@mui/icons-material/StoreOutlined';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import RecommendOutlinedIcon from '@mui/icons-material/RecommendOutlined';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import { useGetShopIdQuery } from '~/features/shop/shopApi';
 import DiscountOutlinedIcon from '@mui/icons-material/DiscountOutlined';
+
+
+// Kiểu cho item
+type NavItem = {
+    label: string;
+    icon: JSX.Element;
+    href?: string; // nếu có href -> link trực tiếp
+    children?: { label: string; href: string }[];
+};
 
 export default function MerchantSidebar() {
     const [openItems, setOpenItems] = useState<Record<number, boolean>>({});
@@ -16,8 +27,15 @@ export default function MerchantSidebar() {
 
     const pathname = usePathname();
 
-    const navItems = useMemo(
+     const { data: shopId } = useGetShopIdQuery();
+
+    const navItems: NavItem[] = useMemo(
         () => [
+            {
+                label: 'Dashboard',
+                icon: <DashboardOutlinedIcon className="h-5 w-5 mr-3" />,
+                href: '/seller/dashboard',
+            },
             {
                 label: 'Order Management',
                 icon: <ShoppingCartOutlinedIcon className="h-5 w-5 mr-3" />,
@@ -43,10 +61,7 @@ export default function MerchantSidebar() {
                 label: 'Marketing Channel',
                 icon: <LocalOfferIcon className="h-5 w-5 mr-3" />,
                 children: [
-                    {
-                        label: 'Marketing Channel',
-                        href: '/seller/marketing-channel',
-                    },
+                    { label: 'Marketing Channel', href: '/seller/marketing-channel' },
                     { label: 'Shop Promotions', href: '#promotions' },
                     { label: 'Shop Flash Sale', href: '#flash-sale' },
                     { label: 'Shop Discount Code', href: '#discount' },
@@ -56,14 +71,8 @@ export default function MerchantSidebar() {
                 label: 'Customer Service',
                 icon: <RecommendOutlinedIcon className="h-5 w-5 mr-3" />,
                 children: [
-                    {
-                        label: 'Chat Management',
-                        href: '/seller/chat-management',
-                    },
-                    {
-                        label: 'Review Management',
-                        href: '/seller/review-management',
-                    },
+                    { label: 'Chat Management', href: '/seller/chat-management' },
+                    { label: 'Review Management', href: '/seller/review-management' },
                 ],
             },
             {
@@ -71,10 +80,7 @@ export default function MerchantSidebar() {
                 icon: <PaymentsOutlinedIcon className="h-5 w-5 mr-3" />,
                 children: [
                     { label: 'Revenue', href: '/seller/turnover' },
-                    {
-                        label: 'Sope Account Balance',
-                        href: '/seller/account-balance',
-                    },
+                    { label: 'Sope Account Balance', href: '/seller/account-balance' },
                     { label: 'Bank Account', href: '/seller/bank' },
                 ],
             },
@@ -86,6 +92,11 @@ export default function MerchantSidebar() {
                     { label: 'Shop Decoration', href: '#decoration' },
                 ],
             },
+            {
+                label: 'Live Stream',
+                icon: <StoreOutlinedIcon className="h-5 w-5 mr-3" />,
+                href: `/live/seller/${shopId}`
+            }
         ],
         [],
     );

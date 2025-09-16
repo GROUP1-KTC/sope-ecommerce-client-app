@@ -1,13 +1,13 @@
 'use client';
 
 import React from 'react';
-import type { CollapseProduct } from '~/types/products/product';
+import type { ProductSummary } from '~/types/products/product';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import StarIcon from '@mui/icons-material/Star';
 
 interface CollapseProductCardProps {
-    product: CollapseProduct & { rating?: number; sold?: number };
-    onAddToCart?: (product: CollapseProduct) => void;
+    product: ProductSummary & { rating?: number; sold?: number };
+    onAddToCart?: (product: ProductSummary) => void;
 }
 
 const CollapseProductCard = ({
@@ -21,7 +21,7 @@ const CollapseProductCard = ({
             <div className="flex flex-col">
                 <div className="flex items-center gap-3">
                     <img
-                        src={product.image}
+                        src={product.defaultImage}
                         alt={product.name}
                         className="w-20 h-20 object-cover rounded ml-2"
                     />
@@ -48,9 +48,9 @@ const CollapseProductCard = ({
                         </div>
 
                         <span className="text-sm font-semibold text-black-500">
-                            {product.price.toLocaleString()}₫{' '}
+                            {product.minPrice.toLocaleString()}₫{' '}
                             <span className="text-xs ml-2 text-red-500 line-through">
-                                {product.originalPrice.toLocaleString()}₫
+                                {product.minPrice.toLocaleString()}₫
                             </span>
                         </span>
                     </div>

@@ -13,43 +13,25 @@ import LeftPanel from '~/components/livestream/seller/LeftPannel';
 import CenterPanel from '~/components/livestream/seller/CenterPannel';
 import RightPanel from '~/components/livestream/seller/RightPannel';
 import SellerLiveLayout from './layout';
-import type { SellerLiveProduct } from '~/types/products';
 import type { Comment } from '~/types/comment';
-import { title } from 'process';
 import { useAlertStore } from '~/store/zustand/alertStore';
+import { useGetApprovedProductsByShopQuery } from '~/features/products/productApi';
+import { ProductSummary, SellerLiveProduct } from '~/types/products';
 
-const mockProducts: SellerLiveProduct[] = [
-    {
-        id: 1,
-        name: 'Áo thun hot',
-        originalPrice: 299000,
-        price: 199000,
-        image: 'https://i.pravatar.cc/200',
-        sold: 150,
-        stock: 50,
+function mapToSellerLiveProduct(summary: ProductSummary): SellerLiveProduct {
+    return {
+        id: summary.productId, 
+        name: summary.name,
+        image: summary.defaultImage,
+        originalPrice: summary.minPrice, 
+        price: summary.minPrice,
+        sold: summary.totalSold,
+        stock: summary.totalStock,
         onPin: false,
-    },
-    {
-        id: 2,
-        name: 'Giày sneaker',
-        originalPrice: 999000,
-        price: 799000,
-        image: 'https://i.pravatar.cc/200',
-        sold: 200,
-        stock: 30,
-        onPin: false,
-    },
-    {
-        id: 3,
-        name: 'Mũ lưỡi trai',
-        originalPrice: 199000,
-        price: 149000,
-        image: 'https://i.pravatar.cc/200',
-        sold: 100,
-        stock: 20,
-        onPin: false,
-    },
-];
+        flashSaleActive: false,
+        highlightActive: false,
+    };
+}
 
 export default function SellerPage() {
     const { shopId } = useParams<{ shopId: string }>();
@@ -59,6 +41,15 @@ export default function SellerPage() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const [chat, setChat] = useState<Comment[]>([]);
+
+    const { data } = useGetApprovedProductsByShopQuery({
+        shopId,
+        page: 0,
+        size: 12,
+    });
+
+    const products: SellerLiveProduct[] = data?.content.map(mapToSellerLiveProduct) ?? [];
+
 
     const startPreview = async () => {
         try {
@@ -202,7 +193,7 @@ export default function SellerPage() {
                         className="absolute inset-0 w-full h-full object-cover rounded"
                     />
                 </LeftPanel>
-                <CenterPanel products={mockProducts} />
+                <CenterPanel products={products} />
                 <RightPanel comments={chat} />
             </div>
         </SellerLiveLayout>
