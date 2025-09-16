@@ -5,11 +5,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface Category {
-    name: string;
-    img: string;
-}
+import { Category } from '~/types/products';
 
 interface CategorySectionProps {
     categories: Category[];
@@ -24,9 +20,11 @@ const CategorySection: React.FC<CategorySectionProps> = ({
     const [atStart, setAtStart] = useState(true);
     const [atEnd, setAtEnd] = useState(false);
 
+    const topCategories = categories.filter((cat) => cat.level === 1);
+
     const rows = [
-        categories.slice(0, itemsPerRow),
-        categories.slice(itemsPerRow, itemsPerRow * 2),
+        topCategories.slice(0, itemsPerRow),
+        topCategories.slice(itemsPerRow, itemsPerRow * 2),
     ];
 
     const handleScroll = (dir: 'left' | 'right') => {
@@ -80,7 +78,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                                 <div key={idx} className="flex flex-row mb-2">
                                     {row.map((cat) => (
                                         <Link
-                                            href="/product"
+                                            href={`/${cat.slug}`}
                                             key={cat.name}
                                             className="flex flex-col items-center mx-2 cursor-pointer w-24"
                                         >
