@@ -4,6 +4,7 @@ import type {
     OrderCreateRequest,
     OrderCreateResponse,
     OrderGroupShop,
+    OrderStatus,
     PageResponse,
 } from '~/types/orders/order';
 
@@ -28,6 +29,18 @@ export const orderApi = apiSlice.injectEndpoints({
             }),
             providesTags: ['Order'],
         }),
+
+        getPendingOrdersByShop: builder.query<
+            ApiResponse<PageResponse<OrderGroupShop>>,
+            { shopId: string; page?: number; size?: number }
+        >({
+            query: ({ shopId, page = 0, size = 20 }) => ({
+                url: `orders/shop/${shopId}/pending?page=${page}&size=${size}`,
+                credentials: 'omit',
+            }),
+            providesTags: ['Order'],
+        }),
+
         getRevenueByShop: builder.query<
             ApiResponse<OrderGroupShop[]>,
             { shopId: string }
@@ -53,6 +66,24 @@ export const orderApi = apiSlice.injectEndpoints({
             transformResponse: (response: { data: OrderGroupShop[] }) =>
                 response.data,
         }),
+
+        getAllOrders: builder.query<OrderGroupShop[], void>({
+            query: () => ({
+                url: 'orders',
+                method: 'GET',
+            }),
+            transformResponse: (response: { data: OrderGroupShop[] }) =>
+                response.data,
+        }),
+
+        getOrdersForShipper: builder.query<PageResponse<OrderGroupShop>, { status: string; page?: number; size?: number }>({
+            query: ({ status, page = 0, size = 20 }) => ({
+                url: `orders/shipper?status=${status}&page=${page}&size=${size}`,
+                credentials: 'omit',
+            }),
+            transformResponse: (response: { data: PageResponse<OrderGroupShop> }) =>
+                response.data,
+        }),
         cancelOrder: builder.mutation<
             void,
             { orderId: string; reason: string }
@@ -63,14 +94,29 @@ export const orderApi = apiSlice.injectEndpoints({
                 body: { reason },
             }),
         }),
+
+        updateOrderStatus: builder.mutation<
+            void,
+            { orderId: string; status: OrderStatus }
+        >({
+            query: ({ orderId, status }) => ({
+                url: `orders/update-status`,
+                method: 'PATCH',
+                body: { status, orderId },
+            }),
+        }),
     }),
 });
 
 export const {
     useCheckoutMutation,
     useGetOrdersQuery,
+    useGetAllOrdersQuery,
     useGetOrdersByShopQuery,
+    useGetPendingOrdersByShopQuery,
     useGetRevenueByShopQuery,
     useGetOrderDetailQuery,
     useCancelOrderMutation,
+    useUpdateOrderStatusMutation,
+    useGetOrdersForShipperQuery,
 } = orderApi;

@@ -14,8 +14,8 @@ type FlashSaleData = {
 
 type ProductLiveCardProps = {
     product: SellerLiveProduct;
-    onPinAction: (id: number) => void;
-    pinnedId?: number;
+    onPinAction: (id: string) => void;
+    pinnedId?: string | null;
 };
 
 export function ProductLiveCard({

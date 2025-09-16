@@ -9,11 +9,12 @@ interface ProductReviewsProps {
 const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
     const [selectedFilter, setSelectedFilter] = useState<'all' | number>('all');
 
-    console.log('check reviews', reviews)
+    console.log('check reviews', reviews);
 
     const averageRating =
         reviews.length > 0
-            ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
+            ? reviews.reduce((sum, review) => sum + review.rating, 0) /
+              reviews.length
             : 0;
 
     const starCounts = [5, 4, 3, 2, 1].map(
@@ -40,21 +41,66 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
                         <div className="flex">
                             {[1, 2, 3, 4, 5].map((star) => {
                                 if (star <= Math.floor(averageRating)) {
-                                    return <span key={star} className="text-3xl text-red-500">★</span>;
-                                } else if (star === Math.floor(averageRating) + 1) {
-                                    const fraction = averageRating - Math.floor(averageRating);
+                                    return (
+                                        <span
+                                            key={star}
+                                            className="text-3xl text-red-500"
+                                        >
+                                            ★
+                                        </span>
+                                    );
+                                } else if (
+                                    star ===
+                                    Math.floor(averageRating) + 1
+                                ) {
+                                    const fraction =
+                                        averageRating -
+                                        Math.floor(averageRating);
                                     if (fraction >= 0.8) {
-                                        return <span key={star} className="text-3xl text-red-500">★</span>;
+                                        return (
+                                            <span
+                                                key={star}
+                                                className="text-3xl text-red-500"
+                                            >
+                                                ★
+                                            </span>
+                                        );
                                     } else if (fraction >= 0.25) {
-                                        return <span key={star} className="text-3xl text-red-500 relative">
-                                            <span className="absolute overflow-hidden" style={{ width: '50%' }}>★</span>
-                                            <span className="text-gray-300">★</span>
-                                        </span>;
+                                        return (
+                                            <span
+                                                key={star}
+                                                className="text-3xl text-red-500 relative"
+                                            >
+                                                <span
+                                                    className="absolute overflow-hidden"
+                                                    style={{ width: '50%' }}
+                                                >
+                                                    ★
+                                                </span>
+                                                <span className="text-gray-300">
+                                                    ★
+                                                </span>
+                                            </span>
+                                        );
                                     } else {
-                                        return <span key={star} className="text-3xl text-gray-300">★</span>;
+                                        return (
+                                            <span
+                                                key={star}
+                                                className="text-3xl text-gray-300"
+                                            >
+                                                ★
+                                            </span>
+                                        );
                                     }
                                 } else {
-                                    return <span key={star} className="text-3xl text-gray-300">★</span>;
+                                    return (
+                                        <span
+                                            key={star}
+                                            className="text-3xl text-gray-300"
+                                        >
+                                            ★
+                                        </span>
+                                    );
                                 }
                             })}
                         </div>
@@ -69,9 +115,11 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
                     <button
                         onClick={() => setSelectedFilter('all')}
                         className={`relative px-3 py-1 text-sm rounded-md 
-                        ${selectedFilter === 'all'
+                        ${
+                            selectedFilter === 'all'
                                 ? 'border border-red-500 text-red-500'
-                                : 'bg-gray-200 hover:bg-gray-300'}`}
+                                : 'bg-gray-200 hover:bg-gray-300'
+                        }`}
                     >
                         Tất cả ({reviews.length})
                         {selectedFilter === 'all' && (
@@ -86,9 +134,11 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
                             key={star}
                             onClick={() => setSelectedFilter(star)}
                             className={`relative px-3 py-1 text-sm rounded-md 
-                            ${selectedFilter === star
+                            ${
+                                selectedFilter === star
                                     ? 'border border-red-500 text-red-500'
-                                    : 'bg-gray-200 hover:bg-gray-300'}`}
+                                    : 'bg-gray-200 hover:bg-gray-300'
+                            }`}
                         >
                             {star} sao ({starCounts[5 - star]})
                             {selectedFilter === star && (
@@ -106,20 +156,25 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
                 {filteredReviews.map((review) => (
                     <Comment
                         key={review.reviewId}
-                        avatar={'https://res.cloudinary.com/dybo8zd4y123/image/upload/v1756883466/mqre9eovhxqpgo4z2pik.webp'}
-                        username={"Nguoi dung review"}
+                        avatar={
+                            'https://res.cloudinary.com/dybo8zd4y123/image/upload/v1756883466/mqre9eovhxqpgo4z2pik.webp'
+                        }
+                        username={review.user.name || 'Người dùng ẩn danh'}
                         rating={review.rating}
                         content={review.content}
                         videoReviewUrl={review.videoReviewUrl}
-                        date={new Date(review.createdAt).toLocaleString('vi-VN', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit',
-                            hour12: false
-                        })}
+                        date={new Date(review.createdAt).toLocaleString(
+                            'vi-VN',
+                            {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                hour12: false,
+                            },
+                        )}
                         mediaList={review.mediaList ?? []}
                         attributes={review.productVariant?.attributes ?? []}
                     />

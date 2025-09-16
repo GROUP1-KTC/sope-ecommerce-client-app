@@ -1,4 +1,4 @@
-import type { CartGroup, CartItem } from '~/app/(customer)/cart/page';
+import type { CartGroup } from '~/app/(customer)/cart/page';
 import { apiSlice } from '~/services/api/apiSlice';
 import type { AddToCartRequest } from '~/types/cart/AddToCartRequest';
 import type { UpdateCartItemRequest } from '~/types/cart/UpdateCartItemReques';

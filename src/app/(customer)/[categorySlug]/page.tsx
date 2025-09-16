@@ -12,45 +12,31 @@ import SelectFilter from '~/components/product-list/SelectFilter';
 
 const CategoryPage = () => {
     const params = useParams();
-    const slug = params?.categorySlug as string;
+    const slug = params.categorySlug as string ?? "";
+
+    console.log('check slug', slug)
 
     const { data: categories = [], isLoading: loadingCategories } = useGetCategoriesQuery();
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-    const { data: products = [], isLoading: loadingProducts } =
-        useGetProductsByCategoryQuery(slug);
+    const [page, setPage] = useState(0);
 
-    const mappedProducts = products.map((p) => {
-        const minPrice = Math.min(
-            ...p.variantsByCategory.map((v) => Number(v.price)),
-        );
-        const totalSold = p.variantsByCategory.reduce(
-            (acc, v) => acc + v.sold,
-            0,
+    const { data: productsByCategory, isLoading: loadingProducts } =
+        useGetProductsByCategoryQuery(
+            { slug, page, size: 20 },
+            { skip: !slug }
         );
 
-        return {
-            productId: p.productId,
-            slug: p.slug,
-            name: p.name,
-            brand: p.brand,
-            defaultImage: p.defaultImage,
-            defaultPrice: minPrice,
-            totalSold,
-        };
-    });
+    console.log('check productsByCategory', productsByCategory?.content)
 
-    if (loadingCategories || loadingProducts) return <p>Đang tải...</p>;
+    if (loadingProducts) return <p>Đang tải sản phẩm...</p>;
 
-    const category = categories.find((cat) => cat.slug === slug);
-
-    if (!category) return <p>Không tìm thấy danh mục</p>;
 
     return (
         <div className="w-full flex justify-center bg-gray-50 py-8">
             <div className="bg-white rounded-xl shadow p-6 max-w-7xl w-full flex">
                 {/* Sidebar */}
-                <div className="w-64 pr-6 border-r">
+                <div className="w-64 pr-6 ">
                     <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
                         Tất Cả Danh Mục
                     </h2>
@@ -60,14 +46,23 @@ const CategoryPage = () => {
                         selectedCategory={selectedCategory}
                         setSelectedCategory={setSelectedCategory}
                     />
-                    <SelectFilter />
+                    {/* <SelectFilter /> */}
 
                 </div>
 
-                {/* Main Content */}
-                <ProductList
-                    products={mappedProducts}
-                />
+                {/* MAIN CONTENT */}
+                <div className="flex-1">
+                    <div id="all-products" className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                        <h2 className="font-semibold text-lg text-gray-800 mb-5">Tất cả sản phẩm</h2>
+                        <ProductList
+                            products={productsByCategory?.content || []}
+                            page={page}
+                            totalPages={productsByCategory?.totalPages || 1}
+                            onPageChange={setPage}
+                        />
+                    </div>
+                </div>
+
             </div>
         </div>
     );

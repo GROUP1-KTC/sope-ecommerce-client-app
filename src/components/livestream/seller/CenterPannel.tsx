@@ -9,7 +9,7 @@ type CenterPanelProps = {
 
 export default function CenterPanel({ products }: CenterPanelProps) {
     const [query, setQuery] = useState('');
-    const [pinnedId, setPinnedId] = useState<number | null>(null);
+    const [pinnedId, setPinnedId] = useState<string | null>(null);
 
     // filter sản phẩm theo tên (trừ sản phẩm đang ghim)
     const filteredProducts = useMemo(() => {
@@ -20,7 +20,7 @@ export default function CenterPanel({ products }: CenterPanelProps) {
         );
     }, [products, query, pinnedId]);
 
-    const handlePin = (id: number) => {
+    const handlePin = (id: string) => {
         setPinnedId((prev) => (prev === id ? null : id)); // toggle pin
     };
 

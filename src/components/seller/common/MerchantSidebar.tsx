@@ -10,6 +10,7 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import RecommendOutlinedIcon from '@mui/icons-material/RecommendOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import { useGetShopIdQuery } from '~/features/shop/shopApi';
+import DiscountOutlinedIcon from '@mui/icons-material/DiscountOutlined';
 
 
 // Kiểu cho item
@@ -40,11 +41,13 @@ export default function MerchantSidebar() {
                 icon: <ShoppingCartOutlinedIcon className="h-5 w-5 mr-3" />,
                 children: [
                     { label: 'All Order', href: '/seller/all-order' },
-                    {
-                        label: 'Return/Refund or Cancellation Order',
-                        href: '/seller/return-order',
-                    },
+                    { label: 'New Order', href: '/seller/confirm-order' },
                 ],
+            },
+            {
+                label: 'Voucher Management',
+                icon: <DiscountOutlinedIcon className="h-5 w-5 mr-3" />,
+                href: '/seller/vouchers',
             },
             {
                 label: 'Product Management',
@@ -101,21 +104,14 @@ export default function MerchantSidebar() {
     useEffect(() => {
         setActivePath(pathname);
         navItems.forEach((item, index) => {
-            const isChildActive = item.children?.some((sub) => sub.href === pathname);
-            if (isChildActive) {
-                setOpenItems((prev) => ({
-                    ...prev,
-                    [index]: true,
-                }));
+            if (item.children?.some((sub) => sub.href === pathname)) {
+                setOpenItems((prev) => ({ ...prev, [index]: true }));
             }
         });
     }, [pathname, navItems]);
 
     const toggleItem = (index: number) => {
-        setOpenItems((prev) => ({
-            ...prev,
-            [index]: !prev[index],
-        }));
+        setOpenItems((prev) => ({ ...prev, [index]: !prev[index] }));
     };
 
     return (
@@ -134,25 +130,30 @@ export default function MerchantSidebar() {
                                             {item.icon}
                                             <span>{item.label}</span>
                                         </span>
-                                        <span>{openItems[index] ? '▾' : '▸'}</span>
+                                        <span>
+                                            {openItems[index] ? '▾' : '▸'}
+                                        </span>
                                     </button>
 
                                     {openItems[index] && (
                                         <ul className="ml-8 mt-1">
-                                            {item.children.map((sub, subIndex) => (
-                                                <li key={subIndex}>
-                                                    <a
-                                                        href={sub.href}
-                                                        className={`block py-1 px-2 text-sm rounded-md ${
-                                                            activePath === sub.href
-                                                                ? 'text-red-500 bg-orange-100'
-                                                                : 'text-gray-600 hover:text-red-500 hover:bg-gray-50'
-                                                        }`}
-                                                    >
-                                                        {sub.label}
-                                                    </a>
-                                                </li>
-                                            ))}
+                                            {item.children.map(
+                                                (sub, subIndex) => (
+                                                    <li key={subIndex}>
+                                                        <a
+                                                            href={sub.href}
+                                                            className={`block py-1 px-2 text-sm rounded-md ${
+                                                                activePath ===
+                                                                sub.href
+                                                                    ? 'text-red-500 bg-orange-100'
+                                                                    : 'text-gray-600 hover:text-red-500 hover:bg-gray-50'
+                                                            }`}
+                                                        >
+                                                            {sub.label}
+                                                        </a>
+                                                    </li>
+                                                ),
+                                            )}
                                         </ul>
                                     )}
                                 </>
@@ -162,7 +163,7 @@ export default function MerchantSidebar() {
                                     className={`w-full flex items-center py-2 px-3 rounded-md ${
                                         activePath === item.href
                                             ? 'text-red-500 bg-orange-100'
-                                            : 'text-gray-700 hover:bg-gray-100 hover:text-red-500'
+                                            : 'text-gray-700 hover:text-red-500 hover:bg-gray-100'
                                     }`}
                                 >
                                     {item.icon}

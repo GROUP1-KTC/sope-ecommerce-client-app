@@ -16,8 +16,7 @@ type Filters = {
     orderNumber: string;
 };
 export default function AllOrder({ shopIdProp }: { shopIdProp?: string }) {
-
-    const shopId = shopIdProp ?? '4d3bb71f-860c-48cf-b96e-984b55b21822';
+    const shopId = shopIdProp ?? '8696366f-9402-48f9-84a2-9cd2599e72a0';
 
     const [activeTab, setActiveTab] = useState(0);
     const [page, setPage] = useState(0);
@@ -29,7 +28,11 @@ export default function AllOrder({ shopIdProp }: { shopIdProp?: string }) {
         orderNumber: '',
     });
 
-    const { data: allOrder, isLoading, isError } = useGetOrdersByShopQuery({
+    const {
+        data: allOrder,
+        isLoading,
+        isError,
+    } = useGetOrdersByShopQuery({
         shopId,
         page,
         size,
@@ -56,10 +59,21 @@ export default function AllOrder({ shopIdProp }: { shopIdProp?: string }) {
 
     const counts: Record<string, number> = {
         ALL: allOrder?.data?.totalElements ?? 0,
-        PENDING: allOrder?.data?.content?.filter(o => o.order.status === 'PENDING').length ?? 0,
-        CONFIRMED: allOrder?.data?.content?.filter(o => o.order.status === 'CONFIRMED').length ?? 0,
-        DELIVERED: allOrder?.data?.content?.filter(o => o.order.status === 'DELIVERED').length ?? 0,
-        CANCELLED: allOrder?.data?.content?.filter(o => o.order.status === 'CANCELLED').length ?? 0,
+        PENDING:
+            allOrder?.data?.content?.filter((o) => o.order.status === 'PENDING')
+                .length ?? 0,
+        CONFIRMED:
+            allOrder?.data?.content?.filter(
+                (o) => o.order.status === 'CONFIRMED',
+            ).length ?? 0,
+        DELIVERED:
+            allOrder?.data?.content?.filter(
+                (o) => o.order.status === 'DELIVERED',
+            ).length ?? 0,
+        CANCELLED:
+            allOrder?.data?.content?.filter(
+                (o) => o.order.status === 'CANCELLED',
+            ).length ?? 0,
     };
 
     return (

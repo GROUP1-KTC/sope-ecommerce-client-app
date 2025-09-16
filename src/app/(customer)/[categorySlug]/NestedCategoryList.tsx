@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import type { Category } from '~/types/products';
+import { Plus, Minus } from 'lucide-react';
 
 const CategoryNode = ({
     category,
@@ -29,8 +30,8 @@ const CategoryNode = ({
                 <Link
                     href={`/${category.slug}`}
                     className={`flex-1 block rounded text-sm px-2 py-1 cursor-pointer ${currentSlug === category.slug
-                            ? 'border border-red-500 text-red-500 font-semibold bg-red-50'
-                            : 'hover:bg-gray-100'
+                        ? 'border border-red-500 text-red-500 font-semibold bg-red-50'
+                        : 'hover:bg-gray-100'
                         }`}
                 >
                     {category.name}
@@ -38,10 +39,14 @@ const CategoryNode = ({
 
                 {children.length > 0 && (
                     <button
-                        className="text-xs text-gray-800 px-2 focus:outline-none"
+                        className="cursor-pointer  text-xs text-gray-800 px-2 focus:outline-none"
                         onClick={() => toggleOpen(category.id)}
                     >
-                        {openCategories[category.id] ? '-' : '+'}
+                        {openCategories[category.id] ? (
+                            <Minus size={18} className="text-gray-600" />
+                        ) : (
+                            <Plus size={18} className="text-gray-600" />
+                        )}
                     </button>
                 )}
             </div>

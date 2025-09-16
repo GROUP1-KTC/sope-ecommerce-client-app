@@ -117,7 +117,8 @@ export interface OrderDetail {
     paymentProvider: string | null;
     paymentStatus: string;
     statusHistory: OrderStatusHistory[];
-    createdAt: string | null;
+    createdAt: string;
+    paymentPayUrl?: string;
 }
 
 export interface OrderGroupShop {

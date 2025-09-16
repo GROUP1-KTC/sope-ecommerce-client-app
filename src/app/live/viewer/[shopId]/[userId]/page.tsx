@@ -16,7 +16,7 @@ import { ShoppingBagIcon } from 'lucide-react';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useAppDispatch } from '~/hooks/useTypes';
 import { useAlertStore } from '~/store/zustand/alertStore';
-import { useGetProductByShopQuery } from '~/features/products/productApi';
+import { useGetApprovedProductsByShopQuery } from '~/features/products/productApi';
 
 
 export default function ViewerPage() {
@@ -27,7 +27,7 @@ export default function ViewerPage() {
     const [showCart, setShowCart] = useState(false);
     const dispatch = useAppDispatch();
 
-    const { data, isLoading, error } = useGetProductByShopQuery({
+    const { data, isLoading, error } = useGetApprovedProductsByShopQuery({
         shopId,
         page: 0,
         size: 12,

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { ChevronRight } from "lucide-react";
@@ -11,10 +11,19 @@ import { useAppDispatch } from '~/hooks/useTypes';
 import { setSelectedConversationId } from '~/features/chat/chatSlice';
 import ChatDialog from '~/components/shared/chat/ChatDialog';
 import { useCreateConversationWithShopMutation } from '~/features/chat/conversation/ConversationApi';
+import { useGetApprovedProductsByShopQuery } from '~/features/products/productApi';
 
 const ShopPage: React.FC = () => {
   const { shopId } = useParams();
   const { data: shop, isLoading, error } = useGetShopByIdQuery(shopId as string);
+
+  const [page, setPage] = useState(0);
+
+  const { data: productByShopApproved } = useGetApprovedProductsByShopQuery({
+    shopId: shopId as string,
+    page,
+    size: 20,
+  });
 
   const dispatch = useAppDispatch();
   const [createConversationWithShop] = useCreateConversationWithShopMutation();
@@ -24,7 +33,7 @@ const ShopPage: React.FC = () => {
   if (error) return <p>Có lỗi khi tải cửa hàng.</p>;
   if (!shop) return <p>Không tìm thấy cửa hàng.</p>;
 
-  const allProducts = shop.products || [];
+  const allProducts = productByShopApproved?.content || [];
   const suggestedProducts = allProducts.slice(0, 6);
 
   const handleChatClick = async () => {
@@ -43,9 +52,7 @@ const ShopPage: React.FC = () => {
         console.error("Status:", err.status);
       }
     }
-
   };
-
 
   return (
     <div className="max-w-[80%] w-full mx-auto p-4 space-y-6">
@@ -106,7 +113,7 @@ const ShopPage: React.FC = () => {
               </div>
               <div className="text-sm text-center line-clamp-2 text-gray-700 mt-2">{product.name}</div>
               <div className="text-red-500 font-bold text-base mt-1">
-                ₫{product.defaultPrice.toLocaleString('vi-VN')}
+                {/* ₫{product.defaultPrice.toLocaleString('vi-VN')} */}
               </div>
               <div className="text-xs text-gray-500">Đã bán: {product.totalSold}</div>
             </div>
@@ -125,7 +132,12 @@ const ShopPage: React.FC = () => {
       {/* All Products */}
       <div id="all-products" className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
         <h2 className="font-semibold text-lg text-gray-800 mb-5">Tất cả sản phẩm</h2>
-        <ProductList products={allProducts} />
+        <ProductList
+          products={productByShopApproved?.content || []}
+          page={page}
+          totalPages={productByShopApproved?.totalPages || 1}
+          onPageChange={setPage}
+        />
       </div>
 
       {/* Chat Dialog */}
