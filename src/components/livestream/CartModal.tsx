@@ -1,13 +1,13 @@
 'use client';
 
 import React from 'react';
-import type { CollapseProduct } from '~/types/products/product';
+import type { ProductSummary } from '~/types/products/product';
 import CollapseProductCard from './CollapseProductCart';
 
 import CloseIcon from '@mui/icons-material/Close';
 
 interface CartModalProps {
-    products: CollapseProduct[];
+    products: ProductSummary[];
     onClose: () => void;
 }
 
@@ -29,7 +29,7 @@ const CartModal = ({ products, onClose }: CartModalProps) => {
                 style={{ scrollbarWidth: 'none' }}
             >
                 {products.map((p) => (
-                    <CollapseProductCard key={p.id} product={p} />
+                    <CollapseProductCard key={p.productId} product={p} />
                 ))}
             </div>
             <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-gray-300 to-transparent pointer-events-none rounded-b-lg"></div>

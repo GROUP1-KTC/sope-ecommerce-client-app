@@ -118,7 +118,7 @@ export type Product = ProductFormData;
 
 // Collapse for livestream cart
 export interface CollapseProduct {
-    id: number;
+    id: string;
     name: string;
     originalPrice: number;
     price: number;
@@ -128,7 +128,7 @@ export interface CollapseProduct {
 }
 
 export type SellerLiveProduct = {
-    id: number;
+    id: string;
     name: string;
     image: string;
     originalPrice: number;
@@ -150,3 +150,4 @@ export interface ProductSummary {
     totalSold: number;
     averageRating: number | null;
 }
+

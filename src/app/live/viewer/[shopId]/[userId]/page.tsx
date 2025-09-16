@@ -11,42 +11,13 @@ import {
 import { RoomEvent, type Participant } from 'livekit-client';
 import ChatBox from '~/components/livestream/ChatBox';
 import CartModal from '~/components/livestream/CartModal';
-import type { CollapseProduct } from '~/types/products';
 import type { Comment } from '~/types/comment';
 import { ShoppingBagIcon } from 'lucide-react';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useAppDispatch } from '~/hooks/useTypes';
 import { useAlertStore } from '~/store/zustand/alertStore';
+import { useGetApprovedProductsByShopQuery } from '~/features/products/productApi';
 
-const mockProducts: CollapseProduct[] = [
-    {
-        id: 1,
-        name: 'Áo thun hot',
-        originalPrice: 299000,
-        price: 199000,
-        image: 'https://i.pravatar.cc/200',
-        rating: 4.5,
-        sold: 150,
-    },
-    {
-        id: 2,
-        name: 'Giày sneaker',
-        originalPrice: 999000,
-        price: 799000,
-        image: 'https://i.pravatar.cc/200',
-        rating: 4.0,
-        sold: 200,
-    },
-    {
-        id: 3,
-        name: 'Mũ lưỡi trai',
-        originalPrice: 199000,
-        price: 149000,
-        image: 'https://i.pravatar.cc/200',
-        rating: 4.2,
-        sold: 100,
-    },
-];
 
 export default function ViewerPage() {
     const { shopId, userId } = useParams<{ shopId: string; userId: string }>();
@@ -55,6 +26,14 @@ export default function ViewerPage() {
     const [room, setRoom] = useState<Room | null>(null);
     const [showCart, setShowCart] = useState(false);
     const dispatch = useAppDispatch();
+
+    const { data, isLoading, error } = useGetApprovedProductsByShopQuery({
+        shopId,
+        page: 0,
+        size: 12,
+    });
+
+    const products = data?.content ?? [];
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -228,7 +207,7 @@ export default function ViewerPage() {
 
             {showCart && (
                 <CartModal
-                    products={mockProducts}
+                    products={products}
                     onClose={() => setShowCart(false)}
                 />
             )}
