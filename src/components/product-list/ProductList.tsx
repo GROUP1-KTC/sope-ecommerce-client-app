@@ -135,9 +135,6 @@ const ProductList: React.FC<ProductListProps> = ({ products, page, totalPages, o
 								<span className="text-red-500 font-extrabold text-xl">
 									₫{(product.minPrice ?? 0).toLocaleString('vi-VN')}
 								</span>
-								<span className="bg-red-100 text-red-500 text-[10px] font-semibold px-1 py-0.5 rounded">
-									-35%
-								</span>
 							</div>
 							<div className="flex items-center text-xs justify-between text-gray-500 gap-1">
 								<span className="text-yellow-500">
