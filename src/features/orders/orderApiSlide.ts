@@ -76,13 +76,17 @@ export const orderApi = apiSlice.injectEndpoints({
                 response.data,
         }),
 
-        getOrdersForShipper: builder.query<PageResponse<OrderGroupShop>, { status: string; page?: number; size?: number }>({
+        getOrdersForShipper: builder.query<
+            PageResponse<OrderGroupShop>,
+            { status: string; page?: number; size?: number }
+        >({
             query: ({ status, page = 0, size = 20 }) => ({
                 url: `orders/shipper?status=${status}&page=${page}&size=${size}`,
                 credentials: 'omit',
             }),
-            transformResponse: (response: { data: PageResponse<OrderGroupShop> }) =>
-                response.data,
+            transformResponse: (response: {
+                data: PageResponse<OrderGroupShop>;
+            }) => response.data,
         }),
         cancelOrder: builder.mutation<
             void,
