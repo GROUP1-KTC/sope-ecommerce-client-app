@@ -19,9 +19,9 @@ export const ServiceProgramApi = apiSlice.injectEndpoints({
             onQueryStarted: async (_arg, { queryFulfilled }) => {
                 try {
                     const { data } = await queryFulfilled;
-                    console.log('✅ API createProduct thành công:', data);
+                    console.log('✅ API createAdsForProduct thành công:', data);
                 } catch (err) {
-                    console.error('❌ API createProduct thất bại:', err);
+                    console.error('❌ API createAdsForProduct thất bại:', err);
                 }
             },
         }),

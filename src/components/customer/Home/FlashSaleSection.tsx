@@ -9,45 +9,11 @@ import { useGetActiveFlashSalesQuery } from "~/features/service-program/servicep
 import { FlashSaleProgramDTO } from '~/types/service-programs/serviceprogram';
 import FlashCountdown from './FlashCountdown';
 
-// Countdown riêng cho từng sản phẩm
-const ProductCountdown: React.FC<{ endDateTime: string }> = ({ endDateTime }) => {
-    const [timeLeft, setTimeLeft] = useState<string>("");
-
-    useEffect(() => {
-        const target = new Date(endDateTime).getTime();
-        const tick = () => {
-            const now = Date.now();
-            const diff = target - now;
-            if (diff <= 0) {
-                setTimeLeft("Hết hạn");
-                return;
-            }
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            setTimeLeft(`${hours.toString().padStart(2, "0")}:${minutes
-                .toString()
-                .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`);
-        };
-        tick();
-        const interval = setInterval(tick, 1000);
-        return () => clearInterval(interval);
-    }, [endDateTime]);
-
-    return (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-500 text-white text-xs font-bold rounded px-2 py-1.5 shadow">
-            ⏳ {timeLeft}
-        </div>
-    );
-};
-
 interface FlashSaleSectionProps {
     initialSeconds?: number;
 }
 
-const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
-    initialSeconds = 3600,
-}) => {
+const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [atStart, setAtStart] = useState(true);
     const [atEnd, setAtEnd] = useState(false);
@@ -95,12 +61,6 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({
                     <h2 className="text-xl font-bold flex items-center text-red-500">
                         ⚡FLASH SALES siêu hot
                     </h2>
-                    <a
-                        href="#"
-                        className="text-sm text-orange-500 hover:underline"
-                    >
-                        Xem tất cả {'>'}
-                    </a>
                 </div>
                 <hr className="mb-4 border-gray-300" />
                 <div className="relative group">

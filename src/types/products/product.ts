@@ -17,7 +17,7 @@ export interface BaseProduct {
     description: string;
     hidden: boolean;
     categoryId: string;
-    shopId: string;
+    // shopId: string;
     productDetails?: ProductDetail[];
 }
 
@@ -141,12 +141,12 @@ export type SellerLiveProduct = {
 };
 
 export interface ProductSummary {
-  productId: string;  
-  name: string;
-  slug: string;
-  minPrice: number;
-  defaultImage: string;
-  totalStock: number;
-  totalSold: number;
-  averageRating: number | null;
+    productId: string;
+    name: string;
+    slug: string;
+    minPrice: number;
+    defaultImage: string;
+    totalStock: number;
+    totalSold: number;
+    averageRating: number | null;
 }

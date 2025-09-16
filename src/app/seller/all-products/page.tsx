@@ -17,11 +17,7 @@ const AllProductsByShop = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
     const [activeTab, setActiveTab] = useState('all');
-    const { data, isLoading, isError } = useGetProductByShopQuery({
-        shopId: '190e754a-20d1-42e9-81ce-fa1bc282caa9',
-        page: currentPage,
-        size: 20,
-    });
+    const { data, isLoading, isError } = useGetProductByShopQuery({ page: currentPage, size: 20 });
 
     const [searchText, setSearchText] = useState('');
     const [showCategorySelector, setShowCategorySelector] = useState(false);
@@ -83,15 +79,15 @@ const AllProductsByShop = () => {
         activeTab === 'all'
             ? products
             : activeTab === 'lowStock'
-              ? products
+                ? products
                     .map((p) => ({
                         ...p,
                         variants: p.variants.filter((v) => v.stock < 10),
                     }))
                     .filter((p) => p.variants.length > 0)
-              : products.filter(
+                : products.filter(
                     tabs.find((t) => t.key === activeTab)?.filter ??
-                        (() => true),
+                    (() => true),
                 );
 
     if (searchText.trim()) {
@@ -133,11 +129,10 @@ const AllProductsByShop = () => {
                     <button
                         key={tab.key}
                         onClick={() => setActiveTab(tab.key)}
-                        className={`pb-2 font-medium cursor-pointer ${
-                            activeTab === tab.key
+                        className={`pb-2 font-medium cursor-pointer ${activeTab === tab.key
                                 ? 'text-orange-600 border-b-2 border-orange-600'
                                 : 'text-gray-600 hover:text-orange-600'
-                        }`}
+                            }`}
                     >
                         {tab.label} ({tab.count})
                     </button>
@@ -159,9 +154,9 @@ const AllProductsByShop = () => {
                     >
                         {selectedCategory
                             ? getCategoryPathName(
-                                  categories,
-                                  selectedCategory.id,
-                              )
+                                categories,
+                                selectedCategory.id,
+                            )
                             : 'Loại Sản phẩm'}
                     </button>
 
@@ -214,21 +209,19 @@ const AllProductsByShop = () => {
                     <div className="flex items-center gap-2 bg-gray-50 rounded-lg  px-1">
                         <button
                             onClick={() => setViewMode('list')}
-                            className={`p-2 cursor-pointer rounded-lg ${
-                                viewMode === 'list'
+                            className={`p-2 cursor-pointer rounded-lg ${viewMode === 'list'
                                     ? 'bg-gray-200 text-red-600'
                                     : 'hover:bg-gray-100'
-                            }`}
+                                }`}
                         >
                             <List size={18} />
                         </button>
                         <button
                             onClick={() => setViewMode('grid')}
-                            className={`p-2 cursor-pointer rounded-lg ${
-                                viewMode === 'grid'
+                            className={`p-2 cursor-pointer rounded-lg ${viewMode === 'grid'
                                     ? 'bg-gray-200 text-red-600'
                                     : 'hover:bg-gray-100'
-                            }`}
+                                }`}
                         >
                             <Grid size={18} />
                         </button>

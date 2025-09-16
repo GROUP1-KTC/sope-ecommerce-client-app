@@ -26,11 +26,11 @@ export function FlashSaleModal({
     if (!show) return null;
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
             <div className="bg-white p-6 rounded-2xl shadow-2xl w-96 animate-scaleIn">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg text-red-600 font-bold text-gray-800 flex items-center gap-2">
+                    <h3 className="text-lg text-red-600 font-bold  flex items-center gap-2">
                         Flash Sale:{' '}
                         <span className="text-black">{productName}</span>
                     </h3>

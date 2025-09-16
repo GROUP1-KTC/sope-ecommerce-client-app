@@ -7,8 +7,73 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useGetActiveAdsQuery } from "~/features/service-program/serviceprogramApi";
 import { AdsProgramDTO } from '~/types/service-programs/serviceprogram';
 
+const banners = [
+    {
+        bg: 'bg-gradient-to-br from-blue-900 to-blue-700',
+        content: (
+            <div className="h-full flex flex-col justify-center pl-10 pr-4 py-6 relative z-20">
+                <span className="text-4xl font-bold text-white">
+                    Naver Shopping Live
+                    <br />
+                    Best Awards
+                </span>
+                <span className="text-lg text-white mt-2">
+                    Live maximum benefits + additional accrual!
+                </span>
+            </div>
+        ),
+        img: 'https://shop-phinf.pstatic.net/20250703_185/1751519723006NSNsz_PNG/EC87BCED9591EB9DBCEC9DB4EBB88C%2BEC8381EBB098EAB8B0%2BEAB2.png?type=a2304_jpg',
+    },
+    {
+        bg: 'bg-orange-400',
+        content: (
+            <div className="h-full flex flex-col justify-center pl-10 pr-4 py-6 relative z-20">
+                <span className="text-4xl font-bold text-white">
+                    LG Electronics Summer Peak
+                </span>
+                <span className="text-lg text-white">
+                    Hot home appliances that will change this summer, IT sale
+                </span>
+            </div>
+        ),
+        img: 'https://shop-phinf.pstatic.net/20250704_40/17516202403428uDWV_JPEG/E18481E185AEE18486E185A7E1848CE185AF%2BE18492E185A9E186.jpg?type=a2304_jpg',
+    },
+    {
+        bg: 'bg-blue-600',
+        content: (
+            <div className="h-full flex flex-col justify-center pl-10 pr-4 py-6 relative z-20">
+                <span className="text-4xl font-bold text-white">
+                    My dog and cat too
+                    <br />
+                    Membership benefits!
+                </span>
+                <span className="text-lg text-white mt-2">
+                    50% off popular pet brands
+                </span>
+            </div>
+        ),
+        img: 'https://shop-phinf.pstatic.net/20250703_142/1751509026934BSOch_PNG/EB84A4ED948CEC8AA4%2BED9988%2BECB59CEC8381EB8BA8_ED858DEC8.png?type=a2304_jpg',
+    },
+    {
+        bg: 'bg-black',
+        content: (
+            <div className="h-full flex flex-col justify-center pl-10 pr-4 py-6 relative z-20">
+                <span className="text-4xl font-bold text-white">
+                    Nenet once today
+                    <br />
+                    Would you like to do it?
+                </span>
+                <span className="text-lg text-white mt-2">
+                    Membership starts at 4,900 won per month
+                </span>
+            </div>
+        ),
+        img: 'https://shop-phinf.pstatic.net/20250703_239/17515023748273J7Gd_PNG/ED8EABEB9DBCEC9DB4ECA795EC9C84ED81AC%2BECB59CEC8381EB8B.png?type=a2304_jpg',
+    },
+];
+
 const AdsBanner = () => {
-    const { data: ads, isLoading } = useGetActiveAdsQuery();
+    // const { data: ads, isLoading } = useGetActiveAdsQuery();
     const [current, setCurrent] = useState(0);
     const [bannersPerView, setBannersPerView] = useState(2);
 
@@ -23,8 +88,12 @@ const AdsBanner = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const adsSafe = ads ?? [];
-    const totalSlides = Math.max(1, Math.ceil(adsSafe.length / bannersPerView));
+    // const adsSafe = ads ?? [];
+    // const totalSlides = Math.max(1, Math.ceil(adsSafe.length / bannersPerView));
+
+    const totalSlides = Math.ceil(banners.length / bannersPerView);
+
+
 
     const prev = () => {
         setCurrent((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
@@ -42,13 +111,13 @@ const AdsBanner = () => {
     }, [next]);
 
     // 👇 render fallback trong JSX thay vì return sớm
-    if (isLoading) {
-        return <div className="p-6 text-center">Đang tải quảng cáo...</div>;
-    }
+    // if (isLoading) {
+    //     return <div className="p-6 text-center">Đang tải quảng cáo...</div>;
+    // }
 
-    if (adsSafe.length === 0) {
-        return <div className="p-6 text-center">Không có quảng cáo nào</div>;
-    }
+    // if (adsSafe.length === 0) {
+    //     return <div className="p-6 text-center">Không có quảng cáo nào</div>;
+    // }
 
     return (
         <div className="w-full flex flex-col items-center py-6">
@@ -62,32 +131,48 @@ const AdsBanner = () => {
                 >
                     {Array.from({ length: totalSlides }).map((_, slideId) => (
                         <div key={slideId} className="flex w-full">
-                            {adsSafe
+                            {/* {adsSafe */}
+                            {banners
                                 .slice(
                                     slideId * bannersPerView,
                                     slideId * bannersPerView + bannersPerView,
                                 )
-                                .map((ad: AdsProgramDTO, index) => (
+                                // .map((ad: AdsProgramDTO, index) => (
+                                .map((banner, index) => (
                                     <div
-                                        key={ad.id}
-                                        style={{ width: `${100 / bannersPerView}%` }}
-                                        className="aspect-[16/9] rounded-3xl shadow-xl flex relative overflow-hidden mx-6 justify-between bg-gray-900"
+                                        // key={ad.id}
+                                        // style={{ width: `${100 / bannersPerView}%` }}
+                                        // className="aspect-[16/9] rounded-3xl shadow-xl flex relative overflow-hidden mx-6 justify-between bg-gray-900"
+                                        key={index}
+                                        style={{
+                                            width: `${100 / bannersPerView}%`,
+                                        }}
+                                        className={`aspect-[16/9] rounded-3xl shadow-xl flex relative overflow-hidden mx-6 justify-between ${banner.bg}`}
                                     >
-                                        {ad.productInfo?.defaultImage && (
+                                        {/* {ad.productInfo?.defaultImage && ( */}
+                                        {banner.img && (
                                             <Image
-                                                src={ad.productInfo.defaultImage}
-                                                alt={ad.productInfo.name}
+                                                // src={ad.productInfo.defaultImage}
+                                                // alt={ad.productInfo.name}
+                                                src={banner.img}
+                                                alt="banner"
                                                 fill
                                                 className="object-cover z-10"
                                             />
                                         )}
                                         <div className="relative z-20 w-full h-full flex flex-col justify-center pl-8 bg-black/40">
                                             <span className="text-3xl font-bold text-white">
-                                                {ad.productInfo?.name}
+                                                {/* {ad.productInfo?.name} */}
+                                                {banner.content}
                                             </span>
                                         </div>
                                     </div>
                                 ))}
+                            {banners.length % 2 !== 0 &&
+                                slideId === totalSlides - 1 &&
+                                banners.length % bannersPerView !== 0 && (
+                                    <div className="w-1/2 h-64 mx-2" />
+                                )}
                         </div>
                     ))}
                 </div>

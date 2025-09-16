@@ -1,4 +1,9 @@
-import type { Category, ProductResponseByCategory } from '../../types/products';
+import type {
+    Category,
+    PageResponse,
+    ProductResponseByCategory,
+    ProductSummary,
+} from '../../types/products';
 import { apiSlice } from '~/services/api/apiSlice';
 
 export const categoryApi = apiSlice.injectEndpoints({
@@ -11,14 +16,17 @@ export const categoryApi = apiSlice.injectEndpoints({
             providesTags: ['Category'],
         }),
         getProductsByCategory: builder.query<
-            ProductResponseByCategory[],
-            string
+            PageResponse<ProductSummary>,
+            { slug: string; page?: number; size?: number }
         >({
-            query: (slug) => ({
-                url: `v1/products/by-category/slug/${slug}`,
+            query: ({ slug, page = 0, size = 12 }) => ({
+                url: `v1/products/by-category/slug/${slug}?page=${page}&size=${size}`,
+                method: 'GET',
                 credentials: 'omit',
             }),
-            providesTags: (slug) => [{ type: 'Category', slug }],
+            providesTags: (result, error, { slug }) => [
+                { type: 'Category', id: slug },
+            ],
         }),
         getBreadcrumbCategory: builder.query<Category[], string>({
             query: (id) => ({
