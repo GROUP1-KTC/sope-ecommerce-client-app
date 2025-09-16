@@ -48,7 +48,7 @@ export const productApi = apiSlice.injectEndpoints({
             },
         }),
         getProductByShop: builder.query<
-            PageResponse<ProductResponse>,
+            PageResponse<ProductSummary>,
             { shopId: string; page?: number; size?: number }
         >({
             query: ({ shopId, page = 0, size = 12 }) => ({

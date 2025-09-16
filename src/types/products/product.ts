@@ -118,7 +118,7 @@ export type Product = ProductFormData;
 
 // Collapse for livestream cart
 export interface CollapseProduct {
-    id: number;
+    id: string;
     name: string;
     originalPrice: number;
     price: number;
