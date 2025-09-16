@@ -18,8 +18,9 @@ import UserMenu from './Home/UserMenu';
 import HeaderCartIconWithBadge from './HeaderCartIconWithBadge';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { useSearchSuggestQuery } from '~/features/products/elasticApi';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import { useAppSelector } from '~/hooks/useTypes';
+import { loadAuthUser } from '~/utils/authCookie';
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -28,38 +29,63 @@ const Header = () => {
     const [isFocused, setIsFocused] = useState(false);
     const router = useRouter();
 
-    const roles = useAppSelector((state) => state.auth.roles);
+    const roles = loadAuthUser()?.roles || [];
 
-    const isSeller = roles.includes("SELLER");
-
-    console.log("isSeller", isSeller);
+    const isSeller = roles.includes('SELLER');
 
     const { data: products = [], isLoading } = useSearchSuggestQuery(
         searchTerm
             ? {
-                _source: ["productId", "slug", "name", "default_image"],
-                query: {
-                    function_score: {
-                        query: {
-                            bool: {
-                                should: [
-                                    { match_phrase: { name: { query: searchTerm, boost: 5 } } },
-                                    { match_phrase_prefix: { name: { query: searchTerm, boost: 4 } } },
-                                    { match: { name: { query: searchTerm, fuzziness: "AUTO", boost: 2 } } },
-                                    { match: { slug: { query: searchTerm, boost: 1 } } },
-
-                                ],
-                            },
-                        },
-                        boost_mode: "sum",
-                    },
-                },
-                size: 20,
-                sort: [{ _score: "desc" }],
-            }
-            : skipToken
+                  _source: ['productId', 'slug', 'name', 'default_image'],
+                  query: {
+                      function_score: {
+                          query: {
+                              bool: {
+                                  should: [
+                                      {
+                                          match_phrase: {
+                                              name: {
+                                                  query: searchTerm,
+                                                  boost: 5,
+                                              },
+                                          },
+                                      },
+                                      {
+                                          match_phrase_prefix: {
+                                              name: {
+                                                  query: searchTerm,
+                                                  boost: 4,
+                                              },
+                                          },
+                                      },
+                                      {
+                                          match: {
+                                              name: {
+                                                  query: searchTerm,
+                                                  fuzziness: 'AUTO',
+                                                  boost: 2,
+                                              },
+                                          },
+                                      },
+                                      {
+                                          match: {
+                                              slug: {
+                                                  query: searchTerm,
+                                                  boost: 1,
+                                              },
+                                          },
+                                      },
+                                  ],
+                              },
+                          },
+                          boost_mode: 'sum',
+                      },
+                  },
+                  size: 20,
+                  sort: [{ _score: 'desc' }],
+              }
+            : skipToken,
     );
-
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -70,7 +96,7 @@ const Header = () => {
     }, [inputValue]);
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
+        if (e.key === 'Enter') {
             e.preventDefault();
             const trimmed = inputValue.trim();
             if (trimmed) {
@@ -102,10 +128,12 @@ const Header = () => {
             <div className="hidden sm:flex flex-col md:flex-row justify-between items-center px-4 sm:px-8 md:px-20 lg:px-40 py-1 text-xs sm:text-sm">
                 <div className="flex gap-3 items-center">
                     <Link
-                        href={isSeller ? "/seller" : "/create-shop"}
+                        href={isSeller ? '/seller' : '/create-shop'}
                         className="hover:text-yellow-200 transition"
                     >
-                        {isSeller ? "Trang Bán Hàng" : "Trở thành Người bán Sope"}
+                        {isSeller
+                            ? 'Trang Bán Hàng'
+                            : 'Trở thành Người bán Sope'}
                     </Link>
 
                     <span>|</span>
@@ -173,7 +201,9 @@ const Header = () => {
                             onFocus={() => setIsFocused(true)}
                             onChange={(e) => setInputValue(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+                            onBlur={() =>
+                                setTimeout(() => setIsFocused(false), 200)
+                            }
                             className="w-full px-4 py-2 text-gray-800 bg-white rounded-l-md focus:outline-none focus:ring-2 focus:ring-red-300"
                             placeholder="Tìm kiếm trong Sope"
                             type="text"
@@ -195,7 +225,9 @@ const Header = () => {
                                                 height={40}
                                                 className="w-10 h-10 object-cover rounded"
                                             />
-                                            <span className="text-sm text-gray-800">{p.name}</span>
+                                            <span className="text-sm text-gray-800">
+                                                {p.name}
+                                            </span>
                                         </Link>
                                     ))
                                 ) : (
@@ -205,7 +237,6 @@ const Header = () => {
                                 )}
                             </div>
                         )}
-
                     </div>
 
                     <button
@@ -215,7 +246,6 @@ const Header = () => {
                         <SearchIcon className="text-[#d0001a]" />
                     </button>
                 </div>
-
 
                 {/* Cart + Hamburger */}
                 <HeaderCartIconWithBadge
@@ -240,8 +270,9 @@ const Header = () => {
             )}
 
             <div
-                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'
-                    } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
+                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${
+                    menuOpen ? 'translate-x-0' : 'translate-x-full'
+                } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
             >
                 <div className="flex justify-end">
                     <button
@@ -267,10 +298,10 @@ const Header = () => {
                     Trang chủ Sope
                 </Link>
                 <Link
-                    href={isSeller ? "/seller" : "create-shop"}
+                    href={isSeller ? '/seller' : 'create-shop'}
                     className="hover:text-yellow-200 transition"
                 >
-                    {isSeller ? "Trang Bán Hàng" : "Trở thành Người bán Sope"}
+                    {isSeller ? 'Trang Bán Hàng' : 'Trở thành Người bán Sope'}
                 </Link>
 
                 <Link
