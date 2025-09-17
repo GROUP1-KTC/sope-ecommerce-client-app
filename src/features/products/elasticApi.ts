@@ -14,7 +14,7 @@ export const elasticApi = createApi({
     endpoints: (builder) => ({
         searchSuggest: builder.query<ElasticSearchProduct[], unknown>({
             query: (body) => ({
-                url: `/products_index_new/_search`,
+                url: `/products_index/_search`,
                 method: 'POST',
                 body,
             }),

@@ -6,18 +6,12 @@ import OrderFilters from '~/components/seller/order/OrderFilters';
 import OrderList from '~/components/seller/order/OrderList';
 import { useGetOrdersByShopQuery } from '~/features/orders/orderApiSlide';
 
-interface AllOrderProps {
-    shopId: string;
-}
-
 type Filters = {
     status: string | null;
     shippingRateId: string | null;
     orderNumber: string;
 };
-export default function AllOrder({ shopIdProp }: { shopIdProp?: string }) {
-    const shopId = shopIdProp ?? '8696366f-9402-48f9-84a2-9cd2599e72a0';
-
+export default function AllOrder() {
     const [activeTab, setActiveTab] = useState(0);
     const [page, setPage] = useState(0);
     const size = 10;
@@ -33,10 +27,11 @@ export default function AllOrder({ shopIdProp }: { shopIdProp?: string }) {
         isLoading,
         isError,
     } = useGetOrdersByShopQuery({
-        shopId,
         page,
         size,
     });
+
+    console.log('check allOrder', allOrder);
 
     const filteredOrders = useMemo(() => {
         if (!allOrder?.data?.content) return [];

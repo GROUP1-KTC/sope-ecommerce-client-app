@@ -21,10 +21,10 @@ export const orderApi = apiSlice.injectEndpoints({
         }),
         getOrdersByShop: builder.query<
             ApiResponse<PageResponse<OrderGroupShop>>,
-            { shopId: string; page?: number; size?: number }
+            { page?: number; size?: number }
         >({
-            query: ({ shopId, page = 0, size = 20 }) => ({
-                url: `orders/shop/${shopId}?page=${page}&size=${size}`,
+            query: ({ page = 0, size = 20 }) => ({
+                url: `orders/shop?page=${page}&size=${size}`,
                 credentials: 'omit',
             }),
             providesTags: ['Order'],
@@ -76,13 +76,17 @@ export const orderApi = apiSlice.injectEndpoints({
                 response.data,
         }),
 
-        getOrdersForShipper: builder.query<PageResponse<OrderGroupShop>, { status: string; page?: number; size?: number }>({
+        getOrdersForShipper: builder.query<
+            PageResponse<OrderGroupShop>,
+            { status: string; page?: number; size?: number }
+        >({
             query: ({ status, page = 0, size = 20 }) => ({
                 url: `orders/shipper?status=${status}&page=${page}&size=${size}`,
                 credentials: 'omit',
             }),
-            transformResponse: (response: { data: PageResponse<OrderGroupShop> }) =>
-                response.data,
+            transformResponse: (response: {
+                data: PageResponse<OrderGroupShop>;
+            }) => response.data,
         }),
         cancelOrder: builder.mutation<
             void,
