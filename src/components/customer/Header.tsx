@@ -28,9 +28,9 @@ const Header = () => {
     const [isFocused, setIsFocused] = useState(false);
     const router = useRouter();
 
-    const roles = useAppSelector((state) => state.auth.roles);
-
+    const roles = useAppSelector((state) => state.auth.roles) || [];
     const isSeller = roles.includes("SELLER");
+
 
     console.log("isSeller", isSeller);
 
