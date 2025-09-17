@@ -59,8 +59,8 @@ export default function Step4({
                             onChange={(e) =>
                                 setIdType(
                                     e.target.value as
-                                        | 'CITIZEN_IDENTIFICATION'
-                                        | 'PASSPORT',
+                                    | 'CITIZEN_IDENTIFICATION'
+                                    | 'PASSPORT',
                                 )
                             }
                             className="block w-full appearance-none border border-gray-300 rounded-md px-3 py-2 pr-8 bg-white text-gray-700 shadow-sm focus:outline-none"
@@ -88,7 +88,6 @@ export default function Step4({
                     </div>
                 </div>
 
-                {/* Họ tên */}
                 <div>
                     <label className="text-sm block mb-1">
                         Họ tên (trên giấy tờ)
@@ -96,7 +95,7 @@ export default function Step4({
                     <input
                         value={idName}
                         onChange={(e) => setIdName(e.target.value)}
-                        className="w-full border rounded p-2"
+                        className="w-full border rounded p-2 border-gray-300"
                     />
                     {errors.idName && (
                         <p className="text-red-500 text-sm mt-1">
@@ -105,14 +104,17 @@ export default function Step4({
                     )}
                 </div>
 
-                {/* Số giấy tờ */}
                 <div>
                     <label className="text-sm block mb-1">Số giấy tờ</label>
                     <input
                         value={idNumber}
-                        onChange={(e) => setIdNumber(e.target.value)}
-                        className="w-full border rounded p-2"
+                        onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, ''); 
+                            setIdNumber(value);
+                        }}
+                        className="w-full border rounded p-2 border-gray-300"
                     />
+
                     {errors.idNumber && (
                         <p className="text-red-500 text-sm mt-1">
                             {errors.idNumber}
@@ -133,7 +135,7 @@ export default function Step4({
                             id="id-front-upload"
                             className="hidden"
                             onChange={(e) =>
-                                handleFileChange(setIdFront, () => {}, e)
+                                handleFileChange(setIdFront, () => { }, e)
                             }
                         />
                         <label
@@ -167,7 +169,7 @@ export default function Step4({
                             id="id-back-upload"
                             className="hidden"
                             onChange={(e) =>
-                                handleFileChange(setIdBack, () => {}, e)
+                                handleFileChange(setIdBack, () => { }, e)
                             }
                         />
                         <label
@@ -201,7 +203,7 @@ export default function Step4({
                             id="selfie-upload"
                             className="hidden"
                             onChange={(e) =>
-                                handleFileChange(setSelfie, () => {}, e)
+                                handleFileChange(setSelfie, () => { }, e)
                             }
                         />
                         <label
