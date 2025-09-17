@@ -27,7 +27,7 @@ export default function Step2({
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         rows={5}
-                        className="w-full border rounded p-2"
+                        className="w-full border rounded p-2 border-gray-300"
                         placeholder="Mô tả shop, sản phẩm chủ lực, chính sách..."
                     />
                 </div>

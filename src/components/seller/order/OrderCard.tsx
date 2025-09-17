@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { statusColors } from '~/components/order/OrderItem';
 import type { OrderGroupShop } from '~/types/orders/order';
-import Link from 'next/link';
 import {
     Button,
     Dialog,
@@ -18,6 +17,7 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useState } from 'react';
 import { useUpdateOrderStatusMutation } from '~/features/orders/orderApiSlide';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const shippingProviders: Record<string, string> = {
     'MTJfMTdfMTU1OQ==': 'GIAO HÀNG TIẾT KIỆM (tiết kiệm)',
@@ -147,11 +147,11 @@ export default function OrderCard({
                 {isFromPendingOrder ? (
                     <div className="flex justify-center items-center gap-2">
                         <Tooltip title="Xem chi tiết">
-                            <Link href={`/seller/orders/${o.orderNumber}`}>
+                            <CustomLink href={`/seller/orders/${o.orderNumber}`}>
                                 <IconButton size="small" color="primary">
                                     <VisibilityOutlinedIcon fontSize="small" />
                                 </IconButton>
-                            </Link>
+                            </CustomLink>
                         </Tooltip>
 
                         <Tooltip title="Xác nhận đơn hàng">
@@ -172,12 +172,12 @@ export default function OrderCard({
                     </div>
                 ) : (
                     <div className="flex flex-col justify-center items-end gap-2">
-                        <Link
+                        <CustomLink
                             href={`/seller/orders/${o.orderNumber}`}
                             className="text-blue-600 hover:underline text-sm"
                         >
                             Xem chi tiết
-                        </Link>
+                        </CustomLink>
                     </div>
                 )}
 

@@ -24,9 +24,9 @@ export default function ProgressBar({ step }: ProgressBarProps) {
                             <div
                                 className={`w-9 h-9 rounded-full flex items-center justify-center text-white ${
                                     done
-                                        ? 'bg-green-500'
+                                        ? 'bg-red-500'
                                         : active
-                                          ? 'bg-blue-600'
+                                          ? 'bg-red-600'
                                           : 'bg-gray-300'
                                 }`}
                             >
@@ -39,7 +39,7 @@ export default function ProgressBar({ step }: ProgressBarProps) {
             </div>
             <div className="mt-3 h-2 bg-gray-200 rounded">
                 <div
-                    className="h-2 bg-blue-600 rounded"
+                    className="h-2 bg-red-600 rounded"
                     style={{ width: `${((step - 1) / (5 - 1)) * 100}%` }}
                 />
             </div>

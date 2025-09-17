@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ChevronDown } from 'lucide-react';
 import type { ProductSummary } from '~/types/products';
+import CustomLink from '../shared/loading/CustomLink';
 
 interface ProductListProps {
     products: ProductSummary[];
@@ -124,7 +124,7 @@ const ProductList: React.FC<ProductListProps> = ({
             {/* Grid sản phẩm */}
             <div className="grid grid-cols-5 gap-4">
                 {sortedProducts.map((product) => (
-                    <Link
+                    <CustomLink
                         key={product.productId}
                         href={`/product-detail/${product.slug}`}
                         className="border border-gray-600 rounded-lg bg-white flex flex-col p-2 relative cursor-pointer hover:shadow-lg hover:scale-105 hover:bg-orange-100 transition duration-200"
@@ -160,30 +160,9 @@ const ProductList: React.FC<ProductListProps> = ({
                                 <span>Đã bán {product.totalSold}</span>
                             </div>
                         </div>
-                    </Link>
+                    </CustomLink>
                 ))}
             </div>
-
-            {/* Pagination */}
-            {/* <div className="flex justify-center items-center mt-6 gap-2">
-				<button
-					disabled={page === 0}
-					onClick={() => onPageChange(page - 1)}
-					className="p-1 border rounded mx-1 cursor-pointer text-black hover:text-red-500 disabled:opacity-50"
-				>
-					<ArrowBackIcon />
-				</button>
-				<span className="text-xs text-gray-500">
-					{page + 1}/{totalPages}
-				</span>
-				<button
-					disabled={page + 1 >= totalPages}
-					onClick={() => onPageChange(page + 1)}
-					className="p-1 border rounded mx-1 cursor-pointer text-gray-500 hover:text-red-500 disabled:opacity-50"
-				>
-					<ArrowForwardIcon />
-				</button>
-			</div> */}
         </div>
     );
 };

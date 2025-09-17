@@ -3,6 +3,7 @@ import type { Message } from '~/types/chat';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DescriptionIcon from '@mui/icons-material/Description';
+import CustomLink from '../loading/CustomLink';
 
 const imageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 const videoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
@@ -58,7 +59,7 @@ const MessageTypeFile = (message: Message) => {
     }
 
     return (
-        <Link
+        <CustomLink
             sx={{
                 display: 'flex',
                 textDecoration: 'none',
@@ -80,7 +81,7 @@ const MessageTypeFile = (message: Message) => {
             <Typography variant="body2" noWrap>
                 {name}
             </Typography>
-        </Link>
+        </CustomLink>
     );
 };
 
