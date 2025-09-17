@@ -3,6 +3,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import Image from 'next/image';
 import Link from 'next/link';
+import CustomLink from '../shared/loading/CustomLink';
 
 const Footer = () => {
     return (
@@ -44,7 +45,7 @@ const Footer = () => {
                     <h3 className="font-bold mb-2">THANH TOÁN</h3>
                     <ul className="grid grid-cols-3 gap-2 mb-4">
                         <li>
-                            <Link
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -57,10 +58,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </Link>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -73,10 +74,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -89,10 +90,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -105,10 +106,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -121,10 +122,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -137,10 +138,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -153,10 +154,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -169,13 +170,13 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                     </ul>
                     <h3 className="font-bold mb-2 mt-4">ĐƠN VỊ VẬN CHUYỂN</h3>
                     <ul className="grid grid-cols-3 gap-2">
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -188,10 +189,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -204,10 +205,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -220,10 +221,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -236,10 +237,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -252,10 +253,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -268,10 +269,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -284,10 +285,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -300,10 +301,10 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                         <li>
-                            <a
+                            <CustomLink
                                 href="#"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -316,7 +317,7 @@ const Footer = () => {
                                     height={24}
                                     className="w-12 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </li>
                     </ul>
                 </div>
@@ -325,7 +326,7 @@ const Footer = () => {
                     <h3 className="font-bold mb-2">FOLLOW US</h3>
                     <ul className="space-y-1">
                         <li className="mb-2">
-                            <a
+                            <CustomLink
                                 href="https://facebook.com"
                                 className="flex items-center gap-2 hover:underline"
                             >
@@ -334,10 +335,10 @@ const Footer = () => {
                                     sx={{ fontSize: 20 }}
                                 />{' '}
                                 Facebook
-                            </a>
+                            </CustomLink>
                         </li>
                         <li className="mb-2">
-                            <a
+                            <CustomLink
                                 href="https://instagram.com"
                                 className="flex items-center gap-2 hover:underline"
                             >
@@ -346,10 +347,10 @@ const Footer = () => {
                                     sx={{ fontSize: 20 }}
                                 />{' '}
                                 Instagram
-                            </a>
+                            </CustomLink>
                         </li>
                         <li className="mb-2">
-                            <a
+                            <CustomLink
                                 href="https://linkedin.com"
                                 className="flex items-center gap-2 hover:underline"
                             >
@@ -358,7 +359,7 @@ const Footer = () => {
                                     sx={{ fontSize: 20 }}
                                 />{' '}
                                 LinkedIn
-                            </a>
+                            </CustomLink>
                         </li>
                     </ul>
                 </div>
@@ -366,7 +367,7 @@ const Footer = () => {
                 <div>
                     <h3 className="font-bold mb-2">SHOPEE APP DOWNLOAD</h3>
                     <div className="flex flex-row gap-4 items-center">
-                        <a
+                        <CustomLink
                             href="https://shopee.vn/web"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -379,9 +380,9 @@ const Footer = () => {
                                 height={64}
                                 className="w-16 h-16 object-contain"
                             />
-                        </a>
+                        </CustomLink>
                         <div className="flex flex-col gap-2">
-                            <a
+                            <CustomLink
                                 href="https://shopee.vn/web"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -394,8 +395,8 @@ const Footer = () => {
                                     height={24}
                                     className="w-20 h-6 object-contain"
                                 />
-                            </a>
-                            <a
+                            </CustomLink>
+                            <CustomLink
                                 href="https://shopee.vn/web"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -408,8 +409,8 @@ const Footer = () => {
                                     height={24}
                                     className="w-20 h-6 object-contain"
                                 />
-                            </a>
-                            <a
+                            </CustomLink>
+                            <CustomLink
                                 href="https://shopee.vn/web"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -422,7 +423,7 @@ const Footer = () => {
                                     height={24}
                                     className="w-20 h-6 object-contain"
                                 />
-                            </a>
+                            </CustomLink>
                         </div>
                     </div>
                 </div>
@@ -433,9 +434,9 @@ const Footer = () => {
                     © 2025 Shopee. All Rights Reserved .
                 </div>
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mt-2">
-                    <Link href="/privacy-policy">
+                    <CustomLink href="/privacy-policy">
                         <span>PRIVACY POLICY</span>
-                    </Link>
+                    </CustomLink>
                     <span className="hidden sm:inline">|</span>
                     <span>TERM OF SERVICE</span>
                     <span className="hidden sm:inline">|</span>

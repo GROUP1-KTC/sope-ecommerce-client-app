@@ -3,6 +3,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
 import type { RootState } from '~/store/appStore';
+import CustomLink from '../shared/loading/CustomLink';
 
 const HeaderCartIconWithBadge = ({
     menuOpen,
@@ -25,7 +26,7 @@ const HeaderCartIconWithBadge = ({
 
     return (
         <div className="relative flex items-center gap-2">
-            <Link
+            <CustomLink
                 href="/cart"
                 className="flex items-center hover:text-yellow-200 transition relative"
             >
@@ -38,7 +39,7 @@ const HeaderCartIconWithBadge = ({
                         {cartCount}
                     </span>
                 )}
-            </Link>
+            </CustomLink>
 
             {/* Only show menu button on mobile */}
             <button

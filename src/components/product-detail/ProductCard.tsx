@@ -1,10 +1,10 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import type { ProductSummary } from '~/types/products';
+import CustomLink from '../shared/loading/CustomLink';
 
 const ProductCard = ({ product }: { product: ProductSummary }) => {
     return (
-        <Link href={`/product-detail/${product.slug}`}>
+        <CustomLink href={`/product-detail/${product.slug}`}>
             <div className="bg-white mb-1 shadow-sm rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300 w-[192px] min-w-[192px] min-h-[240px] hover:scale-105">
                 <Image
                     width={192}
@@ -42,7 +42,7 @@ const ProductCard = ({ product }: { product: ProductSummary }) => {
                     </div>
                 </div>
             </div>
-        </Link>
+        </CustomLink>
     );
 };
 

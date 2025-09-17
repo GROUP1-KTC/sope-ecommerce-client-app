@@ -10,7 +10,6 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import HelpIcon from '@mui/icons-material/Help';
 import LanguageIcon from '@mui/icons-material/Language';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-// loi tookit
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -19,8 +18,9 @@ import HeaderCartIconWithBadge from './HeaderCartIconWithBadge';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { useSearchSuggestQuery } from '~/features/products/elasticApi';
 import { useRouter } from 'next/navigation';
-import { useAppSelector } from '~/hooks/useTypes';
 import { loadAuthUser } from '~/utils/authCookie';
+import CustomLink from '../shared/loading/CustomLink';
+import SellerLink from './SellerLink';
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -125,37 +125,30 @@ const Header = () => {
             {/* Top bar - only show on desktop */}
             <div className="hidden sm:flex flex-col md:flex-row justify-between items-center px-4 sm:px-8 md:px-20 lg:px-40 py-1 text-xs sm:text-sm">
                 <div className="flex gap-3 items-center">
-                    <Link
-                        href={isSeller ? '/seller' : '/create-shop'}
-                        className="hover:text-yellow-200 transition"
-                    >
-                        {isSeller
-                            ? 'Trang Bán Hàng'
-                            : 'Trở thành Người bán Sope'}
-                    </Link>
+                    <SellerLink />
 
                     <span>|</span>
-                    <Link href="#" className="hover:text-yellow-200 transition">
+                    <CustomLink href="#" className="hover:text-yellow-200 transition">
                         Tải ứng dụng
-                    </Link>
+                    </CustomLink>
                     <span>|</span>
                     <span>Kết nối</span>
-                    <Link href="#" className="hover:text-yellow-200 transition">
+                    <CustomLink href="#" className="hover:text-yellow-200 transition">
                         <FacebookIcon style={{ fontSize: 20 }} />
-                    </Link>
-                    <Link href="#" className="hover:text-yellow-200 transition">
+                    </CustomLink>
+                    <CustomLink href="#" className="hover:text-yellow-200 transition">
                         <InstagramIcon style={{ fontSize: 20 }} />
-                    </Link>
+                    </CustomLink>
                 </div>
                 <div className="flex gap-3 items-center">
                     <span className="flex items-center gap-1">
                         <NotificationsActiveIcon style={{ fontSize: 18 }} />
-                        <Link
-                            href="/notification"
+                        <CustomLink
+                            href="/account/notification"
                             className="hover:text-gray-400 transition"
                         >
                             Thông báo
-                        </Link>
+                        </CustomLink>
                     </span>
                     <span className="h-4 w-px bg-white" />
                     <span className="flex items-center gap-1">
@@ -180,7 +173,7 @@ const Header = () => {
                         style={{ fontSize: 40 }}
                         className="text-white"
                     />
-                    <Link href="/" className="hover:text-yellow-200 transition">
+                    <CustomLink href="/" className="hover:text-yellow-200 transition">
                         <Image
                             src="/assets/logo/logo.svg"
                             alt="Sope Logo"
@@ -188,7 +181,7 @@ const Header = () => {
                             height={94}
                             className="h-12 sm:h-16 w-auto"
                         />
-                    </Link>
+                    </CustomLink>
                 </div>
                 {/* Search bar */}
 
@@ -211,7 +204,7 @@ const Header = () => {
                             <div className="absolute top-full left-0 w-full bg-white shadow-lg rounded-md mt-1 z-50 max-h-80 overflow-y-auto">
                                 {products.length > 0 ? (
                                     products.map((p, index) => (
-                                        <Link
+                                        <CustomLink
                                             key={p.productId || index}
                                             href={`/product-detail/${p.slug}`}
                                             className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer"
@@ -226,7 +219,7 @@ const Header = () => {
                                             <span className="text-sm text-gray-800">
                                                 {p.name}
                                             </span>
-                                        </Link>
+                                        </CustomLink>
                                     ))
                                 ) : (
                                     <div className="p-2 text-sm text-gray-500">
@@ -281,7 +274,7 @@ const Header = () => {
                     </button>
                 </div>
 
-                <Link
+                <CustomLink
                     href="#"
                     className="hover:bg-white/10 rounded px-2 py-1 transition flex items-center gap-2"
                 >
@@ -293,31 +286,25 @@ const Header = () => {
                         className="h-6 w-auto"
                     />
                     Trang chủ Sope
-                </Link>
-                <Link
-                    href={isSeller ? '/seller' : 'create-shop'}
-                    className="hover:text-yellow-200 transition"
-                >
-                    {isSeller ? 'Trang Bán Hàng' : 'Trở thành Người bán Sope'}
-                </Link>
-
-                <Link
+                </CustomLink>
+                <SellerLink />
+                <CustomLink
                     href="#"
                     className="hover:bg-white/10 rounded px-2 py-1 transition"
                 >
                     {' '}
                     <GetAppIcon className="mr-6" /> Tải ứng dụng
-                </Link>
+                </CustomLink>
 
                 <hr className="border-white/20 my-2" />
 
                 {/* Nhóm 2 */}
-                <Link
-                    href="/notification"
+                <CustomLink
+                    href="/account/notification"
                     className="hover:bg-white/10 rounded px-2 py-1 transition flex items-center gap-2"
                 >
                     <NotificationsActiveIcon className="mr-6" /> Thông báo
-                </Link>
+                </CustomLink>
                 <div className="hover:bg-white/10 rounded px-2 py-1 transition cursor-pointer">
                     <HelpIcon className="mr-7" /> Hỗ trợ
                 </div>
@@ -328,20 +315,20 @@ const Header = () => {
                 <hr className="border-white/20 my-2" />
 
                 {/* Nhóm 3 */}
-                <Link
+                <CustomLink
                     href="/login"
                     className="hover:bg-white/10 rounded px-2 py-1 transition"
                 >
                     <AccountCircleIcon className="mr-6" /> Đăng Nhập
-                </Link>
+                </CustomLink>
 
                 <div className="flex gap-3 mt-auto pt-4">
-                    <Link href="#">
+                    <CustomLink href="#">
                         <FacebookIcon fontSize="small" />
-                    </Link>
-                    <Link href="#">
+                    </CustomLink>
+                    <CustomLink href="#">
                         <InstagramIcon fontSize="small" />
-                    </Link>
+                    </CustomLink>
                 </div>
             </div>
         </header>

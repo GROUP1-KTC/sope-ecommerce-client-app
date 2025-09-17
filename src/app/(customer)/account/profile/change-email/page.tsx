@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const ChangeEmailPage = () => {
     const [newEmail, setNewEmail] = useState('');
@@ -43,12 +44,12 @@ const ChangeEmailPage = () => {
 
                             <div className="mb-4 flex items-center">
                                 <label className="block text-gray-700 text-sm font-bold w-1/4"></label>
-                                <Link
+                                <CustomLink
                                     href="/account/profile/verify-email"
                                     className="w-1/6 bg-red-500 text-white p-2 rounded cursor-pointer hover:bg-red-600 transition-colors duration-200 flex items-center justify-center text-center"
                                 >
                                     Tiếp Theo
-                                </Link>
+                                </CustomLink>
                             </div>
 
                             <div className="mb-4 flex items-center">

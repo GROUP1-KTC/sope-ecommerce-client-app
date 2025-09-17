@@ -15,6 +15,7 @@ import ProductReviews from '~/components/product-detail/ProductReviews';
 import { useGetReviewByProductQuery } from '~/features/reviews/reviewApi';
 import { skipToken } from '@reduxjs/toolkit/query';
 import ProductList from '~/components/product-detail/ProductList';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const ProductBySlug = () => {
     const params = useParams();
@@ -102,20 +103,20 @@ const ProductBySlug = () => {
         <div className="w-4/5 mx-auto ">
             <div className="text-base text-gray-600 mb-4 mt-4">
                 <nav className="flex items-center flex-wrap gap-1">
-                    <Link href="/" className="text-blue-600  hover:underline">
-                        Shopee
-                    </Link>
+                    <CustomLink href="/" className="text-blue-600  hover:underline">
+                        Sope
+                    </CustomLink>
                     <span>›</span>
 
                     {/* Categories */}
                     {breadcrumb?.map((cat, _) => (
                         <React.Fragment key={cat.id}>
-                            <Link
+                            <CustomLink
                                 href={`/${cat.slug}`}
                                 className="text-blue-600 hover:underline"
                             >
                                 {cat.name}
-                            </Link>
+                            </CustomLink>
                             <span>›</span>
                         </React.Fragment>
                     ))}

@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 interface Category {
     name: string;
@@ -165,7 +166,7 @@ const AllCategories = () => {
                                 </div>
                                 <div className="grid grid-cols-6 gap-6 bg-white p-8 rounded-xl shadow">
                                     {groups[ch].map((cat, idx) => (
-                                        <Link
+                                        <CustomLink
                                             href={cat.link}
                                             key={cat.name + idx}
                                             className="flex flex-col items-center p-4 rounded-lg hover:bg-gray-100 transition group"
@@ -182,7 +183,7 @@ const AllCategories = () => {
                                             <div className="text-center text-sm font-medium text-gray-700 group-hover:text-green-600">
                                                 {cat.name}
                                             </div>
-                                        </Link>
+                                        </CustomLink>
                                     ))}
                                 </div>
                             </div>

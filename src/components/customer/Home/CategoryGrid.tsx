@@ -5,6 +5,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Image from 'next/image';
 import Link from 'next/link';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const categories = [
     {
@@ -237,7 +238,7 @@ const CategoryGrid = () => {
                                         className="flex flex-row mb-2 hover"
                                     >
                                         {row.map((cat, _) => (
-                                            <Link
+                                            <CustomLink
                                                 href="/product"
                                                 key={cat.name}
                                                 className="flex flex-col items-center mx-2 cursor-pointer w-24"
@@ -254,7 +255,7 @@ const CategoryGrid = () => {
                                                 <span className="text-xs text-center text-gray-700 font-medium leading-tight">
                                                     {cat.name}
                                                 </span>
-                                            </Link>
+                                            </CustomLink>
                                         ))}
                                     </div>
                                 ))}

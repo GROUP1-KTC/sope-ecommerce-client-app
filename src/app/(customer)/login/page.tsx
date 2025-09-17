@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import type { LoginResponse } from '~/types/auth/auth';
 import { setCredentials } from '~/features/auth/authSlice';
 import type { ServerResponse } from '~/types/serverReponse';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const Login = () => {
     const [input, setInput] = useState<LoginInput>({
@@ -230,12 +231,12 @@ const Login = () => {
                                             </label>
                                         </div>
                                         <div className="text-sm">
-                                            <Link
+                                            <CustomLink
                                                 href="/forgot-password"
                                                 className="text-blue-600 hover:underline font-semibold"
                                             >
                                                 Forgot password?
-                                            </Link>
+                                            </CustomLink>
                                         </div>
                                     </div>
                                     <div className="!mt-6">
@@ -275,12 +276,12 @@ const Login = () => {
                                     </div>
                                     <p className="text-slate-900 text-sm !mt-6 text-center">
                                         Don't have an account yet ?{' '}
-                                        <Link
+                                        <CustomLink
                                             href="/signup"
                                             className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
                                         >
                                             Sign up here
-                                        </Link>
+                                        </CustomLink>
                                     </p>
                                 </form>
                             </div>

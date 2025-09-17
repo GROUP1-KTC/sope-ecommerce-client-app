@@ -13,6 +13,7 @@ import { setUser, updateUser } from '~/features/user/userSlice';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 import { loadAuthUser } from '~/utils/authCookie';
 import { useAlertStore } from '~/store/zustand/alertStore';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const ProfilePage = () => {
     const [updateProfile] = useUpdateProfileMutation();
@@ -185,12 +186,12 @@ const ProfilePage = () => {
                                                 )}
                                             </div>
                                         </div>
-                                        <Link
+                                        <CustomLink
                                             href="/account/profile/change-email"
                                             className="ml-2 text-sm cursor-pointer text-blue-500 underline"
                                         >
                                             Thay Đổi
-                                        </Link>
+                                        </CustomLink>
                                     </div>
                                 </div>
                                 <div className="mb-4 flex items-center">
@@ -205,12 +206,12 @@ const ProfilePage = () => {
                                                 '$1******$3',
                                             )}
                                         </div>
-                                        <Link
+                                        <CustomLink
                                             href="/account/profile/change-phone"
                                             className="ml-2 text-sm cursor-pointer text-blue-500 underline"
                                         >
                                             Thay Đổi
-                                        </Link>
+                                        </CustomLink>
                                     </div>
                                 </div>
                                 <div className="mb-4 flex items-center">

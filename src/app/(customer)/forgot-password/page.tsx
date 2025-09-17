@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import Image from 'next/image';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const RecoverPassword = () => {
     const [input, setInput] = useState({
@@ -138,12 +139,12 @@ const RecoverPassword = () => {
 
                                     <p className="text-slate-900 text-sm !mt-6 text-center">
                                         Đã nhớ mật khẩu?{' '}
-                                        <Link
+                                        <CustomLink
                                             href="/login"
                                             className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
                                         >
                                             Đăng nhập tại đây
-                                        </Link>
+                                        </CustomLink>
                                     </p>
                                 </form>
                             </div>
