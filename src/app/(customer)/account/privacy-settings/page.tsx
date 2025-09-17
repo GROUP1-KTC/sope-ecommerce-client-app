@@ -1,13 +1,16 @@
 'use client';
 import { useState } from 'react';
 import NoAccountsIcon from '@mui/icons-material/NoAccounts';
+import { useAlertStore } from '~/store/zustand/alertStore';
 
 const PrivacySettingsPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleDeleteAccount = () => {
-        // TODO: Gửi yêu cầu xóa tài khoản
-        alert('Yêu cầu xóa tài khoản đã được gửi!');
+        useAlertStore.getState().showAlert({
+            severity: 'error',
+            message: 'Yêu cầu xóa tài khoản đã được gửi!',
+        });
         setIsModalOpen(false);
     };
 

@@ -12,14 +12,16 @@ import type {
 import SalesInfo from '~/components/add-edit-product/SalesInfo';
 import DetailInfo from '~/components/add-edit-product/DetailInfo';
 import LeftSideBar from '~/components/add-edit-product/LeftSideBar';
-import RightSideBar, {
+import type {
     ProductFormDataWithMedia,
     MediaItem,
 } from '~/components/add-edit-product/RightSideBar';
+import RightSideBar from '~/components/add-edit-product/RightSideBar';
 import FundanmentalInformation from '~/components/add-edit-product/FundanmentalInformation';
 import { buildCategoryPath } from '~/utils/buildCategoryPath';
 import ErrorModal from './ErrorModal';
 import { verifyImage } from '~/utils/api';
+import { useAlertStore } from '~/store/zustand/alertStore';
 
 type ProductFormMode = 'add' | 'edit';
 
@@ -84,43 +86,43 @@ const ProductForm: React.FC<ProductFormProps> = ({
     const [productData, setProductData] = useState<AddState | EditState>(
         mode === 'add'
             ? ({
-                mode: 'add',
-                name: '',
-                brand: '',
-                description: '',
-                defaultImage: null,
-                defaultVideoIntro: null,
-                hidden: false,
-                categoryId: '',
-                variants: [],
-                imagesList: [],
-                productDetails: [],
-            } as AddState)
+                  mode: 'add',
+                  name: '',
+                  brand: '',
+                  description: '',
+                  defaultImage: null,
+                  defaultVideoIntro: null,
+                  hidden: false,
+                  categoryId: '',
+                  variants: [],
+                  imagesList: [],
+                  productDetails: [],
+              } as AddState)
             : ({
-                mode: 'edit',
-                description: initialData?.description || '',
-                name: initialData?.name || '',
-                brand: initialData?.brand || '',
-                hidden: initialData?.hidden ?? false,
-                categoryId: initialData?.categoryId || '',
-                defaultImage: mapUrlToMediaItem(initialData?.defaultImage),
-                defaultVideoIntro: mapUrlToMediaItem(
-                    initialData?.defaultVideoIntro ?? null,
-                ),
-                imagesList: mapApiImagesToMediaItems(
-                    initialData?.imagesList ?? [],
-                ),
-                productDetails: initialData?.productDetails || [],
-                variants: initialData?.variants.map((v) => ({
-                    price: v.price,
-                    productVariantId: v.productVariantId,
-                    stock: v.stock,
-                    attributes: v.attributes,
-                    imageVariant: v.imageVariant,
-                    dimension: v.dimension,
-                    weight: v.weight,
-                })),
-            } as EditState),
+                  mode: 'edit',
+                  description: initialData?.description || '',
+                  name: initialData?.name || '',
+                  brand: initialData?.brand || '',
+                  hidden: initialData?.hidden ?? false,
+                  categoryId: initialData?.categoryId || '',
+                  defaultImage: mapUrlToMediaItem(initialData?.defaultImage),
+                  defaultVideoIntro: mapUrlToMediaItem(
+                      initialData?.defaultVideoIntro ?? null,
+                  ),
+                  imagesList: mapApiImagesToMediaItems(
+                      initialData?.imagesList ?? [],
+                  ),
+                  productDetails: initialData?.productDetails || [],
+                  variants: initialData?.variants.map((v) => ({
+                      price: v.price,
+                      productVariantId: v.productVariantId,
+                      stock: v.stock,
+                      attributes: v.attributes,
+                      imageVariant: v.imageVariant,
+                      dimension: v.dimension,
+                      weight: v.weight,
+                  })),
+              } as EditState),
     );
 
     useEffect(() => {
@@ -188,9 +190,18 @@ const ProductForm: React.FC<ProductFormProps> = ({
     ) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        if (file.type !== 'video/mp4') return alert('Chỉ hỗ trợ định dạng MP4');
-        if (file.size > 10 * 1024 * 1024)
-            return alert('Dung lượng video không được vượt quá 10MB');
+        if (file.type !== 'video/mp4') {
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Chỉ hỗ trợ định dạng MP4!',
+            });
+        }
+        if (file.size > 10 * 1024 * 1024) {
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Dung lượng video không được vượt quá 10MB',
+            });
+        }
 
         const mediaItem: MediaItem = {
             file,
@@ -208,18 +219,27 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
         for (const f of files) {
             if (!f.type.startsWith('image/')) {
-                alert('Chỉ hỗ trợ định dạng hình ảnh');
+                useAlertStore.getState().showAlert({
+                    severity: 'warning',
+                    message: 'Chỉ hỗ trợ định dạng hình ảnh',
+                });
                 continue;
             }
             if (f.size > maxSizeMB * 1024 * 1024) {
-                alert('Dung lượng hình ảnh không được vượt quá 10MB');
+                useAlertStore.getState().showAlert({
+                    severity: 'warning',
+                    message: 'Dung lượng hình ảnh không được vượt quá 10MB',
+                });
                 continue;
             }
 
             try {
                 const result = await verifyImage(f);
                 if (!result.valid) {
-                    alert(`Ảnh ${f.name} không hợp lệ: ${result.reason}`);
+                    useAlertStore.getState().showAlert({
+                        severity: 'warning',
+                        message: `Ảnh ${f.name} không hợp lệ: ${result.reason}`,
+                    });
                     continue;
                 }
 
@@ -232,7 +252,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
                     imagesList: [...prev.imagesList, mediaItem],
                 }));
             } catch (err) {
-                alert(`Không thể kiểm tra ảnh ${f.name}`);
+                useAlertStore.getState().showAlert({
+                    severity: 'warning',
+                    message: `Không thể kiểm tra ảnh ${f.name}`,
+                });
             }
         }
 
@@ -244,17 +267,27 @@ const ProductForm: React.FC<ProductFormProps> = ({
     ) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        if (!file.type.startsWith('image/'))
-            return alert('Chỉ hỗ trợ định dạng hình ảnh');
-        if (file.size > 5 * 1024 * 1024)
-            return alert('Dung lượng hình ảnh không được vượt quá 5MB');
+        if (!file.type.startsWith('image/')) {
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Chỉ hỗ trợ định dạng hình ảnh',
+            });
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Dung lượng hình ảnh không được vượt quá 5MB',
+            });
+        }
 
         try {
             const result = await verifyImage(file);
-
             if (!result.valid) {
-                alert(`Ảnh không hợp lệ: ${result.reason}`);
-                return;
+                useAlertStore.getState().showAlert({
+                    severity: 'warning',
+                    message: `Ảnh không hợp lệ: ${result.reason}`,
+                });
             }
             const mediaItem: MediaItem = {
                 file,
@@ -262,7 +295,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
             };
             setProductData((prev) => ({ ...prev, defaultImage: mediaItem }));
         } catch (err) {
-            alert('Không thể kiểm tra ảnh. Vui lòng thử lại.');
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Không thể kiểm tra ảnh. Vui lòng thử lại.',
+            });
         } finally {
             e.target.value = '';
         }
@@ -423,7 +459,12 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
             if (mode === 'add' && onCreate) {
                 await onCreate(formData);
-                alert('Tạo sản phẩm thành công!');
+
+                useAlertStore.getState().showAlert({
+                    severity: 'success',
+                    message: 'Tạo sản phẩm thành công!',
+                });
+
                 setProductData({
                     mode: 'add',
                     name: '',
@@ -442,7 +483,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
             }
             if (mode === 'edit' && onUpdate && initialData) {
                 await onUpdate(initialData.productId, formData);
-                alert('🎉 Sửa sản phẩm thành công!');
+                useAlertStore.getState().showAlert({
+                    severity: 'success',
+                    message: '🎉 Sửa sản phẩm thành công!',
+                });
             }
         } catch (err: any) {
             let msg = 'Có lỗi xảy ra';

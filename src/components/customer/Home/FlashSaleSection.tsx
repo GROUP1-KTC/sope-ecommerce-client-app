@@ -4,16 +4,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Image from 'next/image';
-import { useGetActiveFlashSalesQuery } from "~/features/service-program/serviceprogramApi";
+import { useGetActiveFlashSalesQuery } from '~/features/service-program/serviceprogramApi';
 
-import { FlashSaleProgramDTO } from '~/types/service-programs/serviceprogram';
+import type { FlashSaleProgramDTO } from '~/types/service-programs/serviceprogram';
 import FlashCountdown from './FlashCountdown';
 
 interface FlashSaleSectionProps {
     initialSeconds?: number;
 }
 
-const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ }) => {
+const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({}) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [atStart, setAtStart] = useState(true);
     const [atEnd, setAtEnd] = useState(false);
@@ -43,8 +43,7 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ }) => {
         return () => el?.removeEventListener('scroll', onScroll);
     }, []);
 
-    const formatPrice = (price: number) =>
-        `₫${price.toLocaleString('vi-VN')}`;
+    const formatPrice = (price: number) => `₫${price.toLocaleString('vi-VN')}`;
 
     if (isLoading) {
         return (
@@ -86,14 +85,15 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ }) => {
                             {flashSales.map((sale: FlashSaleProgramDTO) => {
                                 const { variantInfo, discountPercentage } =
                                     sale;
-                                const nameWithAttrs = `${variantInfo.productName}${variantInfo.attributes?.length
-                                    ? ' (' +
-                                    variantInfo.attributes
-                                        .map((a) => a.value)
-                                        .join(', ') +
-                                    ')'
-                                    : ''
-                                    }`;
+                                const nameWithAttrs = `${variantInfo.productName}${
+                                    variantInfo.attributes?.length
+                                        ? ' (' +
+                                          variantInfo.attributes
+                                              .map((a) => a.value)
+                                              .join(', ') +
+                                          ')'
+                                        : ''
+                                }`;
 
                                 // Giá sau khi giảm
                                 const discountedPrice =
@@ -101,12 +101,13 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ }) => {
                                     (1 - discountPercentage / 100);
 
                                 // % sold (đơn giản stock+sold)
-                                const total = variantInfo.stock + variantInfo.sold;
+                                const total =
+                                    variantInfo.stock + variantInfo.sold;
                                 const soldPercent =
                                     total > 0
                                         ? Math.round(
-                                            (variantInfo.sold / total) * 100
-                                        )
+                                              (variantInfo.sold / total) * 100,
+                                          )
                                         : 0;
 
                                 return (
@@ -114,7 +115,9 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({ }) => {
                                         key={sale.id}
                                         className="relative flex flex-col items-center shadow-xl rounded-lg m-2 p-2 w-48 min-w-[12rem] cursor-pointer hover:bg-orange-100 transition-colors duration-200"
                                     >
-                                        <FlashCountdown endDateTime={`${sale.saleDate}T${sale.endTime}`} />
+                                        <FlashCountdown
+                                            endDateTime={`${sale.saleDate}T${sale.endTime}`}
+                                        />
 
                                         <div className="w-36 h-36 flex items-center justify-center bg-white mb-2 rounded overflow-hidden">
                                             <Image

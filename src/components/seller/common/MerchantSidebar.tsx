@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, JSX } from 'react';
+import type { JSX } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
@@ -11,7 +12,6 @@ import RecommendOutlinedIcon from '@mui/icons-material/RecommendOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import { useGetShopIdQuery } from '~/features/shop/shopApi';
 import DiscountOutlinedIcon from '@mui/icons-material/DiscountOutlined';
-
 
 // Kiểu cho item
 type NavItem = {
@@ -27,7 +27,7 @@ export default function MerchantSidebar() {
 
     const pathname = usePathname();
 
-     const { data: shopId } = useGetShopIdQuery();
+    const { data: shopId } = useGetShopIdQuery();
 
     const navItems: NavItem[] = useMemo(
         () => [
@@ -61,7 +61,10 @@ export default function MerchantSidebar() {
                 label: 'Marketing Channel',
                 icon: <LocalOfferIcon className="h-5 w-5 mr-3" />,
                 children: [
-                    { label: 'Marketing Channel', href: '/seller/marketing-channel' },
+                    {
+                        label: 'Marketing Channel',
+                        href: '/seller/marketing-channel',
+                    },
                     { label: 'Shop Promotions', href: '#promotions' },
                     { label: 'Shop Flash Sale', href: '#flash-sale' },
                     { label: 'Shop Discount Code', href: '#discount' },
@@ -71,8 +74,14 @@ export default function MerchantSidebar() {
                 label: 'Customer Service',
                 icon: <RecommendOutlinedIcon className="h-5 w-5 mr-3" />,
                 children: [
-                    { label: 'Chat Management', href: '/seller/chat-management' },
-                    { label: 'Review Management', href: '/seller/review-management' },
+                    {
+                        label: 'Chat Management',
+                        href: '/seller/chat-management',
+                    },
+                    {
+                        label: 'Review Management',
+                        href: '/seller/review-management',
+                    },
                 ],
             },
             {
@@ -80,7 +89,10 @@ export default function MerchantSidebar() {
                 icon: <PaymentsOutlinedIcon className="h-5 w-5 mr-3" />,
                 children: [
                     { label: 'Revenue', href: '/seller/turnover' },
-                    { label: 'Sope Account Balance', href: '/seller/account-balance' },
+                    {
+                        label: 'Sope Account Balance',
+                        href: '/seller/account-balance',
+                    },
                     { label: 'Bank Account', href: '/seller/bank' },
                 ],
             },
@@ -95,8 +107,8 @@ export default function MerchantSidebar() {
             {
                 label: 'Live Stream',
                 icon: <StoreOutlinedIcon className="h-5 w-5 mr-3" />,
-                href: `/live/seller/${shopId}`
-            }
+                href: `/live/seller/${shopId}`,
+            },
         ],
         [],
     );

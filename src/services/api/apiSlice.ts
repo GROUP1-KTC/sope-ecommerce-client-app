@@ -5,7 +5,7 @@ import {
     type FetchArgs,
     type FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
-import { clearCredentials, setCredentials } from '~/features/auth/authSlice';
+import { clearCredentials } from '~/features/auth/authSlice';
 import { loadAuthUser } from '~/utils/authCookie';
 
 const baseQuery = fetchBaseQuery({
@@ -40,9 +40,9 @@ const baseQueryWithReauth: BaseQueryFn<
         );
 
         if (refreshResult.data) {
-            const { accessToken } = refreshResult.data as {
-                accessToken: string;
-            };
+            // const { accessToken } = refreshResult.data as {
+            //     accessToken: string;
+            // };
 
             // Thử lại request ban đầu
             result = await baseQuery(args, api, extraOptions);

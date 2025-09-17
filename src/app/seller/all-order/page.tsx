@@ -16,7 +16,6 @@ type Filters = {
     orderNumber: string;
 };
 export default function AllOrder({ shopIdProp }: { shopIdProp?: string }) {
-
     const [activeTab, setActiveTab] = useState(0);
     const [page, setPage] = useState(0);
     const size = 10;
@@ -36,7 +35,7 @@ export default function AllOrder({ shopIdProp }: { shopIdProp?: string }) {
         size,
     });
 
-    console.log('check allOrder', allOrder)
+    console.log('check allOrder', allOrder);
 
     const filteredOrders = useMemo(() => {
         if (!allOrder?.data?.content) return [];

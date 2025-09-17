@@ -164,7 +164,10 @@ const Cart: React.FC = () => {
 
     const handleDeleteSelected = async () => {
         if (selected.length === 0) {
-            alert('Vui lòng chọn sản phẩm để xóa.');
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Vui lòng chọn sản phẩm để xóa.',
+            });
             return;
         }
         try {
@@ -310,7 +313,10 @@ const Cart: React.FC = () => {
 
     const handleSaveToFavorites = () => {
         if (selected.length === 0) {
-            alert('Vui lòng chọn sản phẩm để lưu vào mục Đã thích.');
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Vui lòng chọn sản phẩm để lưu vào mục Đã thích.',
+            });
             return;
         }
         const favorites = cartGroups
@@ -318,12 +324,19 @@ const Cart: React.FC = () => {
             .filter((item) => selected.includes(item.id))
             .map((item) => item.name)
             .join(', ');
-        alert(`Đã lưu các sản phẩm sau vào mục yêu thích:\n${favorites}`);
+
+        useAlertStore.getState().showAlert({
+            severity: 'success',
+            message: `Đã lưu các sản phẩm sau vào mục yêu thích:\n${favorites}`,
+        });
     };
 
     const handleCheckout = () => {
         if (selected.length === 0) {
-            alert('Vui lòng chọn ít nhất một sản phẩm để mua.');
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Vui lòng chọn ít nhất một sản phẩm để mua.',
+            });
             return;
         }
 

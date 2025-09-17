@@ -1,7 +1,7 @@
 'use client';
 
 import OrderCard from './OrderCard';
-import { OrderGroupShop } from '~/types/orders/order';
+import type { OrderGroupShop } from '~/types/orders/order';
 
 export interface OrderListProps {
     allOrder: {

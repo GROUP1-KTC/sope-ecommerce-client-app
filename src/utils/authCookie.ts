@@ -1,6 +1,6 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 
-const COOKIE_KEY = "authUser";
+const COOKIE_KEY = 'authUser';
 
 export function saveAuthUser(user: {
     id: string;
@@ -8,9 +8,8 @@ export function saveAuthUser(user: {
     roles: string[];
     accessToken: string | null;
 }) {
-
     Cookies.set(COOKIE_KEY, JSON.stringify(user), {
-        path: "/",
+        path: '/',
         expires: 365,
     });
 }
@@ -21,5 +20,5 @@ export function loadAuthUser() {
 }
 
 export function clearAuthUser() {
-    Cookies.remove(COOKIE_KEY, { path: "/" });
+    Cookies.remove(COOKIE_KEY, { path: '/' });
 }

@@ -1,6 +1,5 @@
 import type {
     PageResponse,
-    Product,
     ProductResponse,
     ProductSummary,
 } from '../../types/products';
@@ -28,7 +27,9 @@ export const productApi = apiSlice.injectEndpoints({
                 try {
                     const { data } = await queryFulfilled;
                     console.log('API createProduct thành công:', data);
-                } catch (err) {}
+                } catch (err) {
+                    console.log('check err', err);
+                }
             },
         }),
         updateProduct: builder.mutation<

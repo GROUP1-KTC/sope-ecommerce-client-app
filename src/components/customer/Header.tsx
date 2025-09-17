@@ -18,7 +18,7 @@ import UserMenu from './Home/UserMenu';
 import HeaderCartIconWithBadge from './HeaderCartIconWithBadge';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { useSearchSuggestQuery } from '~/features/products/elasticApi';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import { useAppSelector } from '~/hooks/useTypes';
 
 const Header = () => {
@@ -30,36 +30,61 @@ const Header = () => {
 
     const roles = useAppSelector((state) => state.auth.roles);
 
-    const isSeller = roles.includes("SELLER");
+    const isSeller = roles.includes('SELLER');
 
-    console.log("isSeller", isSeller);
-
-    const { data: products = [], isLoading } = useSearchSuggestQuery(
+    const { data: products = [] } = useSearchSuggestQuery(
         searchTerm
             ? {
-                _source: ["productId", "slug", "name", "default_image"],
+                _source: ['productId', 'slug', 'name', 'default_image'],
                 query: {
                     function_score: {
                         query: {
                             bool: {
                                 should: [
-                                    { match_phrase: { name: { query: searchTerm, boost: 5 } } },
-                                    { match_phrase_prefix: { name: { query: searchTerm, boost: 4 } } },
-                                    { match: { name: { query: searchTerm, fuzziness: "AUTO", boost: 2 } } },
-                                    { match: { slug: { query: searchTerm, boost: 1 } } },
-
+                                    {
+                                        match_phrase: {
+                                            name: {
+                                                query: searchTerm,
+                                                boost: 5,
+                                            },
+                                        },
+                                    },
+                                    {
+                                        match_phrase_prefix: {
+                                            name: {
+                                                query: searchTerm,
+                                                boost: 4,
+                                            },
+                                        },
+                                    },
+                                    {
+                                        match: {
+                                            name: {
+                                                query: searchTerm,
+                                                fuzziness: 'AUTO',
+                                                boost: 2,
+                                            },
+                                        },
+                                    },
+                                    {
+                                        match: {
+                                            slug: {
+                                                query: searchTerm,
+                                                boost: 1,
+                                            },
+                                        },
+                                    },
                                 ],
                             },
                         },
-                        boost_mode: "sum",
+                        boost_mode: 'sum',
                     },
                 },
                 size: 20,
-                sort: [{ _score: "desc" }],
+                sort: [{ _score: 'desc' }],
             }
-            : skipToken
+            : skipToken,
     );
-
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -70,7 +95,7 @@ const Header = () => {
     }, [inputValue]);
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
+        if (e.key === 'Enter') {
             e.preventDefault();
             const trimmed = inputValue.trim();
             if (trimmed) {
@@ -102,10 +127,12 @@ const Header = () => {
             <div className="hidden sm:flex flex-col md:flex-row justify-between items-center px-4 sm:px-8 md:px-20 lg:px-40 py-1 text-xs sm:text-sm">
                 <div className="flex gap-3 items-center">
                     <Link
-                        href={isSeller ? "/seller" : "/create-shop"}
+                        href={isSeller ? '/seller' : '/create-shop'}
                         className="hover:text-yellow-200 transition"
                     >
-                        {isSeller ? "Trang Bán Hàng" : "Trở thành Người bán Sope"}
+                        {isSeller
+                            ? 'Trang Bán Hàng'
+                            : 'Trở thành Người bán Sope'}
                     </Link>
 
                     <span>|</span>
@@ -173,7 +200,9 @@ const Header = () => {
                             onFocus={() => setIsFocused(true)}
                             onChange={(e) => setInputValue(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+                            onBlur={() =>
+                                setTimeout(() => setIsFocused(false), 200)
+                            }
                             className="w-full px-4 py-2 text-gray-800 bg-white rounded-l-md focus:outline-none focus:ring-2 focus:ring-red-300"
                             placeholder="Tìm kiếm trong Sope"
                             type="text"
@@ -185,7 +214,7 @@ const Header = () => {
                                     products.map((p, index) => (
                                         <Link
                                             key={p.productId || index}
-                                            href={`/product-by-slug/${p.slug}`}
+                                            href={`/product-detail/${p.slug}`}
                                             className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer"
                                         >
                                             <Image
@@ -195,7 +224,9 @@ const Header = () => {
                                                 height={40}
                                                 className="w-10 h-10 object-cover rounded"
                                             />
-                                            <span className="text-sm text-gray-800">{p.name}</span>
+                                            <span className="text-sm text-gray-800">
+                                                {p.name}
+                                            </span>
                                         </Link>
                                     ))
                                 ) : (
@@ -205,7 +236,6 @@ const Header = () => {
                                 )}
                             </div>
                         )}
-
                     </div>
 
                     <button
@@ -215,7 +245,6 @@ const Header = () => {
                         <SearchIcon className="text-[#d0001a]" />
                     </button>
                 </div>
-
 
                 {/* Cart + Hamburger */}
                 <HeaderCartIconWithBadge
@@ -267,10 +296,10 @@ const Header = () => {
                     Trang chủ Sope
                 </Link>
                 <Link
-                    href={isSeller ? "/seller" : "create-shop"}
+                    href={isSeller ? '/seller' : 'create-shop'}
                     className="hover:text-yellow-200 transition"
                 >
-                    {isSeller ? "Trang Bán Hàng" : "Trở thành Người bán Sope"}
+                    {isSeller ? 'Trang Bán Hàng' : 'Trở thành Người bán Sope'}
                 </Link>
 
                 <Link

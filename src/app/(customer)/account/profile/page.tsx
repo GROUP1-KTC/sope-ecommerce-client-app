@@ -12,6 +12,7 @@ import {
 import { setUser, updateUser } from '~/features/user/userSlice';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 import { loadAuthUser } from '~/utils/authCookie';
+import { useAlertStore } from '~/store/zustand/alertStore';
 
 const ProfilePage = () => {
     const [updateProfile] = useUpdateProfileMutation();
@@ -21,16 +22,21 @@ const ProfilePage = () => {
         try {
             const storedUser = loadAuthUser();
             if (!storedUser) {
-                alert(
-                    'Không tìm thấy thông tin người dùng, vui lòng đăng nhập lại!',
-                );
+                useAlertStore.getState().showAlert({
+                    severity: 'error',
+                    message:
+                        'Không tìm thấy thông tin người dùng, vui lòng đăng nhập lại!',
+                });
                 return;
             }
 
             const userId = storedUser.id;
 
             if (!userId) {
-                alert('Thiếu userId, vui lòng đăng nhập lại!');
+                useAlertStore.getState().showAlert({
+                    severity: 'error',
+                    message: 'Thiếu userId, vui lòng đăng nhập lại!',
+                });
                 return;
             }
 
@@ -53,25 +59,39 @@ const ProfilePage = () => {
             }).unwrap();
 
             dispatch(updateUser(res));
-            alert('Cập nhật thành công!');
+            useAlertStore.getState().showAlert({
+                severity: 'success',
+                message: 'Cập nhật thành công!',
+            });
         } catch (error) {
             console.error(error);
-            alert('Có lỗi xảy ra khi cập nhật!');
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: 'Có lỗi xảy ra khi cập nhật!',
+            });
         }
     };
 
-    const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleAvatarChange = async (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         if (!event.target.files || event.target.files.length === 0) return;
 
         const file = event.target.files[0];
         if (file.size > 1024 * 1024) {
-            alert("Dung lượng file tối đa 1MB!");
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: 'Dung lượng file tối đa 1MB!',
+            });
             return;
         }
 
         const storedUser = loadAuthUser();
         if (!storedUser) {
-            alert("Vui lòng đăng nhập lại!");
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: 'Vui lòng đăng nhập lại!',
+            });
             return;
         }
 
@@ -82,10 +102,16 @@ const ProfilePage = () => {
             }).unwrap();
 
             dispatch(updateUser(res));
-            alert("Cập nhật avatar thành công!");
+            useAlertStore.getState().showAlert({
+                severity: 'success',
+                message: 'Cập nhật avatar thành công!',
+            });
         } catch (error) {
             console.error(error);
-            alert("Có lỗi khi upload avatar!");
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: 'Có lỗi khi upload avatar!',
+            });
         }
     };
 

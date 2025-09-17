@@ -1,14 +1,5 @@
-import { ProductSummary } from '~/types/products';
+import type { ProductSummary } from '~/types/products';
 import ProductCard from './ProductCard';
-
-interface Product {
-    id: string;
-    name: string;
-    price: number;
-    image: string;
-    rating: number;
-    sold: string;
-}
 
 const ProductList = ({
     title,

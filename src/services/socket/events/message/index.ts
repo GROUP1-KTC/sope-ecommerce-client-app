@@ -32,7 +32,9 @@ const OnNewMessage = ({
                             fileName: receivedMessage.fileName || null,
                             fileType: receivedMessage.fileType || null,
                             fileSize: receivedMessage.fileSize || null,
-                            sentAt: receivedMessage.sentAt || new Date().toISOString(),
+                            sentAt:
+                                receivedMessage.sentAt ||
+                                new Date().toISOString(),
                         },
                     }),
                 );

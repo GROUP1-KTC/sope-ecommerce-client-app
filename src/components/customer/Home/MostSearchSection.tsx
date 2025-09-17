@@ -4,8 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ProductCard from '~/components/product-detail/ProductCard';
-import { ProductSummary } from '~/types/products/product';
-
+import type { ProductSummary } from '~/types/products/product';
 
 interface MostSearchProps {
     products: ProductSummary[];

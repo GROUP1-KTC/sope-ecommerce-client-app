@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
-import { Attribute } from '~/types/products';
-import { ReviewMedia } from '~/types/products/review_media';
+import type { Attribute } from '~/types/products';
+import type { ReviewMedia } from '~/types/products/review_media';
 
 interface CommentProps {
     avatar: string;
@@ -11,7 +11,7 @@ interface CommentProps {
     content?: string;
     videoReviewUrl?: string;
     mediaList?: ReviewMedia[];
-    attributes?: Attribute[]
+    attributes?: Attribute[];
 }
 
 const Comment: React.FC<CommentProps> = ({
@@ -22,7 +22,7 @@ const Comment: React.FC<CommentProps> = ({
     content,
     videoReviewUrl,
     mediaList = [],
-    attributes = []
+    attributes = [],
 }) => {
     return (
         <div className="mb-6">
@@ -37,11 +37,16 @@ const Comment: React.FC<CommentProps> = ({
 
                 <div className="flex-1">
                     <div className="flex justify-between items-center">
-                        <div className='flex items-baseline gap-1'>
-                            <h3 className="font-semibold text-gray-800">{username}</h3>
+                        <div className="flex items-baseline gap-1">
+                            <h3 className="font-semibold text-gray-800">
+                                {username}
+                            </h3>
                             {attributes && attributes.length > 0 && (
                                 <span className="text-sm text-gray-500 ml-2">
-                                    Phân loại hàng: {attributes.map(attr => attr.value).join(', ')}
+                                    Phân loại hàng:{' '}
+                                    {attributes
+                                        .map((attr) => attr.value)
+                                        .join(', ')}
                                 </span>
                             )}
                         </div>
@@ -53,17 +58,22 @@ const Comment: React.FC<CommentProps> = ({
                                 year: 'numeric',
                                 hour: '2-digit',
                                 minute: '2-digit',
-                                second: '2-digit'
+                                second: '2-digit',
                             })}
                         </span>
                     </div>
                     <div className="flex items-center mt-1">
                         {Array.from({ length: 5 }, (_, i) => {
                             return (
-                                <span key={i} className="relative inline-block text-yellow-500">
+                                <span
+                                    key={i}
+                                    className="relative inline-block text-yellow-500"
+                                >
                                     <span
                                         className={`absolute overflow-hidden`}
-                                        style={{ width: `${Math.min(Math.max(rating - i, 0), 1) * 100}%` }}
+                                        style={{
+                                            width: `${Math.min(Math.max(rating - i, 0), 1) * 100}%`,
+                                        }}
                                     >
                                         ★
                                     </span>

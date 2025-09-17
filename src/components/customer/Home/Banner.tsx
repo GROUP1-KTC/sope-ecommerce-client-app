@@ -4,7 +4,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { useGetActiveAdsQuery } from "~/features/service-program/serviceprogramApi";
+import { useGetActiveAdsQuery } from '~/features/service-program/serviceprogramApi';
 import { AdsProgramDTO } from '~/types/service-programs/serviceprogram';
 
 const banners = [
@@ -92,8 +92,6 @@ const AdsBanner = () => {
     // const totalSlides = Math.max(1, Math.ceil(adsSafe.length / bannersPerView));
 
     const totalSlides = Math.ceil(banners.length / bannersPerView);
-
-
 
     const prev = () => {
         setCurrent((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));

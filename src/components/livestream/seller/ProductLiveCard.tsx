@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import type { SellerLiveProduct } from '~/types/products';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+// import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -149,9 +149,8 @@ export function ProductLiveCard({
 
                 <button
                     onClick={() => onPinAction(product.id)}
-                    className={`flex items-center gap-1 px-2 py-1 rounded text-white cursor-pointer hover:bg-blue-600 transition ${
-                        isPinned ? 'bg-gray-500' : 'bg-blue-400'
-                    }`}
+                    className={`flex items-center gap-1 px-2 py-1 rounded text-white cursor-pointer hover:bg-blue-600 transition ${isPinned ? 'bg-gray-500' : 'bg-blue-400'
+                        }`}
                 >
                     <PushPinIcon fontSize="small" />{' '}
                     {isPinned ? 'Unpin' : 'Pin Live'}

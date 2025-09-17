@@ -104,10 +104,11 @@ const VideoTrimModal = ({
                     </button>
                     <button
                         onClick={handleConfirm}
-                        className={`px-4 py-2 rounded text-white ${range[1] - range[0] >= 10
-                            ? 'bg-orange-500 hover:bg-orange-600'
-                            : 'bg-gray-300 cursor-not-allowed'
-                            }`}
+                        className={`px-4 py-2 rounded text-white ${
+                            range[1] - range[0] >= 10
+                                ? 'bg-orange-500 hover:bg-orange-600'
+                                : 'bg-gray-300 cursor-not-allowed'
+                        }`}
                         disabled={range[1] - range[0] < 10}
                     >
                         Xác nhận

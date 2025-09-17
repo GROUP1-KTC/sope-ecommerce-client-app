@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
+import { useAlertStore } from '~/store/zustand/alertStore';
 
 const ResetPassword = () => {
     const [input, setInput] = useState({
@@ -63,7 +64,10 @@ const ResetPassword = () => {
         if (Object.values(newErrors).some((err) => err)) return;
 
         try {
-            alert('Password reset successfully');
+            useAlertStore.getState().showAlert({
+                severity: 'success',
+                message: 'Password reset successfully',
+            });
             redirect('/');
         } catch (error) {
             console.error('Reset password error', error);

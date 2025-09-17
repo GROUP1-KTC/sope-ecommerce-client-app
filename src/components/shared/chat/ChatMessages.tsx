@@ -7,7 +7,7 @@ import { connectSocket } from '~/services/socket/socket.service';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 import { OnNewMessage } from '~/services/socket/events/message';
 import { useGetConversationByIdQuery } from '~/features/chat/conversation/ConversationApi';
-import { Message } from '~/types/chat';
+import type { Message } from '~/types/chat';
 import { loadAuthUser } from '~/utils/authCookie';
 
 interface ChatMessagesProps {
@@ -30,7 +30,7 @@ const ChatMessages = ({
     const dispatch = useAppDispatch();
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    const botStatus = useAppSelector(state => state.chat.status);
+    const botStatus = useAppSelector((state) => state.chat.status);
 
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
@@ -109,10 +109,10 @@ const ChatMessages = ({
                         const isMine = msg.senderId === currentUserId;
                         console.log(
                             isMine +
-                            ' - ' +
-                            msg.senderId +
-                            ' - ' +
-                            currentUserId,
+                                ' - ' +
+                                msg.senderId +
+                                ' - ' +
+                                currentUserId,
                         );
                         return (
                             <Box
@@ -125,18 +125,18 @@ const ChatMessages = ({
                                     ...(msg.fileUrl
                                         ? {}
                                         : {
-                                            bgcolor: isMine
-                                                ? 'primary.main'
-                                                : 'white',
-                                            color: isMine
-                                                ? 'white'
-                                                : 'text.primary',
-                                            px: 2.5,
-                                            py: 1.5,
-                                            borderRadius: 2,
-                                            boxShadow:
-                                                '0 1px 3px rgba(0,0,0,0.1)',
-                                        }),
+                                              bgcolor: isMine
+                                                  ? 'primary.main'
+                                                  : 'white',
+                                              color: isMine
+                                                  ? 'white'
+                                                  : 'text.primary',
+                                              px: 2.5,
+                                              py: 1.5,
+                                              borderRadius: 2,
+                                              boxShadow:
+                                                  '0 1px 3px rgba(0,0,0,0.1)',
+                                          }),
                                 }}
                             >
                                 {msg.fileUrl ? (

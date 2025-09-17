@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import isBetween from 'dayjs/plugin/isBetween';
-import { OrderGroupShop, OrderDetail } from '~/types/orders/order';
+import type { OrderGroupShop, OrderDetail } from '~/types/orders/order';
 
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
