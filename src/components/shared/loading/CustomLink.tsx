@@ -10,7 +10,7 @@ interface CustomLinkProps extends LinkProps {
     children: React.ReactNode;
     className?: string;
     style?: React.CSSProperties;
-    sx?: SxProps<Theme>; 
+    sx?: SxProps<Theme>;
     target?: React.HTMLAttributeAnchorTarget;
     rel?: string;
 }

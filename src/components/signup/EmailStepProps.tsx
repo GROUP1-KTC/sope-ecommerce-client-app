@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import Image from 'next/image';
 import CustomLink from '../shared/loading/CustomLink';
 
@@ -92,7 +91,7 @@ const EmailStep = ({
                     </button>
                 </div>
             </div>
-            <p className="text-slate-900 text-sm !mt-6 text-center">
+            <span className="text-slate-900 text-sm !mt-6 text-center">
                 Already have an account?{' '}
                 <CustomLink
                     href="/login"
@@ -100,7 +99,7 @@ const EmailStep = ({
                 >
                     Sign in here
                 </CustomLink>
-            </p>
+            </span>
         </form>
     );
 };

@@ -60,7 +60,7 @@ const VerificationCodeStep = ({
                     Confirm
                 </button>
             </div>
-            <p className="text-slate-900 text-sm !mt-6 text-center">
+            <span className="text-slate-900 text-sm !mt-6 text-center">
                 <button
                     type="button"
                     className="text-blue-600 hover:underline font-semibold cursor-pointer"
@@ -68,7 +68,7 @@ const VerificationCodeStep = ({
                 >
                     Back
                 </button>
-            </p>
+            </span>
         </form>
     );
 };

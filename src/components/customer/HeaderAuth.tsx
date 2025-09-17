@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import Image from 'next/image';
 import { colors } from '~/constants/color.constant';
 import CustomLink from '../shared/loading/CustomLink';

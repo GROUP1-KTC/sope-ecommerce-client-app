@@ -2,7 +2,6 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import Image from 'next/image';
-import Link from 'next/link';
 import CustomLink from '../shared/loading/CustomLink';
 
 const Footer = () => {

@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import Link from 'next/link';
 import CustomLink from '~/components/shared/loading/CustomLink';
 
 export default function SellerWelcomeCard() {

@@ -3,7 +3,6 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CustomLink from '../shared/loading/CustomLink';
 

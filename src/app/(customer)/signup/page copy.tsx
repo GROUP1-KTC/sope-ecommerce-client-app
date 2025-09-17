@@ -233,7 +233,7 @@ const Signup = () => {
                                                 </button>
                                             </div>
                                         </div>
-                                        <p className="text-slate-900 text-sm !mt-6 text-center">
+                                        <span className="text-slate-900 text-sm !mt-6 text-center">
                                             Already have an account?{' '}
                                             <CustomLink
                                                 href="/login"
@@ -241,7 +241,7 @@ const Signup = () => {
                                             >
                                                 Sign in here
                                             </CustomLink>
-                                        </p>
+                                        </span>
                                     </form>
                                 )}
                                 {step === 2 && (
@@ -292,7 +292,7 @@ const Signup = () => {
                                                 Confirm
                                             </button>
                                         </div>
-                                        <p className="text-slate-900 text-sm !mt-6 text-center">
+                                        <span className="text-slate-900 text-sm !mt-6 text-center">
                                             <button
                                                 type="button"
                                                 className="text-blue-600 hover:underline font-semibold cursor-pointer"
@@ -300,7 +300,7 @@ const Signup = () => {
                                             >
                                                 Back
                                             </button>
-                                        </p>
+                                        </span>
                                     </form>
                                 )}
                                 {step === 3 && (
@@ -415,7 +415,7 @@ const Signup = () => {
                                                 Sign Up
                                             </button>
                                         </div>
-                                        <p className="text-slate-900 text-sm !mt-6 text-center">
+                                        <span className="text-slate-900 text-sm !mt-6 text-center">
                                             <button
                                                 type="button"
                                                 className="text-blue-600 hover:underline font-semibold cursor-pointer"
@@ -423,7 +423,7 @@ const Signup = () => {
                                             >
                                                 Back
                                             </button>
-                                        </p>
+                                        </span>
                                     </form>
                                 )}
                             </div>

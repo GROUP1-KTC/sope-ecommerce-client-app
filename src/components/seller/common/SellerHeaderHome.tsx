@@ -1,7 +1,6 @@
 'use client';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Image from 'next/image';
-import Link from 'next/link';
 import QuickMenu from './QuickMenu';
 import CustomLink from '~/components/shared/loading/CustomLink';
 

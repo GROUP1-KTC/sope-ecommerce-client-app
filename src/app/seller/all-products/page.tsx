@@ -11,7 +11,6 @@ import {
     getCategoryPathName,
     buildCategoryPath,
 } from '~/utils/buildCategoryPath';
-import Link from 'next/link';
 import CustomLink from '~/components/shared/loading/CustomLink';
 
 const AllProductsByShop = () => {

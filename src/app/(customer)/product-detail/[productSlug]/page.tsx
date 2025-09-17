@@ -3,7 +3,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 // import Image from 'next/image';
-import Link from 'next/link';
 import {
     useGetProductBySlugQuery,
     useGetSimilarProductsQuery,
@@ -16,6 +15,7 @@ import { useGetReviewByProductQuery } from '~/features/reviews/reviewApi';
 import { skipToken } from '@reduxjs/toolkit/query';
 import ProductList from '~/components/product-detail/ProductList';
 import CustomLink from '~/components/shared/loading/CustomLink';
+import { EmptyMessage, ErrorMessage, LoadingMessage } from '~/components/shared/loading/FeedBack';
 
 const ProductBySlug = () => {
     const params = useParams();
@@ -95,9 +95,9 @@ const ProductBySlug = () => {
     const displayedPrice = selectedVariant?.price ?? minPrice;
     const displayedStock = selectedVariant?.stock;
 
-    if (isLoading) return <p>Đang tải sản phẩm...</p>;
-    if (isError) return <p>Lỗi khi tải sản phẩm.</p>;
-    if (!product) return <p>Không tìm thấy sản phẩm.</p>;
+    if (isLoading) return <LoadingMessage message="Đang tải sản phẩm..." />;
+    if (isError) return <ErrorMessage message="Sản phẩm này không tồn tại." />;
+    if (!product) return <EmptyMessage message="Không tìm thấy sản phẩm." />;
 
     return (
         <div className="w-4/5 mx-auto ">

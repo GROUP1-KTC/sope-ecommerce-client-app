@@ -10,7 +10,6 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import HelpIcon from '@mui/icons-material/Help';
 import LanguageIcon from '@mui/icons-material/Language';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import UserMenu from './Home/UserMenu';

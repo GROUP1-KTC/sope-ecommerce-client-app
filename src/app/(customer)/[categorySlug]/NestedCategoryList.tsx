@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
 import type { Category } from '~/types/products';
 import { Plus, Minus } from 'lucide-react';
 import CustomLink from '~/components/shared/loading/CustomLink';

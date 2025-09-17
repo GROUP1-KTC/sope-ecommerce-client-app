@@ -2,7 +2,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CustomLink from '~/components/shared/loading/CustomLink';
 import { useLogoutMutation } from '~/features/auth/authApi';
@@ -63,10 +62,10 @@ const UserMenu = () => {
                     <div className="h-2 w-full pointer-events-auto" />
                     <div className="w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-b-8 border-b-white self-end mr-3 -mt-2"></div>
 
-                    <div className="w-40 bg-white text-black rounded shadow-lg flex flex-col">
+                    <div className="w-40 bg-white text-black rounded shadow-lg flex flex-col ">
                         <CustomLink
                             href="/account/profile"
-                            className="px-4 py-2 hover:bg-gray-100 hover:text-red-500"
+                            className="px-4 py-2 hover:bg-gray-100 hover:text-red-500 rounded-t"
                         >
                             Profile
                         </CustomLink>
@@ -79,7 +78,7 @@ const UserMenu = () => {
                         </CustomLink>
                         <button
                             onClick={handleLogout}
-                            className="text-left px-4 py-2 hover:bg-gray-100 hover:text-red-500"
+                            className="text-left px-4 py-2 hover:bg-gray-100 hover:text-red-500 rounded-b cursor-pointer"
                         >
                             Logout
                         </button>

@@ -1,5 +1,4 @@
 'use client';
-import Link from 'next/link';
 import React, { useRef, useState, useEffect } from 'react';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';

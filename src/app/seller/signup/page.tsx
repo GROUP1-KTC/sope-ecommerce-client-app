@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
@@ -231,7 +230,7 @@ const Signup = () => {
                                                 </button>
                                             </div>
                                         </div>
-                                        <p className="text-slate-900 text-sm !mt-6 text-center">
+                                        <span className="text-slate-900 text-sm !mt-6 text-center">
                                             Đã có tài khoản?{' '}
                                             <CustomLink
                                                 href="/login"
@@ -239,7 +238,7 @@ const Signup = () => {
                                             >
                                                 Đăng nhập ở đây
                                             </CustomLink>
-                                        </p>
+                                        </span>
                                     </form>
                                 )}
                                 {step === 2 && (
@@ -290,7 +289,7 @@ const Signup = () => {
                                                 Xác nhận
                                             </button>
                                         </div>
-                                        <p className="text-slate-900 text-sm !mt-6 text-center">
+                                        <span className="text-slate-900 text-sm !mt-6 text-center">
                                             <button
                                                 type="button"
                                                 className="text-blue-600 hover:underline font-semibold cursor-pointer"
@@ -298,7 +297,7 @@ const Signup = () => {
                                             >
                                                 Quay lại
                                             </button>
-                                        </p>
+                                        </span>
                                     </form>
                                 )}
                                 {step === 3 && (
@@ -413,7 +412,7 @@ const Signup = () => {
                                                 Đăng ký
                                             </button>
                                         </div>
-                                        <p className="text-slate-900 text-sm !mt-6 text-center">
+                                        <span className="text-slate-900 text-sm !mt-6 text-center">
                                             <button
                                                 type="button"
                                                 className="text-blue-600 hover:underline font-semibold cursor-pointer"
@@ -421,7 +420,7 @@ const Signup = () => {
                                             >
                                                 Quay lại
                                             </button>
-                                        </p>
+                                        </span>
                                     </form>
                                 )}
                             </div>

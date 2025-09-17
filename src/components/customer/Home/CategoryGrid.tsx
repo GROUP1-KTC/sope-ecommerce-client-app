@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Image from 'next/image';
-import Link from 'next/link';
 import CustomLink from '~/components/shared/loading/CustomLink';
 
 const categories = [

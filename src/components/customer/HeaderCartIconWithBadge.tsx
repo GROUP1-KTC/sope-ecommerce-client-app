@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
-import Link from 'next/link';
 import type { RootState } from '~/store/appStore';
 import CustomLink from '../shared/loading/CustomLink';
 

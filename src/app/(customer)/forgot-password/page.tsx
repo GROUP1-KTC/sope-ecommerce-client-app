@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
 import Image from 'next/image';
 import CustomLink from '~/components/shared/loading/CustomLink';
@@ -137,7 +136,7 @@ const RecoverPassword = () => {
                                         </button>
                                     </div>
 
-                                    <p className="text-slate-900 text-sm !mt-6 text-center">
+                                    <span className="text-slate-900 text-sm !mt-6 text-center">
                                         Đã nhớ mật khẩu?{' '}
                                         <CustomLink
                                             href="/login"
@@ -145,7 +144,7 @@ const RecoverPassword = () => {
                                         >
                                             Đăng nhập tại đây
                                         </CustomLink>
-                                    </p>
+                                    </span>
                                 </form>
                             </div>
                         </div>

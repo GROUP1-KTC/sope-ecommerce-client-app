@@ -6,7 +6,6 @@ import OrderTracking from '~/components/order-detail/OrderTracking';
 import OrderItems from '~/components/order-detail/OrderItems';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import OrderSummary from '~/components/order-detail/OrderSummary';
-import Link from 'next/link';
 import CustomLink from '~/components/shared/loading/CustomLink';
 
 const OrderDetailPage = () => {

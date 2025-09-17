@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import React from 'react';
 import { useGetCategoriesQuery } from '~/features/categories/categoryApi';
 import type { Category } from '~/types/products';
