@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import ProductForm from '~/components/add-edit-product/ProductForm';
 import { useGetCategoriesQuery } from '~/features/categories/categoryApi';

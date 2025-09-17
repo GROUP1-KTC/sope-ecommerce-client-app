@@ -1,5 +1,5 @@
 import { apiSlice } from '~/services/api/apiSlice';
-import {
+import type {
     AdsProgramDTO,
     AdsRequest,
     FlashSaleRequest,

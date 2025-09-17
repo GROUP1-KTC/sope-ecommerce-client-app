@@ -8,7 +8,9 @@ import { usePathname } from 'next/navigation';
 import SellerHeaderHome from '~/components/seller/common/SellerHeaderHome';
 import MerchantSidebar from '~/components/seller/common/MerchantSidebar';
 
-export default function SellerLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function SellerLayout({
+    children,
+}: Readonly<{ children: React.ReactNode }>) {
     const pathname = usePathname();
     const isAddProductPage = pathname?.includes('/seller/add-product');
     const isEidtProductPage = pathname?.includes('/seller/edit-product');
@@ -38,9 +40,7 @@ export default function SellerLayout({ children }: Readonly<{ children: React.Re
                     <MerchantSidebar />
                 </aside>
 
-                <main className="flex-1 p-2  overflow-y-auto">
-                    {children}
-                </main>
+                <main className="flex-1 p-2  overflow-y-auto">{children}</main>
 
                 <aside>
                     <SettingSidebar />

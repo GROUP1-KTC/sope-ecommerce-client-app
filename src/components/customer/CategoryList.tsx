@@ -6,7 +6,7 @@ import { useGetCategoriesQuery } from '~/features/categories/categoryApi';
 import type { Category } from '~/types/products';
 
 const CategoryList = () => {
-    const { data: categories = [], isLoading } = useGetCategoriesQuery();
+    const { data: categories = [] } = useGetCategoriesQuery();
 
     console.log('Categories:', categories);
 

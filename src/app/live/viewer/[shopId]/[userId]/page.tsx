@@ -2,12 +2,12 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
-import {
+import type {
     Room,
     RemoteTrack,
     RemoteTrackPublication,
-    joinLiveKitRoom,
 } from '~/utils/livekit';
+import { joinLiveKitRoom } from '~/utils/livekit';
 import { RoomEvent, type Participant } from 'livekit-client';
 import ChatBox from '~/components/livestream/ChatBox';
 import CartModal from '~/components/livestream/CartModal';
@@ -17,7 +17,6 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useAppDispatch } from '~/hooks/useTypes';
 import { useAlertStore } from '~/store/zustand/alertStore';
 import { useGetApprovedProductsByShopQuery } from '~/features/products/productApi';
-
 
 export default function ViewerPage() {
     const { shopId, userId } = useParams<{ shopId: string; userId: string }>();

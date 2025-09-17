@@ -9,9 +9,9 @@ type Filters = {
 };
 
 const shippingProviders: Record<string, string> = {
-    "MTJfMTdfMTU1OQ==": "GIAO HÀNG TIẾT KIỆM (tiết kiệm)",
-    "MTNfN18xNjE4": "GIAO HÀNG NHANH (nhanh)",
-    "MTFfN18xMTk1": "GIAO HÀNG TIẾT KIỆM (nhanh)",
+    'MTJfMTdfMTU1OQ==': 'GIAO HÀNG TIẾT KIỆM (tiết kiệm)',
+    MTNfN18xNjE4: 'GIAO HÀNG NHANH (nhanh)',
+    MTFfN18xMTk1: 'GIAO HÀNG TIẾT KIỆM (nhanh)',
 };
 
 export default function OrderFilters({
@@ -78,13 +78,18 @@ export default function OrderFilters({
                 >
                     Áp dụng
                 </button>
-                <button className="cursor-pointer border px-4 py-1 rounded text-sm" onClick={reset}>
+                <button
+                    className="cursor-pointer border px-4 py-1 rounded text-sm"
+                    onClick={reset}
+                >
                     Đặt lại
                 </button>
             </div>
 
             <div className="flex gap-2 md:ml-auto">
-                <button className="cursor-pointer border px-4 py-1 rounded text-sm">Xuất</button>
+                <button className="cursor-pointer border px-4 py-1 rounded text-sm">
+                    Xuất
+                </button>
                 <button className="cursor-pointer border px-4 py-1 rounded text-sm">
                     Lịch sử Xuất Báo cáo
                 </button>

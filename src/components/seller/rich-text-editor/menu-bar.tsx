@@ -14,7 +14,7 @@ import {
     Underline,
     Undo,
     Redo,
-    ImagePlus
+    ImagePlus,
 } from 'lucide-react';
 import type { Editor } from '@tiptap/react';
 
@@ -114,14 +114,18 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
                     const reader = new FileReader();
                     reader.onload = () => {
                         const src = reader.result as string;
-                        editor.chain().focus().insertContent(`<img src="${src}" alt="image" />`).run();
+                        editor
+                            .chain()
+                            .focus()
+                            .insertContent(`<img src="${src}" alt="image" />`)
+                            .run();
                     };
                     reader.readAsDataURL(file);
                 };
                 input.click();
             },
             pressed: false,
-        }
+        },
     ];
 
     const EmojiOptions = emojiList.map((emoji) => ({

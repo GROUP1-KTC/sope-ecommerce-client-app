@@ -1,6 +1,5 @@
-import { PaymentRequest } from './../../types/payment/payment.d';
+import type { PaymentRequest } from './../../types/payment/payment.d';
 import { apiSlice } from '~/services/api/apiSlice';
-import type { OrderCreateRequest } from '~/types/orders/order';
 import type { PaymentResponse } from '~/types/payment/payment';
 
 export const paymentApi = apiSlice.injectEndpoints({
@@ -11,13 +10,11 @@ export const paymentApi = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data,
             }),
-            transformResponse: (response: { data: PaymentResponse }) => response.data,
+            transformResponse: (response: { data: PaymentResponse }) =>
+                response.data,
             invalidatesTags: ['Order'],
-
         }),
     }),
 });
 
-export const {
-    useInitiatePaymentMutation,
-} = paymentApi;
+export const { useInitiatePaymentMutation } = paymentApi;

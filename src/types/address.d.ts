@@ -28,10 +28,11 @@ export interface AddressCreateRequest {
     isDefault: boolean;
 }
 
-
-
-import type { Province, District, Ward } from '~/components/checkout/TempAddressSection';
-
+import type {
+    Province,
+    District,
+    Ward,
+} from '~/components/checkout/TempAddressSection';
 
 export type TempAddress = {
     email: string;
@@ -41,5 +42,5 @@ export type TempAddress = {
     district: District | null;
     ward: Ward | null;
     detailedAddress: string; // số nhà, tên đường
-    isDefault?: boolean;     // optional, nếu sau này muốn cho guest set mặc định
+    isDefault?: boolean; // optional, nếu sau này muốn cho guest set mặc định
 };

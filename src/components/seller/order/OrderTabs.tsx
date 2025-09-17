@@ -23,10 +23,11 @@ export default function OrderTabs({
                 <button
                     key={tab.label}
                     onClick={() => onChange(index, tab.status)}
-                    className={`pb-2 border-b-2 font-medium transition-colors cursor-pointer ${activeTab === index
-                        ? 'border-orange-500 text-orange-500'
-                        : 'border-transparent text-gray-700 hover:text-orange-500'
-                        }`}
+                    className={`pb-2 border-b-2 font-medium transition-colors cursor-pointer ${
+                        activeTab === index
+                            ? 'border-orange-500 text-orange-500'
+                            : 'border-transparent text-gray-700 hover:text-orange-500'
+                    }`}
                 >
                     {tab.label}
                     {counts[tab.key] ? ` (${counts[tab.key]})` : ''}

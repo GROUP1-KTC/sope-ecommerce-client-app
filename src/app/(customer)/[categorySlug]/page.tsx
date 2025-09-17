@@ -8,29 +8,30 @@ import {
 } from '~/features/categories/categoryApi';
 import NestedCategoryList from './NestedCategoryList';
 import ProductList from '~/components/product-list/ProductList';
-import SelectFilter from '~/components/product-list/SelectFilter';
+// import SelectFilter from '~/components/product-list/SelectFilter';
 
 const CategoryPage = () => {
     const params = useParams();
-    const slug = params.categorySlug as string ?? "";
+    const slug = (params.categorySlug as string) ?? '';
 
-    console.log('check slug', slug)
+    console.log('check slug', slug);
 
-    const { data: categories = [], isLoading: loadingCategories } = useGetCategoriesQuery();
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const { data: categories = [] } = useGetCategoriesQuery();
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(
+        null,
+    );
 
     const [page, setPage] = useState(0);
 
     const { data: productsByCategory, isLoading: loadingProducts } =
         useGetProductsByCategoryQuery(
             { slug, page, size: 20 },
-            { skip: !slug }
+            { skip: !slug },
         );
 
-    console.log('check productsByCategory', productsByCategory?.content)
+    console.log('check productsByCategory', productsByCategory?.content);
 
     if (loadingProducts) return <p>Đang tải sản phẩm...</p>;
-
 
     return (
         <div className="w-full flex justify-center bg-gray-50 py-8">
@@ -47,13 +48,17 @@ const CategoryPage = () => {
                         setSelectedCategory={setSelectedCategory}
                     />
                     {/* <SelectFilter /> */}
-
                 </div>
 
                 {/* MAIN CONTENT */}
                 <div className="flex-1">
-                    <div id="all-products" className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-                        <h2 className="font-semibold text-lg text-gray-800 mb-5">Tất cả sản phẩm</h2>
+                    <div
+                        id="all-products"
+                        className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm"
+                    >
+                        <h2 className="font-semibold text-lg text-gray-800 mb-5">
+                            Tất cả sản phẩm
+                        </h2>
                         <ProductList
                             products={productsByCategory?.content || []}
                             page={page}
@@ -62,7 +67,6 @@ const CategoryPage = () => {
                         />
                     </div>
                 </div>
-
             </div>
         </div>
     );

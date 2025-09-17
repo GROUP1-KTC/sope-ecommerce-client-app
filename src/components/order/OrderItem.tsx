@@ -59,9 +59,9 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
 
     const [showReview, setShowReview] = useState(false);
 
-    const handleOpenReview = () => {
-        setShowReview(true);
-    };
+    // const handleOpenReview = () => {
+    //     setShowReview(true);
+    // };
 
     const [selectedItem, setSelectedItem] = useState<any | null>(null);
 

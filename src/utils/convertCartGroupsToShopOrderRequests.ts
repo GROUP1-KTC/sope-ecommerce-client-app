@@ -1,18 +1,25 @@
-import type { CartGroup } from "~/app/(customer)/cart/page";
-import type { ShopOrderRequest } from "~/types/orders/order";
+import type { CartGroup } from '~/app/(customer)/cart/page';
+import type { ShopOrderRequest } from '~/types/orders/order';
 
 export function convertCartGroupsToShopOrderRequests(
     cartGroups: CartGroup[],
     extra?: Record<
         string, // shopId
-        { note?: string; discountCodes?: string[]; shippingCharge?: number; shippingRateId: string }
-    >
+        {
+            note?: string;
+            discountCodes?: string[];
+            shippingCharge?: number;
+            shippingRateId: string;
+        }
+    >,
 ): ShopOrderRequest[] {
     return cartGroups.map((group) => {
         const extraData = extra?.[group.shop.id];
 
         if (extraData?.shippingRateId === undefined) {
-            throw new Error(`Vui lòng chọn phương thức vận chuyển cho ${group.shop.name}`);
+            throw new Error(
+                `Vui lòng chọn phương thức vận chuyển cho ${group.shop.name}`,
+            );
         }
 
         return {
@@ -22,7 +29,7 @@ export function convertCartGroupsToShopOrderRequests(
                 quantity: item.quantity,
             })),
             note: extraData?.note
-                ? [group.shop.name, extraData.note].join(" - ")
+                ? [group.shop.name, extraData.note].join(' - ')
                 : undefined,
             discountCodes: extraData?.discountCodes
                 ? Array.from(new Set(extraData.discountCodes))

@@ -4,12 +4,12 @@ import { useState } from 'react';
 import PaymentList from '~/components/payment/PaymentList';
 import AddPaymentCardDialog from '~/components/payment/AddPaymentCardDialog';
 import type { PaymentCardData } from '~/types/payment';
-import { PaymentCard } from '~/types/payment';
 import {
     useAddCardMutation,
     useDeleteCardMutation,
     useGetCardsQuery,
 } from '~/features/paymentCard/paymentCardApi';
+import { useAlertStore } from '~/store/zustand/alertStore';
 
 const PaymentManagementPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,24 +22,32 @@ const PaymentManagementPage = () => {
         cardType: '',
     });
 
-    const { data: cards = [], isLoading } = useGetCardsQuery();
-    const [addCard, { isLoading: isAdding }] = useAddCardMutation();
+    const { data: cards = [] } = useGetCardsQuery();
+    const [addCard] = useAddCardMutation();
     const [deleteCard] = useDeleteCardMutation();
 
     const handleAddCard = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // validate đơn giản
         if (!/^\d{16}$/.test(cardData.number.replace(/\s/g, ''))) {
-            alert('Số thẻ phải có đúng 16 chữ số!');
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: 'Số thẻ phải có đúng 16 chữ số',
+            });
             return;
         }
         if (!/^\d{2}\/\d{2}$/.test(cardData.expiry)) {
-            alert('Ngày hết hạn phải có định dạng MM/YY!');
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: 'Ngày hết hạn phải có định dạng MM/YY!',
+            });
             return;
         }
         if (!/^\d{3,4}$/.test(cardData.cvc)) {
-            alert('CVV phải có 3 hoặc 4 chữ số!');
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: 'CVV phải có 3 hoặc 4 chữ số!',
+            });
             return;
         }
 
@@ -56,7 +64,6 @@ const PaymentManagementPage = () => {
                 cvc: cardData.cvc,
             }).unwrap();
 
-            // Reset form + đóng modal
             setCardData({
                 number: '',
                 expiry: '',
@@ -68,16 +75,22 @@ const PaymentManagementPage = () => {
             setIsModalOpen(false);
         } catch (error) {
             console.error('Add card failed:', error);
-            alert('Thêm thẻ thất bại!');
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Thêm thẻ thất bại!',
+            });
         }
     };
 
     const handleDeleteCard = async (id: string) => {
         try {
-            await deleteCard(id).unwrap(); // 👈 gọi mutation deleteCard
+            await deleteCard(id).unwrap();
         } catch (err) {
             console.error('Delete card failed:', err);
-            alert('Xoá thẻ thất bại!');
+            useAlertStore.getState().showAlert({
+                severity: 'error',
+                message: 'Xoá thẻ thất bại!',
+            });
         }
     };
 

@@ -5,7 +5,7 @@ import {
     updateAddressField,
 } from '~/features/address/tempAddressSlice';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
-import { TempAddress } from '~/types/address';
+import type { TempAddress } from '~/types/address';
 
 export type Province = { code: number; name: string };
 export type District = { code: number; name: string };

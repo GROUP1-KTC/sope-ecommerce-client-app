@@ -4,7 +4,10 @@ import React, { useEffect, useState } from 'react';
 
 import { useGetConversationsQuery } from '~/features/chat/conversation/ConversationApi';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
-import { setConversations, setSelectedConversationId } from '~/features/chat/chatSlice';
+import {
+    setConversations,
+    setSelectedConversationId,
+} from '~/features/chat/chatSlice';
 
 import ChatMessages from './ChatMessages';
 import ConversationListBar from './ConversationListBar';
@@ -28,13 +31,16 @@ const ChatDialog: React.FC<{ open: boolean; onClose: () => void }> = ({
         c.name.toLowerCase().includes(search.toLowerCase()),
     );
 
-    const selectedId = useAppSelector(state => state.chat.selectedConversationId);
-    const selected = conversations?.find(conv => conv.conversationId === selectedId) || null;
+    const selectedId = useAppSelector(
+        (state) => state.chat.selectedConversationId,
+    );
+    const selected =
+        conversations?.find((conv) => conv.conversationId === selectedId) ||
+        null;
 
     const handleBack = () => {
         dispatch(setSelectedConversationId(null));
     };
-
 
     useEffect(() => {
         if (ConversationsData) {
@@ -66,7 +72,6 @@ const ChatDialog: React.FC<{ open: boolean; onClose: () => void }> = ({
                     filteredConversations={filteredConversations}
                 />
 
-
                 <ChatMessages
                     conversationId={selected?.conversationId || null}
                     name={selected?.name || ''}
@@ -75,7 +80,6 @@ const ChatDialog: React.FC<{ open: boolean; onClose: () => void }> = ({
                     onClose={onClose}
                     isMobile={isMobile}
                 />
-
             </DialogContent>
         </Dialog>
     );

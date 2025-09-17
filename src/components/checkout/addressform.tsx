@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAlertStore } from '~/store/zustand/alertStore';
 
 type AddressFormData = {
     fullName: string;
@@ -34,11 +35,17 @@ export default function AddressForm({
             addressFormData;
 
         if (!fullName || !phone || !city || !district || !ward || !address) {
-            alert('Vui lòng điền đầy đủ thông tin địa chỉ.');
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Vui lòng điền đầy đủ thông tin địa chỉ',
+            });
             return;
         }
         if (!/^\d{10}$/.test(phone)) {
-            alert('Số điện thoại phải có 10 chữ số.');
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Số điện thoại phải có 10 chữ số.',
+            });
             return;
         }
 
@@ -47,7 +54,6 @@ export default function AddressForm({
 
     return (
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-            {/* Họ tên & SĐT */}
             <div className="flex space-x-4">
                 <input
                     type="text"
@@ -69,7 +75,6 @@ export default function AddressForm({
                 />
             </div>
 
-            {/* City / District / Ward */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <input
                     type="text"
@@ -100,7 +105,6 @@ export default function AddressForm({
                 />
             </div>
 
-            {/* Địa chỉ cụ thể */}
             <input
                 type="text"
                 name="address"
@@ -111,7 +115,6 @@ export default function AddressForm({
                 required
             />
 
-            {/* Type & Button vị trí */}
             <div className="flex space-x-4">
                 <select
                     name="type"
@@ -130,7 +133,6 @@ export default function AddressForm({
                 </button>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex justify-end space-x-4">
                 <button
                     type="button"

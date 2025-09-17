@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { statusColors } from '~/components/order/OrderItem';
-import { OrderGroupShop } from '~/types/orders/order';
+import type { OrderGroupShop } from '~/types/orders/order';
 import Link from 'next/link';
 import {
     Button,

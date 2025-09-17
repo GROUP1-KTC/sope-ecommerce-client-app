@@ -13,7 +13,8 @@ export const BOT_CONVERSATION_ID = 'chatbot';
 
 const botIntroMessage: Message = {
     id: 'welcome',
-    content: 'Xin chào 👋, mình là Chatbot AI! Bạn đang quan tâm đến sản phẩm nào nhỉ ?',
+    content:
+        'Xin chào 👋, mình là Chatbot AI! Bạn đang quan tâm đến sản phẩm nào nhỉ ?',
     senderId: 'bot',
     sentAt: Date.now().toString(),
     type: 'BOT',
@@ -29,12 +30,11 @@ const initialBotConversation: Conversation = {
 const initialState: ChatState = {
     conversations: [initialBotConversation],
     messagesByConversationId: {
-        [BOT_CONVERSATION_ID]: [botIntroMessage],  
+        [BOT_CONVERSATION_ID]: [botIntroMessage],
     },
     selectedConversationId: BOT_CONVERSATION_ID,
     status: 'idle',
 };
-
 
 const chatSlice = createSlice({
     name: 'chat',
@@ -42,11 +42,11 @@ const chatSlice = createSlice({
     reducers: {
         setConversations(state, action: PayloadAction<Conversation[]>) {
             const others = action.payload.filter(
-                c => c.conversationId !== BOT_CONVERSATION_ID
+                (c) => c.conversationId !== BOT_CONVERSATION_ID,
             );
             state.conversations = [initialBotConversation, ...others];
 
-            action.payload.forEach(conv => {
+            action.payload.forEach((conv) => {
                 if (!state.messagesByConversationId[conv.conversationId]) {
                     state.messagesByConversationId[conv.conversationId] = [];
                 }
@@ -55,7 +55,7 @@ const chatSlice = createSlice({
 
         addMessage(
             state,
-            action: PayloadAction<{ conversationId: string; message: Message }>
+            action: PayloadAction<{ conversationId: string; message: Message }>,
         ) {
             const { conversationId, message } = action.payload;
 
@@ -65,7 +65,7 @@ const chatSlice = createSlice({
             state.messagesByConversationId[conversationId].push(message);
 
             const conversation = state.conversations.find(
-                conv => conv.conversationId === conversationId
+                (conv) => conv.conversationId === conversationId,
             );
             if (conversation) {
                 conversation.lastMessage = message;
@@ -89,7 +89,10 @@ const chatSlice = createSlice({
             state.selectedConversationId = action.payload;
         },
 
-        setStatus(state, action: PayloadAction<'idle' | 'sending' | 'error' | 'typing'>) {
+        setStatus(
+            state,
+            action: PayloadAction<'idle' | 'sending' | 'error' | 'typing'>,
+        ) {
             state.status = action.payload;
         },
     },

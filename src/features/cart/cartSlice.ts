@@ -42,7 +42,12 @@ export const cartSlice = createSlice({
                         id: shopId,
                         name: shopName || `Shop ${shopId}`,
                         avatarUrl: shopAvatar || '/default-shop-avatar.png',
-                        address: { street: '', ward: '', district: '', city: '' }
+                        address: {
+                            street: '',
+                            ward: '',
+                            district: '',
+                            city: '',
+                        },
                     },
                     items: [cartItem],
                 });

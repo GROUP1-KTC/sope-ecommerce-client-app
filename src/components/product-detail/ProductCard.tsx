@@ -1,11 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ProductSummary } from '~/types/products';
-
+import type { ProductSummary } from '~/types/products';
 
 const ProductCard = ({ product }: { product: ProductSummary }) => {
     return (
-        <Link href={`/product-by-slug/${product.slug}`}>
+        <Link href={`/product-detail/${product.slug}`}>
             <div className="bg-white mb-1 shadow-sm rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300 w-[192px] min-w-[192px] min-h-[240px] hover:scale-105">
                 <Image
                     width={192}
@@ -36,9 +35,11 @@ const ProductCard = ({ product }: { product: ProductSummary }) => {
                     <div className="flex items-center gap-1 text-xs text-gray-600">
                         <span>⭐ {product.averageRating ?? 0}</span>
                         <span>|</span>
-                        <span>{(product.totalSold ?? 0).toLocaleString('vi-VN')} Đã bán</span>
+                        <span>
+                            {(product.totalSold ?? 0).toLocaleString('vi-VN')}{' '}
+                            Đã bán
+                        </span>
                     </div>
-
                 </div>
             </div>
         </Link>
