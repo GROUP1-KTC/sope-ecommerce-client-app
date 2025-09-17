@@ -5,31 +5,27 @@ export function authMiddleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   const protectedRoutes = ['/account', '/admin', '/seller', '/create-shop'];
-  const requiresAuth = protectedRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+  const requiresAuth = protectedRoutes.some((route) => pathname.startsWith(route));
 
-  if (!requiresAuth) {
-    return NextResponse.next(); 
-  }
+  if (!requiresAuth) return NextResponse.next();
 
-  const sessionCookie = req.cookies.get('session')?.value;
+  const authCookie = req.cookies.get('authUser')?.value;
   let token: string | null = null;
 
-  if (sessionCookie) {
+  if (authCookie) {
     try {
-      const session = JSON.parse(sessionCookie);
-      token = session.token ?? null; 
+      const user = JSON.parse(authCookie);
+      token = user.accessToken ?? user.token ?? null;
     } catch {
       token = null;
     }
   }
 
   if (!token) {
-    return NextResponse.redirect('/login'); 
+    return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  return NextResponse.next();
+  return null;
 }
 
 export const config = {
