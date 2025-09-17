@@ -86,7 +86,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                                                 <Image
                                                     width={40}
                                                     height={40}
-                                                    src={cat.img}
+                                                    src={cat.imageForParent || "/placeholder.png"}
                                                     alt={cat.name}
                                                     className="w-18 h-18 object-contain"
                                                 />

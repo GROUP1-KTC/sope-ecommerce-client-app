@@ -17,7 +17,7 @@ import Image from 'next/image';
 import UserMenu from './Home/UserMenu';
 import HeaderCartIconWithBadge from './HeaderCartIconWithBadge';
 import { skipToken } from '@reduxjs/toolkit/query';
-import { useSearchSuggestQuery } from '~/features/products/elasticApi';
+import { useSearchSuggestQuery, useLogProductClickMutation } from '~/features/products/elasticApi';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '~/hooks/useTypes';
 import { loadAuthUser } from '~/utils/authCookie';
@@ -36,7 +36,7 @@ const Header = () => {
     const { data: products = [] } = useSearchSuggestQuery(
         searchTerm
             ? {
-                _source: ['productId', 'slug', 'name', 'default_image'],
+                _source: ['product_id', 'slug', 'name', 'default_image'],
                 query: {
                     function_score: {
                         query: {
@@ -87,11 +87,22 @@ const Header = () => {
             : skipToken,
     );
 
+    const [logClick] = useLogProductClickMutation();
+
+    const handleClickProduct = (productId: string, keyword: string) => {
+        console.log('check productId', productId)
+        logClick({
+            product_id: productId,
+            keyword,
+            timestamp: new Date().toISOString(),
+        });
+    };
+
     useEffect(() => {
         const timeout = setTimeout(() => {
             const trimmed = inputValue.trim();
             setSearchTerm(trimmed);
-        }, 500);
+        }, 800);
         return () => clearTimeout(timeout);
     }, [inputValue]);
 
@@ -212,9 +223,10 @@ const Header = () => {
                                 {products.length > 0 ? (
                                     products.map((p, index) => (
                                         <Link
-                                            key={p.productId || index}
+                                            key={p.product_id || index}
                                             href={`/product-detail/${p.slug}`}
                                             className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer"
+                                            onClick={() => handleClickProduct(p.product_id, searchTerm)}
                                         >
                                             <Image
                                                 src={p.default_image}
