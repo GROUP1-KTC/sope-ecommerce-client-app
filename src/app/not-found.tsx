@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { colors } from '~/constants/color.constant';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const NotFound: React.FC = () => {
     const [countdown, setCountdown] = useState(10);
@@ -60,9 +60,9 @@ const NotFound: React.FC = () => {
                 }}
             >
                 Redirecting to{' '}
-                <Link href="/" style={{ fontWeight: 'bold' }}>
+                <CustomLink href="/" style={{ fontWeight: 'bold' }}>
                     Home
-                </Link>{' '}
+                </CustomLink>{' '}
                 in <span style={{ fontWeight: 'bold' }}>{countdown}</span>{' '}
                 seconds...
             </div>

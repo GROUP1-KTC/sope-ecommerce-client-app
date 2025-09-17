@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
 import type { Category } from '~/types/products';
 import { Plus, Minus } from 'lucide-react';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const CategoryNode = ({
     category,
@@ -27,7 +27,7 @@ const CategoryNode = ({
     return (
         <li key={category.id}>
             <div className="flex justify-between items-center">
-                <Link
+                <CustomLink
                     href={`/${category.slug}`}
                     className={`flex-1 block rounded text-sm px-2 py-1 cursor-pointer ${
                         currentSlug === category.slug
@@ -36,7 +36,7 @@ const CategoryNode = ({
                     }`}
                 >
                     {category.name}
-                </Link>
+                </CustomLink>
 
                 {children.length > 0 && (
                     <button

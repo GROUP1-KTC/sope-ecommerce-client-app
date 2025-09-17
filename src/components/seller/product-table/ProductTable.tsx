@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import type { ProductResponse } from '~/types/products';
 import { Pencil, ChevronDown, ChevronUp } from 'lucide-react';
 import EditModal from './EditModal';
@@ -8,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useUpdateProductMutation } from '~/features/products/productApi';
 import Ads from '../ads-flashsale/Ads';
 import FlashSale from '../ads-flashsale/FlashSale';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 interface Props {
     products: ProductResponse[];
@@ -142,7 +142,7 @@ export default function ProductTable({ products, viewMode }: Props) {
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 px-2">
                     {products.map((product) => (
-                        <Link
+                        <CustomLink
                             key={product.productId}
                             href={`/seller/edit-product/${product.slug}`}
                             target="_blank"
@@ -200,7 +200,7 @@ export default function ProductTable({ products, viewMode }: Props) {
                                     </div>
                                 </div>
                             </div>
-                        </Link>
+                        </CustomLink>
                     ))}
                 </div>
             </>
@@ -386,15 +386,15 @@ export default function ProductTable({ products, viewMode }: Props) {
                                         {/* Thao tác */}
                                         <td className="p-3 align-top text-center">
                                             <div className="flex flex-col gap-1 items-center">
-                                                <Link
+                                                <CustomLink
                                                     href={`/seller/edit-product/${product.slug}`}
                                                     className="text-blue-600 hover:underline text-sm"
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                 >
                                                     Cập nhật
-                                                </Link>
-                                                <Link
+                                                </CustomLink>
+                                                <CustomLink
                                                     href="#"
                                                     className="text-blue-600 hover:underline text-sm"
                                                     onClick={(e) => {
@@ -405,13 +405,13 @@ export default function ProductTable({ products, viewMode }: Props) {
                                                     }}
                                                 >
                                                     Quảng cáo
-                                                </Link>
-                                                <Link
+                                                </CustomLink>
+                                                <CustomLink
                                                     href="#"
                                                     className="text-blue-600 hover:underline text-sm"
                                                 >
                                                     Xem thêm
-                                                </Link>
+                                                </CustomLink>
                                             </div>
                                         </td>
 

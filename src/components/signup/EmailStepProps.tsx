@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import Image from 'next/image';
+import CustomLink from '../shared/loading/CustomLink';
 
 interface EmailStepProps {
     input: { email: string };
@@ -91,15 +91,15 @@ const EmailStep = ({
                     </button>
                 </div>
             </div>
-            <p className="text-slate-900 text-sm !mt-6 text-center">
+            <span className="text-slate-900 text-sm !mt-6 text-center">
                 Already have an account?{' '}
-                <Link
+                <CustomLink
                     href="/login"
                     className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
                 >
                     Sign in here
-                </Link>
-            </p>
+                </CustomLink>
+            </span>
         </form>
     );
 };

@@ -1,9 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const Signup = () => {
     const [input, setInput] = useState({
@@ -233,15 +233,15 @@ const Signup = () => {
                                                 </button>
                                             </div>
                                         </div>
-                                        <p className="text-slate-900 text-sm !mt-6 text-center">
+                                        <span className="text-slate-900 text-sm !mt-6 text-center">
                                             Already have an account?{' '}
-                                            <Link
+                                            <CustomLink
                                                 href="/login"
                                                 className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
                                             >
                                                 Sign in here
-                                            </Link>
-                                        </p>
+                                            </CustomLink>
+                                        </span>
                                     </form>
                                 )}
                                 {step === 2 && (
@@ -292,7 +292,7 @@ const Signup = () => {
                                                 Confirm
                                             </button>
                                         </div>
-                                        <p className="text-slate-900 text-sm !mt-6 text-center">
+                                        <span className="text-slate-900 text-sm !mt-6 text-center">
                                             <button
                                                 type="button"
                                                 className="text-blue-600 hover:underline font-semibold cursor-pointer"
@@ -300,7 +300,7 @@ const Signup = () => {
                                             >
                                                 Back
                                             </button>
-                                        </p>
+                                        </span>
                                     </form>
                                 )}
                                 {step === 3 && (
@@ -415,7 +415,7 @@ const Signup = () => {
                                                 Sign Up
                                             </button>
                                         </div>
-                                        <p className="text-slate-900 text-sm !mt-6 text-center">
+                                        <span className="text-slate-900 text-sm !mt-6 text-center">
                                             <button
                                                 type="button"
                                                 className="text-blue-600 hover:underline font-semibold cursor-pointer"
@@ -423,7 +423,7 @@ const Signup = () => {
                                             >
                                                 Back
                                             </button>
-                                        </p>
+                                        </span>
                                     </form>
                                 )}
                             </div>

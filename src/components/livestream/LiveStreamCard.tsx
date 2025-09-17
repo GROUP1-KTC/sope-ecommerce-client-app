@@ -3,8 +3,8 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import CustomLink from '../shared/loading/CustomLink';
 
 interface LiveStreamCardProps {
     title: string;
@@ -24,7 +24,7 @@ const LiveStreamCard: React.FC<LiveStreamCardProps> = ({
     link,
 }) => {
     return (
-        <Link
+        <CustomLink
             href={link}
             className="flex flex-col items-center mx-4 cursor-pointer w-60"
         >
@@ -59,7 +59,7 @@ const LiveStreamCard: React.FC<LiveStreamCardProps> = ({
                     </span>
                 </div>
             </div>
-        </Link>
+        </CustomLink>
     );
 };
 

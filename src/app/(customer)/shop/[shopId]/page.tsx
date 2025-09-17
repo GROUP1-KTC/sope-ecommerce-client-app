@@ -12,6 +12,8 @@ import { setSelectedConversationId } from '~/features/chat/chatSlice';
 import ChatDialog from '~/components/shared/chat/ChatDialog';
 import { useCreateConversationWithShopMutation } from '~/features/chat/conversation/ConversationApi';
 import { useGetApprovedProductsByShopQuery } from '~/features/products/productApi';
+import { EmptyMessage, ErrorMessage, LoadingMessage } from '~/components/shared/loading/FeedBack';
+
 
 const ShopPage: React.FC = () => {
     const { shopId } = useParams();
@@ -34,9 +36,9 @@ const ShopPage: React.FC = () => {
         useCreateConversationWithShopMutation();
     const [openChat, setOpenChat] = React.useState(false);
 
-    if (isLoading) return <p>Đang tải cửa hàng...</p>;
-    if (error) return <p>Có lỗi khi tải cửa hàng.</p>;
-    if (!shop) return <p>Không tìm thấy cửa hàng.</p>;
+    if (isLoading) return <LoadingMessage message="Đang tải thông tin shop..." />;
+    if (error) return <ErrorMessage message="Shop này không tồn tại." />;
+    if (!shop) return <EmptyMessage message="Không tìm thấy shop." />;
 
     const allProducts = productByShopApproved?.content || [];
     const suggestedProducts = allProducts.slice(0, 6);
@@ -50,7 +52,6 @@ const ShopPage: React.FC = () => {
             dispatch(setSelectedConversationId(conv.conversationId));
             setOpenChat(true);
         } catch (err: any) {
-            // log đầy đủ
             console.error('Không thể tạo cuộc trò chuyện', err);
             if (err?.data) {
                 console.error('Response data:', err.data);

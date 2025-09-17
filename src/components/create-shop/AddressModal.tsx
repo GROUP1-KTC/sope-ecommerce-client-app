@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Address, Province, District, Ward } from './types';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface AddressModalProps {
     onClose: () => void;
@@ -97,9 +98,9 @@ export default function AddressModal({ onClose, onAdd }: AddressModalProps) {
                     </h3>
                     <button
                         onClick={onClose}
-                        className="text-2xl text-gray-400"
+                        className="text-2xl text-gray-400 cursor-pointer hover:text-gray-600 transition"
                     >
-                        ×
+                        <CloseIcon />
                     </button>
                 </div>
 
@@ -120,7 +121,7 @@ export default function AddressModal({ onClose, onAdd }: AddressModalProps) {
                                 name="senderName"
                                 value={form.senderName}
                                 onChange={handle}
-                                className="w-full border rounded p-2"
+                                className="w-full border border-gray-300 rounded p-2"
                                 required
                             />
                         </div>
@@ -131,23 +132,25 @@ export default function AddressModal({ onClose, onAdd }: AddressModalProps) {
                             <input
                                 name="senderPhone"
                                 value={form.senderPhone}
-                                onChange={handle}
-                                className="w-full border rounded p-2"
+                                onChange={(e) => {
+                                    const numericValue = e.target.value.replace(/\D/g, '');
+                                    setForm(prev => ({ ...prev, senderPhone: numericValue }));
+                                }}
+                                className="w-full border border-gray-300 rounded p-2"
                                 required
                             />
+
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
-                            <label className="text-sm block mb-1">
-                                Tỉnh/Thành
-                            </label>
+                            <label className="text-sm block mb-1">Tỉnh/Thành</label>
                             <select
                                 name="province"
                                 value={form.province}
                                 onChange={handle}
-                                className="w-full border rounded p-2"
+                                className="w-full border border-gray-300 rounded-lg p-2 bg-white shadow-sm text-gray-800 hover:shadow-md focus:outline-none focus:ring-1 focus:ring-black cursor-pointer transition-all"
                                 required
                             >
                                 <option value="">Chọn tỉnh</option>
@@ -160,14 +163,13 @@ export default function AddressModal({ onClose, onAdd }: AddressModalProps) {
                         </div>
 
                         <div>
-                            <label className="text-sm block mb-1">
-                                Quận/Huyện
-                            </label>
+                            <label className="text-sm block mb-1">Quận/Huyện</label>
                             <select
                                 name="district"
                                 value={form.district}
                                 onChange={handle}
-                                className="w-full border rounded p-2"
+                                className={`w-full border border-gray-300 rounded-lg p-2 bg-white shadow-sm text-gray-800 hover:shadow-md focus:outline-none focus:ring-1 focus:ring-black cursor-pointer transition-all ${!form.province ? 'opacity-50 cursor-not-allowed' : ''
+                                    }`}
                                 required
                                 disabled={!form.province}
                             >
@@ -181,14 +183,13 @@ export default function AddressModal({ onClose, onAdd }: AddressModalProps) {
                         </div>
 
                         <div>
-                            <label className="text-sm block mb-1">
-                                Phường/Xã
-                            </label>
+                            <label className="text-sm block mb-1">Phường/Xã</label>
                             <select
                                 name="ward"
                                 value={form.ward}
                                 onChange={handle}
-                                className="w-full border rounded p-2"
+                                className={`w-full border border-gray-300 rounded-lg p-2 bg-white shadow-sm text-gray-800 hover:shadow-md focus:outline-none focus:ring-1 focus:ring-black cursor-pointer transition-all ${!form.district ? 'opacity-50 cursor-not-allowed' : ''
+                                    }`}
                                 required
                                 disabled={!form.district}
                             >
@@ -202,6 +203,7 @@ export default function AddressModal({ onClose, onAdd }: AddressModalProps) {
                         </div>
                     </div>
 
+
                     <div>
                         <label className="text-sm block mb-1">
                             Địa chỉ chi tiết
@@ -210,7 +212,7 @@ export default function AddressModal({ onClose, onAdd }: AddressModalProps) {
                             name="street"
                             value={form.street}
                             onChange={handle}
-                            className="w-full border rounded p-2"
+                            className="w-full border border-gray-300 rounded p-2"
                             placeholder="Số nhà, tên đường..."
                             required
                         />
@@ -227,7 +229,7 @@ export default function AddressModal({ onClose, onAdd }: AddressModalProps) {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 cursor-pointer disabled:opacity-50"
+                            className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600 cursor-pointer disabled:opacity-50 transition"
                         >
                             {loading ? 'Đang thêm...' : 'Thêm địa chỉ'}
                         </button>

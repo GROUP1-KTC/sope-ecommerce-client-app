@@ -1,9 +1,9 @@
 'use client';
-import Link from 'next/link';
 import React, { useRef, useState, useEffect } from 'react';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Image from 'next/image';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const brands = [
     {
@@ -132,7 +132,7 @@ const Mall = () => {
                                     key={index}
                                     className="flex flex-col hover"
                                 >
-                                    <Link href="/mall-detail">
+                                    <CustomLink href="/mall-detail">
                                         <div className="w-40 h-40 flex items-center justify-center rounded mb-2 border border-gray-200 overflow-hidden hover:bg-orange-100 transition-colors duration-200   ">
                                             <Image
                                                 src={brand.img}
@@ -148,7 +148,7 @@ const Mall = () => {
                                                 {brand.name}
                                             </span>
                                         </div>
-                                    </Link>
+                                    </CustomLink>
                                 </div>
                             ))}
                         </div>

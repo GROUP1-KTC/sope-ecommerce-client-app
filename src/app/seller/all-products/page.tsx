@@ -11,7 +11,7 @@ import {
     getCategoryPathName,
     buildCategoryPath,
 } from '~/utils/buildCategoryPath';
-import Link from 'next/link';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const AllProductsByShop = () => {
     const [currentPage, setCurrentPage] = useState(0);
@@ -115,7 +115,7 @@ const AllProductsByShop = () => {
             <div className="text-lg font-semibold mb-6 flex items-center justify-between  gap-2">
                 <div>PRODUCTS</div>
                 <div className="flex gap-2 p-2 items-center">
-                    <Link
+                    <CustomLink
                         target="_blank"
                         rel="noopener noreferrer"
                         href="/seller/add-product"
@@ -123,7 +123,7 @@ const AllProductsByShop = () => {
                     >
                         <Plus size={18} />
                         Thêm 1 sản phẩm mới
-                    </Link>
+                    </CustomLink>
                 </div>
             </div>
 

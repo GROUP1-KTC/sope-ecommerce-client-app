@@ -9,7 +9,7 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { colors } from '~/constants/color.constant';
-import Link from 'next/link';
+import CustomLink from '../shared/loading/CustomLink';
 
 type SidebarItem = {
     title: string;
@@ -102,13 +102,13 @@ const Sidebar: React.FC = () => {
                         <div key={title}>
                             <div className="flex items-center">
                                 {href ? (
-                                    <Link
+                                    <CustomLink
                                         href={href}
                                         className={`font-semibold mt-2 flex-1 flex items-center gap-1 text-gray-700 p-1 rounded hover:bg-gray-100 transition-colors`}
                                     >
                                         {icon}
                                         {title}
-                                    </Link>
+                                    </CustomLink>
                                 ) : (
                                     <div
                                         onClick={() =>
@@ -158,7 +158,7 @@ const Sidebar: React.FC = () => {
                                                 }
                                             >
                                                 {href ? (
-                                                    <Link
+                                                    <CustomLink
                                                         href={href}
                                                         className="hover:underline"
                                                         style={
@@ -174,7 +174,7 @@ const Sidebar: React.FC = () => {
                                                         }
                                                     >
                                                         {label}
-                                                    </Link>
+                                                    </CustomLink>
                                                 ) : (
                                                     <span>{label}</span>
                                                 )}

@@ -29,10 +29,14 @@ export default function Step3({
                     </label>
                     <input
                         value={taxCode}
-                        onChange={(e) => setTaxCode(e.target.value)}
-                        className="w-full border rounded p-2 mt-1"
+                        onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, '');
+                            setTaxCode(value);
+                        }}
+                        className="w-full border rounded p-2 mt-1 border-gray-300"
                         placeholder="Nhập mã số thuế"
                     />
+
                     {errors.taxCode && (
                         <p className="text-red-500 text-sm mt-1">
                             {errors.taxCode}

@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
@@ -12,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import type { LoginResponse } from '~/types/auth/auth';
 import { setCredentials } from '~/features/auth/authSlice';
 import type { ServerResponse } from '~/types/serverReponse';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const Login = () => {
     const [input, setInput] = useState<LoginInput>({
@@ -25,6 +25,9 @@ const Login = () => {
         email: '',
         password: '',
     });
+
+    const [serverError, setServerError] = useState<string>('');
+
 
     const [login, { isLoading }] = useLoginMutation();
     const dispatch = useAppDispatch();
@@ -74,8 +77,6 @@ const Login = () => {
             const res: ServerResponse<LoginResponse> =
                 await login(input).unwrap();
 
-            console.log('Response from server:', res.data);
-
             dispatch(setCredentials(res.data));
             const roles = res.data.roles;
             if (roles.includes('ADMIN')) {
@@ -84,22 +85,15 @@ const Login = () => {
                 router.push('/');
             }
         } catch (err: any) {
-            console.error('Full error object:', err);
-
-            let message = 'Login failed, please try again.';
-
-            if (err?.data?.message) {
-                message = err.data.message;
-            } else if (typeof err?.error === 'string') {
-                message = err.error;
-            } else if (err?.status) {
-                message = `Server error (${err.status}).`;
-            } else if (err instanceof Error) {
-                message = err.message;
+            if (err?.data?.errors && Array.isArray(err.data.errors)) {
+                setServerError(err.data.errors.join(', '));
+            } else if (err?.data?.message) {
+                setServerError(err.data.message);
+            } else {
+                setServerError('Login failed, please try again.');
             }
-
-            console.error('Error message:', message);
         }
+
     };
 
     return (
@@ -120,7 +114,7 @@ const Login = () => {
                 <div className="bg-gray-50 flex-1">
                     <div className="min-h-[85vh] bg-[#d0001a] flex flex-col items-center justify-center px-4">
                         <div className="max-w-[600px] w-full">
-                            <div className="p-6 sm:p-8 rounded-2xl bg-white border border-gray-200 shadow-sm">
+                            <div className="px-6 py-4 sm:px-8 sm:py-4 rounded-2xl bg-white border border-gray-200 shadow-sm">
                                 <h1 className="text-slate-900 text-center text-3xl font-semibold">
                                     Sign In
                                 </h1>
@@ -214,7 +208,8 @@ const Login = () => {
                                             </p>
                                         )}
                                     </div>
-                                    <div className="flex flex-wrap items-center justify-between gap-4">
+                                    {serverError && <p className="text-red-500 mt-1">{serverError}</p>}
+                                    <div className="flex flex-wrap items-center justify-between gap-2">
                                         <div className="flex items-center">
                                             <input
                                                 id="remember-me"
@@ -230,12 +225,12 @@ const Login = () => {
                                             </label>
                                         </div>
                                         <div className="text-sm">
-                                            <Link
+                                            <CustomLink
                                                 href="/forgot-password"
                                                 className="text-blue-600 hover:underline font-semibold"
                                             >
                                                 Forgot password?
-                                            </Link>
+                                            </CustomLink>
                                         </div>
                                     </div>
                                     <div className="!mt-6">
@@ -273,15 +268,15 @@ const Login = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    <p className="text-slate-900 text-sm !mt-6 text-center">
+                                    <span className="text-slate-900 text-sm !mt-6 text-center">
                                         Don't have an account yet ?{' '}
-                                        <Link
+                                        <CustomLink
                                             href="/signup"
                                             className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
                                         >
                                             Sign up here
-                                        </Link>
-                                    </p>
+                                        </CustomLink>
+                                    </span>
                                 </form>
                             </div>
                         </div>

@@ -32,7 +32,6 @@ export default function Step1({
             </h3>
 
             <div className="grid grid-cols-1 gap-4">
-                {/* Tên shop */}
                 <div>
                     <label className="block text-sm font-medium mb-1">
                         Tên shop
@@ -40,7 +39,7 @@ export default function Step1({
                     <input
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full border rounded p-2"
+                        className="w-full border border-gray-300 rounded p-2"
                         placeholder="Tên shop"
                     />
                     {errors.name && (
@@ -50,7 +49,6 @@ export default function Step1({
                     )}
                 </div>
 
-                {/* Email + SĐT */}
                 <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm font-medium mb-1">
@@ -59,7 +57,7 @@ export default function Step1({
                         <input
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full border rounded p-2"
+                            className="w-full border border-gray-300 rounded p-2"
                             placeholder="email@domain.com"
                         />
                         {errors.email && (
@@ -74,10 +72,14 @@ export default function Step1({
                         </label>
                         <input
                             value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            className="w-full border rounded p-2"
+                            onChange={(e) => {
+                                const numericValue = e.target.value.replace(/\D/g, '');
+                                setPhone(numericValue);
+                            }}
+                            className="w-full border border-gray-300 rounded p-2"
                             placeholder="0123xxxxxx"
                         />
+
                         {errors.phone && (
                             <p className="text-red-500 text-sm mt-1">
                                 {errors.phone}
@@ -86,7 +88,6 @@ export default function Step1({
                     </div>
                 </div>
 
-                {/* Địa chỉ */}
                 <div>
                     <div className="flex items-center justify-between mb-2 mt-1">
                         <label className="block text-sm font-medium">
@@ -106,7 +107,7 @@ export default function Step1({
                             Chưa có địa chỉ nào. Thêm để tiếp tục.
                         </div>
                     ) : (
-                        <div className="flex items-center justify-between rounded p-2 border">
+                        <div className="flex items-center justify-between rounded p-2 border border-gray-300 bg-gray-50">
                             <div>
                                 <div className="font-medium">
                                     {address.senderName}
