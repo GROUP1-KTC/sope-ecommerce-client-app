@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useAlertStore } from '~/store/zustand/alertStore';
 
 const MAX_ADDRESS_LENGTH = 200;
 
@@ -64,8 +65,10 @@ const PersonalInfoPage = () => {
 
         if (!validate()) return;
 
-        // TODO: Gửi thông tin về backend
-        alert('Gửi thông tin thành công!');
+        useAlertStore.getState().showAlert({
+            severity: 'success',
+            message: 'Gửi thông tin thành công!',
+        });
     };
 
     const isFormValid =

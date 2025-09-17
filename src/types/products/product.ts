@@ -2,8 +2,8 @@ import type { ProductVariant } from './product_variant';
 import type { Shop } from '../users/shop';
 import type { ProductDetail } from './product_detail';
 import type { Image } from './image';
-import { MediaItem } from '~/components/add-edit-product/RightSideBar';
-import { StatusProduct } from './enum/StatusProduct';
+import type { MediaItem } from '~/components/add-edit-product/RightSideBar';
+import type { StatusProduct } from './enum/StatusProduct';
 
 export interface ProductAdsDTO {
     name: string;
@@ -150,4 +150,3 @@ export interface ProductSummary {
     totalSold: number;
     averageRating: number | null;
 }
-

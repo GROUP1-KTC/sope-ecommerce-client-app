@@ -1,7 +1,6 @@
 import type {
     Category,
     PageResponse,
-    ProductResponseByCategory,
     ProductSummary,
 } from '../../types/products';
 import { apiSlice } from '~/services/api/apiSlice';

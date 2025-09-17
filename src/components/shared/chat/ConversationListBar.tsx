@@ -25,7 +25,6 @@ interface ConversationListBarProps {
     filteredConversations: Conversation[];
 }
 
-
 const ConversationListBar = ({
     onClose,
     search,
@@ -33,8 +32,12 @@ const ConversationListBar = ({
     filteredConversations,
 }: ConversationListBarProps) => {
     const dispatch = useAppDispatch();
-    const selectedId = useAppSelector(state => state.chat.selectedConversationId);
-    const selected = filteredConversations.find(c => c.conversationId === selectedId) || null;
+    const selectedId = useAppSelector(
+        (state) => state.chat.selectedConversationId,
+    );
+    const selected =
+        filteredConversations.find((c) => c.conversationId === selectedId) ||
+        null;
 
     return (
         <Box
@@ -96,7 +99,9 @@ const ConversationListBar = ({
                     <ListItem
                         key={conv.conversationId}
                         onClick={() =>
-                            dispatch(setSelectedConversationId(conv.conversationId))
+                            dispatch(
+                                setSelectedConversationId(conv.conversationId),
+                            )
                         }
                         sx={{
                             borderRadius: 2,
@@ -111,7 +116,8 @@ const ConversationListBar = ({
                                     : 'text.primary',
                             '&:hover': {
                                 bgcolor:
-                                    conv.conversationId === selected?.conversationId
+                                    conv.conversationId ===
+                                    selected?.conversationId
                                         ? 'primary.main'
                                         : 'action.hover',
                                 cursor: 'pointer',
@@ -129,7 +135,8 @@ const ConversationListBar = ({
                             primary={
                                 <Typography
                                     fontWeight={
-                                        conv.conversationId === selected?.conversationId
+                                        conv.conversationId ===
+                                        selected?.conversationId
                                             ? 'bold'
                                             : 'medium'
                                     }
@@ -143,7 +150,8 @@ const ConversationListBar = ({
                                     variant="body2"
                                     noWrap
                                     color={
-                                        conv.conversationId === selected?.conversationId
+                                        conv.conversationId ===
+                                        selected?.conversationId
                                             ? 'inherit'
                                             : 'text.secondary'
                                     }

@@ -1,6 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import type { Category } from '~/types/products';
-import { getCategoryPathName, buildCategoryPath } from '~/utils/buildCategoryPath';
+import {
+    getCategoryPathName,
+    buildCategoryPath,
+} from '~/utils/buildCategoryPath';
 
 interface CategorySelectorProps {
     categories: Category[];
@@ -9,8 +12,12 @@ interface CategorySelectorProps {
     onClose: () => void;
 }
 
-const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, selected, onSelect, onClose }) => {
-
+const CategorySelector: React.FC<CategorySelectorProps> = ({
+    categories,
+    selected,
+    onSelect,
+    onClose,
+}) => {
     const levels = useMemo(() => {
         const result: Category[][] = [];
         const firstLevel = categories.filter((c) => !c.parentId);
@@ -29,18 +36,18 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, selecte
         onSelect(newSelected);
     };
 
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState('');
 
     const leafCategories = useMemo(() => {
         return categories.filter(
-            (cat) => !categories.some((c) => c.parentId === cat.id)
+            (cat) => !categories.some((c) => c.parentId === cat.id),
         );
     }, [categories]);
 
     const searchResults = useMemo(() => {
         if (searchTerm.trim().length < 1) return [];
         return leafCategories.filter((cat) =>
-            cat.name.toLowerCase().includes(searchTerm.toLowerCase())
+            cat.name.toLowerCase().includes(searchTerm.toLowerCase()),
         );
     }, [leafCategories, searchTerm]);
 
@@ -49,13 +56,14 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, selecte
     };
 
     const lastSelected = selected[selected.length - 1];
-    const isValidSelection = lastSelected ? isLeafCategory(lastSelected) : false;
+    const isValidSelection = lastSelected
+        ? isLeafCategory(lastSelected)
+        : false;
 
     return (
         <div className="fixed inset-0 bg-black/40 z-40 flex items-center justify-center p-6 pt-[15vh]">
             {/* Modal content */}
             <div className="w-full max-w-5xl bg-white rounded-2xl shadow-xl flex flex-col max-h-[85vh] overflow-hidden">
-
                 {/* Header */}
                 <div className="flex justify-between items-center px-6 py-4 ">
                     <h2 className="text-lg font-semibold">Chọn ngành hàng</h2>
@@ -86,14 +94,26 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, selecte
                                 searchResults.map((cat) => (
                                     <button
                                         key={cat.id}
-                                        onClick={() => onSelect(buildCategoryPath(categories, cat.id))}
+                                        onClick={() =>
+                                            onSelect(
+                                                buildCategoryPath(
+                                                    categories,
+                                                    cat.id,
+                                                ),
+                                            )
+                                        }
                                         className="w-120 text-left px-4 py-2 border rounded-lg hover:bg-gray-50"
                                     >
-                                        {getCategoryPathName(categories, cat.id)}
+                                        {getCategoryPathName(
+                                            categories,
+                                            cat.id,
+                                        )}
                                     </button>
                                 ))
                             ) : (
-                                <p className="text-gray-500 italic">Không tìm thấy kết quả</p>
+                                <p className="text-gray-500 italic">
+                                    Không tìm thấy kết quả
+                                </p>
                             )}
                         </div>
                     ) : (
@@ -102,18 +122,22 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, selecte
                                 <div
                                     key={level}
                                     className={`flex flex-col space-y-1 max-h-[60vh] overflow-y-auto p-2 
-                                        ${level < levels.length - 1 ? "border-r border-gray-200" : ""}`}
+                                        ${level < levels.length - 1 ? 'border-r border-gray-200' : ''}`}
                                 >
                                     {group.map((cat) => {
-                                        const isSelected = selected[level]?.id === cat.id;
+                                        const isSelected =
+                                            selected[level]?.id === cat.id;
                                         return (
                                             <button
                                                 key={cat.id}
-                                                onClick={() => handleSelect(cat, level)}
-                                                className={`px-3 py-2 text-left rounded-md border text-sm transition cursor-pointer ${isSelected
-                                                    ? "bg-orange-50 border-orange-500 text-orange-600 font-medium"
-                                                    : "bg-white border-transparent hover:bg-gray-50"
-                                                    }`}
+                                                onClick={() =>
+                                                    handleSelect(cat, level)
+                                                }
+                                                className={`px-3 py-2 text-left rounded-md border text-sm transition cursor-pointer ${
+                                                    isSelected
+                                                        ? 'bg-orange-50 border-orange-500 text-orange-600 font-medium'
+                                                        : 'bg-white border-transparent hover:bg-gray-50'
+                                                }`}
                                             >
                                                 {cat.name}
                                             </button>
@@ -130,7 +154,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, selecte
                     <div className="text-sm text-gray-600">
                         {isValidSelection
                             ? `Đã chọn: ${getCategoryPathName(categories, lastSelected.id)}`
-                            : "Vui lòng chọn đến ngành hàng cuối cùng"}
+                            : 'Vui lòng chọn đến ngành hàng cuối cùng'}
                     </div>
                     <div className="flex space-x-2">
                         <button
@@ -150,21 +174,19 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({ categories, selecte
                                 }
                             }}
                             disabled={!isValidSelection}
-                            className={`px-4 py-2 rounded-lg text-white cursor-pointer ${isValidSelection
-                                ? "bg-orange-500 hover:bg-orange-600"
-                                : "bg-gray-300 cursor-not-allowed"
-                                }`}
+                            className={`px-4 py-2 rounded-lg text-white cursor-pointer ${
+                                isValidSelection
+                                    ? 'bg-orange-500 hover:bg-orange-600'
+                                    : 'bg-gray-300 cursor-not-allowed'
+                            }`}
                         >
                             Thêm danh mục
                         </button>
                     </div>
                 </div>
             </div>
-        </div >
-
+        </div>
     );
-
 };
-
 
 export default CategorySelector;

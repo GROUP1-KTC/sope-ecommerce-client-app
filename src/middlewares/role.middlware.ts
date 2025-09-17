@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 export function roleMiddleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+    const { pathname } = req.nextUrl;
 
   console.log('--- roleMiddleware ---');
   console.log('Request pathname:', pathname);
@@ -42,5 +42,5 @@ export function roleMiddleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/seller/:path*'],
+    matcher: ['/admin/:path*', '/seller/:path*'],
 };

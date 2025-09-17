@@ -7,7 +7,10 @@ import {
     VideoPresets,
 } from 'livekit-client';
 
-export async function joinLiveKitRoom(wsUrl: string, token: string): Promise<Room> {
+export async function joinLiveKitRoom(
+    wsUrl: string,
+    token: string,
+): Promise<Room> {
     try {
         if (!wsUrl || !token) {
             throw new Error('WebSocket URL and token are required');
@@ -22,9 +25,7 @@ export async function joinLiveKitRoom(wsUrl: string, token: string): Promise<Roo
                 facingMode: 'user',
                 resolution: VideoPresets.h1440.resolution,
             },
-
         });
-
 
         // room.prepareConnection(url, token);
 
@@ -34,7 +35,6 @@ export async function joinLiveKitRoom(wsUrl: string, token: string): Promise<Roo
         //     .on(RoomEvent.ActiveSpeakersChanged, handleActiveSpeakerChange)
         //     .on(RoomEvent.Disconnected, handleDisconnect)
         //     .on(RoomEvent.LocalTrackUnpublished, handleLocalTrackUnpublished);
-
 
         // try {
         //     await navigator.mediaDevices.getUserMedia({ video: true, audio: true });

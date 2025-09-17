@@ -5,7 +5,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Category } from '~/types/products';
+import type { Category } from '~/types/products';
 
 interface CategorySectionProps {
     categories: Category[];

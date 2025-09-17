@@ -1,7 +1,5 @@
 'use client';
-import { set } from 'lodash';
-import React, { useEffect, useRef, useState, type ReactNode } from 'react';
-import { useAlertStore } from '~/store/zustand/alertStore';
+import React, { useRef, useState, type ReactNode } from 'react';
 
 type LeftPanelProps = {
     liveActive: boolean;

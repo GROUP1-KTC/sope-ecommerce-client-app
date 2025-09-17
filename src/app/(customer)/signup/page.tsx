@@ -188,7 +188,7 @@ const Signup = () => {
             };
 
             const registerRequest: RegisterRequest = {
-                username: input.email,
+                username: input.email.split('@')[0],
                 email: input.email,
                 name: input.fullName,
                 gender: genderMap[input.gender.toLowerCase()] || 'OTHER',

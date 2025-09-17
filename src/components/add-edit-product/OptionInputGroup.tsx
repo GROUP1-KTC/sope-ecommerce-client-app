@@ -6,7 +6,10 @@ interface OptionInputGroupProps {
     onOptionsChange: (options: string[]) => void;
 }
 
-const OptionInputGroup = ({ options, onOptionsChange }: OptionInputGroupProps) => {
+const OptionInputGroup = ({
+    options,
+    onOptionsChange,
+}: OptionInputGroupProps) => {
     const [localOptions, setLocalOptions] = useState([...options, '']);
     const [errorIndex, setErrorIndex] = useState<number | null>(null);
 
@@ -21,7 +24,10 @@ const OptionInputGroup = ({ options, onOptionsChange }: OptionInputGroupProps) =
 
         // ✅ Check duplicate (trừ chính nó ra)
         const isDuplicate = updated.some(
-            (opt, idx) => idx !== index && opt.trim() !== "" && opt.trim().toLowerCase() === trimmedValue.trim().toLowerCase()
+            (opt, idx) =>
+                idx !== index &&
+                opt.trim() !== '' &&
+                opt.trim().toLowerCase() === trimmedValue.trim().toLowerCase(),
         );
 
         if (isDuplicate) {
@@ -30,7 +36,11 @@ const OptionInputGroup = ({ options, onOptionsChange }: OptionInputGroupProps) =
             setErrorIndex(null);
         }
 
-        if (index === localOptions.length - 1 && trimmedValue.trim() !== '' && !isDuplicate) {
+        if (
+            index === localOptions.length - 1 &&
+            trimmedValue.trim() !== '' &&
+            !isDuplicate
+        ) {
             updated.push('');
         }
 
@@ -72,7 +82,9 @@ const OptionInputGroup = ({ options, onOptionsChange }: OptionInputGroupProps) =
                                         placeholder="Nhập"
                                         maxLength={20}
                                         className="flex-grow px-2 py-1 focus:outline-none"
-                                        onChange={(e) => handleChange(e.target.value, idx)}
+                                        onChange={(e) =>
+                                            handleChange(e.target.value, idx)
+                                        }
                                     />
                                     <span className="text-gray-400 text-sm pr-2">
                                         {val.length}/20
@@ -86,7 +98,8 @@ const OptionInputGroup = ({ options, onOptionsChange }: OptionInputGroupProps) =
                                 </div>
                                 {hasError && (
                                     <p className="text-red-500 text-xs mt-1">
-                                        Giá trị này đã tồn tại, vui lòng nhập khác
+                                        Giá trị này đã tồn tại, vui lòng nhập
+                                        khác
                                     </p>
                                 )}
                             </div>

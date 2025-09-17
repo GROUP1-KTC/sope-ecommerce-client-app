@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, JSX } from 'react';
+import type { JSX } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';

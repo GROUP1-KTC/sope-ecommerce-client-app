@@ -2,8 +2,8 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
+import type { Room } from '~/utils/livekit';
 import {
-    Room,
     RemoteTrack,
     RemoteTrackPublication,
     joinLiveKitRoom,
@@ -16,14 +16,14 @@ import SellerLiveLayout from './layout';
 import type { Comment } from '~/types/comment';
 import { useAlertStore } from '~/store/zustand/alertStore';
 import { useGetApprovedProductsByShopQuery } from '~/features/products/productApi';
-import { ProductSummary, SellerLiveProduct } from '~/types/products';
+import type { ProductSummary, SellerLiveProduct } from '~/types/products';
 
 function mapToSellerLiveProduct(summary: ProductSummary): SellerLiveProduct {
     return {
-        id: summary.productId, 
+        id: summary.productId,
         name: summary.name,
         image: summary.defaultImage,
-        originalPrice: summary.minPrice, 
+        originalPrice: summary.minPrice,
         price: summary.minPrice,
         sold: summary.totalSold,
         stock: summary.totalStock,
@@ -48,8 +48,8 @@ export default function SellerPage() {
         size: 12,
     });
 
-    const products: SellerLiveProduct[] = data?.content.map(mapToSellerLiveProduct) ?? [];
-
+    const products: SellerLiveProduct[] =
+        data?.content.map(mapToSellerLiveProduct) ?? [];
 
     const startPreview = async () => {
         try {

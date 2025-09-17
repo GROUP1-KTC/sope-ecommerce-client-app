@@ -15,8 +15,10 @@ const MessageTypeFile = (message: Message) => {
     const type = message.fileType || 'application/octet-stream';
 
     const getFileIcon = (type: string) => {
-        if (type === 'application/pdf') return <PictureAsPdfIcon fontSize="small" />;
-        if (type.startsWith('text/') || type.includes('document')) return <DescriptionIcon fontSize="small" />;
+        if (type === 'application/pdf')
+            return <PictureAsPdfIcon fontSize="small" />;
+        if (type.startsWith('text/') || type.includes('document'))
+            return <DescriptionIcon fontSize="small" />;
         return <InsertDriveFileIcon fontSize="small" />;
     };
 
@@ -31,7 +33,8 @@ const MessageTypeFile = (message: Message) => {
                     borderRadius: 2,
                     objectFit: 'contain',
                     cursor: 'pointer',
-                    alignSelf: message.senderId === 'Me' ? 'flex-end' : 'flex-start',
+                    alignSelf:
+                        message.senderId === 'Me' ? 'flex-end' : 'flex-start',
                 }}
                 onClick={() => window.open(url, '_blank')}
             />
@@ -47,7 +50,8 @@ const MessageTypeFile = (message: Message) => {
                 sx={{
                     maxHeight: '300px',
                     borderRadius: 2,
-                    alignSelf: message.senderId === 'Me' ? 'flex-end' : 'flex-start',
+                    alignSelf:
+                        message.senderId === 'Me' ? 'flex-end' : 'flex-start',
                 }}
             />
         );
@@ -60,7 +64,8 @@ const MessageTypeFile = (message: Message) => {
                 textDecoration: 'none',
                 gap: 1,
                 cursor: 'pointer',
-                alignSelf: message.senderId === 'Me' ? 'flex-end' : 'flex-start',
+                alignSelf:
+                    message.senderId === 'Me' ? 'flex-end' : 'flex-start',
                 px: 2.5,
                 py: 1.5,
                 bgcolor: message.senderId === 'Me' ? 'primary.main' : 'white',
