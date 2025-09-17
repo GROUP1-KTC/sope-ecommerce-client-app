@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import OrderCard from './OrderCard';
 import type { OrderGroupShop } from '~/types/orders/order';
 
@@ -28,13 +29,23 @@ export default function OrderList({
     isFromPendingOrder,
     setPage,
 }: OrderListProps) {
+    const [orders, setOrders] = useState<OrderGroupShop[]>([]);
+
+    useEffect(() => {
+        setOrders(allOrder?.content ?? []);
+    }, [allOrder]);
+
     if (isLoading) return <div>Loading...</div>;
     if (isError || !allOrder) return <div>Error loading orders</div>;
+
+    const handleConfirm = (orderId: string) => {
+        setOrders((prev) => prev.filter((o) => o.order.orderId !== orderId));
+    };
 
     return (
         <div>
             <div className="mb-2 text-lg font-semibold">
-                {allOrder.totalElements} Đơn hàng
+                {orders.length} Đơn hàng
             </div>
 
             <div className="hidden sm:grid grid-cols-7 gap-2 bg-gray-100 px-4 py-3 rounded-t mb-3 text-sm font-medium text-gray-700">
@@ -51,6 +62,7 @@ export default function OrderList({
                     key={group.paymentId}
                     order={group}
                     isFromPendingOrder={isFromPendingOrder}
+                    onConfirm={handleConfirm}
                 />
             ))}
 

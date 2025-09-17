@@ -15,7 +15,7 @@ export const shopApi = apiSlice.injectEndpoints({
             query: (shopId) => `/shops/${shopId}`,
         }),
         getShopId: builder.query<string, void>({
-            query: () => '/get-shop-id',
+            query: () => '/shops/get-shop-id',
         }),
     }),
 });

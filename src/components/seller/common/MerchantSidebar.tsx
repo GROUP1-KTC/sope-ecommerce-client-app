@@ -110,7 +110,7 @@ export default function MerchantSidebar() {
                 href: `/live/seller/${shopId}`,
             },
         ],
-        [],
+        [shopId],
     );
 
     useEffect(() => {

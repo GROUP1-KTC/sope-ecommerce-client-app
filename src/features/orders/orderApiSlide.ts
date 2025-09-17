@@ -21,10 +21,10 @@ export const orderApi = apiSlice.injectEndpoints({
         }),
         getOrdersByShop: builder.query<
             ApiResponse<PageResponse<OrderGroupShop>>,
-            { shopId: string; page?: number; size?: number }
+            { page?: number; size?: number }
         >({
-            query: ({ shopId, page = 0, size = 20 }) => ({
-                url: `orders/shop/${shopId}?page=${page}&size=${size}`,
+            query: ({ page = 0, size = 20 }) => ({
+                url: `orders/shop?page=${page}&size=${size}`,
                 credentials: 'omit',
             }),
             providesTags: ['Order'],

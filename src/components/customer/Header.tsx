@@ -20,6 +20,7 @@ import { skipToken } from '@reduxjs/toolkit/query';
 import { useSearchSuggestQuery } from '~/features/products/elasticApi';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '~/hooks/useTypes';
+import { loadAuthUser } from '~/utils/authCookie';
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -28,7 +29,7 @@ const Header = () => {
     const [isFocused, setIsFocused] = useState(false);
     const router = useRouter();
 
-    const roles = useAppSelector((state) => state.auth.roles);
+    const roles = loadAuthUser()?.roles || [];
 
     const isSeller = roles.includes('SELLER');
 
@@ -99,11 +100,9 @@ const Header = () => {
             e.preventDefault();
             const trimmed = inputValue.trim();
             if (trimmed) {
-                // chỉ redirect nếu có kết quả
                 if (products.length > 0) {
                     router.push(`/search/${encodeURIComponent(trimmed)}`);
                 } else {
-                    // show thông báo ở dropdown
                     setIsFocused(true);
                 }
             }

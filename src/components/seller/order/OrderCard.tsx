@@ -28,9 +28,11 @@ const shippingProviders: Record<string, string> = {
 export default function OrderCard({
     order,
     isFromPendingOrder,
+    onConfirm,
 }: {
     order: OrderGroupShop;
     isFromPendingOrder?: boolean;
+    onConfirm?: (orderId: string) => void;
 }) {
     const [confirmDialog, setConfirmDialog] = useState(false);
 
@@ -44,6 +46,8 @@ export default function OrderCard({
             orderId: o.orderId,
             status: 'CONFIRMED',
         });
+
+        onConfirm?.(o.orderId);
 
         setConfirmDialog(true);
     };
