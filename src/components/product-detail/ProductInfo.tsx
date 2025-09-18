@@ -475,7 +475,7 @@ const ProductInfo = ({
                         )}
                     </div>
 
-                    {attributeEntries.map(([name, values], index) => (
+                    {attributeEntries.map(([name, values]) => (
                         <div className="flex items-center mt-4" key={name}>
                             <span className="w-32 font-semibold">
                                 Chọn {name}
@@ -511,12 +511,9 @@ const ProductInfo = ({
                                             (v) => v.stock > 0,
                                         );
 
-                                    const variantImage =
-                                        index === 0
-                                            ? matchingVariants?.find(
-                                                  (v) => v.imageVariant,
-                                              )?.imageVariant
-                                            : null;
+                                    const variantImage = matchingVariants?.find(
+                                        (v) => v.imageVariant,
+                                    )?.imageVariant as string | undefined;
 
                                     return (
                                         <button

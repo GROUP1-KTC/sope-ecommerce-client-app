@@ -223,12 +223,12 @@ const Header = () => {
                                 {products.length > 0 ? (
                                     products.map((p, index) => (
                                         <CustomLink
-                                            key={p.product_id || index}
+                                            key={p.productId || index}
                                             href={`/product-detail/${p.slug}`}
                                             className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer"
                                             onClick={() =>
                                                 handleClickProduct(
-                                                    p.product_id,
+                                                    p.productId,
                                                     searchTerm,
                                                 )
                                             }

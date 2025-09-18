@@ -58,7 +58,7 @@ const OptionInputGroup = ({
         onOptionsChange(updated.filter((opt) => opt.trim() !== ''));
     };
 
-    const rows = [];
+    const rows: string[][] = [];
     for (let i = 0; i < localOptions.length; i += 2) {
         rows.push([localOptions[i], localOptions[i + 1] ?? '']);
     }

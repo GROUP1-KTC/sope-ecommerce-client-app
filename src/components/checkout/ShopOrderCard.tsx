@@ -50,7 +50,7 @@ const ShopOrderCard: React.FC<ShopOrderCardProps> = ({
                 <Image
                     width={32}
                     height={32}
-                    src={group.shop.avatarUrl}
+                    src={group.shop.avatarUrl ?? '/default-avatar.png'}
                     alt={group.shop.name}
                     className="w-8 h-8 rounded-full object-cover"
                 />
