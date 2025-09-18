@@ -7,17 +7,15 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 import StoreOutlinedIcon from '@mui/icons-material/StoreOutlined';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import RecommendOutlinedIcon from '@mui/icons-material/RecommendOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import { useGetShopIdQuery } from '~/features/shop/shopApi';
 import DiscountOutlinedIcon from '@mui/icons-material/DiscountOutlined';
 
-// Kiểu cho item
 type NavItem = {
     label: string;
     icon: JSX.Element;
-    href?: string; // nếu có href -> link trực tiếp
+    href?: string; 
     children?: { label: string; href: string }[];
 };
 
@@ -55,19 +53,6 @@ export default function MerchantSidebar() {
                 children: [
                     { label: 'All Products', href: '/seller/all-products' },
                     { label: 'Add Product', href: '/seller/add-product' },
-                ],
-            },
-            {
-                label: 'Marketing Channel',
-                icon: <LocalOfferIcon className="h-5 w-5 mr-3" />,
-                children: [
-                    {
-                        label: 'Marketing Channel',
-                        href: '/seller/marketing-channel',
-                    },
-                    { label: 'Shop Promotions', href: '#promotions' },
-                    { label: 'Shop Flash Sale', href: '#flash-sale' },
-                    { label: 'Shop Discount Code', href: '#discount' },
                 ],
             },
             {

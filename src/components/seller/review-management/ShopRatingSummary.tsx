@@ -35,7 +35,7 @@ export default function ShopRatingSummary() {
                 ].map((item, index) => (
                     <div
                         key={index}
-                        className="space-y-1 border rounded-lg p-4 hover:shadow-sm transition"
+                        className="space-y-1 shadow-sm border border-gray-300 rounded-lg p-4 hover:shadow-md transition"
                     >
                         <div className="text-sm text-gray-500">
                             {item.label}
@@ -52,7 +52,7 @@ export default function ShopRatingSummary() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="text-sm text-gray-700 border rounded-lg p-4 hover:shadow-sm transition">
+                <div className="text-sm text-gray-700 border border-gray-300 rounded-lg p-4 hover:shadow-sm transition">
                     Đánh giá tiêu cực cần phản hồi:{' '}
                     <span className="text-red-500 font-medium">0</span>{' '}
                     <a href="#" className="text-blue-600 ml-2">
@@ -62,7 +62,7 @@ export default function ShopRatingSummary() {
                         Các đánh giá có 1 & 2 sao cần bạn phản hồi
                     </div>
                 </div>
-                <div className="text-sm text-gray-700 border rounded-lg p-4 hover:shadow-sm transition">
+                <div className="text-sm text-gray-700 border border-gray-300 rounded-lg p-4 hover:shadow-sm transition">
                     Đánh giá gần đây:{' '}
                     <span className="text-red-500 font-medium">0</span>{' '}
                     <a href="#" className="text-blue-600 ml-2">

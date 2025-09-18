@@ -14,19 +14,19 @@ export default function TableNotPaid({
 
     if (!list.length) {
         return (
-            <div className="overflow-x-auto border rounded text-sm">
+            <div className="overflow-x-auto border-y text-sm">
                 <table className="min-w-full">
                     <thead className="bg-gray-100 text-left">
                         <tr>
-                            <th className="px-4 py-2">Đơn hàng</th>
-                            <th className="px-4 py-2">
+                            <th className="px-4 py-2 font-medium">Đơn hàng</th>
+                            <th className="px-4 py-2 font-medium">
                                 Ngày thanh toán dự kiến
                             </th>
-                            <th className="px-4 py-2">Trạng thái</th>
-                            <th className="px-4 py-2">
+                            <th className="px-4 py-2 font-medium">Trạng thái</th>
+                            <th className="px-4 py-2 font-medium">
                                 Phương thức thanh toán
                             </th>
-                            <th className="px-4 py-2">Số tiền nhận được</th>
+                            <th className="px-4 py-2 font-medium">Số tiền nhận được</th>
                         </tr>
                     </thead>
                     <tbody>

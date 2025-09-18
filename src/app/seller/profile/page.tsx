@@ -28,15 +28,15 @@ export default function ShopProfile() {
 
     return (
         <div className="p-4">
-            <div className="flex space-x-2 border-b mb-4">
+            <div className="flex space-x-2 border-b-2 border-gray-300 mb-4 ">
                 {TABS.map((tab) => (
                     <button
                         key={tab.value}
                         onClick={() => setActiveTab(tab.value)}
-                        className={`px-4 py-2 rounded-t ${
+                        className={`px-4 py-2 rounded-t cursor-pointer ${
                             activeTab === tab.value
-                                ? 'bg-white border border-b-0 border-gray-300 text-black font-medium'
-                                : 'bg-gray-100 text-gray-500'
+                                ? 'bg-white text-black font-medium'
+                                : ' text-gray-500'
                         }`}
                     >
                         {tab.label}

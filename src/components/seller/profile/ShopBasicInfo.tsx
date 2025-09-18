@@ -9,10 +9,10 @@ export default function ShopBasicInfo() {
                     Thông tin cơ bản
                 </h2>
                 <div className="flex gap-2">
-                    <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-100">
+                    <button className="px-4 py-2 border text-sm border-gray-300 text-gray-700 rounded hover:bg-gray-300 cursor-pointer">
                         Xem Shop của tôi
                     </button>
-                    <button className="px-4 py-2 border border-red-600 text-white bg-red-600 rounded hover:bg-red-700">
+                    <button className="px-4 py-2 border text-sm border-red-600 text-white bg-red-600 rounded hover:bg-red-700 cursor-pointer">
                         Chỉnh sửa
                     </button>
                 </div>
