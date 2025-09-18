@@ -7,6 +7,7 @@ import type {
     LoginInput,
     LoginResponse,
     RegisterRequest,
+    ResetPasswordRequest,
     VerifyEmailRequest,
 } from '~/types/auth/auth';
 
@@ -63,6 +64,22 @@ export const authApi = apiSlice.injectEndpoints({
                 body,
             }),
         }),
+        sendForgotPasswordOtp: builder.mutation<ServerResponse<string>, EmailRequest>({
+            query: (body) => ({
+                url: '/auth/forgot-password',
+                method: 'POST',
+                body,
+            }),
+        }),
+
+        resetPassword: builder.mutation<ServerResponse<string>, ResetPasswordRequest>({
+            query: (body) => ({
+                url: '/auth/reset-password',
+                method: 'POST',
+                body,
+            }),
+        }),
+
     }),
     overrideExisting: false,
 });
@@ -74,4 +91,6 @@ export const {
     useVerifyOtpMutation,
     useRegisterMutation,
     useChangePasswordMutation,
+    useSendForgotPasswordOtpMutation,
+    useResetPasswordMutation,
 } = authApi;

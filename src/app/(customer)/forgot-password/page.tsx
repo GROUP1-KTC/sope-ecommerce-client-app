@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import CustomLink from '~/components/shared/loading/CustomLink';
-
+import { useResetPasswordMutation, useSendForgotPasswordOtpMutation } from '~/features/auth/authApi';
+import { useAlertStore } from '~/store/zustand/alertStore';
+import { useRouter } from 'next/navigation';
 const RecoverPassword = () => {
     const [input, setInput] = useState({
         email: '',
@@ -14,6 +16,16 @@ const RecoverPassword = () => {
         email: '',
     });
 
+    const [loading, setLoading] = useState(false);
+
+    const [sendOtp] = useSendForgotPasswordOtpMutation();
+    const [resetPassword] = useResetPasswordMutation();
+
+    const [step, setStep] = useState<'email' | 'reset'>('email');
+    const [otp, setOtp] = useState('');
+
+    const router = useRouter();
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const validateField = (name: string, value: string) => {
@@ -22,8 +34,7 @@ const RecoverPassword = () => {
         switch (name) {
             case 'email':
                 if (!value) error = 'Email is required';
-                else if (!emailRegex.test(value))
-                    error = 'Invalid email format';
+                else if (!emailRegex.test(value)) error = 'Invalid email format';
                 break;
         }
         return error;
@@ -40,9 +51,7 @@ const RecoverPassword = () => {
         setErrors((prev) => ({ ...prev, [e.target.name]: '' }));
     };
 
-    const forgotPasswordHandler = async (
-        e: React.FormEvent<HTMLFormElement>,
-    ) => {
+    const forgotPasswordHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const newErrors = {
@@ -57,6 +66,40 @@ const RecoverPassword = () => {
             console.log('Login successfully with', input);
         } catch (error) {
             console.error('Login error', error);
+        }
+    };
+
+    const handleSendOtp = async () => {
+        if (!input.email) return setErrors({ email: 'Email không được để trống' });
+        setLoading(true);
+        try {
+            await sendOtp({ email: input.email }).unwrap();
+            setStep('reset');
+        } catch (err: any) {
+            setErrors({ email: err?.data?.message || 'Lỗi khi gửi OTP' });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleResetPassword = async () => {
+        if (!otp || !input.password) return;
+        setLoading(true);
+        try {
+            await resetPassword({ email: input.email, otp, newPassword: input.password }).unwrap();
+            useAlertStore.getState().showAlert({
+                            severity: 'success',
+                            message: 'Đổi mật khẩu thành công!',
+                        });
+            setStep('email');
+            setInput({ email: '', password: '' });
+            setOtp('');
+            await new Promise((resolve) => setTimeout(resolve, 3000));
+            router.push('/login');
+        } catch (err: any) {
+            console.error(err);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -82,70 +125,126 @@ const RecoverPassword = () => {
                                 <h1 className="text-slate-900 text-center text-3xl font-semibold">
                                     Recover Password
                                 </h1>
-                                <form
-                                    onSubmit={forgotPasswordHandler}
-                                    className="mt-6 space-y-6"
-                                >
-                                    <div>
-                                        <label className="text-slate-900 text-sm font-medium mb-2 block">
-                                            Email
-                                        </label>
-                                        <div className="relative flex items-center">
+
+                                {step === 'reset' ? (
+                                    <div className="mt-6 space-y-4">
+                                        <div>
+                                            <label className="text-slate-900 text-sm font-medium mb-2 block">
+                                                OTP
+                                            </label>
                                             <input
-                                                name="email"
+                                                name="otp"
                                                 type="text"
-                                                required
-                                                className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                placeholder="Enter email"
-                                                value={input.email}
-                                                onChange={changeEventHandler}
-                                                onBlur={handleBlur}
+                                                className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 rounded-md outline-blue-600"
+                                                placeholder="Enter OTP"
+                                                value={otp}
+                                                onChange={(e) => setOtp(e.target.value)}
                                             />
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="#bbb"
-                                                stroke="#bbb"
-                                                className="w-4 h-4 absolute right-4"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <circle
-                                                    cx="10"
-                                                    cy="7"
-                                                    r="6"
-                                                    data-original="#000000"
-                                                ></circle>
-                                                <path
-                                                    d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z"
-                                                    data-original="#000000"
-                                                ></path>
-                                            </svg>
                                         </div>
-                                        {errors.email && (
-                                            <p className="text-red-500 text-sm mt-1">
-                                                {errors.email}
-                                            </p>
-                                        )}
-                                    </div>
 
-                                    <div className="!mt-6">
+                                        <div>
+                                            <label className="text-slate-900 text-sm font-medium mb-2 block">
+                                                New Password
+                                            </label>
+                                            <input
+                                                name="password"
+                                                type="password"
+                                                className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 rounded-md outline-blue-600"
+                                                placeholder="Enter new password"
+                                                value={input.password}
+                                                onChange={changeEventHandler}
+                                            />
+                                        </div>
+
                                         <button
-                                            type="submit"
-                                            className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer"
+                                            type="button"
+                                            onClick={handleResetPassword}
+                                            disabled={loading}
+                                            className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer flex justify-center items-center gap-2"
                                         >
-                                            Send me a reset password email
+                                            {loading && (
+                                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                                </svg>
+                                            )}
+                                            Reset Password
                                         </button>
-                                    </div>
 
-                                    <span className="text-slate-900 text-sm !mt-6 text-center">
-                                        Đã nhớ mật khẩu?{' '}
-                                        <CustomLink
-                                            href="/login"
-                                            className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
-                                        >
-                                            Đăng nhập tại đây
-                                        </CustomLink>
-                                    </span>
-                                </form>
+
+                                        <span className="text-slate-900 text-sm !mt-6 text-center block">
+                                            Nhập sai email?{' '}
+                                            <button
+                                                type="button"
+                                                onClick={() => setStep('email')}
+                                                className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
+                                            >
+                                                Quay lại
+                                            </button>
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <form onSubmit={forgotPasswordHandler} className="mt-6 space-y-6">
+                                        <div>
+                                            <label className="text-slate-900 text-sm font-medium mb-2 block">
+                                                Email
+                                            </label>
+                                            <div className="relative flex items-center">
+                                                <input
+                                                    name="email"
+                                                    type="text"
+                                                    required
+                                                    className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
+                                                    placeholder="Enter email"
+                                                    value={input.email}
+                                                    onChange={changeEventHandler}
+                                                    onBlur={handleBlur}
+                                                />
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="#bbb"
+                                                    stroke="#bbb"
+                                                    className="w-4 h-4 absolute right-4"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <circle cx="10" cy="7" r="6"></circle>
+                                                    <path d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z"></path>
+                                                </svg>
+                                            </div>
+                                            {errors.email && (
+                                                <p className="text-red-500 text-sm mt-3">{errors.email}</p>
+                                            )}
+                                        </div>
+
+                                        <div className="!mt-6">
+                                            <button
+                                                type="button"
+                                                onClick={handleSendOtp}
+                                                disabled={loading}
+                                                className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer flex justify-center items-center gap-2"
+                                            >
+                                                {loading && (
+                                                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                                    </svg>
+                                                )}
+                                                Send me a reset password email
+                                            </button>
+
+                                        </div>
+
+                                        <span className="text-slate-900 text-sm !mt-6 text-center w-full block">
+                                            Đã nhớ mật khẩu?{' '}
+                                            <CustomLink
+                                                href="/login"
+                                                className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
+                                            >
+                                                Đăng nhập tại đây
+                                            </CustomLink>
+                                        </span>
+                                    </form>
+                                )}
                             </div>
                         </div>
                     </div>
