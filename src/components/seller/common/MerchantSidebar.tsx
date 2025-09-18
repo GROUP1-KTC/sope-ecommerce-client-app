@@ -34,7 +34,7 @@ export default function MerchantSidebar() {
             {
                 label: 'Dashboard',
                 icon: <DashboardOutlinedIcon className="h-5 w-5 mr-3" />,
-                href: '/seller/dashboard',
+                href: '/seller',
             },
             {
                 label: 'Order Management',
@@ -127,7 +127,7 @@ export default function MerchantSidebar() {
     };
 
     return (
-        <aside className="w-58 bg-white border-r border-gray-200 overflow-auto">
+        <aside className="w-58 bg-white overflow-auto">
             <nav>
                 <ul>
                     {navItems.map((item, index) => (
@@ -154,7 +154,7 @@ export default function MerchantSidebar() {
                                                     <li key={subIndex}>
                                                         <a
                                                             href={sub.href}
-                                                            className={`block py-1 px-2 text-sm rounded-md ${
+                                                            className={`block py-1 px-2 text-sm rounded-md cursor-pointer ${
                                                                 activePath ===
                                                                 sub.href
                                                                     ? 'text-red-500 bg-orange-100'

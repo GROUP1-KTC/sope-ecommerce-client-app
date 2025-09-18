@@ -23,7 +23,7 @@ export function authMiddleware(req: NextRequest) {
       return NextResponse.redirect(new URL('/login', req.url));
     }
 
-    return NextResponse.next();
+    return null;
   } catch {
     return NextResponse.redirect(new URL('/login', req.url));
   }
