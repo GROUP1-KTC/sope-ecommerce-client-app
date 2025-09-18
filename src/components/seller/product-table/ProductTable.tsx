@@ -118,7 +118,7 @@ export default function ProductTable({ products, viewMode }: Props) {
     if (viewMode === 'grid') {
         return (
             <>
-                <div className="flex gap-4 mb-4 p-2 text-sm border items-center">
+                <div className="flex gap-4 mb-4 p-2 text-sm  items-center">
                     <span className="px-3">Sắp xếp theo:</span>
                     {(['price', 'stock', 'sold'] as const).map((key) => (
                         <button
@@ -259,7 +259,7 @@ export default function ProductTable({ products, viewMode }: Props) {
                                     {/* Row cho product */}
                                     <tr
                                         key={product.productId}
-                                        className="hover:bg-orange-50 mb-4"
+                                        className="hover:bg-red-50 mb-4"
                                     >
                                         <td className="p-3 align-top">
                                             <input type="checkbox" />
@@ -277,7 +277,7 @@ export default function ProductTable({ products, viewMode }: Props) {
                                                     <span>{product.name}</span>
                                                     {!isSimpleProduct &&
                                                         variants.length > 0 && (
-                                                            <span className="text-xs text-orange-500 border border-orange-300 px-1 rounded-full">
+                                                            <span className="text-xs text-red-500 border border-red-300 px-1 rounded-full">
                                                                 {
                                                                     variants.length
                                                                 }{' '}
@@ -351,7 +351,7 @@ export default function ProductTable({ products, viewMode }: Props) {
                                                         'price',
                                                     )
                                                 }
-                                                className="cursor-pointer ml-1 text-yellow-500 hover:text-orange-500"
+                                                className="cursor-pointer ml-1 text-yellow-500 hover:text-red-500"
                                             >
                                                 <Pencil size={14} />
                                             </button>
@@ -373,7 +373,7 @@ export default function ProductTable({ products, viewMode }: Props) {
                                                         'stock',
                                                     )
                                                 }
-                                                className="cursor-pointer ml-1 text-yellow-500 hover:text-orange-500"
+                                                className="cursor-pointer ml-1 text-yellow-500 hover:text-red-500"
                                             >
                                                 <Pencil size={14} />
                                             </button>
@@ -538,7 +538,7 @@ export default function ProductTable({ products, viewMode }: Props) {
        															     ${variant.stock <
                                                                     10
                                                                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                                                    : 'bg-gradient-to-r cursor-pointer from-pink-500 to-orange-500 text-white hover:from-pink-600 hover:to-orange-600'
+                                                                    : 'bg-gradient-to-r cursor-pointer from-pink-500 to-red-500 text-white hover:from-pink-600 hover:to-red-600'
                                                                 }`}
                                                             title={
                                                                 variant.stock <

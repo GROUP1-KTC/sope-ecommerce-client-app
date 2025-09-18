@@ -11,8 +11,7 @@ import {
     StickyNote,
     Clock,
 } from 'lucide-react';
-import { FileEdit, Receipt, Wallet } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Receipt, Wallet } from 'lucide-react';
 import { statusColors } from '~/components/order/OrderItem';
 
 const shippingProviders: Record<string, string> = {
@@ -49,7 +48,6 @@ export default function OrderDetail() {
     const items = Array.isArray(order.items) ? order.items : [];
 
     // Tính doanh thu
-    // Tính doanh thu
     const calculateRevenue = (order: any) => {
         const subTotal =
             order.items?.reduce(
@@ -72,8 +70,8 @@ export default function OrderDetail() {
                 return (
                     sum +
                     item.price *
-                        item.quantity *
-                        (item.commissionFeePercent / 100)
+                    item.quantity *
+                    (item.commissionFeePercent / 100)
                 );
             }, 0) ?? 0;
 
@@ -100,8 +98,8 @@ export default function OrderDetail() {
                                 <strong>Ngày tạo:</strong>{' '}
                                 {createdAt
                                     ? new Date(createdAt).toLocaleString(
-                                          'vi-VN',
-                                      )
+                                        'vi-VN',
+                                    )
                                     : '—'}
                             </div>
                             <div>
@@ -241,9 +239,9 @@ export default function OrderDetail() {
                                             (sum: number, item: any) =>
                                                 sum +
                                                 item.price *
-                                                    item.quantity *
-                                                    (item.commissionFeePercent /
-                                                        100),
+                                                item.quantity *
+                                                (item.commissionFeePercent /
+                                                    100),
                                             0,
                                         ) ?? 0
                                     ).toLocaleString('vi-VN')}{' '}
@@ -366,7 +364,7 @@ export default function OrderDetail() {
                                     <span
                                         className={
                                             statusColors[
-                                                s.status as keyof typeof statusColors
+                                            s.status as keyof typeof statusColors
                                             ]
                                         }
                                     >

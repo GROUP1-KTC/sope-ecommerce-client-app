@@ -4,6 +4,7 @@ import {
     getCategoryPathName,
     buildCategoryPath,
 } from '~/utils/buildCategoryPath';
+import { X } from 'lucide-react';
 
 interface CategorySelectorProps {
     categories: Category[];
@@ -69,9 +70,11 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
                     <h2 className="text-lg font-semibold">Chọn ngành hàng</h2>
                     <button
                         onClick={onClose}
-                        className="p-1 text-gray-400 hover:text-gray-600"
+                        className="p-1 text-sl cursor-pointer text-red-400 hover:text-red-600"
+                        tabIndex={-1}
                     >
-                        ✕
+
+                        <X size={18} className="text-gray-600" />
                     </button>
                 </div>
 
@@ -82,7 +85,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         placeholder="🔍 Nhập từ khóa để tìm..."
-                        className="w-120 border rounded-full px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                        className="w-120 border rounded-full px-4 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none"
                     />
                 </div>
 
@@ -133,11 +136,10 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
                                                 onClick={() =>
                                                     handleSelect(cat, level)
                                                 }
-                                                className={`px-3 py-2 text-left rounded-md border text-sm transition cursor-pointer ${
-                                                    isSelected
-                                                        ? 'bg-orange-50 border-orange-500 text-orange-600 font-medium'
-                                                        : 'bg-white border-transparent hover:bg-gray-50'
-                                                }`}
+                                                className={`px-3 py-2 text-left rounded-md border text-sm transition cursor-pointer ${isSelected
+                                                    ? 'bg-red-50 border-red-500 text-red-600 font-medium'
+                                                    : 'bg-white border-transparent hover:bg-gray-50'
+                                                    }`}
                                             >
                                                 {cat.name}
                                             </button>
@@ -174,11 +176,10 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
                                 }
                             }}
                             disabled={!isValidSelection}
-                            className={`px-4 py-2 rounded-lg text-white cursor-pointer ${
-                                isValidSelection
-                                    ? 'bg-orange-500 hover:bg-orange-600'
-                                    : 'bg-gray-300 cursor-not-allowed'
-                            }`}
+                            className={`px-4 py-2 rounded-lg text-white cursor-pointer ${isValidSelection
+                                ? 'bg-red-500 hover:bg-red-600'
+                                : 'bg-gray-300 cursor-not-allowed'
+                                }`}
                         >
                             Thêm danh mục
                         </button>

@@ -26,7 +26,7 @@ export default function VariantGroupInput({
         otherVariantName &&
         variantName.trim() !== '' &&
         variantName.trim().toLowerCase() ===
-            otherVariantName.trim().toLowerCase();
+        otherVariantName.trim().toLowerCase();
 
     return (
         <div className="bg-gray-200 py-2 px-1">
@@ -36,9 +36,8 @@ export default function VariantGroupInput({
                     <input
                         type="text"
                         placeholder="Phân loại (ví dụ: Màu sắc, Size...)"
-                        className={`w-3/4 border rounded p-1 ${
-                            isDuplicate ? 'border-red-500' : 'border-gray-300'
-                        }`}
+                        className={`w-3/4 rounded p-1 focus:outline-none focus:ring-1 focus:ring-black ${isDuplicate ? 'border-red-500' : 'border-gray-300'
+                            } border`}
                         value={variantName}
                         onChange={(e) => setVariantName(e.target.value)}
                     />
@@ -50,7 +49,7 @@ export default function VariantGroupInput({
                 )}
                 <button
                     type="button"
-                    className={`text-gray-400 ${mode === 'edit' ? 'cursor-not-allowed opacity-50' : 'hover:text-red-500'}`}
+                    className={`text-gray-400 cursor-pointer ${mode === 'edit' ? 'cursor-not-allowed opacity-50' : 'hover:text-red-500'}`}
                     onClick={onRemove}
                     tabIndex={-1}
                     disabled={mode === 'edit'}
