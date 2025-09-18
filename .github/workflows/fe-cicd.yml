@@ -5,6 +5,7 @@ on:
         branches:
             - main
             - dev
+            - format-and-deploy
 
 jobs:
     build-and-push:
