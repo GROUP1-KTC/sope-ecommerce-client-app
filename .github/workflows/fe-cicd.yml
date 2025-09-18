@@ -46,7 +46,7 @@ jobs:
             - name: Push Docker image
               run: docker push ${{ secrets.DOCKER_USERNAME }}/frontend-app:latest
 
-            # 7. Copy docker-compose.yml sang EC2
+            # 7. Copy docker-compose.yml to EC2
             - name: Copy docker-compose.yml to EC2
               uses: appleboy/scp-action@v0.1.7
               with:
@@ -76,3 +76,5 @@ jobs:
                       docker compose down
                       docker compose up -d
                       echo "Deployed at $(date)" >> ~/frontend-app/deployed.log
+
+                      
