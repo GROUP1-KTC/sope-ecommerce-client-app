@@ -44,7 +44,7 @@ export default function OrderFilters({
                 <input
                     type="text"
                     placeholder="Nhập Mã đơn hàng"
-                    className="border rounded px-2 py-1 text-sm w-64"
+                    className="border border-gray-300 rounded px-2 py-1 text-sm w-64 focus:outline-none focus:ring-1 focus:ring-black"
                     value={local.orderNumber}
                     onChange={(e) =>
                         setLocal((s) => ({ ...s, orderNumber: e.target.value }))
@@ -55,7 +55,7 @@ export default function OrderFilters({
             {/* Shipping Provider */}
             <div className="flex gap-2">
                 <select
-                    className="border rounded px-2 py-1 text-sm"
+                    className="border border-gray-300 rounded px-2 py-1 text-sm"
                     value={local.shippingRateId ?? ''}
                     onChange={(e) =>
                         setLocal((s) => ({
@@ -73,13 +73,13 @@ export default function OrderFilters({
                 </select>
 
                 <button
-                    className="cursor-pointer bg-orange-500 text-white px-4 py-1 rounded text-sm"
+                    className="cursor-pointer bg-red-500 hover:bg-red-600  text-white px-4 py-1 rounded text-sm"
                     onClick={apply}
                 >
                     Áp dụng
                 </button>
                 <button
-                    className="cursor-pointer border px-4 py-1 rounded text-sm"
+                    className="cursor-pointer border  bg-red-500 hover:bg-red-600 text-white  border-gray-300 px-4 py-1 rounded text-sm"
                     onClick={reset}
                 >
                     Đặt lại
@@ -87,10 +87,10 @@ export default function OrderFilters({
             </div>
 
             <div className="flex gap-2 md:ml-auto">
-                <button className="cursor-pointer border px-4 py-1 rounded text-sm">
+                <button className="cursor-pointer  bg-red-500 hover:bg-red-600 border text-white  border-gray-300 px-4 py-1 rounded text-sm">
                     Xuất
                 </button>
-                <button className="cursor-pointer border px-4 py-1 rounded text-sm">
+                <button className="cursor-pointer  bg-red-500 hover:bg-red-600 border text-white  border-gray-300 px-4 py-1 rounded text-sm">
                     Lịch sử Xuất Báo cáo
                 </button>
             </div>
