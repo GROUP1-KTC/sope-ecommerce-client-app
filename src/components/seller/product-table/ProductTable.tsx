@@ -296,10 +296,10 @@ export default function ProductTable({ products, viewMode }: Props) {
                                             {isSimpleProduct
                                                 ? (firstVariant?.sold ?? 0)
                                                 : variants.reduce(
-                                                    (t, v) =>
-                                                        t + (v.sold ?? 0),
-                                                    0,
-                                                )}
+                                                      (t, v) =>
+                                                          t + (v.sold ?? 0),
+                                                      0,
+                                                  )}
                                         </td>
 
                                         {/* Giá */}
@@ -332,14 +332,14 @@ export default function ProductTable({ products, viewMode }: Props) {
                                                             )}
                                                             {minPrice !==
                                                                 maxPrice && (
-                                                                    <>
-                                                                        {' '}
-                                                                        - ₫
-                                                                        {maxPrice.toLocaleString(
-                                                                            'vi-VN',
-                                                                        )}
-                                                                    </>
-                                                                )}
+                                                                <>
+                                                                    {' '}
+                                                                    - ₫
+                                                                    {maxPrice.toLocaleString(
+                                                                        'vi-VN',
+                                                                    )}
+                                                                </>
+                                                            )}
                                                         </>
                                                     );
                                                 })()
@@ -362,10 +362,10 @@ export default function ProductTable({ products, viewMode }: Props) {
                                             {isSimpleProduct
                                                 ? (firstVariant?.stock ?? 0)
                                                 : variants.reduce(
-                                                    (t, v) =>
-                                                        t + (v.stock ?? 0),
-                                                    0,
-                                                )}
+                                                      (t, v) =>
+                                                          t + (v.stock ?? 0),
+                                                      0,
+                                                  )}
                                             <button
                                                 onClick={() =>
                                                     openEditModal(
@@ -458,35 +458,15 @@ export default function ProductTable({ products, viewMode }: Props) {
                                                     <td className="p-3 align-top flex gap-3 pl-8 ">
                                                         {typeof variant.imageVariant ===
                                                             'string' && (
-                                                                <Image
-                                                                    src={
-                                                                        variant.imageVariant
-                                                                    }
-                                                                    width={60}
-                                                                    height={60}
-                                                                    alt={
-                                                                        variant.attributes
-                                                                            ?.map(
-                                                                                (
-                                                                                    a,
-                                                                                ) =>
-                                                                                    a.value,
-                                                                            )
-                                                                            .join(
-                                                                                ', ',
-                                                                            ) ||
-                                                                        'Variant'
-                                                                    }
-                                                                    className="object-cover rounded border"
-                                                                />
-                                                            )}
-                                                        <div>
-                                                            <div className="text-sm font-medium text-gray-900">
-                                                                {variant
-                                                                    .attributes
-                                                                    ?.length
-                                                                    ? variant.attributes
-                                                                        .map(
+                                                            <Image
+                                                                src={
+                                                                    variant.imageVariant
+                                                                }
+                                                                width={60}
+                                                                height={60}
+                                                                alt={
+                                                                    variant.attributes
+                                                                        ?.map(
                                                                             (
                                                                                 a,
                                                                             ) =>
@@ -494,7 +474,27 @@ export default function ProductTable({ products, viewMode }: Props) {
                                                                         )
                                                                         .join(
                                                                             ', ',
-                                                                        )
+                                                                        ) ||
+                                                                    'Variant'
+                                                                }
+                                                                className="object-cover rounded border"
+                                                            />
+                                                        )}
+                                                        <div>
+                                                            <div className="text-sm font-medium text-gray-900">
+                                                                {variant
+                                                                    .attributes
+                                                                    ?.length
+                                                                    ? variant.attributes
+                                                                          .map(
+                                                                              (
+                                                                                  a,
+                                                                              ) =>
+                                                                                  a.value,
+                                                                          )
+                                                                          .join(
+                                                                              ', ',
+                                                                          )
                                                                     : `Biến thể ${idx + 1}`}
                                                             </div>
                                                             <div className="text-xs text-gray-500">
@@ -535,14 +535,15 @@ export default function ProductTable({ products, viewMode }: Props) {
                                                                 10
                                                             }
                                                             className={`px-3 py-1.5 text-sm font-medium rounded-lg shadow-sm transition-colors duration-200
-       															     ${variant.stock <
-                                                                    10
-                                                                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                                                    : 'bg-gradient-to-r cursor-pointer from-pink-500 to-red-500 text-white hover:from-pink-600 hover:to-red-600'
-                                                                }`}
+       															     ${
+                                                                         variant.stock <
+                                                                         10
+                                                                             ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                                                             : 'bg-gradient-to-r cursor-pointer from-pink-500 to-red-500 text-white hover:from-pink-600 hover:to-red-600'
+                                                                     }`}
                                                             title={
                                                                 variant.stock <
-                                                                    10
+                                                                10
                                                                     ? ''
                                                                     : 'Đăng ký FlashSale'
                                                             }
@@ -552,18 +553,18 @@ export default function ProductTable({ products, viewMode }: Props) {
 
                                                         {openFlashSaleId ===
                                                             variant.productVariantId && (
-                                                                <FlashSale
-                                                                    open={true}
-                                                                    onClose={() =>
-                                                                        setOpenFlashSaleId(
-                                                                            null,
-                                                                        )
-                                                                    }
-                                                                    productVariantId={
-                                                                        variant.productVariantId
-                                                                    }
-                                                                />
-                                                            )}
+                                                            <FlashSale
+                                                                open={true}
+                                                                onClose={() =>
+                                                                    setOpenFlashSaleId(
+                                                                        null,
+                                                                    )
+                                                                }
+                                                                productVariantId={
+                                                                    variant.productVariantId
+                                                                }
+                                                            />
+                                                        )}
                                                     </td>
                                                 </motion.tr>
                                             ))}
@@ -590,9 +591,10 @@ export default function ProductTable({ products, viewMode }: Props) {
                                                                 )
                                                             }
                                                             className={`flex items-center cursor-pointer  justify-center gap-1 text-sm font-medium px-3 py-1.5 rounded-full transition-colors 
-   																${showAll
-                                                                    ? 'bg-red-100 text-red-600 hover:bg-red-200'
-                                                                    : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+   																${
+                                                                    showAll
+                                                                        ? 'bg-red-100 text-red-600 hover:bg-red-200'
+                                                                        : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
                                                                 }`}
                                                         >
                                                             {showAll ? (

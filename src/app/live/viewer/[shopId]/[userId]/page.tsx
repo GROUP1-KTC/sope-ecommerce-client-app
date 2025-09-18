@@ -14,9 +14,9 @@ import CartModal from '~/components/livestream/CartModal';
 import type { Comment } from '~/types/comment';
 import { ShoppingBagIcon } from 'lucide-react';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { useAppDispatch } from '~/hooks/useTypes';
 import { useAlertStore } from '~/store/zustand/alertStore';
 import { useGetApprovedProductsByShopQuery } from '~/features/products/productApi';
+import Image from 'next/image';
 
 export default function ViewerPage() {
     const { shopId, userId } = useParams<{ shopId: string; userId: string }>();
@@ -24,9 +24,8 @@ export default function ViewerPage() {
     const audioRef = useRef<HTMLAudioElement>(null);
     const [room, setRoom] = useState<Room | null>(null);
     const [showCart, setShowCart] = useState(false);
-    const dispatch = useAppDispatch();
 
-    const { data, isLoading, error } = useGetApprovedProductsByShopQuery({
+    const { data } = useGetApprovedProductsByShopQuery({
         shopId,
         page: 0,
         size: 12,
@@ -94,7 +93,6 @@ export default function ViewerPage() {
 
                 r.on(RoomEvent.ParticipantConnected, attachTracks);
 
-                // Attach remote video
                 r.on(
                     RoomEvent.TrackSubscribed,
                     (
@@ -106,6 +104,7 @@ export default function ViewerPage() {
                     },
                 );
             } catch (err) {
+                console.error(err);
                 setErrorMessage('Failed to connect livestream');
             }
         };
@@ -115,7 +114,7 @@ export default function ViewerPage() {
             mounted = false;
             room?.disconnect();
         };
-    }, [shopId, userId]);
+    }, [shopId, userId, room]);
 
     useEffect(() => {
         if (!room) return;
@@ -153,6 +152,7 @@ export default function ViewerPage() {
             };
             setChat((prev) => [...prev, newMsg]);
         } catch (error) {
+            console.error('Send message failed:', error);
             setErrorMessage('Failed to send message');
         }
     };
@@ -180,7 +180,9 @@ export default function ViewerPage() {
                         </button>
 
                         <div className="flex items-center gap-2">
-                            <img
+                            <Image
+                                width={40}
+                                height={40}
                                 src="https://i.pravatar.cc/40"
                                 alt="Streamer Avatar"
                                 className="w-10 h-10 rounded-full object-cover mr-1 cursor-pointer"

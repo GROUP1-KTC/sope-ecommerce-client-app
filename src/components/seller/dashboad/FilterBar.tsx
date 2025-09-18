@@ -47,7 +47,6 @@ export default function FilterBar({ onFilterChange }: FilterBarProps) {
                     </select>
                 </label>
             </div>
-
         </div>
     );
 }

@@ -10,7 +10,7 @@ export default function ShopReviewTable() {
             <ShopReviewFilters />
             <div className="overflow-x-auto">
                 <table className="min-w-full text-sm text-gray-700 border-t pt-4">
-                    <thead className='text-black'>
+                    <thead className="text-black">
                         <tr className="bg-gray-100 text-left">
                             <th className="px-4 py-2 font-medium">
                                 Thông tin sản phẩm

@@ -3,7 +3,9 @@
 import Link, { type LinkProps } from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { SxProps, Theme, Box } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
+import { Box } from '@mui/material';
+
 import Loading from './Loading';
 
 interface CustomLinkProps extends LinkProps {
@@ -39,6 +41,7 @@ export default function CustomLink({
 
     useEffect(() => {
         if (loading) setLoading(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pathname]);
 
     return (

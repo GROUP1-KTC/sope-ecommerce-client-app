@@ -73,7 +73,6 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
                         className="p-1 text-sl cursor-pointer text-red-400 hover:text-red-600"
                         tabIndex={-1}
                     >
-
                         <X size={18} className="text-gray-600" />
                     </button>
                 </div>
@@ -136,10 +135,11 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
                                                 onClick={() =>
                                                     handleSelect(cat, level)
                                                 }
-                                                className={`px-3 py-2 text-left rounded-md border text-sm transition cursor-pointer ${isSelected
-                                                    ? 'bg-red-50 border-red-500 text-red-600 font-medium'
-                                                    : 'bg-white border-transparent hover:bg-gray-50'
-                                                    }`}
+                                                className={`px-3 py-2 text-left rounded-md border text-sm transition cursor-pointer ${
+                                                    isSelected
+                                                        ? 'bg-red-50 border-red-500 text-red-600 font-medium'
+                                                        : 'bg-white border-transparent hover:bg-gray-50'
+                                                }`}
                                             >
                                                 {cat.name}
                                             </button>
@@ -176,10 +176,11 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
                                 }
                             }}
                             disabled={!isValidSelection}
-                            className={`px-4 py-2 rounded-lg text-white cursor-pointer ${isValidSelection
-                                ? 'bg-red-500 hover:bg-red-600'
-                                : 'bg-gray-300 cursor-not-allowed'
-                                }`}
+                            className={`px-4 py-2 rounded-lg text-white cursor-pointer ${
+                                isValidSelection
+                                    ? 'bg-red-500 hover:bg-red-600'
+                                    : 'bg-gray-300 cursor-not-allowed'
+                            }`}
                         >
                             Thêm danh mục
                         </button>

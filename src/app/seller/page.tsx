@@ -7,7 +7,7 @@ import { useGetProductByShopQuery } from '~/features/products/productApi';
 import { useGetOrdersByShopQuery } from '~/features/orders/orderApiSlide';
 
 export default function HomeSeller() {
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [filters, setFilters] = useState<{
         dateRange: { from: Date; to: Date };
         orderType: string;
@@ -16,31 +16,14 @@ export default function HomeSeller() {
         orderType: 'ALL',
     });
 
-    const [page, setPage] = useState(0);
+    const [page] = useState(0);
     const size = 40;
 
-    const { data: allProduct, isLoading: loadingProducts } = useGetProductByShopQuery({ page, size });
-    const { data: allOrder, isLoading: loadingOrders } = useGetOrdersByShopQuery({ page, size });
+    const { data: allProduct } = useGetProductByShopQuery({ page, size });
+    const { data: allOrder } = useGetOrdersByShopQuery({ page, size });
 
     const orders = allOrder?.data?.content || [];
     const products = allProduct?.content || [];
-
-    const filteredOrders = orders.filter((o) => {
-        const orderDate = new Date(o.order.createdAt);
-        const inDateRange =
-            orderDate >= filters.dateRange.from &&
-            orderDate <= filters.dateRange.to;
-
-        const matchType =
-            filters.orderType === 'ALL' ||
-            (filters.orderType === 'PLACED' && o.order.status === 'PENDING') ||
-            (filters.orderType === 'PAID' && o.order.paymentStatus === 'PAID');
-
-        return inDateRange && matchType;
-    });
-
-    console.log('check allProduct', allProduct)
-    console.log('check allOrder', allOrder)
 
     return (
         <div>

@@ -59,8 +59,8 @@ export default function Step4({
                             onChange={(e) =>
                                 setIdType(
                                     e.target.value as
-                                    | 'CITIZEN_IDENTIFICATION'
-                                    | 'PASSPORT',
+                                        | 'CITIZEN_IDENTIFICATION'
+                                        | 'PASSPORT',
                                 )
                             }
                             className="block w-full appearance-none border border-gray-300 rounded-md px-3 py-2 pr-8 bg-white text-gray-700 shadow-sm focus:outline-none"
@@ -109,7 +109,7 @@ export default function Step4({
                     <input
                         value={idNumber}
                         onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, ''); 
+                            const value = e.target.value.replace(/\D/g, '');
                             setIdNumber(value);
                         }}
                         className="w-full border rounded p-2 border-gray-300"
@@ -135,7 +135,7 @@ export default function Step4({
                             id="id-front-upload"
                             className="hidden"
                             onChange={(e) =>
-                                handleFileChange(setIdFront, () => { }, e)
+                                handleFileChange(setIdFront, () => {}, e)
                             }
                         />
                         <label
@@ -169,7 +169,7 @@ export default function Step4({
                             id="id-back-upload"
                             className="hidden"
                             onChange={(e) =>
-                                handleFileChange(setIdBack, () => { }, e)
+                                handleFileChange(setIdBack, () => {}, e)
                             }
                         />
                         <label
@@ -203,7 +203,7 @@ export default function Step4({
                             id="selfie-upload"
                             className="hidden"
                             onChange={(e) =>
-                                handleFileChange(setSelfie, () => { }, e)
+                                handleFileChange(setSelfie, () => {}, e)
                             }
                         />
                         <label

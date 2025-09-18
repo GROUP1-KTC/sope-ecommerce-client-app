@@ -10,7 +10,6 @@ interface AdsProps {
 }
 
 export default function Ads({ open, productId, onClose }: AdsProps) {
-
     const today = new Date();
     const maxDate = addDays(today, 30); // tới 1 tháng sau
     const [startDate, setStartDate] = useState<Date | null>(null);

@@ -22,11 +22,15 @@ export default function TablePay({
                             <th className="px-4 py-2 font-medium">
                                 Thanh toán đã chuyển vào
                             </th>
-                            <th className="px-4 py-2 font-medium">Trạng thái</th>
+                            <th className="px-4 py-2 font-medium">
+                                Trạng thái
+                            </th>
                             <th className="px-4 py-2 font-medium">
                                 Phương thức thanh toán
                             </th>
-                            <th className="px-4 py-2 font-medium">Số tiền nhận được</th>
+                            <th className="px-4 py-2 font-medium">
+                                Số tiền nhận được
+                            </th>
                         </tr>
                     </thead>
                     <tbody>

@@ -1,6 +1,5 @@
 'use client';
 
-import { error } from 'console';
 import { useState } from 'react';
 import {
     useGetOrdersForShipperQuery,
@@ -60,7 +59,6 @@ export default function ShipperDashboard() {
     ) => {
         const newStatus = nextStatus(currentStatus);
 
-        // Optimistic update: xoá đơn khỏi tab hiện tại
         setLocalOrders((prev) =>
             prev.filter((g) => g.order.orderId !== orderId),
         );
@@ -68,8 +66,7 @@ export default function ShipperDashboard() {
         try {
             await updateOrderStatus({ orderId, status: newStatus }).unwrap();
             refetch();
-        } catch (error) {
-            // Nếu fail → rollback
+        } catch (_error) {
             if (ordersPage?.content) {
                 setLocalOrders(ordersPage.content);
             }

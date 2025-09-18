@@ -536,7 +536,6 @@ function Step1({
 function Step2({
     description,
     setDescription,
-    logoFile,
     setLogoFile,
     logoPreview,
 }: {
@@ -601,7 +600,6 @@ function Step3({
     setIsMall,
     taxCode,
     setTaxCode,
-    taxFile,
     setTaxFile,
     taxFilePreview,
     errors,

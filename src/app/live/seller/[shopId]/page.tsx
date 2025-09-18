@@ -3,11 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import type { Room } from '~/utils/livekit';
-import {
-    RemoteTrack,
-    RemoteTrackPublication,
-    joinLiveKitRoom,
-} from '~/utils/livekit';
+import { joinLiveKitRoom } from '~/utils/livekit';
 import { RoomEvent } from 'livekit-client';
 import LeftPanel from '~/components/livestream/seller/LeftPannel';
 import CenterPanel from '~/components/livestream/seller/CenterPannel';
@@ -69,9 +65,11 @@ export default function SellerPage() {
     useEffect(() => {
         startPreview();
 
+        const videoEl = videoRef.current;
+
         return () => {
-            if (videoRef.current?.srcObject) {
-                (videoRef.current.srcObject as MediaStream)
+            if (videoEl?.srcObject) {
+                (videoEl.srcObject as MediaStream)
                     .getTracks()
                     .forEach((t) => t.stop());
             }

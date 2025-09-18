@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
     Table,
     TableBody,
@@ -24,7 +24,7 @@ import Image from 'next/image';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
-import type { CartItem, CartGroup } from '~/app/(customer)/cart/page';
+import type { CartGroup } from '~/app/(customer)/cart/page';
 import { debounce } from 'lodash';
 
 // Component DesktopTable
@@ -54,7 +54,6 @@ const DesktopTableComponent: React.FC<{
     inputQuantities,
     setInputQuantities,
     handleInputChange,
-    getDebouncedUpdate,
     flushDebouncedUpdate,
 }) => (
     <TableContainer>
@@ -372,7 +371,6 @@ const MobileCardLayoutComponent: React.FC<{
     inputQuantities,
     setInputQuantities,
     handleInputChange,
-    getDebouncedUpdate,
     flushDebouncedUpdate,
     isMobile,
 }) => (
@@ -665,8 +663,9 @@ const CartTable: React.FC<CartTableProps> = ({
     }>({});
 
     useEffect(() => {
+        const currentDebounced = debouncedUpdates.current;
         return () => {
-            Object.values(debouncedUpdates.current).forEach((debounceFn) =>
+            Object.values(currentDebounced).forEach((debounceFn) =>
                 debounceFn.cancel(),
             );
         };
@@ -681,7 +680,7 @@ const CartTable: React.FC<CartTableProps> = ({
             });
         });
         setInputQuantities(initialQuantities);
-    }, []);
+    }, [cartGroups]);
 
     useEffect(() => {
         if (!isInternalUpdate.current) {

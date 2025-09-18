@@ -145,14 +145,18 @@ const RightSideBar = ({ productData, categories }: RightSideBarProps) => {
                                         <td className="p-2">
                                             {typeof v.imageVariant ===
                                             'string' ? (
-                                                <img
+                                                <ImageNext
+                                                    width={48}
+                                                    height={48}
                                                     src={v.imageVariant}
                                                     alt="variant"
                                                     className="w-12 h-12 object-cover rounded"
                                                 />
                                             ) : v.imageVariant instanceof
                                               File ? (
-                                                <img
+                                                <ImageNext
+                                                    width={48}
+                                                    height={48}
                                                     src={URL.createObjectURL(
                                                         v.imageVariant,
                                                     )}

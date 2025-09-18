@@ -2,10 +2,7 @@
 
 import { useState } from 'react';
 import OrderList from '~/components/seller/order/OrderList';
-import {
-    useGetOrdersByShopQuery,
-    useGetPendingOrdersByShopQuery,
-} from '~/features/orders/orderApiSlide';
+import { useGetPendingOrdersByShopQuery } from '~/features/orders/orderApiSlide';
 
 export default function ConfirmOrder({ shopIdProp }: { shopIdProp?: string }) {
     const shopId = shopIdProp ?? '8696366f-9402-48f9-84a2-9cd2599e72a0';

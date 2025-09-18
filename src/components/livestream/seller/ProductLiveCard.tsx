@@ -5,6 +5,7 @@ import FlashOnIcon from '@mui/icons-material/FlashOn';
 // import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import CloseIcon from '@mui/icons-material/Close';
+import Image from 'next/image';
 
 type FlashSaleData = {
     price: number;
@@ -69,7 +70,9 @@ export function ProductLiveCard({
         <div className="flex items-center bg-white rounded-lg shadow p-2 gap-4 relative">
             {/* Image */}
             <div className="w-24 h-24 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 relative">
-                <img
+                <Image
+                    width={120}
+                    height={120}
                     src={product.image}
                     alt={product.name}
                     className="w-full h-full object-cover"
@@ -149,8 +152,9 @@ export function ProductLiveCard({
 
                 <button
                     onClick={() => onPinAction(product.id)}
-                    className={`flex items-center gap-1 px-2 py-1 rounded text-white cursor-pointer hover:bg-blue-600 transition ${isPinned ? 'bg-gray-500' : 'bg-blue-400'
-                        }`}
+                    className={`flex items-center gap-1 px-2 py-1 rounded text-white cursor-pointer hover:bg-blue-600 transition ${
+                        isPinned ? 'bg-gray-500' : 'bg-blue-400'
+                    }`}
                 >
                     <PushPinIcon fontSize="small" />{' '}
                     {isPinned ? 'Unpin' : 'Pin Live'}

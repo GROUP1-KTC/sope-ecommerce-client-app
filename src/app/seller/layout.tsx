@@ -51,7 +51,9 @@ export default function SellerLayout({
 
                 <div
                     className={`fixed inset-0 z-50 bg-black/30 transition-opacity duration-300 md:hidden ${
-                        sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                        sidebarOpen
+                            ? 'opacity-100 pointer-events-auto'
+                            : 'opacity-0 pointer-events-none'
                     }`}
                     onClick={() => setSidebarOpen(false)}
                 />
@@ -62,7 +64,10 @@ export default function SellerLayout({
                     }`}
                 >
                     <div className="flex justify-end p-2">
-                        <button onClick={() => setSidebarOpen(false)} className="p-2">
+                        <button
+                            onClick={() => setSidebarOpen(false)}
+                            className="p-2"
+                        >
                             <CloseIcon />
                         </button>
                     </div>

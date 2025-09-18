@@ -1,7 +1,5 @@
 'use client';
 import React from 'react';
-import CustomLink from './CustomLink';
-import HomeIcon from '@mui/icons-material/Home';
 import { SearchX } from 'lucide-react';
 
 export const LoadingMessage = ({ message }: { message?: string }) => (
@@ -15,7 +13,6 @@ export const ErrorMessage = ({ message }: { message?: string }) => (
     <div className="flex flex-col justify-center items-center h-[80vh] text-red-600 text-xl gap-4">
         <SearchX size={256} color="#c84646" strokeWidth={1} />
         <span>{message ?? 'Đã xảy ra lỗi!'}</span>
-
     </div>
 );
 

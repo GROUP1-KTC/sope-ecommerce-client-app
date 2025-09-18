@@ -28,7 +28,6 @@ const Login = () => {
 
     const [serverError, setServerError] = useState<string>('');
 
-
     const [login, { isLoading }] = useLoginMutation();
     const dispatch = useAppDispatch();
     const router = useRouter();
@@ -93,7 +92,6 @@ const Login = () => {
                 setServerError('Login failed, please try again.');
             }
         }
-
     };
 
     return (
@@ -208,7 +206,11 @@ const Login = () => {
                                             </p>
                                         )}
                                     </div>
-                                    {serverError && <p className="text-red-500 mt-1">{serverError}</p>}
+                                    {serverError && (
+                                        <p className="text-red-500 mt-1">
+                                            {serverError}
+                                        </p>
+                                    )}
                                     <div className="flex flex-wrap items-center justify-between gap-2">
                                         <div className="flex items-center">
                                             <input
@@ -237,7 +239,7 @@ const Login = () => {
                                         <button
                                             type="submit"
                                             className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer flex justify-center items-center gap-2"
-                                            disabled={isLoading} 
+                                            disabled={isLoading}
                                         >
                                             {isLoading ? (
                                                 <svg
@@ -264,7 +266,6 @@ const Login = () => {
                                                 'Sign In'
                                             )}
                                         </button>
-
                                     </div>
                                     <div className="flex items-center my-4">
                                         <div className="flex-grow h-px bg-gray-200"></div>

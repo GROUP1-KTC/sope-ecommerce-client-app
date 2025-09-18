@@ -299,7 +299,7 @@ export default function CreateShopMultiStep() {
                 <AddressModal
                     onClose={() => setAddressModalOpen(false)}
                     onAdd={(addr) => {
-                        setAddress((prev) => {
+                        setAddress((_prev) => {
                             const next = { ...addr, id: cryptoRandomId() };
                             return next;
                         });

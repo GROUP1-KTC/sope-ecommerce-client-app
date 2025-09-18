@@ -119,7 +119,7 @@ const LiveStreamSection: React.FC<LiveStreamSectionProps> = () => {
             subscription?.unsubscribe();
             disconnectSocket();
         };
-    }, []);
+    }, [userId]);
 
     const containerRef = useRef<HTMLDivElement>(null);
     const [atStart, setAtStart] = useState(true);

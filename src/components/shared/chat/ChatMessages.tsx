@@ -1,7 +1,7 @@
 import ChatInputBar from './ChatInputBar';
-import { Avatar, Box, IconButton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import MessageTypeFile from './MessageTypeFile';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { StompSubscription } from '@stomp/stompjs';
 import { connectSocket } from '~/services/socket/socket.service';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
@@ -19,14 +19,7 @@ interface ChatMessagesProps {
     isMobile: boolean;
 }
 
-const ChatMessages = ({
-    conversationId,
-    name,
-    avatar,
-    handleBack,
-    onClose,
-    isMobile,
-}: ChatMessagesProps) => {
+const ChatMessages = ({ conversationId }: ChatMessagesProps) => {
     const dispatch = useAppDispatch();
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +34,7 @@ const ChatMessages = ({
         }
     }, []);
 
-    const { data: oldMessages = [], isLoading } = useGetConversationByIdQuery(
+    const { data: oldMessages = [] } = useGetConversationByIdQuery(
         conversationId!,
         {
             skip: !conversationId,
@@ -54,7 +47,9 @@ const ChatMessages = ({
             : [],
     );
 
-    const messages: Message[] = [...oldMessages, ...newMessages];
+    const messages: Message[] = useMemo(() => {
+        return [...oldMessages, ...newMessages];
+    }, [oldMessages, newMessages]);
 
     const scrollToBottom = () =>
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

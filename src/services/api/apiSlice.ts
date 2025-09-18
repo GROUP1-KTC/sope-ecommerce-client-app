@@ -5,7 +5,7 @@ import {
     type FetchArgs,
     type FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
-import { clearCredentials, setCredentials } from '~/features/auth/authSlice';
+import { setCredentials } from '~/features/auth/authSlice';
 import { loadAuthUser, saveAuthUser } from '~/utils/authCookie';
 
 const baseQuery = fetchBaseQuery({
@@ -39,7 +39,6 @@ const baseQueryWithReauth: BaseQueryFn<
             extraOptions,
         );
 
-
         if (refreshResult.data) {
             const { accessToken, id, username, roles } = refreshResult.data as {
                 accessToken: string;
@@ -51,13 +50,12 @@ const baseQueryWithReauth: BaseQueryFn<
             const newUser = { id, username, roles, accessToken };
 
             api.dispatch(setCredentials(newUser));
-            saveAuthUser(newUser); 
+            saveAuthUser(newUser);
 
             result = await baseQuery(args, api, extraOptions);
 
             console.log('Re-authenticated successfully');
         }
-
     }
 
     return result;

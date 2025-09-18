@@ -24,10 +24,11 @@ export default function ShopReviewFilters() {
                     <button
                         key={label}
                         onClick={() => setStatus(label)}
-                        className={`px-3 py-1 border border-gray-300 rounded text-sm cursor-pointer hover:bg-gray-300 ${status === label
-                            ? 'bg-red-100 border-red-400 text-red-600 hover:bg-red-100'
-                            : 'text-gray-600'
-                            }`}
+                        className={`px-3 py-1 border border-gray-300 rounded text-sm cursor-pointer hover:bg-gray-300 ${
+                            status === label
+                                ? 'bg-red-100 border-red-400 text-red-600 hover:bg-red-100'
+                                : 'text-gray-600'
+                        }`}
                     >
                         {label} (0)
                     </button>
@@ -50,15 +51,13 @@ export default function ShopReviewFilters() {
                             type="checkbox"
                             checked={stars.includes(star)}
                             onChange={() => toggleStar(star)}
-                            className='cursor-pointer'
+                            className="cursor-pointer"
                         />
                         <div className="flex items-center gap-1 text-sm text-gray-700">
                             <span>{star}</span>
                             <StarIcon className="w-2 h-2 text-yellow-400 inline-block" />
                             <span className="text-gray-500">(0)</span>
                         </div>
-
-
                     </label>
                 ))}
             </div>

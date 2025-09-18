@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import AddressList from '~/components/address/AddressList';
 import AddressFormModal from '~/components/address/AddAddressFormModal';
 import {
@@ -9,11 +9,7 @@ import {
 } from '~/features/address/addressApi';
 
 const AddressManagementPage = () => {
-    const {
-        data: storedAddresses = [],
-        error,
-        isLoading,
-    } = useGetUserAddressesQuery();
+    const { data: storedAddresses = [] } = useGetUserAddressesQuery();
     const [setDefault] = useSetDefaultAddressMutation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteAddress] = useDeleteAddressMutation();

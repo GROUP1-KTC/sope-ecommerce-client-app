@@ -28,39 +28,46 @@ const TempAddressSection = () => {
     }, []);
 
     useEffect(() => {
-        if (addressData.province) {
-            fetch(
-                `https://provinces.open-api.vn/api/p/${addressData.province.code}?depth=2`,
-            )
-                .then((res) => res.json())
-                .then((data) => setDistricts(data.districts || []))
-                .catch((err) => console.error('Lỗi khi lấy quận/huyện:', err));
+        if (!addressData.province) return;
 
-            dispatch(
-                setAddress({
-                    ...addressData,
-                    district: null,
-                    ward: null,
-                }),
-            );
-            setDistricts([]);
-            setWards([]);
-        }
-    }, [addressData.province]);
+        fetch(
+            `https://provinces.open-api.vn/api/p/${addressData.province.code}?depth=2`,
+        )
+            .then((res) => res.json())
+            .then((data) => setDistricts(data.districts || []))
+            .catch((err) => console.error('Lỗi khi lấy quận/huyện:', err));
+
+        dispatch(
+            setAddress({
+                ...addressData,
+                district: null,
+                ward: null,
+            }),
+        );
+
+        setDistricts([]);
+        setWards([]);
+    }, [addressData.province, addressData, dispatch]);
 
     useEffect(() => {
-        if (addressData.district) {
-            fetch(
-                `https://provinces.open-api.vn/api/d/${addressData.district.code}?depth=2`,
-            )
-                .then((res) => res.json())
-                .then((data) => setWards(data.wards || []))
-                .catch((err) => console.error('Lỗi khi lấy phường/xã:', err));
+        if (!addressData.district) return;
 
-            dispatch(setAddress({ ...addressData, ward: null }));
-            setWards([]);
-        }
-    }, [addressData.district]);
+        fetch(
+            `https://provinces.open-api.vn/api/d/${addressData.district.code}?depth=2`,
+        )
+            .then((res) => res.json())
+            .then((data) => setWards(data.wards || []))
+            .catch((err) => console.error('Lỗi khi lấy phường/xã:', err));
+
+        dispatch(
+            setAddress({
+                ...addressData,
+                ward: null,
+            }),
+        );
+
+        setWards([]);
+    }, [addressData.district, addressData, dispatch]);
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,

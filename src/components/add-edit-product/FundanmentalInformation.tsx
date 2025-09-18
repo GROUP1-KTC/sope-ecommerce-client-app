@@ -221,8 +221,9 @@ const FundanmentalInformation: React.FC<FundanmentalInformationProps> = ({
                 <input
                     type="text"
                     disabled={mode === 'edit'}
-                    className={`w-full border rounded px-3 py-2 ${mode === 'edit' ? 'bg-gray-100 cursor-not-allowed' : ''
-                        }`}
+                    className={`w-full border rounded px-3 py-2 ${
+                        mode === 'edit' ? 'bg-gray-100 cursor-not-allowed' : ''
+                    }`}
                     value={productData.name}
                     onChange={(e) =>
                         setProductData({

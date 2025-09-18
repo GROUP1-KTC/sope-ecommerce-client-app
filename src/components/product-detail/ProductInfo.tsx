@@ -100,7 +100,7 @@ const ProductInfo = ({
                     severity: 'success',
                     message: 'Thêm sản phẩm vào giỏ hàng thành công!',
                 });
-            } catch (error) {
+            } catch (_error) {
                 useAlertStore.getState().showAlert({
                     severity: 'error',
                     message: 'Thêm giỏ hàng thất bại!',
@@ -543,7 +543,9 @@ const ProductInfo = ({
                                                 `}
                                         >
                                             {variantImage && (
-                                                <img
+                                                <Image
+                                                    width={24}
+                                                    height={24}
                                                     src={variantImage}
                                                     alt={`${name} - ${value}`}
                                                     className="w-6 h-6 object-cover rounded"
