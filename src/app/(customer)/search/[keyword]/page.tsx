@@ -82,7 +82,7 @@ const SearchPage = () => {
             : skipToken,
     );
 
-    const total = products?.hits?.total?.value ?? 0;
+    const total = products.length;
 
     const totalPages = Math.ceil(total / size);
 
@@ -92,6 +92,7 @@ const SearchPage = () => {
         defaultImage: p.default_image,
         name: p.name,
         minPrice: p.min_price,
+        totalStock: p.total_stock ?? 0,
         brand: p.category_name, // hoặc gán brand thật nếu API khác có
         totalSold: p.total_sold,
         createdAt: p.unix_ts_in_secs
