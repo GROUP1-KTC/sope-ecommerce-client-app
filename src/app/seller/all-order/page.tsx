@@ -14,7 +14,7 @@ type Filters = {
 export default function AllOrder() {
     const [activeTab, setActiveTab] = useState(0);
     const [page, setPage] = useState(0);
-    const size = 10;
+    const size = 40;
 
     const [filters, setFilters] = useState<Filters>({
         status: '',

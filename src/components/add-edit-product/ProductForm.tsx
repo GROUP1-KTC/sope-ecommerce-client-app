@@ -86,43 +86,43 @@ const ProductForm: React.FC<ProductFormProps> = ({
     const [productData, setProductData] = useState<AddState | EditState>(
         mode === 'add'
             ? ({
-                  mode: 'add',
-                  name: '',
-                  brand: '',
-                  description: '',
-                  defaultImage: null,
-                  defaultVideoIntro: null,
-                  hidden: false,
-                  categoryId: '',
-                  variants: [],
-                  imagesList: [],
-                  productDetails: [],
-              } as AddState)
+                mode: 'add',
+                name: '',
+                brand: '',
+                description: '',
+                defaultImage: null,
+                defaultVideoIntro: null,
+                hidden: false,
+                categoryId: '',
+                variants: [],
+                imagesList: [],
+                productDetails: [],
+            } as AddState)
             : ({
-                  mode: 'edit',
-                  description: initialData?.description || '',
-                  name: initialData?.name || '',
-                  brand: initialData?.brand || '',
-                  hidden: initialData?.hidden ?? false,
-                  categoryId: initialData?.categoryId || '',
-                  defaultImage: mapUrlToMediaItem(initialData?.defaultImage),
-                  defaultVideoIntro: mapUrlToMediaItem(
-                      initialData?.defaultVideoIntro ?? null,
-                  ),
-                  imagesList: mapApiImagesToMediaItems(
-                      initialData?.imagesList ?? [],
-                  ),
-                  productDetails: initialData?.productDetails || [],
-                  variants: initialData?.variants.map((v) => ({
-                      price: v.price,
-                      productVariantId: v.productVariantId,
-                      stock: v.stock,
-                      attributes: v.attributes,
-                      imageVariant: v.imageVariant,
-                      dimension: v.dimension,
-                      weight: v.weight,
-                  })),
-              } as EditState),
+                mode: 'edit',
+                description: initialData?.description || '',
+                name: initialData?.name || '',
+                brand: initialData?.brand || '',
+                hidden: initialData?.hidden ?? false,
+                categoryId: initialData?.categoryId || '',
+                defaultImage: mapUrlToMediaItem(initialData?.defaultImage),
+                defaultVideoIntro: mapUrlToMediaItem(
+                    initialData?.defaultVideoIntro ?? null,
+                ),
+                imagesList: mapApiImagesToMediaItems(
+                    initialData?.imagesList ?? [],
+                ),
+                productDetails: initialData?.productDetails || [],
+                variants: initialData?.variants.map((v) => ({
+                    price: v.price,
+                    productVariantId: v.productVariantId,
+                    stock: v.stock,
+                    attributes: v.attributes,
+                    imageVariant: v.imageVariant,
+                    dimension: v.dimension,
+                    weight: v.weight,
+                })),
+            } as EditState),
     );
 
     useEffect(() => {
@@ -527,28 +527,28 @@ const ProductForm: React.FC<ProductFormProps> = ({
                     <div className="flex space-x-6 bg-white p-3 rounded-xl shadow-lg whitespace-nowrap overflow-x-auto">
                         <button
                             onClick={() => scrollToSection(infoRef)}
-                            className="text-md font-semibold "
+                            className="text-md font-semibold cursor-pointer "
                         >
                             Thông tin cơ bản
                         </button>
                         <button
                             onClick={() => scrollToSection(detailRef)}
-                            className="text-md font-medium text-gray-600 hover:text-orange-500 hover:border-b-4 hover:border-orange-400 transition-all"
+                            className="text-md font-medium cursor-pointer  text-gray-600 hover:text-red-500 hover:border-b-4 hover:border-red-400 transition-all"
                         >
                             Thông tin chi tiết
                         </button>
                         <button
                             onClick={() => scrollToSection(salesRef)}
-                            className="text-md font-medium text-gray-600 hover:text-orange-500 hover:border-b-4 hover:border-orange-400 transition-all"
+                            className="text-md font-medium cursor-pointer  text-gray-600 hover:text-red-500 hover:border-b-4 hover:border-red-400 transition-all"
                         >
                             Thông tin bán hàng
                         </button>
-                        <button className="text-md font-medium text-gray-600 hover:text-orange-500 hover:border-b-4 hover:border-orange-400 transition-all">
+                        <button className="text-md font-medium cursor-pointer  text-gray-600 hover:text-red-500 hover:border-b-4 hover:border-red-400 transition-all">
                             Thông tin vận chuyển
                         </button>
                         <button
                             onClick={() => scrollToSection(otherRef)}
-                            className="text-md font-medium text-gray-600 hover:text-orange-500 hover:border-b-4 hover:border-orange-400 transition-all"
+                            className="text-md font-medium cursor-pointer  text-gray-600 hover:text-red-500 hover:border-b-4 hover:border-red-400 transition-all"
                         >
                             Thông tin khác
                         </button>
@@ -619,7 +619,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                             Lưu & Ẩn
                         </button>
                         <button
-                            className="px-4 py-2 bg-orange-500 text-white rounded cursor-pointer"
+                            className="px-4 py-2 bg-red-500 text-white rounded cursor-pointer"
                             onClick={() => handleSubmit(false)}
                             disabled={isSubmitting}
                         >

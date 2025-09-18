@@ -76,8 +76,8 @@ const FundanmentalInformation: React.FC<FundanmentalInformationProps> = ({
 
                     {productData?.imagesList?.length < 9 && (
                         <div className="relative w-32 h-32 border-2 border-dashed border-gray-300 flex items-center justify-center text-center cursor-pointer rounded">
-                            <label className="absolute inset-0 flex flex-col items-center justify-center text-gray-500 text-sm hover:text-orange-500">
-                                <span className="text-2xl">➕</span>
+                            <label className="absolute inset-0 flex flex-col items-center justify-center text-gray-500 text-sm hover:text-red-600">
+                                <span className="text-4xl text-red-600">+</span>
                                 <span className="text-xs">Thêm hình</span>
                                 <span className="text-[15px] text-gray-400 mt-1">
                                     {productData?.imagesList?.length}/9
@@ -114,10 +114,10 @@ const FundanmentalInformation: React.FC<FundanmentalInformationProps> = ({
                                 />
                             ) : (
                                 <>
-                                    <span className="text-orange-500 text-2xl mb-2">
+                                    <span className="text-red-500 text-2xl mb-2">
                                         🖼️
                                     </span>
-                                    <span className="text-xs text-gray-500">
+                                    <span className="text-xs text-red-600 ">
                                         Thêm ảnh bìa
                                     </span>
                                 </>
@@ -175,10 +175,10 @@ const FundanmentalInformation: React.FC<FundanmentalInformationProps> = ({
 
                                 {!productData.defaultVideoIntro && (
                                     <label className="">
-                                        <span className="text-orange-500 text-2xl mb-2">
+                                        <span className="text-red-500 text-2xl mb-2">
                                             🎬
                                         </span>
-                                        <span className="text-xs text-gray-500">
+                                        <span className="text-xs text-red-600 ">
                                             Thêm video
                                         </span>
                                         <input
@@ -194,7 +194,7 @@ const FundanmentalInformation: React.FC<FundanmentalInformationProps> = ({
                     )}
 
                     <p className="text-xs text-gray-500 max-w-xs">
-                        * Kích thước tối đa 31Mb, độ phân giải không vượt quá
+                        * Kích thước tối đa 20Mb, độ phân giải không vượt quá
                         1280x1280px
                         <br />
                         * Độ dài: 10s–60s.
@@ -220,10 +220,9 @@ const FundanmentalInformation: React.FC<FundanmentalInformationProps> = ({
                 <label className="block font-medium mb-2">* Tên sản phẩm</label>
                 <input
                     type="text"
-                    disabled={mode === 'edit'} // 👈 check bằng prop mode
-                    className={`w-full border rounded px-3 py-2 ${
-                        mode === 'edit' ? 'bg-gray-100 cursor-not-allowed' : ''
-                    }`}
+                    disabled={mode === 'edit'}
+                    className={`w-full border rounded px-3 py-2 ${mode === 'edit' ? 'bg-gray-100 cursor-not-allowed' : ''
+                        }`}
                     value={productData.name}
                     onChange={(e) =>
                         setProductData({
