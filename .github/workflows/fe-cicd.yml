@@ -1,6 +1,6 @@
 name: Frontend CI/CD
 
-on    push:
+on push:
     branches:
       - main
       - dev
