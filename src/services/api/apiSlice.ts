@@ -9,7 +9,7 @@ import { clearCredentials, setCredentials } from '~/features/auth/authSlice';
 import { loadAuthUser, saveAuthUser } from '~/utils/authCookie';
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+    baseUrl: process.env.NEXT_PUBLIC_API_URL,
     credentials: 'include',
     prepareHeaders: (headers) => {
         const storedUser = loadAuthUser();
@@ -51,7 +51,7 @@ const baseQueryWithReauth: BaseQueryFn<
             const newUser = { id, username, roles, accessToken };
 
             api.dispatch(setCredentials(newUser));
-            saveAuthUser(newUser); 
+            saveAuthUser(newUser);
 
             result = await baseQuery(args, api, extraOptions);
 
