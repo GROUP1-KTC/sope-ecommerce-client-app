@@ -34,7 +34,7 @@ jobs:
             # 4. Build Docker image
             - name: Build Docker image
               run: |
-                docker build --no-cache \ 
+                docker build --no-cache \
                   --build-arg VITE_PUBLIC_API_URL=${{ secrets.VITE_PUBLIC_API_URL }} \
                   -t ${{ secrets.DOCKER_USERNAME }}/frontend-app:latest .
 
