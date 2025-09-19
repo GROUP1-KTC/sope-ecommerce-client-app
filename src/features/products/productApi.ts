@@ -1,6 +1,5 @@
 import type {
     PageResponse,
-    Product,
     ProductResponse,
     ProductSummary,
 } from '../../types/products';
@@ -11,14 +10,14 @@ export const productApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getProductBySlug: builder.query<ProductResponse, string>({
             query: (slug) => ({
-                url: `v1/products/slug/${slug}`,
+                url: `products/slug/${slug}`,
                 credentials: 'omit',
             }),
             providesTags: ['Product'],
         }),
         createProduct: builder.mutation<ProductResponse, FormData>({
             query: (data) => ({
-                url: `v1/products`,
+                url: `products`,
                 method: 'POST',
                 body: data,
                 credentials: 'omit',
@@ -28,7 +27,9 @@ export const productApi = apiSlice.injectEndpoints({
                 try {
                     const { data } = await queryFulfilled;
                     console.log('API createProduct thành công:', data);
-                } catch (err) {}
+                } catch (err) {
+                    console.log('check err', err);
+                }
             },
         }),
         updateProduct: builder.mutation<
@@ -36,7 +37,7 @@ export const productApi = apiSlice.injectEndpoints({
             { slug: string; data: FormData }
         >({
             query: ({ slug, data }) => ({
-                url: `v1/products/${slug}`,
+                url: `products/${slug}`,
                 method: 'PATCH',
                 body: data,
                 credentials: 'omit',
@@ -56,7 +57,7 @@ export const productApi = apiSlice.injectEndpoints({
             { page?: number; size?: number }
         >({
             query: ({ page = 0, size = 12 }) => ({
-                url: `v1/products/shop?page=${page}&size=${size}`,
+                url: `products/shop?page=${page}&size=${size}`,
                 method: 'GET',
                 credentials: 'omit',
             }),
@@ -67,7 +68,7 @@ export const productApi = apiSlice.injectEndpoints({
             { shopId: string; page?: number; size?: number }
         >({
             query: ({ shopId, page = 0, size = 12 }) => ({
-                url: `v1/products/shop/${shopId}/approved?page=${page}&size=${size}`,
+                url: `products/shop/${shopId}/approved?page=${page}&size=${size}`,
                 method: 'GET',
                 credentials: 'omit',
             }),
@@ -75,7 +76,7 @@ export const productApi = apiSlice.injectEndpoints({
         }),
         getInitProducts: builder.query<ProductSummary[], void>({
             query: () => ({
-                url: 'v1/products/init',
+                url: 'products/init',
                 method: 'GET',
                 credentials: 'omit',
             }),
@@ -86,7 +87,7 @@ export const productApi = apiSlice.injectEndpoints({
             { productId: string; limit?: number }
         >({
             query: ({ productId, limit = 10 }) =>
-                `v1/products/suggested/${productId}?limit=${limit}`,
+                `products/suggested/${productId}?limit=${limit}`,
             providesTags: ['Product'],
         }),
 
@@ -95,13 +96,13 @@ export const productApi = apiSlice.injectEndpoints({
             { productId: string; limit?: number }
         >({
             query: ({ productId, limit = 5 }) =>
-                `v1/products/similar/${productId}?limit=${limit}`,
+                `products/similar/${productId}?limit=${limit}`,
             providesTags: ['Product'],
         }),
 
         getInitProductsForGuest: builder.query<ProductSummary[], void>({
             query: () => ({
-                url: 'v1/products/initforguest',
+                url: 'products/initforguest',
                 method: 'GET',
                 credentials: 'omit',
             }),

@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import Link from 'next/link';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 export default function SellerWelcomeCard() {
     return (
@@ -11,11 +11,11 @@ export default function SellerWelcomeCard() {
                 Please provide the information to create a seller account on
                 Sope.
             </p>
-            <Link href="/seller/register-shop">
+            <CustomLink href="/seller/register-shop">
                 <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
                     Continue Registration
                 </button>
-            </Link>
+            </CustomLink>
         </div>
     );
 }

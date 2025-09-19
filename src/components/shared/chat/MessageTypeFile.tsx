@@ -3,6 +3,7 @@ import type { Message } from '~/types/chat';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DescriptionIcon from '@mui/icons-material/Description';
+import CustomLink from '../loading/CustomLink';
 
 const imageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 const videoTypes = ['video/mp4', 'video/webm', 'video/ogg'];
@@ -15,8 +16,10 @@ const MessageTypeFile = (message: Message) => {
     const type = message.fileType || 'application/octet-stream';
 
     const getFileIcon = (type: string) => {
-        if (type === 'application/pdf') return <PictureAsPdfIcon fontSize="small" />;
-        if (type.startsWith('text/') || type.includes('document')) return <DescriptionIcon fontSize="small" />;
+        if (type === 'application/pdf')
+            return <PictureAsPdfIcon fontSize="small" />;
+        if (type.startsWith('text/') || type.includes('document'))
+            return <DescriptionIcon fontSize="small" />;
         return <InsertDriveFileIcon fontSize="small" />;
     };
 
@@ -31,7 +34,8 @@ const MessageTypeFile = (message: Message) => {
                     borderRadius: 2,
                     objectFit: 'contain',
                     cursor: 'pointer',
-                    alignSelf: message.senderId === 'Me' ? 'flex-end' : 'flex-start',
+                    alignSelf:
+                        message.senderId === 'Me' ? 'flex-end' : 'flex-start',
                 }}
                 onClick={() => window.open(url, '_blank')}
             />
@@ -47,20 +51,22 @@ const MessageTypeFile = (message: Message) => {
                 sx={{
                     maxHeight: '300px',
                     borderRadius: 2,
-                    alignSelf: message.senderId === 'Me' ? 'flex-end' : 'flex-start',
+                    alignSelf:
+                        message.senderId === 'Me' ? 'flex-end' : 'flex-start',
                 }}
             />
         );
     }
 
     return (
-        <Link
+        <CustomLink
             sx={{
                 display: 'flex',
                 textDecoration: 'none',
                 gap: 1,
                 cursor: 'pointer',
-                alignSelf: message.senderId === 'Me' ? 'flex-end' : 'flex-start',
+                alignSelf:
+                    message.senderId === 'Me' ? 'flex-end' : 'flex-start',
                 px: 2.5,
                 py: 1.5,
                 bgcolor: message.senderId === 'Me' ? 'primary.main' : 'white',
@@ -75,7 +81,7 @@ const MessageTypeFile = (message: Message) => {
             <Typography variant="body2" noWrap>
                 {name}
             </Typography>
-        </Link>
+        </CustomLink>
     );
 };
 

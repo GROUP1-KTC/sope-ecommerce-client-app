@@ -1,7 +1,5 @@
-
 import { apiSlice } from '~/services/api/apiSlice';
 import type { ShippingRate } from '~/types/shipping/shipping';
-
 
 export const shippingApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -11,15 +9,14 @@ export const shippingApi = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data,
             }),
-            transformResponse: (response: { data: { data: ShippingRate[] } }) => {
+            transformResponse: (response: {
+                data: { data: ShippingRate[] };
+            }) => {
                 return response.data.data;
             },
             invalidatesTags: ['ShippingUnit'],
-
         }),
     }),
 });
 
-export const {
-    useGetShippingRatesMutation,
-} = shippingApi;
+export const { useGetShippingRatesMutation } = shippingApi;

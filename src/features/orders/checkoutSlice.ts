@@ -1,6 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import type { CartGroup, CartItem } from '~/app/(customer)/cart/page';
+import type { CartGroup } from '~/app/(customer)/cart/page';
 
 interface CheckoutState {
     shopOrders: CartGroup[];
@@ -29,5 +29,6 @@ const checkoutSlice = createSlice({
     },
 });
 
-export const { setCheckoutItems, clearCheckoutItems, setIsFormCart } = checkoutSlice.actions;
+export const { setCheckoutItems, clearCheckoutItems, setIsFormCart } =
+    checkoutSlice.actions;
 export default checkoutSlice.reducer;

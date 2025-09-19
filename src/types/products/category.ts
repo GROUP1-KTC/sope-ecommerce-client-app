@@ -5,4 +5,5 @@ export interface Category {
     level: number;
     parentId: string | null;
     commissionFeePercent: number;
+    imageForParent: string | null;
 }

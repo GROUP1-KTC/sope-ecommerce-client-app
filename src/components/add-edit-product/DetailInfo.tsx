@@ -1,10 +1,14 @@
 import React, { useMemo } from 'react';
-import { ProductDetail } from '~/types/products';
-import { X } from "lucide-react";
+import type { ProductDetail } from '~/types/products';
+import { X } from 'lucide-react';
 
 interface DetailInfoProps {
     productDetails: ProductDetail[];
-    onChange: (index: number, field: keyof ProductDetail, value: string) => void;
+    onChange: (
+        index: number,
+        field: keyof ProductDetail,
+        value: string,
+    ) => void;
     onAdd: () => void;
     onRemove: (index: number) => void;
 }
@@ -16,8 +20,10 @@ const DetailInfo: React.FC<DetailInfoProps> = ({
     onRemove,
 }) => {
     const done = useMemo(
-        () => productDetails.filter((d) => (d.data ?? '').trim().length > 0).length,
-        [productDetails]
+        () =>
+            productDetails.filter((d) => (d.data ?? '').trim().length > 0)
+                .length,
+        [productDetails],
     );
 
     return (
@@ -41,7 +47,9 @@ const DetailInfo: React.FC<DetailInfoProps> = ({
                         <input
                             type="text"
                             value={detail.label}
-                            onChange={(e) => onChange(index, 'label', e.target.value)}
+                            onChange={(e) =>
+                                onChange(index, 'label', e.target.value)
+                            }
                             placeholder="Tên thuộc tính (vd: Thương hiệu)"
                             className="w-1/3 border rounded px-3 py-2"
                         />
@@ -50,7 +58,9 @@ const DetailInfo: React.FC<DetailInfoProps> = ({
                         <input
                             type="text"
                             value={detail.data}
-                            onChange={(e) => onChange(index, 'data', e.target.value)}
+                            onChange={(e) =>
+                                onChange(index, 'data', e.target.value)
+                            }
                             placeholder="Giá trị (vd: Nike)"
                             className="w-1/2 border rounded px-3 py-2"
                         />

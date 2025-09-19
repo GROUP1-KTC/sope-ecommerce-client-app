@@ -1,6 +1,6 @@
-import { User } from '../users';
-import { ProductVariant } from './product_variant';
-import { ReviewMedia } from './review_media';
+import type { User } from '../users';
+import type { ProductVariant } from './product_variant';
+import type { ReviewMedia } from './review_media';
 
 export interface Review {
     reviewId: string;

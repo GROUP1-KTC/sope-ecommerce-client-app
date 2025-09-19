@@ -7,17 +7,21 @@ export const discountApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getPlatformDiscount: builder.query<Discount[], void>({
             query: () => 'discounts/platform/active',
-            transformResponse: (response: { data: Discount[] }) => response.data,
+            transformResponse: (response: { data: Discount[] }) =>
+                response.data,
             providesTags: ['Discount'],
-
         }),
         getShopActiveDiscount: builder.query<Discount[], { shopId: string }>({
             query: ({ shopId }) => `discounts/shop/${shopId}/active`,
-            transformResponse: (response: { data: Discount[] }) => response.data,
+            transformResponse: (response: { data: Discount[] }) =>
+                response.data,
             providesTags: ['Discount'],
         }),
 
-        getShopDiscount: builder.query<ApiResponse<PageResponse<Discount>>, { shopId: string, page?: number, size?: number }>({
+        getShopDiscount: builder.query<
+            ApiResponse<PageResponse<Discount>>,
+            { shopId: string; page?: number; size?: number }
+        >({
             query: ({ shopId, page = 0, size = 20 }) => ({
                 url: `discounts/shop/${shopId}?page=${page}&size=${size}`,
             }),
@@ -30,7 +34,11 @@ export const discountApi = apiSlice.injectEndpoints({
                 method: 'POST',
                 body,
             }),
-            transformResponse: (response: { status: number; message: string; data: Discount }) => response.data,
+            transformResponse: (response: {
+                status: number;
+                message: string;
+                data: Discount;
+            }) => response.data,
 
             invalidatesTags: ['Discount'],
         }),
@@ -44,8 +52,11 @@ export const discountApi = apiSlice.injectEndpoints({
                 body: patch,
             }),
 
-            transformResponse: (response: { status: number; message: string; data: Discount }) => response.data,
-
+            transformResponse: (response: {
+                status: number;
+                message: string;
+                data: Discount;
+            }) => response.data,
 
             invalidatesTags: (_result, _error, { id }) => [
                 { type: 'Discount', id },

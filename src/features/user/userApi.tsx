@@ -23,18 +23,21 @@ export const userApi = apiSlice.injectEndpoints({
         uploadAvatar: builder.mutation<any, { id: string; file: File }>({
             query: ({ id, file }) => {
                 const formData = new FormData();
-                formData.append("file", file);
+                formData.append('file', file);
 
                 return {
                     url: `/users/${id}/avatar`,
-                    method: "POST",
+                    method: 'POST',
                     body: formData,
                 };
             },
             invalidatesTags: ['User'],
         }),
-
     }),
 });
 
-export const { useGetProfileQuery, useUpdateProfileMutation, useUploadAvatarMutation } = userApi;
+export const {
+    useGetProfileQuery,
+    useUpdateProfileMutation,
+    useUploadAvatarMutation,
+} = userApi;

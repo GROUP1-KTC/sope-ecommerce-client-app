@@ -1,5 +1,5 @@
-import { ShopInfo } from '~/app/(customer)/cart/page';
-import { Address } from '~/types/address';
+import type { ShopInfo } from '~/app/(customer)/cart/page';
+import type { Address } from '~/types/address';
 
 export type PaymentMethod =
     | 'COD'

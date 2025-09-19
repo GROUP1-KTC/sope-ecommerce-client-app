@@ -6,7 +6,7 @@ import {
     type FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
 import { clearCredentials, setCredentials } from '~/features/auth/authSlice';
-import { loadAuthUser } from '~/utils/authCookie';
+import { loadAuthUser, saveAuthUser } from '~/utils/authCookie';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -39,17 +39,25 @@ const baseQueryWithReauth: BaseQueryFn<
             extraOptions,
         );
 
+
         if (refreshResult.data) {
-            const { accessToken } = refreshResult.data as {
+            const { accessToken, id, username, roles } = refreshResult.data as {
                 accessToken: string;
+                id: string;
+                username: string;
+                roles: string[];
             };
 
-            // Thử lại request ban đầu
+            const newUser = { id, username, roles, accessToken };
+
+            api.dispatch(setCredentials(newUser));
+            saveAuthUser(newUser); 
+
             result = await baseQuery(args, api, extraOptions);
-        } else {
-            // Hết hạn cả refreshToken => đăng xuất
-            api.dispatch(clearCredentials());
+
+            console.log('Re-authenticated successfully');
         }
+
     }
 
     return result;

@@ -1,5 +1,3 @@
-import { de } from "date-fns/locale";
-
 export const productData = {
     breadcrumb:
         'Shopee / Mẹ & Bé / Tã & bô em bé / Tã dùng một lần / Tã Bỉm Quần/Dán MOONY Xanh Unicharm Nhập Khẩu Chính Hãng, Đầy Đủ Tem Phụ cho bé trai và bé gái',
@@ -382,55 +380,60 @@ export const flashSales = [
 
 export const mostSearchProducts = [
     {
-        productId: "101",
+        productId: '101',
         name: 'Tai nghe Bluetooth Xiaomi',
         minPrice: 450000,
-        defaultImage: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-loovapnhstw044.webp',
+        defaultImage:
+            'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-loovapnhstw044.webp',
         averageRating: 4.5,
         totalSold: 111,
         totalStock: 100,
-        slug: 'tai-nghe-bluetooth-xiaomi'
+        slug: 'tai-nghe-bluetooth-xiaomi',
     },
     {
-        productId: "102",
+        productId: '102',
         name: 'Áo thun local brand oversize',
         minPrice: 150000,
-        defaultImage: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-loovapnhstw044.webp',
+        defaultImage:
+            'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-loovapnhstw044.webp',
         averageRating: 4.7,
         totalSold: 111,
         totalStock: 100,
-        slug: 'ao-thun-local-brand-oversize'
+        slug: 'ao-thun-local-brand-oversize',
     },
     {
-        productId: "103",
+        productId: '103',
         name: 'Kem chống nắng La Roche-Posay',
         minPrice: 350000,
-        defaultImage: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-loovapnhstw044.webp',
+        defaultImage:
+            'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-loovapnhstw044.webp',
         averageRating: 4.8,
         totalSold: 111,
         totalStock: 100,
-        slug: 'kem-chong-nang-la-roche-posay'
+        slug: 'kem-chong-nang-la-roche-posay',
     },
     {
-        productId: "104",
+        productId: '104',
         name: 'Giày sneaker thể thao nam',
         minPrice: 850000,
-        defaultImage: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-loovapnhstw044.webp',
+        defaultImage:
+            'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-loovapnhstw044.webp',
         averageRating: 4.4,
         totalSold: 111,
         totalStock: 100,
-        slug: 'giay-sneaker-the-thao-nam'
+        slug: 'giay-sneaker-the-thao-nam',
     },
     {
-        productId: "105",
+        productId: '105',
         name: 'Balo laptop chống nước',
         minPrice: 600000,
-        defaultImage: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-loovapnhstw044.webp',
+        defaultImage:
+            'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-loovapnhstw044.webp',
         averageRating: 4.6,
         totalSold: 2000,
-        totalStock: 100,    
-        slug: 'balo-laptop-chong-nuoc'
-    }
+        totalStock: 100,
+        slug: 'balo-laptop-chong-nuoc',
+    },
 ];
 
 export const streams = [

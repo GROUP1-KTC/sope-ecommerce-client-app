@@ -12,14 +12,16 @@ import type {
 import SalesInfo from '~/components/add-edit-product/SalesInfo';
 import DetailInfo from '~/components/add-edit-product/DetailInfo';
 import LeftSideBar from '~/components/add-edit-product/LeftSideBar';
-import RightSideBar, {
+import type {
     ProductFormDataWithMedia,
     MediaItem,
 } from '~/components/add-edit-product/RightSideBar';
+import RightSideBar from '~/components/add-edit-product/RightSideBar';
 import FundanmentalInformation from '~/components/add-edit-product/FundanmentalInformation';
 import { buildCategoryPath } from '~/utils/buildCategoryPath';
 import ErrorModal from './ErrorModal';
 import { verifyImage } from '~/utils/api';
+import { useAlertStore } from '~/store/zustand/alertStore';
 
 type ProductFormMode = 'add' | 'edit';
 
@@ -188,9 +190,18 @@ const ProductForm: React.FC<ProductFormProps> = ({
     ) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        if (file.type !== 'video/mp4') return alert('Chỉ hỗ trợ định dạng MP4');
-        if (file.size > 10 * 1024 * 1024)
-            return alert('Dung lượng video không được vượt quá 10MB');
+        if (file.type !== 'video/mp4') {
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Chỉ hỗ trợ định dạng MP4!',
+            });
+        }
+        if (file.size > 10 * 1024 * 1024) {
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Dung lượng video không được vượt quá 10MB',
+            });
+        }
 
         const mediaItem: MediaItem = {
             file,
@@ -208,18 +219,27 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
         for (const f of files) {
             if (!f.type.startsWith('image/')) {
-                alert('Chỉ hỗ trợ định dạng hình ảnh');
+                useAlertStore.getState().showAlert({
+                    severity: 'warning',
+                    message: 'Chỉ hỗ trợ định dạng hình ảnh',
+                });
                 continue;
             }
             if (f.size > maxSizeMB * 1024 * 1024) {
-                alert('Dung lượng hình ảnh không được vượt quá 10MB');
+                useAlertStore.getState().showAlert({
+                    severity: 'warning',
+                    message: 'Dung lượng hình ảnh không được vượt quá 10MB',
+                });
                 continue;
             }
 
             try {
                 const result = await verifyImage(f);
                 if (!result.valid) {
-                    alert(`Ảnh ${f.name} không hợp lệ: ${result.reason}`);
+                    useAlertStore.getState().showAlert({
+                        severity: 'warning',
+                        message: `Ảnh ${f.name} không hợp lệ: ${result.reason}`,
+                    });
                     continue;
                 }
 
@@ -232,7 +252,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
                     imagesList: [...prev.imagesList, mediaItem],
                 }));
             } catch (err) {
-                alert(`Không thể kiểm tra ảnh ${f.name}`);
+                useAlertStore.getState().showAlert({
+                    severity: 'warning',
+                    message: `Không thể kiểm tra ảnh ${f.name}`,
+                });
             }
         }
 
@@ -244,17 +267,27 @@ const ProductForm: React.FC<ProductFormProps> = ({
     ) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        if (!file.type.startsWith('image/'))
-            return alert('Chỉ hỗ trợ định dạng hình ảnh');
-        if (file.size > 5 * 1024 * 1024)
-            return alert('Dung lượng hình ảnh không được vượt quá 5MB');
+        if (!file.type.startsWith('image/')) {
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Chỉ hỗ trợ định dạng hình ảnh',
+            });
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Dung lượng hình ảnh không được vượt quá 5MB',
+            });
+        }
 
         try {
             const result = await verifyImage(file);
-
             if (!result.valid) {
-                alert(`Ảnh không hợp lệ: ${result.reason}`);
-                return;
+                useAlertStore.getState().showAlert({
+                    severity: 'warning',
+                    message: `Ảnh không hợp lệ: ${result.reason}`,
+                });
             }
             const mediaItem: MediaItem = {
                 file,
@@ -262,7 +295,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
             };
             setProductData((prev) => ({ ...prev, defaultImage: mediaItem }));
         } catch (err) {
-            alert('Không thể kiểm tra ảnh. Vui lòng thử lại.');
+            useAlertStore.getState().showAlert({
+                severity: 'warning',
+                message: 'Không thể kiểm tra ảnh. Vui lòng thử lại.',
+            });
         } finally {
             e.target.value = '';
         }
@@ -423,7 +459,12 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
             if (mode === 'add' && onCreate) {
                 await onCreate(formData);
-                alert('Tạo sản phẩm thành công!');
+
+                useAlertStore.getState().showAlert({
+                    severity: 'success',
+                    message: 'Tạo sản phẩm thành công!',
+                });
+
                 setProductData({
                     mode: 'add',
                     name: '',
@@ -442,7 +483,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
             }
             if (mode === 'edit' && onUpdate && initialData) {
                 await onUpdate(initialData.productId, formData);
-                alert('🎉 Sửa sản phẩm thành công!');
+                useAlertStore.getState().showAlert({
+                    severity: 'success',
+                    message: '🎉 Sửa sản phẩm thành công!',
+                });
             }
         } catch (err: any) {
             let msg = 'Có lỗi xảy ra';
@@ -483,28 +527,28 @@ const ProductForm: React.FC<ProductFormProps> = ({
                     <div className="flex space-x-6 bg-white p-3 rounded-xl shadow-lg whitespace-nowrap overflow-x-auto">
                         <button
                             onClick={() => scrollToSection(infoRef)}
-                            className="text-md font-semibold "
+                            className="text-md font-semibold cursor-pointer "
                         >
                             Thông tin cơ bản
                         </button>
                         <button
                             onClick={() => scrollToSection(detailRef)}
-                            className="text-md font-medium text-gray-600 hover:text-orange-500 hover:border-b-4 hover:border-orange-400 transition-all"
+                            className="text-md font-medium cursor-pointer  text-gray-600 hover:text-red-500 hover:border-b-4 hover:border-red-400 transition-all"
                         >
                             Thông tin chi tiết
                         </button>
                         <button
                             onClick={() => scrollToSection(salesRef)}
-                            className="text-md font-medium text-gray-600 hover:text-orange-500 hover:border-b-4 hover:border-orange-400 transition-all"
+                            className="text-md font-medium cursor-pointer  text-gray-600 hover:text-red-500 hover:border-b-4 hover:border-red-400 transition-all"
                         >
                             Thông tin bán hàng
                         </button>
-                        <button className="text-md font-medium text-gray-600 hover:text-orange-500 hover:border-b-4 hover:border-orange-400 transition-all">
+                        <button className="text-md font-medium cursor-pointer  text-gray-600 hover:text-red-500 hover:border-b-4 hover:border-red-400 transition-all">
                             Thông tin vận chuyển
                         </button>
                         <button
                             onClick={() => scrollToSection(otherRef)}
-                            className="text-md font-medium text-gray-600 hover:text-orange-500 hover:border-b-4 hover:border-orange-400 transition-all"
+                            className="text-md font-medium cursor-pointer  text-gray-600 hover:text-red-500 hover:border-b-4 hover:border-red-400 transition-all"
                         >
                             Thông tin khác
                         </button>
@@ -575,7 +619,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                             Lưu & Ẩn
                         </button>
                         <button
-                            className="px-4 py-2 bg-orange-500 text-white rounded cursor-pointer"
+                            className="px-4 py-2 bg-red-500 text-white rounded cursor-pointer"
                             onClick={() => handleSubmit(false)}
                             disabled={isSubmitting}
                         >

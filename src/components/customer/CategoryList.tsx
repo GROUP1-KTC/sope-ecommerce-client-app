@@ -1,12 +1,12 @@
 'use client';
 
-import Link from 'next/link';
 import React from 'react';
 import { useGetCategoriesQuery } from '~/features/categories/categoryApi';
 import type { Category } from '~/types/products';
+import CustomLink from '../shared/loading/CustomLink';
 
 const CategoryList = () => {
-    const { data: categories = [], isLoading } = useGetCategoriesQuery();
+    const { data: categories = [] } = useGetCategoriesQuery();
 
     console.log('Categories:', categories);
 
@@ -22,24 +22,24 @@ const CategoryList = () => {
 
                     return (
                         <div key={parent.id}>
-                            <Link
+                            <CustomLink
                                 href={`/${parent.slug}`}
                                 className="hover:underline"
                             >
                                 <h3 className="font-bold mb-2 uppercase">
                                     {parent.name}
                                 </h3>
-                            </Link>
+                            </CustomLink>
 
                             <ul className="space-y-1">
                                 {children.map((child: Category) => (
                                     <li key={child.id}>
-                                        <Link
+                                        <CustomLink
                                             href={`/${child.slug}`}
                                             className="hover:underline"
                                         >
                                             {child.name}
-                                        </Link>
+                                        </CustomLink>
                                     </li>
                                 ))}
                             </ul>

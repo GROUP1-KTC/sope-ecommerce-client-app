@@ -3,30 +3,47 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 // import Image from 'next/image';
-import Link from 'next/link';
-import { useGetProductBySlugQuery, useGetSimilarProductsQuery, useGetSuggestedProductsQuery } from '~/features/products/productApi';
+import {
+    useGetProductBySlugQuery,
+    useGetSimilarProductsQuery,
+    useGetSuggestedProductsQuery,
+} from '~/features/products/productApi';
 import { useGetBreadcrumbCategoryQuery } from '~/features/categories/categoryApi';
 import ProductInfo from '~/components/product-detail/ProductInfo';
 import ProductReviews from '~/components/product-detail/ProductReviews';
-import { useGetReviewByProductQuery, useCreateReviewMutation } from '~/features/reviews/reviewApi';
+import { useGetReviewByProductQuery } from '~/features/reviews/reviewApi';
 import { skipToken } from '@reduxjs/toolkit/query';
 import ProductList from '~/components/product-detail/ProductList';
+import CustomLink from '~/components/shared/loading/CustomLink';
+import { EmptyMessage, ErrorMessage, LoadingMessage } from '~/components/shared/loading/FeedBack';
 
 const ProductBySlug = () => {
     const params = useParams();
     const slug = params?.productSlug as string;
 
-    const { data: product, isLoading, isError } = useGetProductBySlugQuery(slug);
-    const { data: reviews } = useGetReviewByProductQuery(product?.productId ?? skipToken);
+    const {
+        data: product,
+        isLoading,
+        isError,
+    } = useGetProductBySlugQuery(slug);
+    const { data: reviews } = useGetReviewByProductQuery(
+        product?.productId ?? skipToken,
+    );
     const categoryId = product?.categoryId;
-    const { data: breadcrumb } = useGetBreadcrumbCategoryQuery(categoryId!, { skip: !categoryId, });
+    const { data: breadcrumb } = useGetBreadcrumbCategoryQuery(categoryId!, {
+        skip: !categoryId,
+    });
 
     const { data: suggestedProducts } = useGetSuggestedProductsQuery(
-        product?.productId ? { productId: product.productId, limit: 5 } : skipToken
+        product?.productId
+            ? { productId: product.productId, limit: 5 }
+            : skipToken,
     );
 
     const { data: similarProducts } = useGetSimilarProductsQuery(
-        product?.productId ? { productId: product.productId, limit: 5 } : skipToken
+        product?.productId
+            ? { productId: product.productId, limit: 5 }
+            : skipToken,
     );
 
     const attributeMap = useMemo(() => {
@@ -67,8 +84,8 @@ const ProductBySlug = () => {
         if (!product?.variants || product.variants.length === 0) return 0;
 
         const validPrices = product.variants
-            .map(v => v.price)
-            .filter(price => price > 0);
+            .map((v) => v.price)
+            .filter((price) => price > 0);
 
         if (validPrices.length === 0) return 0;
 
@@ -78,35 +95,37 @@ const ProductBySlug = () => {
     const displayedPrice = selectedVariant?.price ?? minPrice;
     const displayedStock = selectedVariant?.stock;
 
-    if (isLoading) return <p>Đang tải sản phẩm...</p>;
-    if (isError) return <p>Lỗi khi tải sản phẩm.</p>;
-    if (!product) return <p>Không tìm thấy sản phẩm.</p>;
+    if (isLoading) return <LoadingMessage message="Đang tải sản phẩm..." />;
+    if (isError) return <ErrorMessage message="Sản phẩm này không tồn tại." />;
+    if (!product) return <EmptyMessage message="Không tìm thấy sản phẩm." />;
 
     return (
         <div className="w-4/5 mx-auto ">
             <div className="text-base text-gray-600 mb-4 mt-4">
                 <nav className="flex items-center flex-wrap gap-1">
-                    <Link href="/" className="text-blue-600  hover:underline">
-                        Shopee
-                    </Link>
+                    <CustomLink href="/" className="text-blue-600  hover:underline">
+                        Sope
+                    </CustomLink>
                     <span>›</span>
 
                     {/* Categories */}
-                    {breadcrumb?.map((cat, idx) => (
+                    {breadcrumb?.map((cat, _) => (
                         <React.Fragment key={cat.id}>
-                            <Link
+                            <CustomLink
                                 href={`/${cat.slug}`}
                                 className="text-blue-600 hover:underline"
                             >
                                 {cat.name}
-                            </Link>
+                            </CustomLink>
                             <span>›</span>
                         </React.Fragment>
                     ))}
 
-                    <span className="text-gray-800 font-medium">{product.name}</span>
-                </nav >
-            </div >
+                    <span className="text-gray-800 font-medium">
+                        {product.name}
+                    </span>
+                </nav>
+            </div>
 
             <ProductInfo
                 product={product}
@@ -119,17 +138,21 @@ const ProductBySlug = () => {
             />
 
             {suggestedProducts && suggestedProducts.length > 0 && (
-                <ProductList title="Sản phẩm gợi ý" products={suggestedProducts} />
+                <ProductList
+                    title="Sản phẩm gợi ý"
+                    products={suggestedProducts}
+                />
             )}
 
             {similarProducts && similarProducts.length > 0 && (
-                <ProductList title="Sản phẩm tương tự" products={similarProducts} />
+                <ProductList
+                    title="Sản phẩm tương tự"
+                    products={similarProducts}
+                />
             )}
 
             <ProductReviews reviews={reviews ?? []} />
-
-
-        </div >
+        </div>
     );
 };
 

@@ -117,13 +117,13 @@ export default function ShopVoucherPage() {
                     <input
                         type="text"
                         placeholder="Tìm theo mã hoặc mô tả..."
-                        className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+                        className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
                     />
                     <button
                         onClick={handleCreate}
-                        className="bg-orange-500 text-white px-3 py-2 rounded-lg flex items-center gap-1 hover:bg-orange-600 transition"
+                        className="bg-red-500 hover:bg-red-600 cursor-pointer text-white px-3 py-2 rounded-lg flex items-center gap-1 transition"
                     >
                         <Plus size={18} /> Tạo voucher mới
                     </button>
@@ -135,25 +135,24 @@ export default function ShopVoucherPage() {
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab as typeof activeTab)}
-                        className={`px-3 py-1 rounded-lg text-sm ${
-                            activeTab === tab
-                                ? 'bg-orange-500 text-white'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                        }`}
+                        className={`px-3 py-1 rounded-lg text-sm cursor-pointer ${activeTab === tab
+                            ? 'bg-red-500 text-white'
+                            : ' hover:text-white hover:bg-red-600'
+                            }`}
                     >
                         {tab === 'all'
                             ? 'Tất cả'
                             : tab === 'active'
-                              ? 'Đang hoạt động'
-                              : tab === 'inactive'
-                                ? 'Chưa kích hoạt'
-                                : 'Hết hạn'}
+                                ? 'Đang hoạt động'
+                                : tab === 'inactive'
+                                    ? 'Chưa kích hoạt'
+                                    : 'Hết hạn'}
                     </button>
                 ))}
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto border rounded-lg shadow">
+            <div className="overflow-x-auto border border-gray-300 rounded-lg shadow">
                 <table className="min-w-full bg-white text-sm">
                     <thead className="bg-gray-50 text-gray-700">
                         <tr>
@@ -195,19 +194,18 @@ export default function ShopVoucherPage() {
                                     –{' '}
                                     {d.endDate
                                         ? new Date(
-                                              d.endDate,
-                                          ).toLocaleDateString('vi-VN')
+                                            d.endDate,
+                                        ).toLocaleDateString('vi-VN')
                                         : 'Không giới hạn'}
                                 </td>
                                 <td className="p-3 text-center">
                                     <span
-                                        className={`px-2 py-1 rounded text-xs font-medium ${
-                                            d.status === 'ACTIVE'
-                                                ? 'bg-green-100 text-green-700'
-                                                : d.status === 'INACTIVE'
-                                                  ? 'bg-yellow-100 text-yellow-700'
-                                                  : 'bg-gray-100 text-gray-500'
-                                        }`}
+                                        className={`px-2 py-1 rounded text-xs font-medium ${d.status === 'ACTIVE'
+                                            ? 'bg-green-100 text-green-700'
+                                            : d.status === 'INACTIVE'
+                                                ? 'bg-yellow-100 text-yellow-700'
+                                                : 'bg-gray-100 text-gray-500'
+                                            }`}
                                     >
                                         {d.status}
                                     </span>
@@ -232,14 +230,14 @@ export default function ShopVoucherPage() {
                 <button
                     disabled={currentPage === 0}
                     onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
-                    className="px-3 py-1 border rounded disabled:opacity-50"
+                    className={`px-3 py-1 border rounded ${currentPage === 0 ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
                 >
                     Trước
                 </button>
                 <span>Trang {currentPage + 1}</span>
                 <button
                     onClick={() => setCurrentPage((p) => p + 1)}
-                    className="px-3 py-1 border rounded"
+                    className="px-3 py-1 border rounded cursor-pointer"
                 >
                     Sau
                 </button>

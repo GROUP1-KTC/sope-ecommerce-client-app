@@ -26,7 +26,7 @@ import type { Discount } from '~/types/discount/discount';
 import { cityString } from '~/utils/city.utils';
 import { useGetUserAddressesQuery } from '~/features/address/addressApi';
 import type { Address } from '~/types/address';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { useAlertStore } from '~/store/zustand/alertStore';
 import Cookies from 'js-cookie';
 export default function Checkout() {

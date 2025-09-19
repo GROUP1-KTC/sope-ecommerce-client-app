@@ -43,17 +43,17 @@ const MarketingChannel = () => {
         {
             icon: '📢',
             title: 'Quảng cáo Shopee',
-            label: { text: 'Tăng lượt truy cập', color: 'orange' },
+            label: { text: 'Tăng lượt truy cập', color: 'red' },
             desc: 'Tăng mức độ hiển thị sản phẩm, thúc đẩy doanh số bán hàng',
         },
         {
             icon: '🛍️',
             title: 'Tăng Đơn Cùng KOL',
-            label: { text: 'Tăng lượt truy cập', color: 'orange' },
+            label: { text: 'Tăng lượt truy cập', color: 'red' },
             desc: 'Tận dụng mạng lưới đối tác tiếp thị liên kết rộng lớn của Shopee để đẩy mạnh doanh số',
         },
         {
-            icon: '��',
+            icon: '🎥',
             title: 'Shopee Live',
             label: { text: 'Cải thiện mức tương tác', color: 'green' },
             desc: 'Kết nối trực tuyến với người mua và trả lời các câu hỏi liên quan đến việc mua hàng',
@@ -66,9 +66,9 @@ const MarketingChannel = () => {
             <div className="bg-white rounded-lg shadow p-4 mb-8">
                 <div className="flex">
                     <h2 className="text-xl font-semibold mb-4">Thông báo</h2>
-                    <div className="flex items-center ml-auto text-blue-600 cursor-pointer whitespace-nowrap">
+                    <button className="ml-auto text-red-500 hover:text-red-600 whitespace-nowrap cursor-pointer">
                         Xem thêm &rarr;
-                    </div>
+                    </button>
                 </div>
                 <div className="flex flex-col md:flex-row gap-4">
                     {notifications.map((n, i) => (
@@ -108,13 +108,12 @@ const MarketingChannel = () => {
                                         {tool.title}
                                     </span>
                                     <span
-                                        className={`text-xs px-2 py-0.5 rounded ${
-                                            tool.label.color === 'blue'
-                                                ? 'bg-blue-100 text-blue-700'
-                                                : tool.label.color === 'orange'
-                                                  ? 'bg-orange-100 text-orange-700'
-                                                  : 'bg-green-100 text-green-700'
-                                        }`}
+                                        className={`text-xs px-2 py-0.5 rounded ${tool.label.color === 'blue'
+                                            ? 'bg-blue-100 text-blue-700'
+                                            : tool.label.color === 'red'
+                                                ? 'bg-red-100 text-red-600'
+                                                : 'bg-green-100 text-green-700'
+                                            }`}
                                     >
                                         {tool.label.text}
                                     </span>
@@ -134,9 +133,9 @@ const MarketingChannel = () => {
                     <h2 className="text-xl font-semibold">
                         Chương trình Shopee
                     </h2>
-                    <div className="flex items-center ml-auto text-blue-600 cursor-pointer whitespace-nowrap">
+                    <button className="ml-auto text-red-500 hover:text-red-600 whitespace-nowrap cursor-pointer">
                         Xem thêm &rarr;
-                    </div>
+                    </button>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {[
@@ -158,7 +157,7 @@ const MarketingChannel = () => {
                             status: (
                                 <span>
                                     Thời gian đăng ký sớm nhất{' '}
-                                    <span className="text-red-500 font-semibold">
+                                    <span className="text-red-600 font-semibold">
                                         kết thúc
                                     </span>{' '}
                                     trong{' '}
@@ -176,12 +175,12 @@ const MarketingChannel = () => {
                             badge: 'Rẻ Vô Địch',
                         },
                         {
-                            img: '', // No image, use fallback
+                            img: '',
                             title: 'Shopee For Students 2025',
                             status: (
                                 <span>
                                     Thời gian đăng ký sớm nhất{' '}
-                                    <span className="text-red-500 font-semibold">
+                                    <span className="text-red-600 font-semibold">
                                         kết thúc
                                     </span>{' '}
                                     trong{' '}
@@ -192,7 +191,7 @@ const MarketingChannel = () => {
                             ),
                             badge: 'Đăng ký sản phẩm',
                             fallback: (
-                                <div className="flex items-center justify-center w-full h-full text-orange-500 text-2xl font-bold">
+                                <div className="flex items-center justify-center w-full h-full text-red-600 text-2xl font-bold">
                                     SHOPEE
                                     <br />
                                     BOOKCLUB
@@ -232,7 +231,7 @@ const MarketingChannel = () => {
                     ))}
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

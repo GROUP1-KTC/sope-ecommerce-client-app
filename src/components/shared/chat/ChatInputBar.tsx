@@ -9,11 +9,13 @@ import data from '@emoji-mart/data';
 import stompClient from '~/services/socket/socket.service';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 import { useSendMessageToBotMutation } from '~/features/chat/conversation/chatBotApi';
-import { BOT_CONVERSATION_ID, addMessage, setStatus } from '~/features/chat/chatSlice';
-import { Message } from '~/types/chat';
+import {
+    BOT_CONVERSATION_ID,
+    addMessage,
+    setStatus,
+} from '~/features/chat/chatSlice';
+import type { Message } from '~/types/chat';
 import { loadAuthUser } from '~/utils/authCookie';
-
-
 
 const ChatInputBar = () => {
     const [input, setInput] = useState('');
@@ -48,7 +50,6 @@ const ChatInputBar = () => {
     );
 
     const dispatch = useAppDispatch();
-    
 
     const handleSend = async () => {
         if (!input.trim() || !selectedConversationId || !currentUserId) return;
@@ -62,14 +63,21 @@ const ChatInputBar = () => {
                 sentAt: Date.now().toString(),
             };
 
-            dispatch(addMessage({ conversationId: BOT_CONVERSATION_ID, message: userMessage }));
+            dispatch(
+                addMessage({
+                    conversationId: BOT_CONVERSATION_ID,
+                    message: userMessage,
+                }),
+            );
             setInput('');
-            
+
             dispatch(setStatus('typing'));
 
             try {
                 dispatch(setStatus('sending'));
-                const res = await sendToBot({ message: userMessage.content }).unwrap();
+                const res = await sendToBot({
+                    message: userMessage.content,
+                }).unwrap();
 
                 const botMessage: Message = {
                     id: Date.now().toString() + '_bot',
@@ -79,7 +87,12 @@ const ChatInputBar = () => {
                     sentAt: Date.now().toString(),
                 };
 
-                dispatch(addMessage({ conversationId: BOT_CONVERSATION_ID, message: botMessage }));
+                dispatch(
+                    addMessage({
+                        conversationId: BOT_CONVERSATION_ID,
+                        message: botMessage,
+                    }),
+                );
                 dispatch(setStatus('idle'));
             } catch (err) {
                 console.error('Bot response error', err);
@@ -114,7 +127,13 @@ const ChatInputBar = () => {
     };
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!e.target.files || e.target.files.length === 0 || !selectedConversationId || !currentUserId) return;
+        if (
+            !e.target.files ||
+            e.target.files.length === 0 ||
+            !selectedConversationId ||
+            !currentUserId
+        )
+            return;
 
         const file = e.target.files[0];
         const fileUrl = URL.createObjectURL(file);

@@ -1,4 +1,4 @@
-import { Attribute, ProductAdsDTO } from '../products';
+import type { Attribute, ProductAdsDTO } from '../products';
 
 export interface AdsRequest {
     productId: string;

@@ -6,7 +6,7 @@ import OrderTracking from '~/components/order-detail/OrderTracking';
 import OrderItems from '~/components/order-detail/OrderItems';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import OrderSummary from '~/components/order-detail/OrderSummary';
-import Link from 'next/link';
+import CustomLink from '~/components/shared/loading/CustomLink';
 
 const OrderDetailPage = () => {
     const order = {
@@ -92,7 +92,7 @@ const OrderDetailPage = () => {
                         <div className="bg-white rounded-lg shadow-md p-6">
                             <div className="flex justify-between items-center mb-6">
                                 <div>
-                                    <Link
+                                    <CustomLink
                                         href="/order"
                                         className="flex items-center text-xl uppercase hover:underline"
                                     >
@@ -100,7 +100,7 @@ const OrderDetailPage = () => {
                                         <span className="hidden md:inline">
                                             Quay lại
                                         </span>
-                                    </Link>
+                                    </CustomLink>
                                 </div>
                                 <h1 className="text-xl font-semibold text-black uppercase flex items-center gap-4">
                                     MÃ ĐƠN HÀNG: {order.id}

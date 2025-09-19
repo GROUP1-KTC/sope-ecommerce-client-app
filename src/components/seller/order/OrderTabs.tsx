@@ -24,8 +24,8 @@ export default function OrderTabs({
                     key={tab.label}
                     onClick={() => onChange(index, tab.status)}
                     className={`pb-2 border-b-2 font-medium transition-colors cursor-pointer ${activeTab === index
-                        ? 'border-orange-500 text-orange-500'
-                        : 'border-transparent text-gray-700 hover:text-orange-500'
+                        ? 'border-red-500 text-red-500'
+                        : 'border-transparent text-gray-700 hover:text-red-500 hover:border-red-500'
                         }`}
                 >
                     {tab.label}

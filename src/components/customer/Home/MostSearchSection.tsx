@@ -4,18 +4,41 @@ import React, { useEffect, useRef, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ProductCard from '~/components/product-detail/ProductCard';
-import { ProductSummary } from '~/types/products/product';
-
+import { useGetMostSearchedProductsQuery, useSearchProductsQuery } from '~/features/products/elasticApi';
+import { skipToken } from '@reduxjs/toolkit/query';
+import { ProductSummary } from '~/types/products';
 
 interface MostSearchProps {
-    products: ProductSummary[];
     title?: string;
 }
 
-const MostSearch: React.FC<MostSearchProps> = ({ products, title }) => {
+const MostSearch: React.FC<MostSearchProps> = ({ title }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [atStart, setAtStart] = useState(true);
     const [atEnd, setAtEnd] = useState(false);
+
+    const { data: topSearched } = useGetMostSearchedProductsQuery();
+    const { data: topProducts } = useSearchProductsQuery(
+        topSearched
+            ? {
+                query: {
+                    ids: { values: topSearched.map((t) => t.productId) },
+                },
+            }
+            : skipToken
+    );
+
+    const products: ProductSummary[] =
+        topProducts?.map((p) => ({
+            productId: p.product_id,
+            name: p.name,
+            slug: p.slug,
+            minPrice: p.min_price,
+            defaultImage: p.default_image,
+            totalStock: 0,
+            totalSold: p.total_sold ?? 0,
+            averageRating: p.rating_score ?? null,
+        })) ?? [];
 
     const handleScroll = (dir: 'left' | 'right') => {
         if (!containerRef.current) return;
@@ -42,14 +65,8 @@ const MostSearch: React.FC<MostSearchProps> = ({ products, title }) => {
     return (
         <div className="w-full flex justify-center bg-gray-50 py-4">
             <div className="bg-white rounded-xl shadow p-6 max-w-6xl w-full relative">
-                <div className="flex items-center justify-between mb-4 pb-2 border-b">
+                <div className="flex items-center justify-between mb-4 pb-2 ">
                     <h2 className="text-xl font-bold text-gray-800">{title}</h2>
-                    <a
-                        href="#"
-                        className="text-sm text-orange-500 hover:underline"
-                    >
-                        Xem tất cả {'>'}
-                    </a>
                 </div>
                 <div className="relative group">
                     {!atStart && (

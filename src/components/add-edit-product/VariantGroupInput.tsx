@@ -2,65 +2,68 @@ import { X } from 'lucide-react';
 import OptionInputGroup from './OptionInputGroup';
 
 interface VariantGroupInputProps {
-      label: string;
-      variantName: string;
-      setVariantName: (value: string) => void;
-      options: string[];
-      setOptions: (options: string[]) => void;
-      onRemove?: () => void;
-      otherVariantName?: string;
-      mode: "add" | "edit";
+    label: string;
+    variantName: string;
+    setVariantName: (value: string) => void;
+    options: string[];
+    setOptions: (options: string[]) => void;
+    onRemove?: () => void;
+    otherVariantName?: string;
+    mode: 'add' | 'edit';
 }
 
 export default function VariantGroupInput({
-      label,
-      variantName,
-      setVariantName,
-      options,
-      setOptions,
-      onRemove,
-      otherVariantName,
-      mode
+    label,
+    variantName,
+    setVariantName,
+    options,
+    setOptions,
+    onRemove,
+    otherVariantName,
+    mode,
 }: VariantGroupInputProps) {
+    const isDuplicate =
+        otherVariantName &&
+        variantName.trim() !== '' &&
+        variantName.trim().toLowerCase() ===
+        otherVariantName.trim().toLowerCase();
 
-      const isDuplicate =
-            otherVariantName &&
-            variantName.trim() !== "" &&
-            variantName.trim().toLowerCase() === otherVariantName.trim().toLowerCase();
-
-      return (
-            <div className="bg-gray-200 py-2 px-1">
-                  <div className="flex justify-between items-center p-2">
-                        <div className="flex items-center w-full">
-                              <label className="mr-2 whitespace-nowrap">{label}</label>
-                              <input
-                                    type="text"
-                                    placeholder="Phân loại (ví dụ: Màu sắc, Size...)"
-                                    className={`w-3/4 border rounded p-1 ${isDuplicate ? "border-red-500" : "border-gray-300"
-                                          }`}
-                                    value={variantName}
-                                    onChange={(e) => setVariantName(e.target.value)}
-                              />
-                        </div>
-                        {isDuplicate && (
-                              <p className="text-red-500 text-xs mt-1">
-                                    Tên phân loại này đã tồn tại, vui lòng nhập khác
-                              </p>
-                        )}
-                        <button
-                              type="button"
-                              className={`text-gray-400 ${mode === "edit" ? "cursor-not-allowed opacity-50" : "hover:text-red-500"}`}
-                              onClick={onRemove}
-                              tabIndex={-1}
-                              disabled={mode === "edit"}
-                        >
-                              <X size={32} />
-                        </button>
-                  </div>
-                  <div className="p-2 flex mb-3">
-                        <label className="mr-2 whitespace-nowrap">Tùy chọn</label>
-                        <OptionInputGroup options={options} onOptionsChange={setOptions} />
-                  </div>
+    return (
+        <div className="bg-gray-200 py-2 px-1">
+            <div className="flex justify-between items-center p-2">
+                <div className="flex items-center w-full">
+                    <label className="mr-2 whitespace-nowrap">{label}</label>
+                    <input
+                        type="text"
+                        placeholder="Phân loại (ví dụ: Màu sắc, Size...)"
+                        className={`w-3/4 rounded p-1 focus:outline-none focus:ring-1 focus:ring-black ${isDuplicate ? 'border-red-500' : 'border-gray-300'
+                            } border`}
+                        value={variantName}
+                        onChange={(e) => setVariantName(e.target.value)}
+                    />
+                </div>
+                {isDuplicate && (
+                    <p className="text-red-500 text-xs mt-1">
+                        Tên phân loại này đã tồn tại, vui lòng nhập khác
+                    </p>
+                )}
+                <button
+                    type="button"
+                    className={`text-gray-400 cursor-pointer ${mode === 'edit' ? 'cursor-not-allowed opacity-50' : 'hover:text-red-500'}`}
+                    onClick={onRemove}
+                    tabIndex={-1}
+                    disabled={mode === 'edit'}
+                >
+                    <X size={32} />
+                </button>
             </div>
-      );
+            <div className="p-2 flex mb-3">
+                <label className="mr-2 whitespace-nowrap">Tùy chọn</label>
+                <OptionInputGroup
+                    options={options}
+                    onOptionsChange={setOptions}
+                />
+            </div>
+        </div>
+    );
 }

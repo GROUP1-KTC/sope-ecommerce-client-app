@@ -6,7 +6,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useAlertStore } from '~/store/zustand/alertStore';
 import type { CartGroup, CartItem } from '~/app/(customer)/cart/page';
 import type { ProductResponse, ProductVariant } from '~/types/products';
-import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
+import { useAppDispatch } from '~/hooks/useTypes';
 import { useAddCartMutation } from '~/features/cart/cartApiSlice';
 interface ProductInfoProps {
     product: ProductResponse;
@@ -38,7 +38,7 @@ const ProductInfo = ({
     price,
     stock,
 }: ProductInfoProps) => {
-    const [showVoucherModal, setShowVoucherModal] = useState(false);
+    // const [showVoucherModal, setShowVoucherModal] = useState(false);
     const [showPolicyModal, setShowPolicyModal] = useState(false);
     const [addCartApi] = useAddCartMutation();
     const router = useRouter();
@@ -286,8 +286,8 @@ const ProductInfo = ({
                 </div>
                 <div
                     className="relative flex items-center gap-4 mb-4 bg-red-50 px-6 py-3 rounded"
-                    onMouseEnter={() => setShowVoucherModal(true)}
-                    onMouseLeave={() => setShowVoucherModal(false)}
+                    // onMouseEnter={() => setShowVoucherModal(true)}
+                    // onMouseLeave={() => setShowVoucherModal(false)}
                 >
                     <span className="text-red-500 font-medium text-3xl">
                         ₫{price.toLocaleString('vi-VN')}
