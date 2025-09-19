@@ -39,7 +39,7 @@ const ProductList: React.FC<ProductListProps> = ({
     }, [products, sort]);
 
     return (
-        <div className="flex-1 pl-6">
+        <div className="flex-1">
             {/* Sorting */}
             <div className="flex items-center gap-2 mb-4 relative">
                 {/* Nút mặc định */}

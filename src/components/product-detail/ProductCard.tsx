@@ -5,7 +5,7 @@ import CustomLink from '../shared/loading/CustomLink';
 const ProductCard = ({ product }: { product: ProductSummary }) => {
     return (
         <CustomLink href={`/product-detail/${product.slug}`}>
-            <div className="bg-white mb-1 shadow-sm rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300 w-[192px] min-w-[192px] min-h-[240px] hover:scale-105 transition-transform duration-400">
+            <div className="bg-white mb-1 shadow-sm rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300  w-[180px] min-h-[240px] hover:scale-105 transition-transform duration-400">
                 <Image
                     width={192}
                     height={144}
@@ -14,7 +14,7 @@ const ProductCard = ({ product }: { product: ProductSummary }) => {
                     className="w-full h-36 object-cover"
                 />
 
-                <div className="p-2">
+                <div className="p-2 pt-4">
                     <h3
                         className="text-xs font-semibold text-gray-800 mb-1"
                         style={{
