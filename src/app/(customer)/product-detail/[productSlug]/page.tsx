@@ -15,7 +15,11 @@ import { useGetReviewByProductQuery } from '~/features/reviews/reviewApi';
 import { skipToken } from '@reduxjs/toolkit/query';
 import ProductList from '~/components/product-detail/ProductList';
 import CustomLink from '~/components/shared/loading/CustomLink';
-import { EmptyMessage, ErrorMessage, LoadingMessage } from '~/components/shared/loading/FeedBack';
+import {
+    EmptyMessage,
+    ErrorMessage,
+    LoadingMessage,
+} from '~/components/shared/loading/FeedBack';
 
 const ProductBySlug = () => {
     const params = useParams();
@@ -103,7 +107,10 @@ const ProductBySlug = () => {
         <div className="w-4/5 mx-auto ">
             <div className="text-base text-gray-600 mb-4 mt-4">
                 <nav className="flex items-center flex-wrap gap-1">
-                    <CustomLink href="/" className="text-blue-600  hover:underline">
+                    <CustomLink
+                        href="/"
+                        className="text-blue-600  hover:underline"
+                    >
                         Sope
                     </CustomLink>
                     <span>›</span>

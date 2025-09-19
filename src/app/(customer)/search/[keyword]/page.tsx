@@ -19,66 +19,66 @@ const SearchPage = () => {
     const { data: products = [], isLoading } = useSearchProductsQuery(
         keyword
             ? {
-                _source: [
-                    'product_id',
-                    'slug',
-                    'name',
-                    'default_image',
-                    'rating_score',
-                    'review_count',
-                    'min_price',
-                    'total_sold',
-                    'category_id',
-                    'category_name',
-                ],
-                query: {
-                    function_score: {
-                        query: {
-                            bool: {
-                                should: [
-                                    {
-                                        match_phrase: {
-                                            name: {
-                                                query: keyword,
-                                                boost: 5,
-                                            },
-                                        },
-                                    },
-                                    {
-                                        match_phrase_prefix: {
-                                            name: {
-                                                query: keyword,
-                                                boost: 4,
-                                            },
-                                        },
-                                    },
-                                    {
-                                        match: {
-                                            name: {
-                                                query: keyword,
-                                                fuzziness: 'AUTO',
-                                                boost: 2,
-                                            },
-                                        },
-                                    },
-                                    {
-                                        match: {
-                                            slug: {
-                                                query: keyword,
-                                                boost: 1,
-                                            },
-                                        },
-                                    },
-                                ],
-                            },
-                        },
-                        boost_mode: 'sum',
-                    },
-                },
-                from: page * size,
-                size,
-                sort: [{ _score: 'desc' }],
-            }
+                  _source: [
+                      'product_id',
+                      'slug',
+                      'name',
+                      'default_image',
+                      'rating_score',
+                      'review_count',
+                      'min_price',
+                      'total_sold',
+                      'category_id',
+                      'category_name',
+                  ],
+                  query: {
+                      function_score: {
+                          query: {
+                              bool: {
+                                  should: [
+                                      {
+                                          match_phrase: {
+                                              name: {
+                                                  query: keyword,
+                                                  boost: 5,
+                                              },
+                                          },
+                                      },
+                                      {
+                                          match_phrase_prefix: {
+                                              name: {
+                                                  query: keyword,
+                                                  boost: 4,
+                                              },
+                                          },
+                                      },
+                                      {
+                                          match: {
+                                              name: {
+                                                  query: keyword,
+                                                  fuzziness: 'AUTO',
+                                                  boost: 2,
+                                              },
+                                          },
+                                      },
+                                      {
+                                          match: {
+                                              slug: {
+                                                  query: keyword,
+                                                  boost: 1,
+                                              },
+                                          },
+                                      },
+                                  ],
+                              },
+                          },
+                          boost_mode: 'sum',
+                      },
+                  },
+                  from: page * size,
+                  size,
+                  sort: [{ _score: 'desc' }],
+              }
             : skipToken,
     );
 

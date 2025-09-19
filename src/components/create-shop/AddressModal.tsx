@@ -133,19 +133,26 @@ export default function AddressModal({ onClose, onAdd }: AddressModalProps) {
                                 name="senderPhone"
                                 value={form.senderPhone}
                                 onChange={(e) => {
-                                    const numericValue = e.target.value.replace(/\D/g, '');
-                                    setForm(prev => ({ ...prev, senderPhone: numericValue }));
+                                    const numericValue = e.target.value.replace(
+                                        /\D/g,
+                                        '',
+                                    );
+                                    setForm((prev) => ({
+                                        ...prev,
+                                        senderPhone: numericValue,
+                                    }));
                                 }}
                                 className="w-full border border-gray-300 rounded p-2"
                                 required
                             />
-
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
-                            <label className="text-sm block mb-1">Tỉnh/Thành</label>
+                            <label className="text-sm block mb-1">
+                                Tỉnh/Thành
+                            </label>
                             <select
                                 name="province"
                                 value={form.province}
@@ -163,13 +170,18 @@ export default function AddressModal({ onClose, onAdd }: AddressModalProps) {
                         </div>
 
                         <div>
-                            <label className="text-sm block mb-1">Quận/Huyện</label>
+                            <label className="text-sm block mb-1">
+                                Quận/Huyện
+                            </label>
                             <select
                                 name="district"
                                 value={form.district}
                                 onChange={handle}
-                                className={`w-full border border-gray-300 rounded-lg p-2 bg-white shadow-sm text-gray-800 hover:shadow-md focus:outline-none focus:ring-1 focus:ring-black cursor-pointer transition-all ${!form.province ? 'opacity-50 cursor-not-allowed' : ''
-                                    }`}
+                                className={`w-full border border-gray-300 rounded-lg p-2 bg-white shadow-sm text-gray-800 hover:shadow-md focus:outline-none focus:ring-1 focus:ring-black cursor-pointer transition-all ${
+                                    !form.province
+                                        ? 'opacity-50 cursor-not-allowed'
+                                        : ''
+                                }`}
                                 required
                                 disabled={!form.province}
                             >
@@ -183,13 +195,18 @@ export default function AddressModal({ onClose, onAdd }: AddressModalProps) {
                         </div>
 
                         <div>
-                            <label className="text-sm block mb-1">Phường/Xã</label>
+                            <label className="text-sm block mb-1">
+                                Phường/Xã
+                            </label>
                             <select
                                 name="ward"
                                 value={form.ward}
                                 onChange={handle}
-                                className={`w-full border border-gray-300 rounded-lg p-2 bg-white shadow-sm text-gray-800 hover:shadow-md focus:outline-none focus:ring-1 focus:ring-black cursor-pointer transition-all ${!form.district ? 'opacity-50 cursor-not-allowed' : ''
-                                    }`}
+                                className={`w-full border border-gray-300 rounded-lg p-2 bg-white shadow-sm text-gray-800 hover:shadow-md focus:outline-none focus:ring-1 focus:ring-black cursor-pointer transition-all ${
+                                    !form.district
+                                        ? 'opacity-50 cursor-not-allowed'
+                                        : ''
+                                }`}
                                 required
                                 disabled={!form.district}
                             >
@@ -202,7 +219,6 @@ export default function AddressModal({ onClose, onAdd }: AddressModalProps) {
                             </select>
                         </div>
                     </div>
-
 
                     <div>
                         <label className="text-sm block mb-1">

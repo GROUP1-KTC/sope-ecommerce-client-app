@@ -28,7 +28,6 @@ const Login = () => {
 
     const [serverError, setServerError] = useState<string>('');
 
-
     const [login, { isLoading }] = useLoginMutation();
     const dispatch = useAppDispatch();
     const router = useRouter();
@@ -93,7 +92,6 @@ const Login = () => {
                 setServerError('Login failed, please try again.');
             }
         }
-
     };
 
     return (
@@ -208,7 +206,11 @@ const Login = () => {
                                             </p>
                                         )}
                                     </div>
-                                    {serverError && <p className="text-red-500 mt-1">{serverError}</p>}
+                                    {serverError && (
+                                        <p className="text-red-500 mt-1">
+                                            {serverError}
+                                        </p>
+                                    )}
                                     <div className="flex flex-wrap items-center justify-between gap-2">
                                         <div className="flex items-center">
                                             <input

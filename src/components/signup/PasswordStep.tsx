@@ -85,14 +85,15 @@ const PasswordStep = ({
                                 } as any)
                             }
                             className={`flex-1 px-4 py-3 text-sm font-medium capitalize transition-all
-        ${input.gender === g
-                                    ? g === 'MALE'
-                                        ? 'bg-blue-600 text-white shadow-md'
-                                        : g === 'FEMALE'
-                                            ? 'bg-pink-500 text-white shadow-md'
-                                            : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md'
-                                    : 'bg-white text-slate-700 hover:bg-slate-100'
-                                }`}
+        ${
+            input.gender === g
+                ? g === 'MALE'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : g === 'FEMALE'
+                      ? 'bg-pink-500 text-white shadow-md'
+                      : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md'
+                : 'bg-white text-slate-700 hover:bg-slate-100'
+        }`}
                         >
                             {g}
                         </button>

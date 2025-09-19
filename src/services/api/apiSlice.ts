@@ -39,7 +39,6 @@ const baseQueryWithReauth: BaseQueryFn<
             extraOptions,
         );
 
-
         if (refreshResult.data) {
             const { accessToken, id, username, roles } = refreshResult.data as {
                 accessToken: string;
@@ -57,7 +56,6 @@ const baseQueryWithReauth: BaseQueryFn<
 
             console.log('Re-authenticated successfully');
         }
-
     }
 
     return result;

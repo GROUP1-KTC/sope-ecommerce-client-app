@@ -7,7 +7,6 @@ import { useGetProductByShopQuery } from '~/features/products/productApi';
 import { useGetOrdersByShopQuery } from '~/features/orders/orderApiSlide';
 
 export default function HomeSeller() {
-
     const [filters, setFilters] = useState<{
         dateRange: { from: Date; to: Date };
         orderType: string;
@@ -19,8 +18,10 @@ export default function HomeSeller() {
     const [page, setPage] = useState(0);
     const size = 40;
 
-    const { data: allProduct, isLoading: loadingProducts } = useGetProductByShopQuery({ page, size });
-    const { data: allOrder, isLoading: loadingOrders } = useGetOrdersByShopQuery({ page, size });
+    const { data: allProduct, isLoading: loadingProducts } =
+        useGetProductByShopQuery({ page, size });
+    const { data: allOrder, isLoading: loadingOrders } =
+        useGetOrdersByShopQuery({ page, size });
 
     const orders = allOrder?.data?.content || [];
     const products = allProduct?.content || [];
@@ -39,8 +40,8 @@ export default function HomeSeller() {
         return inDateRange && matchType;
     });
 
-    console.log('check allProduct', allProduct)
-    console.log('check allOrder', allOrder)
+    console.log('check allProduct', allProduct);
+    console.log('check allOrder', allOrder);
 
     return (
         <div>

@@ -147,7 +147,9 @@ export default function OrderCard({
                 {isFromPendingOrder ? (
                     <div className="flex justify-center items-center gap-2">
                         <Tooltip title="Xem chi tiết">
-                            <CustomLink href={`/seller/orders/${o.orderNumber}`}>
+                            <CustomLink
+                                href={`/seller/orders/${o.orderNumber}`}
+                            >
                                 <IconButton size="small" color="primary">
                                     <VisibilityOutlinedIcon fontSize="small" />
                                 </IconButton>

@@ -86,43 +86,43 @@ const ProductForm: React.FC<ProductFormProps> = ({
     const [productData, setProductData] = useState<AddState | EditState>(
         mode === 'add'
             ? ({
-                mode: 'add',
-                name: '',
-                brand: '',
-                description: '',
-                defaultImage: null,
-                defaultVideoIntro: null,
-                hidden: false,
-                categoryId: '',
-                variants: [],
-                imagesList: [],
-                productDetails: [],
-            } as AddState)
+                  mode: 'add',
+                  name: '',
+                  brand: '',
+                  description: '',
+                  defaultImage: null,
+                  defaultVideoIntro: null,
+                  hidden: false,
+                  categoryId: '',
+                  variants: [],
+                  imagesList: [],
+                  productDetails: [],
+              } as AddState)
             : ({
-                mode: 'edit',
-                description: initialData?.description || '',
-                name: initialData?.name || '',
-                brand: initialData?.brand || '',
-                hidden: initialData?.hidden ?? false,
-                categoryId: initialData?.categoryId || '',
-                defaultImage: mapUrlToMediaItem(initialData?.defaultImage),
-                defaultVideoIntro: mapUrlToMediaItem(
-                    initialData?.defaultVideoIntro ?? null,
-                ),
-                imagesList: mapApiImagesToMediaItems(
-                    initialData?.imagesList ?? [],
-                ),
-                productDetails: initialData?.productDetails || [],
-                variants: initialData?.variants.map((v) => ({
-                    price: v.price,
-                    productVariantId: v.productVariantId,
-                    stock: v.stock,
-                    attributes: v.attributes,
-                    imageVariant: v.imageVariant,
-                    dimension: v.dimension,
-                    weight: v.weight,
-                })),
-            } as EditState),
+                  mode: 'edit',
+                  description: initialData?.description || '',
+                  name: initialData?.name || '',
+                  brand: initialData?.brand || '',
+                  hidden: initialData?.hidden ?? false,
+                  categoryId: initialData?.categoryId || '',
+                  defaultImage: mapUrlToMediaItem(initialData?.defaultImage),
+                  defaultVideoIntro: mapUrlToMediaItem(
+                      initialData?.defaultVideoIntro ?? null,
+                  ),
+                  imagesList: mapApiImagesToMediaItems(
+                      initialData?.imagesList ?? [],
+                  ),
+                  productDetails: initialData?.productDetails || [],
+                  variants: initialData?.variants.map((v) => ({
+                      price: v.price,
+                      productVariantId: v.productVariantId,
+                      stock: v.stock,
+                      attributes: v.attributes,
+                      imageVariant: v.imageVariant,
+                      dimension: v.dimension,
+                      weight: v.weight,
+                  })),
+              } as EditState),
     );
 
     useEffect(() => {

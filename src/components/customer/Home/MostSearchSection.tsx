@@ -4,7 +4,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ProductCard from '~/components/product-detail/ProductCard';
-import { useGetMostSearchedProductsQuery, useSearchProductsQuery } from '~/features/products/elasticApi';
+import {
+    useGetMostSearchedProductsQuery,
+    useSearchProductsQuery,
+} from '~/features/products/elasticApi';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { ProductSummary } from '~/types/products';
 
@@ -21,11 +24,11 @@ const MostSearch: React.FC<MostSearchProps> = ({ title }) => {
     const { data: topProducts } = useSearchProductsQuery(
         topSearched
             ? {
-                query: {
-                    ids: { values: topSearched.map((t) => t.productId) },
-                },
-            }
-            : skipToken
+                  query: {
+                      ids: { values: topSearched.map((t) => t.productId) },
+                  },
+              }
+            : skipToken,
     );
 
     const products: ProductSummary[] =

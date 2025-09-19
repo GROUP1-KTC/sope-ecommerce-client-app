@@ -268,16 +268,16 @@ const SalesInfo = ({ onVariantsChange, productData, mode }: SalesInfoProps) => {
             prev.map((v) =>
                 isSameAttributes(v.attributes ?? [], attrs)
                     ? {
-                        ...v,
-                        dimension: {
-                            ...(v.dimension ?? {
-                                length: 0,
-                                width: 0,
-                                height: 0,
-                            }),
-                            ...partialDim,
-                        } as Dimension,
-                    }
+                          ...v,
+                          dimension: {
+                              ...(v.dimension ?? {
+                                  length: 0,
+                                  width: 0,
+                                  height: 0,
+                              }),
+                              ...partialDim,
+                          } as Dimension,
+                      }
                     : v,
             ),
         );
@@ -669,18 +669,18 @@ const SalesInfo = ({ onVariantsChange, productData, mode }: SalesInfoProps) => {
                                                                     ) =>
                                                                         handleImageVariantChange(
                                                                             combo.attributes ??
-                                                                            [],
+                                                                                [],
                                                                             e
                                                                                 .target
                                                                                 .files?.[0] ??
-                                                                            null,
+                                                                                null,
                                                                         )
                                                                     }
                                                                 />
                                                                 <div className="w-[60px] h-[60px] border border-dashed rounded flex items-center justify-center">
                                                                     {combo.imageVariant ? (
                                                                         typeof combo.imageVariant ===
-                                                                            'string' ? (
+                                                                        'string' ? (
                                                                             <img
                                                                                 src={
                                                                                     combo.imageVariant
@@ -723,7 +723,7 @@ const SalesInfo = ({ onVariantsChange, productData, mode }: SalesInfoProps) => {
                                                         onChange={(e) =>
                                                             handlePriceChangeVariant(
                                                                 combo.attributes ??
-                                                                [],
+                                                                    [],
                                                                 Number(
                                                                     e.target
                                                                         .value,
@@ -740,7 +740,7 @@ const SalesInfo = ({ onVariantsChange, productData, mode }: SalesInfoProps) => {
                                                         onChange={(e) =>
                                                             handleStockChangeVariant(
                                                                 combo.attributes ??
-                                                                [],
+                                                                    [],
                                                                 Number(
                                                                     e.target
                                                                         .value,
@@ -772,8 +772,8 @@ const SalesInfo = ({ onVariantsChange, productData, mode }: SalesInfoProps) => {
                                                                         value={
                                                                             combo
                                                                                 .dimension?.[
-                                                                            dim
-                                                                                .key
+                                                                                dim
+                                                                                    .key
                                                                             ] ??
                                                                             ''
                                                                         }
@@ -786,14 +786,14 @@ const SalesInfo = ({ onVariantsChange, productData, mode }: SalesInfoProps) => {
                                                                                     .value;
                                                                             const parsed =
                                                                                 raw ===
-                                                                                    ''
+                                                                                ''
                                                                                     ? 0
                                                                                     : Number(
-                                                                                        raw,
-                                                                                    );
+                                                                                          raw,
+                                                                                      );
                                                                             handleDimensionChangeVariant(
                                                                                 combo.attributes ??
-                                                                                [],
+                                                                                    [],
                                                                                 {
                                                                                     [dim.key]:
                                                                                         parsed,
@@ -815,7 +815,7 @@ const SalesInfo = ({ onVariantsChange, productData, mode }: SalesInfoProps) => {
                                                         onChange={(e) =>
                                                             handleWeightChangeVariant(
                                                                 combo.attributes ??
-                                                                [],
+                                                                    [],
                                                                 Number(
                                                                     e.target
                                                                         .value,
