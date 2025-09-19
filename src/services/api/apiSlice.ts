@@ -9,7 +9,7 @@ import { clearCredentials, setCredentials } from '~/features/auth/authSlice';
 import { loadAuthUser } from '~/utils/authCookie';
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL_V3,
+    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
     credentials: 'include',
     prepareHeaders: (headers) => {
         const storedUser = loadAuthUser();
