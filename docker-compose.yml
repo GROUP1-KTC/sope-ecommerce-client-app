@@ -1,6 +1,8 @@
 services:
     server:
         image: pkucpkam/frontend-app:latest
+        env_file:
+            - .env
         environment:
             NODE_ENV: production
         ports:
