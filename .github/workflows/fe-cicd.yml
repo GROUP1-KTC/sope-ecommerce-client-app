@@ -94,14 +94,23 @@ jobs:
                   username: ${{ secrets.SSH_USER }}
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   script: |
-                      # Tạo thư mục lưu dữ liệu customer
-                      mkdir -p ~/frontend-app/customer_data
-                      # Pull image mới từ Docker Hub và deploy
                       cd ~/frontend-app
-                      echo "${{ secrets.DOCKER_TOKEN_SON }}" | docker login -u "${{ secrets.DOCKER_USER_SON }}" --password-stdin
-                      docker-compose pull
-                      docker-compose down
-                      docker-compose up -d
-                      echo "Deployed at $(date)" >> ~/frontend-app/deployed.log
+                      echo "Ensuring sope-ecommerce-client-app-network exists..."
+                      docker network inspect sope-ecommerce-client-app-network >/dev/null 2>&1 || \
+                        docker network create sope-ecommerce-client-app-network
+
+                      echo "Stopping and removing old container if exists..."
+                      if [ "$(docker ps -aq -f name=${{ vars.DOCKER_CONTAINER }})" ]; then
+                        docker stop ${{ vars.DOCKER_CONTAINER }} || true
+                        docker rm -f ${{ vars.DOCKER_CONTAINER }} || true
+                      fi
+
+                      echo "Pulling latest image..."
+                      docker-compose -f compose.yml pull ${{ vars.DOCKER_CONTAINER }}
+
+                      echo "Starting new container..."
+                      docker-compose -f compose.yml up -d --remove-orphans ${{ vars.DOCKER_CONTAINER }}
+                      
+                      echo "Deployment completed!"
 
                       
