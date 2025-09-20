@@ -17,8 +17,18 @@ export const shopApi = apiSlice.injectEndpoints({
         getShopId: builder.query<string, void>({
             query: () => '/shops/get-shop-id',
         }),
+        getShopMe: builder.query<any, void>({   
+            query: () => '/shops/me',
+        }),
+        updateShop: builder.mutation<any, any>({ 
+            query: (data) => ({
+                url: '/shops',
+                method: 'PATCH',
+                body: data,
+            }),
+        }),
     }),
 });
 
-export const { useCreateShopMutation, useGetShopByIdQuery, useGetShopIdQuery } =
+export const { useCreateShopMutation, useGetShopByIdQuery, useGetShopIdQuery, useGetShopMeQuery, useUpdateShopMutation } =
     shopApi;
