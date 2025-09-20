@@ -106,10 +106,10 @@ jobs:
                       fi
 
                       echo "Pulling latest image..."
-                      docker-compose -f compose.yml pull ${{ vars.DOCKER_CONTAINER }}
+                      docker-compose -f docker-compose.yml pull ${{ vars.DOCKER_CONTAINER }}
 
                       echo "Starting new container..."
-                      docker-compose -f compose.yml up -d --remove-orphans ${{ vars.DOCKER_CONTAINER }}
+                      docker-compose -f docker-compose.yml up -d --remove-orphans ${{ vars.DOCKER_CONTAINER }}
                       
                       echo "Deployment completed!"
 
