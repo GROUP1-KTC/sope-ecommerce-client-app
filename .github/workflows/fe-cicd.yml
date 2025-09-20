@@ -40,7 +40,8 @@ jobs:
                   --build-arg NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} \
                   --build-arg NEXT_PUBLIC_VERIFY_IMAGE_URL=${{ secrets.NEXT_PUBLIC_VERIFY_IMAGE_URL }} \
                   --build-arg NEXT_PUBLIC_ELASTIC_SEARCH=${{ secrets.NEXT_PUBLIC_ELASTIC_SEARCH }} \
-                  -t ${{ secrets.DOCKER_USER_SON }}/frontend-app:latest .
+                  -t ${{ vars.DOCKER_IMAGE_SON }}:${{ vars.DOCKER_TAG }} .
+                docker push ${{ vars.DOCKER_IMAGE_SON }}:${{ vars.DOCKER_TAG }}
 
             # 5. Login Docker Hub
             - name: Login to Docker Hub
@@ -48,10 +49,6 @@ jobs:
               with:
                   username: ${{ secrets.DOCKER_USER_SON }}
                   password: ${{ secrets.DOCKER_TOKEN_SON }}
-
-            # 6. Push image
-            - name: Push Docker image
-              run: docker push ${{ secrets.DOCKER_USER_SON }}/frontend-app:latest
 
             # 7. Copy docker-compose.yml to EC2
             - name: Copy docker-compose.yml to EC2
@@ -106,10 +103,10 @@ jobs:
                       fi
 
                       echo "Pulling latest image..."
-                      docker-compose -f docker-compose.yml pull ${{ vars.DOCKER_CONTAINER }}
+                      docker-compose -f docker-compose.yml pull
 
                       echo "Starting new container..."
-                      docker-compose -f docker-compose.yml up -d --remove-orphans ${{ vars.DOCKER_CONTAINER }}
+                      docker-compose -f docker-compose.yml up -d --remove-orphans
                       
                       echo "Deployment completed!"
 
