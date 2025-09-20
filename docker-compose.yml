@@ -1,5 +1,5 @@
 services:
-    client-app:
+    frontend-app:
         image: ${DOCKER_IMAGE_SON}:${DOCKER_TAG}
         container_name: ${DOCKER_CONTAINER}
         env_file:
@@ -7,11 +7,11 @@ services:
         environment:
             NODE_ENV: production
         networks:
-            - sope-ecommerce-client-app-network
+            - sope-ecommerce-frontend-app-network
         ports:
             - '3000:3000'
         restart: unless-stopped
 
 networks:
-    sope-ecommerce-client-app-network:
+    sope-ecommerce-frontend-app-network:
         external: true

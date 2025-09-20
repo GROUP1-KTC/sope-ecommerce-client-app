@@ -5,7 +5,7 @@ on:
         branches:
             - main
             - dev
-            - client-app
+            - frontend-app
 
 jobs:
     build-and-push:
@@ -99,9 +99,9 @@ jobs:
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   script: |
                       cd ~/frontend-app
-                      echo "Ensuring sope-ecommerce-client-app-network exists..."
-                      docker network inspect sope-ecommerce-client-app-network >/dev/null 2>&1 || \
-                        docker network create sope-ecommerce-client-app-network
+                      echo "Ensuring sope-ecommerce-frontend-app-network exists..."
+                      docker network inspect sope-ecommerce-frontend-app-network >/dev/null 2>&1 || \
+                        docker network create sope-ecommerce-frontend-app-network
 
                       echo "Stopping and removing old container if exists..."
                       if [ "$(docker ps -aq -f name=${{ vars.DOCKER_CONTAINER }})" ]; then
