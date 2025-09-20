@@ -31,6 +31,12 @@ jobs:
             - name: Build frontend
               run: pnpm run build
 
+            - name: Login to Docker Hub
+              uses: docker/login-action@v3
+              with:
+                username: ${{ secrets.DOCKER_USER_SON }}
+                password: ${{ secrets.DOCKER_TOKEN_SON}}
+
             # 4. Build Docker image
             - name: Build Docker image
               run: |
@@ -43,12 +49,14 @@ jobs:
                   -t ${{ vars.DOCKER_IMAGE_SON }}:${{ vars.DOCKER_TAG }} .
                 docker push ${{ vars.DOCKER_IMAGE_SON }}:${{ vars.DOCKER_TAG }}
 
-            # 5. Login Docker Hub
-            - name: Login to Docker Hub
-              uses: docker/login-action@v2
+            - name: Ensure remote dir exists
+              uses: appleboy/ssh-action@v0.1.7
               with:
-                  username: ${{ secrets.DOCKER_USER_SON }}
-                  password: ${{ secrets.DOCKER_TOKEN_SON }}
+                host: ${{ secrets.SSH_HOST }}
+                username: ${{ secrets.SSH_USER }}
+                key: ${{ secrets.SSH_PRIVATE_KEY }}
+                script: |
+                  mkdir -p ~/frontend-app
 
             # 7. Copy docker-compose.yml to EC2
             - name: Copy docker-compose.yml to EC2
@@ -57,7 +65,7 @@ jobs:
                   host: ${{ secrets.SSH_HOST }}
                   username: ${{ secrets.SSH_USER }}
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
-                  source: 'docker-compose.yml'
+                  source: docker-compose.yml
                   target: ~/frontend-app
 
             - name: Copy .env file to server
@@ -76,7 +84,6 @@ jobs:
                   NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
                   NEXT_PUBLIC_VERIFY_IMAGE_URL=${{ secrets.NEXT_PUBLIC_VERIFY_IMAGE_URL }}
                   NEXT_PUBLIC_ELASTIC_SEARCH=${{ secrets.NEXT_PUBLIC_ELASTIC_SEARCH }}
-
                   EOF
                   chmod 600 ~/frontend-app/.env
 
@@ -103,10 +110,10 @@ jobs:
                       fi
 
                       echo "Pulling latest image..."
-                      docker-compose -f docker-compose.yml pull
+                      docker-compose -f docker-compose.yml pull ${{ vars.DOCKER_CONTAINER }}
 
                       echo "Starting new container..."
-                      docker-compose -f docker-compose.yml up -d --remove-orphans
+                      docker-compose -f docker-compose.yml up -d --remove-orphans ${{ vars.DOCKER_CONTAINER }}
                       
                       echo "Deployment completed!"
 
