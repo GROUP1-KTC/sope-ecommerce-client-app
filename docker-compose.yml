@@ -1,10 +1,17 @@
 services:
-    server:
-        image: pkucpkam/frontend-app:latest
+    client-app:
+        image: ${DOCKER_IMAGE_SON}:${DOCKER_TAG}
+        container_name: ${DOCKER_CONTAINER}
         env_file:
             - .env
         environment:
             NODE_ENV: production
+        networks:
+            - sope-ecommerce-client-app-network
         ports:
             - '3000:3000'
         restart: unless-stopped
+
+networks:
+    sope-ecommerce-client-app-network:
+        external: true

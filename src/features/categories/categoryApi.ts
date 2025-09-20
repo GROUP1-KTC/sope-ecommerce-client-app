@@ -13,6 +13,18 @@ export const categoryApi = apiSlice.injectEndpoints({
                 credentials: 'omit',
             }),
             providesTags: ['Category'],
+            async onQueryStarted(_, { queryFulfilled }) {
+                console.log(
+                    '🚀 Fetching categories from URL:',
+                    `${process.env.NEXT_PUBLIC_API_URL}/v1/categories`,
+                );
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log('✅ categoriesData:', data);
+                } catch (err) {
+                    console.error('❌ Failed to fetch categories:', err);
+                }
+            },
         }),
         getProductsByCategory: builder.query<
             PageResponse<ProductSummary>,
