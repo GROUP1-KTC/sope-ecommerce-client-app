@@ -3,8 +3,19 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Image from 'next/image';
 import QuickMenu from './QuickMenu';
 import CustomLink from '~/components/shared/loading/CustomLink';
+import { useEffect, useState } from 'react';
+import { loadAuthUser } from '~/utils/authCookie';
 
 export default function SellerHeaderHome() {
+
+    const [username, setUsername] = useState<string | null>(null);
+
+    useEffect(() => {
+        const storedUser = loadAuthUser();
+        if (storedUser) {
+            setUsername(storedUser.username);
+        }
+    }, []);
     return (
         <header className="flex justify-between items-center p-2 px-10 bg-white shadow">
             <div className="flex items-center justify-between gap-2 text-lg font-semibold">
@@ -25,7 +36,7 @@ export default function SellerHeaderHome() {
 
                 <div className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer transition">
                     <AccountCircleIcon />
-                    <span className="text-sm font-medium">haicute</span>
+                    <span className="text-sm font-medium">{username}</span>
                 </div>
             </div>
         </header>

@@ -9,6 +9,7 @@ import { OnNewMessage } from '~/services/socket/events/message';
 import { useGetConversationByIdQuery } from '~/features/chat/conversation/ConversationApi';
 import type { Message } from '~/types/chat';
 import { loadAuthUser } from '~/utils/authCookie';
+import FormattedMessage from './FormattedMessage';
 
 interface ChatMessagesProps {
     conversationId: string | null;
@@ -137,7 +138,7 @@ const ChatMessages = ({ conversationId }: ChatMessagesProps) => {
                                 {msg.fileUrl ? (
                                     <MessageTypeFile {...msg} />
                                 ) : (
-                                    <Typography>{msg.content}</Typography>
+                                    <FormattedMessage content={msg.content} />
                                 )}
                                 <Typography
                                     variant="caption"
