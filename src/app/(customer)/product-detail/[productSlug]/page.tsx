@@ -158,15 +158,6 @@ const ProductBySlug = () => {
                 stock={displayedStock}
             />
 
-            {sellerInfo && <SellerInfo sellerInfo={sellerInfo} />}
-
-            {suggestedProducts && suggestedProducts.length > 0 && (
-                <ProductList
-                    title="Sản phẩm gợi ý"
-                    products={suggestedProducts}
-                />
-            )}
-
             <ProductDescription
                 productDetail={{
                     description: product.description ?? '',
@@ -183,6 +174,16 @@ const ProductBySlug = () => {
                     breadcrumb?.map((cat) => cat.name).join(' › ') ?? ''
                 }
             />
+
+            {sellerInfo && <SellerInfo sellerInfo={sellerInfo} />}
+
+            {suggestedProducts && suggestedProducts.length > 0 && (
+                <ProductList
+                    title="Sản phẩm gợi ý"
+                    products={suggestedProducts}
+                />
+            )}
+
 
             {similarProducts && similarProducts.length > 0 && (
                 <ProductList

@@ -32,7 +32,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
             : reviews.filter((r) => r.rating === selectedFilter);
 
     return (
-        <div className="border border-gray-200 mx-auto p-6 bg-white rounded-lg mt-4">
+        <div className="border border-gray-200 mx-auto w-[95%] p-6 bg-white rounded-lg mt-4">
             <h2 className="uppercase text-xl font-semibold text-gray-900 mb-4">
                 Đánh Giá Sản Phẩm
             </h2>
