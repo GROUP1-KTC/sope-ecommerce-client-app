@@ -34,13 +34,13 @@ jobs:
             # 4. Build Docker image
             - name: Build Docker image
               run: |
-                docker build --no-cache \
-                  --build-arg NEXT_PUBLIC_SOCKET_BASE_URL=${{ secrets.NEXT_PUBLIC_SOCKET_BASE_URL }} \
-                  --build-arg NEXT_PUBLIC_LIVEKIT_WS_URL=${{ secrets.NEXT_PUBLIC_LIVEKIT_WS_URL }} \
-                  --build-arg NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} \
-                  --build-arg NEXT_PUBLIC_VERIFY_IMAGE_URL=${{ secrets.NEXT_PUBLIC_VERIFY_IMAGE_URL }} \
-                  --build-arg NEXT_PUBLIC_ELASTIC_SEARCH=${{ secrets.NEXT_PUBLIC_ELASTIC_SEARCH }} \
-                  -t ${{ secrets.DOCKER_USERNAME }}/frontend-app:latest .
+                  docker build --no-cache \
+                    --build-arg NEXT_PUBLIC_SOCKET_BASE_URL=${{ secrets.NEXT_PUBLIC_SOCKET_BASE_URL }} \
+                    --build-arg NEXT_PUBLIC_LIVEKIT_WS_URL=${{ secrets.NEXT_PUBLIC_LIVEKIT_WS_URL }} \
+                    --build-arg NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} \
+                    --build-arg NEXT_PUBLIC_VERIFY_IMAGE_URL=${{ secrets.NEXT_PUBLIC_VERIFY_IMAGE_URL }} \
+                    --build-arg NEXT_PUBLIC_ELASTIC_SEARCH=${{ secrets.NEXT_PUBLIC_ELASTIC_SEARCH }} \
+                    -t ${{ secrets.DOCKER_USERNAME }}/frontend-app:latest .
 
             # 5. Login Docker Hub
             - name: Login to Docker Hub
@@ -66,21 +66,21 @@ jobs:
             - name: Copy .env file to server
               uses: appleboy/ssh-action@v0.1.7
               with:
-                host: ${{ secrets.EC2_HOST }}
-                username: ${{ secrets.EC2_USER }}
-                key: ${{ secrets.EC2_SSH_KEY }}
-                script: |
-                  cat > ~/frontend-app/.env << EOF
-                  DOCKER_IMAGE_SON=${{ vars.DOCKER_IMAGE_SON }}
-                  DOCKER_TAG=${{ vars.DOCKER_TAG }}
-                  DOCKER_CONTAINER=${{ vars.DOCKER_CONTAINER }}
-                  NEXT_PUBLIC_SOCKET_BASE_URL=${{ secrets.NEXT_PUBLIC_SOCKET_BASE_URL }}
-                  NEXT_PUBLIC_LIVEKIT_WS_URL=${{ secrets.NEXT_PUBLIC_LIVEKIT_WS_URL }}
-                  NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
-                  NEXT_PUBLIC_VERIFY_IMAGE_URL=${{ secrets.NEXT_PUBLIC_VERIFY_IMAGE_URL }}
-                  NEXT_PUBLIC_ELASTIC_SEARCH=${{ secrets.NEXT_PUBLIC_ELASTIC_SEARCH }}
-                  EOF
-                  chmod 600 ~/frontend-app/.env
+                  host: ${{ secrets.EC2_HOST }}
+                  username: ${{ secrets.EC2_USER }}
+                  key: ${{ secrets.EC2_SSH_KEY }}
+                  script: |
+                      cat > ~/frontend-app/.env << EOF
+                      DOCKER_IMAGE_SON=${{ vars.DOCKER_IMAGE_SON }}
+                      DOCKER_TAG=${{ vars.DOCKER_TAG }}
+                      DOCKER_CONTAINER=${{ vars.DOCKER_CONTAINER }}
+                      NEXT_PUBLIC_SOCKET_BASE_URL=${{ secrets.NEXT_PUBLIC_SOCKET_BASE_URL }}
+                      NEXT_PUBLIC_LIVEKIT_WS_URL=${{ secrets.NEXT_PUBLIC_LIVEKIT_WS_URL }}
+                      NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+                      NEXT_PUBLIC_VERIFY_IMAGE_URL=${{ secrets.NEXT_PUBLIC_VERIFY_IMAGE_URL }}
+                      NEXT_PUBLIC_ELASTIC_SEARCH=${{ secrets.NEXT_PUBLIC_ELASTIC_SEARCH }}
+                      EOF
+                      chmod 600 ~/frontend-app/.env
 
     deploy:
         runs-on: ubuntu-latest
@@ -102,5 +102,3 @@ jobs:
                       docker-compose down
                       docker-compose up -d
                       echo "Deployed at $(date)" >> ~/frontend-app/deployed.log
-
-                      

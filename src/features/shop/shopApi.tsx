@@ -17,10 +17,10 @@ export const shopApi = apiSlice.injectEndpoints({
         getShopId: builder.query<string, void>({
             query: () => '/shops/get-shop-id',
         }),
-        getShopMe: builder.query<any, void>({   
+        getShopMe: builder.query<any, void>({
             query: () => '/shops/me',
         }),
-        updateShop: builder.mutation<any, any>({ 
+        updateShop: builder.mutation<any, any>({
             query: (data) => ({
                 url: '/shops',
                 method: 'PATCH',
@@ -30,5 +30,10 @@ export const shopApi = apiSlice.injectEndpoints({
     }),
 });
 
-export const { useCreateShopMutation, useGetShopByIdQuery, useGetShopIdQuery, useGetShopMeQuery, useUpdateShopMutation } =
-    shopApi;
+export const {
+    useCreateShopMutation,
+    useGetShopByIdQuery,
+    useGetShopIdQuery,
+    useGetShopMeQuery,
+    useUpdateShopMutation,
+} = shopApi;

@@ -1,12 +1,10 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import Image from 'next/image';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ChevronDown } from 'lucide-react';
 import type { ProductSummary } from '~/types/products';
-import CustomLink from '../shared/loading/CustomLink';
 import ProductCard from '../product-detail/ProductCard';
 
 interface ProductListProps {
@@ -44,10 +42,11 @@ const ProductList: React.FC<ProductListProps> = ({
             <div className="flex items-center gap-2 mb-4 relative">
                 {/* Nút mặc định */}
                 <button
-                    className={`px-4 py-2 rounded cursor-pointer border text-sm font-medium ${sort === 'default'
-                        ? 'bg-red-500 text-white border-red-500'
-                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
-                        }`}
+                    className={`px-4 py-2 rounded cursor-pointer border text-sm font-medium ${
+                        sort === 'default'
+                            ? 'bg-red-500 text-white border-red-500'
+                            : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                    }`}
                     onClick={() => setSort('default')}
                 >
                     Mặc định
@@ -55,10 +54,11 @@ const ProductList: React.FC<ProductListProps> = ({
 
                 {/* Nút bán chạy */}
                 <button
-                    className={`px-4 py-2 rounded cursor-pointer border text-sm font-medium ${sort === 'bestseller'
-                        ? 'bg-red-500 text-white border-red-500'
-                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
-                        }`}
+                    className={`px-4 py-2 rounded cursor-pointer border text-sm font-medium ${
+                        sort === 'bestseller'
+                            ? 'bg-red-500 text-white border-red-500'
+                            : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                    }`}
                     onClick={() => setSort('bestseller')}
                 >
                     Bán chạy
@@ -67,29 +67,32 @@ const ProductList: React.FC<ProductListProps> = ({
                 {/* Dropdown giá */}
                 <div className="relative group">
                     <button
-                        className={`px-4 py-2 rounded cursor-pointer border text-sm font-medium min-w-[150px] flex items-center justify-between ${sort.includes('price')
-                            ? 'bg-red-500 text-white border-red-500'
-                            : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
-                            }`}
+                        className={`px-4 py-2 rounded cursor-pointer border text-sm font-medium min-w-[150px] flex items-center justify-between ${
+                            sort.includes('price')
+                                ? 'bg-red-500 text-white border-red-500'
+                                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                        }`}
                     >
                         <span>Giá</span>
                         <ChevronDown className="w-4 h-4" />
                     </button>
                     <div className="absolute left-0 top-full  hidden group-hover:block bg-white border rounded shadow-md z-10 min-w-[150px]">
                         <button
-                            className={`block w-full text-left px-4 py-2 text-sm ${sort === 'price_asc'
-                                ? 'bg-red-100 text-red-600'
-                                : 'hover:bg-gray-100'
-                                }`}
+                            className={`block w-full text-left px-4 py-2 text-sm ${
+                                sort === 'price_asc'
+                                    ? 'bg-red-100 text-red-600'
+                                    : 'hover:bg-gray-100'
+                            }`}
                             onClick={() => setSort('price_asc')}
                         >
                             Thấp đến cao
                         </button>
                         <button
-                            className={`block w-full text-left px-4 py-2 text-sm ${sort === 'price_desc'
-                                ? 'bg-red-100 text-red-600'
-                                : 'hover:bg-gray-100'
-                                }`}
+                            className={`block w-full text-left px-4 py-2 text-sm ${
+                                sort === 'price_desc'
+                                    ? 'bg-red-100 text-red-600'
+                                    : 'hover:bg-gray-100'
+                            }`}
                             onClick={() => setSort('price_desc')}
                         >
                             Cao đến thấp
@@ -123,7 +126,6 @@ const ProductList: React.FC<ProductListProps> = ({
                     <ProductCard key={product.productId} product={product} />
                 ))}
             </div>
-
         </div>
     );
 };

@@ -3,10 +3,8 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
-import { ChevronRight } from 'lucide-react';
 import SmsIcon from '@mui/icons-material/Sms';
 import ProductList from '~/components/product-list/ProductList';
-
 import { useGetShopByIdQuery } from '~/features/shop/shopApi';
 import { useAppDispatch } from '~/hooks/useTypes';
 import { setSelectedConversationId } from '~/features/chat/chatSlice';
@@ -118,8 +116,10 @@ const ShopPage: React.FC = () => {
                 </div>
             </div>
 
-            <ProductListLine title="Gợi ý cho bạn" products={suggestedProducts} />
-
+            <ProductListLine
+                title="Gợi ý cho bạn"
+                products={suggestedProducts}
+            />
 
             {/* Shop Description */}
             <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">

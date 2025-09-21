@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { loadAuthUser } from '~/utils/authCookie';
 
 export default function SellerHeaderHome() {
-
     const [username, setUsername] = useState<string | null>(null);
 
     useEffect(() => {

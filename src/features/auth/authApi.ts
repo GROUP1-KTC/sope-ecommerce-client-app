@@ -64,7 +64,10 @@ export const authApi = apiSlice.injectEndpoints({
                 body,
             }),
         }),
-        sendForgotPasswordOtp: builder.mutation<ServerResponse<string>, EmailRequest>({
+        sendForgotPasswordOtp: builder.mutation<
+            ServerResponse<string>,
+            EmailRequest
+        >({
             query: (body) => ({
                 url: '/auth/forgot-password',
                 method: 'POST',
@@ -72,14 +75,16 @@ export const authApi = apiSlice.injectEndpoints({
             }),
         }),
 
-        resetPassword: builder.mutation<ServerResponse<string>, ResetPasswordRequest>({
+        resetPassword: builder.mutation<
+            ServerResponse<string>,
+            ResetPasswordRequest
+        >({
             query: (body) => ({
                 url: '/auth/reset-password',
                 method: 'POST',
                 body,
             }),
         }),
-
     }),
     overrideExisting: false,
 });

@@ -3,7 +3,10 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import CustomLink from '~/components/shared/loading/CustomLink';
-import { useResetPasswordMutation, useSendForgotPasswordOtpMutation } from '~/features/auth/authApi';
+import {
+    useResetPasswordMutation,
+    useSendForgotPasswordOtpMutation,
+} from '~/features/auth/authApi';
 import { useAlertStore } from '~/store/zustand/alertStore';
 import { useRouter } from 'next/navigation';
 const RecoverPassword = () => {
@@ -34,7 +37,8 @@ const RecoverPassword = () => {
         switch (name) {
             case 'email':
                 if (!value) error = 'Email is required';
-                else if (!emailRegex.test(value)) error = 'Invalid email format';
+                else if (!emailRegex.test(value))
+                    error = 'Invalid email format';
                 break;
         }
         return error;
@@ -51,7 +55,9 @@ const RecoverPassword = () => {
         setErrors((prev) => ({ ...prev, [e.target.name]: '' }));
     };
 
-    const forgotPasswordHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    const forgotPasswordHandler = async (
+        e: React.FormEvent<HTMLFormElement>,
+    ) => {
         e.preventDefault();
 
         const newErrors = {
@@ -70,7 +76,8 @@ const RecoverPassword = () => {
     };
 
     const handleSendOtp = async () => {
-        if (!input.email) return setErrors({ email: 'Email không được để trống' });
+        if (!input.email)
+            return setErrors({ email: 'Email không được để trống' });
         setLoading(true);
         try {
             await sendOtp({ email: input.email }).unwrap();
@@ -86,11 +93,15 @@ const RecoverPassword = () => {
         if (!otp || !input.password) return;
         setLoading(true);
         try {
-            await resetPassword({ email: input.email, otp, newPassword: input.password }).unwrap();
+            await resetPassword({
+                email: input.email,
+                otp,
+                newPassword: input.password,
+            }).unwrap();
             useAlertStore.getState().showAlert({
-                            severity: 'success',
-                            message: 'Đổi mật khẩu thành công!',
-                        });
+                severity: 'success',
+                message: 'Đổi mật khẩu thành công!',
+            });
             setStep('email');
             setInput({ email: '', password: '' });
             setOtp('');
@@ -138,7 +149,9 @@ const RecoverPassword = () => {
                                                 className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 rounded-md outline-blue-600"
                                                 placeholder="Enter OTP"
                                                 value={otp}
-                                                onChange={(e) => setOtp(e.target.value)}
+                                                onChange={(e) =>
+                                                    setOtp(e.target.value)
+                                                }
                                             />
                                         </div>
 
@@ -163,14 +176,29 @@ const RecoverPassword = () => {
                                             className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer flex justify-center items-center gap-2"
                                         >
                                             {loading && (
-                                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                                <svg
+                                                    className="animate-spin h-5 w-5 text-white"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <circle
+                                                        className="opacity-25"
+                                                        cx="12"
+                                                        cy="12"
+                                                        r="10"
+                                                        stroke="currentColor"
+                                                        strokeWidth="4"
+                                                    ></circle>
+                                                    <path
+                                                        className="opacity-75"
+                                                        fill="currentColor"
+                                                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                                                    ></path>
                                                 </svg>
                                             )}
                                             Reset Password
                                         </button>
-
 
                                         <span className="text-slate-900 text-sm !mt-6 text-center block">
                                             Nhập sai email?{' '}
@@ -184,7 +212,10 @@ const RecoverPassword = () => {
                                         </span>
                                     </div>
                                 ) : (
-                                    <form onSubmit={forgotPasswordHandler} className="mt-6 space-y-6">
+                                    <form
+                                        onSubmit={forgotPasswordHandler}
+                                        className="mt-6 space-y-6"
+                                    >
                                         <div>
                                             <label className="text-slate-900 text-sm font-medium mb-2 block">
                                                 Email
@@ -197,7 +228,9 @@ const RecoverPassword = () => {
                                                     className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
                                                     placeholder="Enter email"
                                                     value={input.email}
-                                                    onChange={changeEventHandler}
+                                                    onChange={
+                                                        changeEventHandler
+                                                    }
                                                     onBlur={handleBlur}
                                                 />
                                                 <svg
@@ -207,12 +240,18 @@ const RecoverPassword = () => {
                                                     className="w-4 h-4 absolute right-4"
                                                     viewBox="0 0 24 24"
                                                 >
-                                                    <circle cx="10" cy="7" r="6"></circle>
+                                                    <circle
+                                                        cx="10"
+                                                        cy="7"
+                                                        r="6"
+                                                    ></circle>
                                                     <path d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z"></path>
                                                 </svg>
                                             </div>
                                             {errors.email && (
-                                                <p className="text-red-500 text-sm mt-3">{errors.email}</p>
+                                                <p className="text-red-500 text-sm mt-3">
+                                                    {errors.email}
+                                                </p>
                                             )}
                                         </div>
 
@@ -224,14 +263,29 @@ const RecoverPassword = () => {
                                                 className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer flex justify-center items-center gap-2"
                                             >
                                                 {loading && (
-                                                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                                    <svg
+                                                        className="animate-spin h-5 w-5 text-white"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <circle
+                                                            className="opacity-25"
+                                                            cx="12"
+                                                            cy="12"
+                                                            r="10"
+                                                            stroke="currentColor"
+                                                            strokeWidth="4"
+                                                        ></circle>
+                                                        <path
+                                                            className="opacity-75"
+                                                            fill="currentColor"
+                                                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                                                        ></path>
                                                     </svg>
                                                 )}
                                                 Send me a reset password email
                                             </button>
-
                                         </div>
 
                                         <span className="text-slate-900 text-sm !mt-6 text-center w-full block">
