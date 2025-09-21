@@ -39,7 +39,7 @@ const ProductListLine = ({
 
     return (
         <div className="w-[95%] mx-auto flex justify-center py-4">
-            <div className="bg-white rounded-xl shadow p-6 max-w-6xl w-full relative overflow-visible">
+            <div className="bg-white rounded-xl shadow px-6 max-w-6xl w-full relative overflow-visible">
                 <div className="flex items-center mb-1 justify-between pb-2">
                     <h2 className="uppercase text-xl font-semibold text-gray-800">
                         {title}
@@ -47,7 +47,7 @@ const ProductListLine = ({
                 </div>
                 <hr className="mb-4 border-gray-300" />
 
-                <div className="relative group">
+                <div className="relative group overflow-visible">
                     <button
                         className={`absolute -left-11 top-1/2 -translate-y-1/2 z-10 
                                    bg-white rounded-full shadow p-2 transition-all duration-200
@@ -62,6 +62,7 @@ const ProductListLine = ({
                         ref={scrollRef}
                         className="flex gap-4 overflow-x-auto scroll-smooth 
                                    [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+                        style={{ overflow: 'visible', paddingBottom: '1rem' }}
                     >
                         {products.map((product) => (
                             <div
