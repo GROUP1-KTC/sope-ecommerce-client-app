@@ -63,6 +63,25 @@ jobs:
                   source: 'docker-compose.yml'
                   target: ~/frontend-app
 
+            - name: Copy .env file to server
+              uses: appleboy/ssh-action@v0.1.7
+              with:
+                host: ${{ secrets.EC2_HOST }}
+                username: ${{ secrets.EC2_USER }}
+                key: ${{ secrets.EC2_SSH_KEY }}
+                script: |
+                  cat > ~/frontend-app/.env << EOF
+                  DOCKER_IMAGE_SON=${{ vars.DOCKER_IMAGE_SON }}
+                  DOCKER_TAG=${{ vars.DOCKER_TAG }}
+                  DOCKER_CONTAINER=${{ vars.DOCKER_CONTAINER }}
+                  NEXT_PUBLIC_SOCKET_BASE_URL=${{ secrets.NEXT_PUBLIC_SOCKET_BASE_URL }}
+                  NEXT_PUBLIC_LIVEKIT_WS_URL=${{ secrets.NEXT_PUBLIC_LIVEKIT_WS_URL }}
+                  NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+                  NEXT_PUBLIC_VERIFY_IMAGE_URL=${{ secrets.NEXT_PUBLIC_VERIFY_IMAGE_URL }}
+                  NEXT_PUBLIC_ELASTIC_SEARCH=${{ secrets.NEXT_PUBLIC_ELASTIC_SEARCH }}
+                  EOF
+                  chmod 600 ~/frontend-app/.env
+
     deploy:
         runs-on: ubuntu-latest
         needs: build-and-push
