@@ -17,7 +17,7 @@ const ChatFloatButton = () => {
 
     const handleFabClick = () => {
         setOpenChat(true);
-        setShowHint(false); 
+        setShowHint(false);
     };
 
     useEffect(() => {
@@ -26,8 +26,8 @@ const ChatFloatButton = () => {
 
             const interval = setInterval(() => {
                 setShowHint(true);
-                setTimeout(() => setShowHint(false), 4000); 
-            }, 10000); 
+                setTimeout(() => setShowHint(false), 4000);
+            }, 10000);
 
             return () => {
                 clearTimeout(timer);

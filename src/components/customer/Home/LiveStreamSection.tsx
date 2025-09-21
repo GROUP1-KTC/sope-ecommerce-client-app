@@ -38,7 +38,7 @@ const LiveStreamSection: React.FC<LiveStreamSectionProps> = () => {
                 );
                 if (res.ok) {
                     const json = await res.json();
-                    
+
                     console.log('📺 Active streams response:', json);
                     const activeStreams: LiveStream[] = json.data;
 
