@@ -131,7 +131,6 @@ const ShopPage: React.FC = () => {
                 </p>
             </div>
 
-            {/* All Products */}
             <div
                 id="all-products"
                 className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm"
@@ -147,7 +146,6 @@ const ShopPage: React.FC = () => {
                 />
             </div>
 
-            {/* Chat Dialog */}
             <ChatDialog open={openChat} onClose={() => setOpenChat(false)} />
         </div>
     );

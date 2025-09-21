@@ -20,6 +20,8 @@ import {
     ErrorMessage,
     LoadingMessage,
 } from '~/components/shared/loading/FeedBack';
+import ProductDescription from '~/components/product-detail/ProductDescription';
+import SellerInfo from '~/components/product-detail/SellerInfo';
 
 const ProductBySlug = () => {
     const params = useParams();
@@ -99,6 +101,18 @@ const ProductBySlug = () => {
     const displayedPrice = selectedVariant?.price ?? minPrice;
     const displayedStock = selectedVariant?.stock;
 
+    const sellerInfo = product?.shop
+        ? {
+              id: product.shop.id,
+              name: product.shop.name,
+              description: product.shop.description || '',
+              lastestTimeOnline: 'Đang online',
+              shopAvatar: product.shop.logoUrl || '/default-avatar.png',
+              numOfReviews: 0,
+              numOfProducts: product.variants?.length || 0,
+          }
+        : null;
+
     if (isLoading) return <LoadingMessage message="Đang tải sản phẩm..." />;
     if (isError) return <ErrorMessage message="Sản phẩm này không tồn tại." />;
     if (!product) return <EmptyMessage message="Không tìm thấy sản phẩm." />;
@@ -144,12 +158,31 @@ const ProductBySlug = () => {
                 stock={displayedStock}
             />
 
+            {sellerInfo && <SellerInfo sellerInfo={sellerInfo} />}
+
             {suggestedProducts && suggestedProducts.length > 0 && (
                 <ProductList
                     title="Sản phẩm gợi ý"
                     products={suggestedProducts}
                 />
             )}
+
+            <ProductDescription
+                productDetail={{
+                    description: product.description ?? '',
+                    features:
+                        product.productDetails?.reduce(
+                            (acc, detail) => {
+                                acc[detail.label] = detail.data;
+                                return acc;
+                            },
+                            {} as Record<string, string>,
+                        ) ?? {},
+                }}
+                breadcrumb={
+                    breadcrumb?.map((cat) => cat.name).join(' › ') ?? ''
+                }
+            />
 
             {similarProducts && similarProducts.length > 0 && (
                 <ProductList

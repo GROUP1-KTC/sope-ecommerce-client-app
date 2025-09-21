@@ -38,9 +38,7 @@ const ProductList: React.FC<ProductListProps> = ({
 
     return (
         <div className="flex-1">
-            {/* Sorting */}
             <div className="flex items-center gap-2 mb-4 relative">
-                {/* Nút mặc định */}
                 <button
                     className={`px-4 py-2 rounded cursor-pointer border text-sm font-medium ${
                         sort === 'default'
@@ -52,7 +50,6 @@ const ProductList: React.FC<ProductListProps> = ({
                     Mặc định
                 </button>
 
-                {/* Nút bán chạy */}
                 <button
                     className={`px-4 py-2 rounded cursor-pointer border text-sm font-medium ${
                         sort === 'bestseller'
@@ -64,7 +61,6 @@ const ProductList: React.FC<ProductListProps> = ({
                     Bán chạy
                 </button>
 
-                {/* Dropdown giá */}
                 <div className="relative group">
                     <button
                         className={`px-4 py-2 rounded cursor-pointer border text-sm font-medium min-w-[150px] flex items-center justify-between ${

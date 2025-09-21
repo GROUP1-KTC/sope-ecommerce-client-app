@@ -1,5 +1,3 @@
-// TEST PRODUCT + CATEGORY (AI LÀM USER THÌ SỬA SAU NHA)
-
 import type { Gender } from './enum/gender';
 import type { Shop } from './shop';
 

@@ -1,98 +1,86 @@
 import Image from 'next/image';
 
-// Hàm định dạng số lượng lớn thành dạng ngắn gọn
-const formatNumber = (num: number): string => {
-    if (num >= 1000) {
-        return (num / 1000).toFixed(1).replace('.0', '') + 'k';
-    }
-    return num.toString();
-};
+import SmsIcon from '@mui/icons-material/Sms';
+import CustomLink from '../shared/loading/CustomLink';
+import { HomeIcon } from 'lucide-react';
 
 interface SellerInfoProps {
     sellerInfo: {
+        id: string;
         name: string;
+        description: string;
         lastestTimeOnline: string;
         shopAvatar: string;
         numOfReviews: number;
-        responseRate: number;
-        responseTime: string;
-        timeActive: string;
         numOfProducts: number;
-        numOfFollowers: number;
     };
+    onChatClick?: () => void;
 }
 
-const SellerInfo = ({ sellerInfo }: SellerInfoProps) => {
+const SellerInfo = ({ sellerInfo, onChatClick }: SellerInfoProps) => {
     return (
-        <div className="flex items-center bg-white border border-gray-200 rounded-xl p-6 mt-4 transition-all duration-300">
-            {/* Logo + Tên Shop */}
+        <div className="flex flex-col w-[95%] mx-auto bg-white mt-4 p-4 rounded-xl border border-gray-100 shadow-sm gap-6">
             <div className="flex items-center gap-6">
-                <Image
-                    src={sellerInfo.shopAvatar}
-                    alt={` Logo`}
-                    width={64}
-                    height={64}
-                    className="rounded-full border-2 border-gray-200 object-cover"
-                />
-                <div className="space-y-1">
-                    <h2 className="text-lg font-bold text-gray-900">
+                <div className="w-32 h-32 overflow-hidden rounded-full border border-gray-200 flex-shrink-0">
+                    <Image
+                        src={sellerInfo.shopAvatar || '/default-avatar.png'}
+                        alt="Shop Logo"
+                        width={200}
+                        height={200}
+                        className="w-full h-full object-cover"
+                    />
+                </div>
+
+                <div className="flex-1 space-y-3">
+                    <h2 className="text-2xl font-bold text-gray-800">
                         {sellerInfo.name}
                     </h2>
-                    <p className="text-xs text-gray-400">
-                        {sellerInfo.lastestTimeOnline}
+                    <p className="text-sm text-gray-600">
+                        {sellerInfo.description}
                     </p>
                     <div className="flex gap-3 mt-2">
-                        <button className="flex items-center text-red-600 border border-red-600 px-4 py-1.5 text-sm rounded-lg hover:bg-red-50 hover:text-red-700 transition-colors">
-                            🛎️ Chat Ngay
+                        <button
+                            onClick={onChatClick}
+                            className="flex items-center px-4 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition gap-2 cursor-pointer"
+                        >
+                            Chat <SmsIcon style={{ fontSize: 18 }} />
                         </button>
-                        <button className="flex items-center border border-gray-300 px-4 py-1.5 text-sm rounded-lg hover:bg-gray-50 transition-colors">
-                            🏬 Xem Shop
-                        </button>
+
+                        <CustomLink
+                            href={`/shop/${sellerInfo.id}`}
+                            className="flex items-center border border-gray-300 px-4 py-1 text-sm rounded-lg hover:bg-gray-300 transition-colors"
+                        >
+                            Xem Shop <HomeIcon className="w-4 h-4 ml-1" />
+                        </CustomLink>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-gray-700">
+                    <div>
+                        Sản phẩm:{' '}
+                        <span className="font-semibold text-red-500">
+                            {sellerInfo.numOfProducts}
+                        </span>
+                    </div>
+                    <div>
+                        Đánh giá:{' '}
+                        <span className="font-semibold text-red-500">
+                            {sellerInfo.numOfReviews} (0)
+                        </span>
+                    </div>
+                    <div>
+                        Tham gia:{' '}
+                        <span className="font-semibold">0 tháng trước</span>
+                    </div>
+                    <div>
+                        Tỉ lệ phản hồi:{' '}
+                        <span className="font-semibold">0%</span>
                     </div>
                 </div>
             </div>
 
-            {/* Divider */}
-            <div className="mx-8 h-24 border-l border-gray-200" />
-
-            {/* Thông tin shop */}
-            <div className="flex-1 grid grid-cols-3 gap-y-3 text-sm text-gray-600">
-                <div className="space-y-1">
-                    <div>Đánh Giá</div>
-                    <div className="text-red-600 font-semibold">
-                        {formatNumber(sellerInfo.numOfReviews)}
-                    </div>
-                </div>
-                <div className="space-y-1">
-                    <div>Tỉ Lệ Phản Hồi</div>
-                    <div className="text-red-600 font-semibold">
-                        {sellerInfo.responseRate}%
-                    </div>
-                </div>
-                <div className="space-y-1">
-                    <div>Tham Gia</div>
-                    <div className="text-red-600 font-semibold">
-                        {sellerInfo.timeActive}
-                    </div>
-                </div>
-                <div className="space-y-1">
-                    <div>Sản Phẩm</div>
-                    <div className="text-red-600 font-semibold">
-                        {sellerInfo.numOfProducts}
-                    </div>
-                </div>
-                <div className="space-y-1">
-                    <div>Thời Gian Phản Hồi</div>
-                    <div className="text-red-600 font-semibold">
-                        {sellerInfo.responseTime}
-                    </div>
-                </div>
-                <div className="space-y-1">
-                    <div>Người Theo Dõi</div>
-                    <div className="text-red-600 font-semibold">
-                        {formatNumber(sellerInfo.numOfFollowers)}
-                    </div>
-                </div>
+            <div className="bg-white p-4 rounded-lg text-gray-700 text-md">
+                {sellerInfo.description || 'Cửa hàng chưa có mô tả chi tiết.'}
             </div>
         </div>
     );

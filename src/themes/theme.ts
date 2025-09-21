@@ -4,18 +4,18 @@ const theme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-            main: '#1976d2', // Màu xanh blue chuẩn của MUI
+            main: '#1976d2',
         },
         secondary: {
-            main: '#ffffff', // Trắng
+            main: '#ffffff',
         },
         background: {
-            default: '#f5faff', // Nền sáng xanh nhạt
-            paper: '#ffffff', // Nền component trắng
+            default: '#f5faff',
+            paper: '#ffffff',
         },
         text: {
-            primary: '#0d47a1', // Xanh đậm cho chữ chính
-            secondary: '#555', // Màu phụ
+            primary: '#0d47a1',
+            secondary: '#555',
         },
     },
     typography: {
