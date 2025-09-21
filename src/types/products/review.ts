@@ -12,4 +12,5 @@ export interface Review {
     videoReviewUrl?: string;
     createdAt: string;
     updatedAt?: string;
+    sentiment?: 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
 }

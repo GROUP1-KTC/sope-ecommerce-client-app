@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 import type { Attribute } from '~/types/products';
 import type { ReviewMedia } from '~/types/products/review_media';
+import { Sentiment } from '~/types/sentiment';
 
 interface CommentProps {
     avatar: string;
@@ -12,6 +13,7 @@ interface CommentProps {
     videoReviewUrl?: string;
     mediaList?: ReviewMedia[];
     attributes?: Attribute[];
+    sentiment?: Sentiment;
 }
 
 const Comment: React.FC<CommentProps> = ({
@@ -23,6 +25,7 @@ const Comment: React.FC<CommentProps> = ({
     videoReviewUrl,
     mediaList = [],
     attributes = [],
+    sentiment,
 }) => {
     return (
         <div className="mb-6">
@@ -83,6 +86,23 @@ const Comment: React.FC<CommentProps> = ({
                             );
                         })}
                     </div>
+                    {sentiment && (
+                        <span
+                            className={`inline-block mt-2 px-2 py-1 text-xs font-medium rounded ${sentiment === "POSITIVE"
+                                    ? "bg-green-100 text-green-700"
+                                    : sentiment === "NEGATIVE"
+                                        ? "bg-red-100 text-red-700"
+                                        : "bg-gray-100 text-gray-600"
+                                }`}
+                        >
+                            {sentiment === "POSITIVE"
+                                ? "Tích cực 😊"
+                                : sentiment === "NEGATIVE"
+                                    ? "Tiêu cực 😡"
+                                    : "Trung lập 😐"}
+                        </span>
+                    )}
+
                     {content && <p className="text-gray-600 mt-2">{content}</p>}
                     {(videoReviewUrl || mediaList.length > 0) && (
                         <div className="flex flex-wrap mt-2 gap-2">

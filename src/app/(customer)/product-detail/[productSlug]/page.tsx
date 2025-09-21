@@ -158,7 +158,11 @@ const ProductBySlug = () => {
                 />
             )}
 
-            <ProductReviews reviews={reviews ?? []} />
+            <ProductReviews
+                reviews={reviews ?? []}
+                overallReview={product.overallReview}
+            />
+
         </div>
     );
 };

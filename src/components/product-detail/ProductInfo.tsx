@@ -220,7 +220,7 @@ const ProductInfo = ({
                                 height={80}
                                 src={img}
                                 alt={`${product.name} - View ${index + 1}`}
-                                className={`w-20 h-20 object-cover rounded border-2 ${
+                                className={`w-20 h-20 cursor-pointer object-cover rounded border-2 ${
                                     selectedImage === img
                                         ? 'border-red-500'
                                         : 'border-gray-300 hover:border-gray-500'
@@ -633,7 +633,7 @@ const ProductInfo = ({
                                 quantity: quantity,
                             })
                         }
-                        className="bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700"
+                        className="bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700 cursor-pointer items-center"
                     >
                         <AddShoppingCartIcon className="mr-2" />
                         Thêm vào giỏ hàng
@@ -642,7 +642,7 @@ const ProductInfo = ({
                         onClick={() => {
                             handleCheckout();
                         }}
-                        className="bg-red-600 text-white px-6 rounded hover:bg-red-700"
+                        className="bg-red-600 text-white px-6 rounded hover:bg-red-700 cursor-pointer"
                     >
                         <span>
                             <p>Mua ngay</p>
