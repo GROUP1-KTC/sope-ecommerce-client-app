@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import Comment from './Comment';
 import type { Review } from '../../types/products';
-import { over } from 'lodash';
 
 interface ProductReviewsProps {
     reviews: Review[];
     overallReview?: string;
 }
 
-const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews, overallReview }) => {
+const ProductReviews: React.FC<ProductReviewsProps> = ({
+    reviews,
+    overallReview,
+}) => {
     const [selectedFilter, setSelectedFilter] = useState<'all' | number>('all');
 
     console.log('check reviews', reviews);
@@ -16,7 +18,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews, overallReview 
     const averageRating =
         reviews.length > 0
             ? reviews.reduce((sum, review) => sum + review.rating, 0) /
-            reviews.length
+              reviews.length
             : 0;
 
     const starCounts = [5, 4, 3, 2, 1].map(
@@ -111,9 +113,10 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews, overallReview 
                         Dựa trên {reviews.length} đánh giá
                     </div>
                     <div className="text-gray-600">
-                        {overallReview ? overallReview : 'Chưa có nhận xét chung về sản phẩm này.'}
+                        {overallReview
+                            ? overallReview
+                            : 'Chưa có nhận xét chung về sản phẩm này.'}
                     </div>
-
                 </div>
 
                 {/* Bộ lọc sao */}
@@ -121,10 +124,11 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews, overallReview 
                     <button
                         onClick={() => setSelectedFilter('all')}
                         className={`relative px-3 py-1 text-sm cursor-pointer rounded-md 
-                        ${selectedFilter === 'all'
+                        ${
+                            selectedFilter === 'all'
                                 ? 'border border-red-500 text-red-500'
                                 : 'bg-gray-200 hover:bg-gray-300'
-                            }`}
+                        }`}
                     >
                         Tất cả ({reviews.length})
                         {selectedFilter === 'all' && (
@@ -139,10 +143,11 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews, overallReview 
                             key={star}
                             onClick={() => setSelectedFilter(star)}
                             className={`relative px-3 py-1 text-sm cursor-pointer rounded-md 
-                            ${selectedFilter === star
+                            ${
+                                selectedFilter === star
                                     ? 'border border-red-500 text-red-500'
                                     : 'bg-gray-200 hover:bg-gray-300'
-                                }`}
+                            }`}
                         >
                             {star} sao ({starCounts[5 - star]})
                             {selectedFilter === star && (

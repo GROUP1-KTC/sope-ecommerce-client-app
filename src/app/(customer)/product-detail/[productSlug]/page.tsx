@@ -162,7 +162,6 @@ const ProductBySlug = () => {
                 reviews={reviews ?? []}
                 overallReview={product.overallReview}
             />
-
         </div>
     );
 };

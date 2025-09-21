@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 import type { Attribute } from '~/types/products';
 import type { ReviewMedia } from '~/types/products/review_media';
-import { Sentiment } from '~/types/sentiment';
+import type { Sentiment } from '~/types/sentiment';
 
 interface CommentProps {
     avatar: string;
@@ -88,18 +88,19 @@ const Comment: React.FC<CommentProps> = ({
                     </div>
                     {sentiment && (
                         <span
-                            className={`inline-block mt-2 px-2 py-1 text-xs font-medium rounded ${sentiment === "POSITIVE"
-                                    ? "bg-green-100 text-green-700"
-                                    : sentiment === "NEGATIVE"
-                                        ? "bg-red-100 text-red-700"
-                                        : "bg-gray-100 text-gray-600"
-                                }`}
+                            className={`inline-block mt-2 px-2 py-1 text-xs font-medium rounded ${
+                                sentiment === 'POSITIVE'
+                                    ? 'bg-green-100 text-green-700'
+                                    : sentiment === 'NEGATIVE'
+                                      ? 'bg-red-100 text-red-700'
+                                      : 'bg-gray-100 text-gray-600'
+                            }`}
                         >
-                            {sentiment === "POSITIVE"
-                                ? "Tích cực 😊"
-                                : sentiment === "NEGATIVE"
-                                    ? "Tiêu cực 😡"
-                                    : "Trung lập 😐"}
+                            {sentiment === 'POSITIVE'
+                                ? 'Tích cực 😊'
+                                : sentiment === 'NEGATIVE'
+                                  ? 'Tiêu cực 😡'
+                                  : 'Trung lập 😐'}
                         </span>
                     )}
 

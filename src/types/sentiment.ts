@@ -1,1 +1,1 @@
-export type Sentiment = "POSITIVE" | "NEGATIVE" | "NEUTRAL";
+export type Sentiment = 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
