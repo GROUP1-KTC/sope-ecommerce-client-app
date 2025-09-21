@@ -184,7 +184,6 @@ const ProductBySlug = () => {
                 />
             )}
 
-
             {similarProducts && similarProducts.length > 0 && (
                 <ProductList
                     title="Sản phẩm tương tự"
