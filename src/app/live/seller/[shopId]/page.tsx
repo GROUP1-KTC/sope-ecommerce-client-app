@@ -93,7 +93,7 @@ export default function SellerPage() {
     }) => {
         try {
             const token = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/livekit/token?room=${shopId}&identity=seller&isPublisher=true`,
+                `${process.env.NEXT_PUBLIC_API_URL}livekit/token?room=${shopId}&identity=seller&isPublisher=true`,
             ).then((r) => r.text());
 
             const r = await joinLiveKitRoom(
@@ -117,7 +117,7 @@ export default function SellerPage() {
                 await r.localParticipant.publishTrack(t);
             }
 
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/livestream/start`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL}livestream/start`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -147,7 +147,7 @@ export default function SellerPage() {
                 if (videoRef.current) videoRef.current.srcObject = stream;
             });
 
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/livestream/end`, {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}livestream/end`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ shopId }),

@@ -74,7 +74,7 @@ export default function ViewerPage() {
         const connect = async () => {
             try {
                 const token = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/livekit/token?room=${shopId}&identity=${userId}&isPublisher=false`,
+                    `${process.env.NEXT_PUBLIC_API_URL}livekit/token?room=${shopId}&identity=${userId}&isPublisher=false`,
                 ).then((r) => {
                     if (!r.ok) throw new Error('Failed to fetch token');
                     return r.text();
