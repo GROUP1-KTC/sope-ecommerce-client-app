@@ -7,9 +7,7 @@ import {
     useGetPendingOrdersByShopQuery,
 } from '~/features/orders/orderApiSlide';
 
-export default function ConfirmOrder({ shopIdProp }: { shopIdProp?: string }) {
-    const shopId = shopIdProp ?? '8696366f-9402-48f9-84a2-9cd2599e72a0';
-
+export default function ConfirmOrder() {
     const [page, setPage] = useState(0);
     const size = 10;
 
@@ -18,7 +16,6 @@ export default function ConfirmOrder({ shopIdProp }: { shopIdProp?: string }) {
         isLoading,
         isError,
     } = useGetPendingOrdersByShopQuery({
-        shopId,
         page,
         size,
     });

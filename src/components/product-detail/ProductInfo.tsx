@@ -220,11 +220,10 @@ const ProductInfo = ({
                                 height={80}
                                 src={img}
                                 alt={`${product.name} - View ${index + 1}`}
-                                className={`w-20 h-20 object-cover rounded border-2 ${
-                                    selectedImage === img
+                                className={`w-20 h-20 object-cover rounded border-2 ${selectedImage === img
                                         ? 'border-red-500'
                                         : 'border-gray-300 hover:border-gray-500'
-                                }`}
+                                    }`}
                             />
                         </button>
                     ))}
@@ -286,8 +285,8 @@ const ProductInfo = ({
                 </div>
                 <div
                     className="relative flex items-center gap-4 mb-4 bg-red-50 px-6 py-3 rounded"
-                    // onMouseEnter={() => setShowVoucherModal(true)}
-                    // onMouseLeave={() => setShowVoucherModal(false)}
+                // onMouseEnter={() => setShowVoucherModal(true)}
+                // onMouseLeave={() => setShowVoucherModal(false)}
                 >
                     <span className="text-red-500 font-medium text-3xl">
                         ₫{price.toLocaleString('vi-VN')}
@@ -313,76 +312,7 @@ const ProductInfo = ({
                             />
                         </svg>
                     </span>
-                    {/* <span className="text-gray-400 text-lg line-through">
-                        ₫{(product.price * 1.2).toLocaleString('vi-VN')}
-                    </span>
-                    {showVoucherModal && (
-                        <div className="absolute left-0 top-full mt-2 w-112 bg-white border border-gray-400 rounded shadow-lg p-4 z-10">
-                            <div className="text-sm">
-                                <p className="text-gray-800 font-medium mb-2">
-                                    Chi tiết giá
-                                </p>
-                                <div className="flex justify-between">
-                                    <span className="text-gray-700">
-                                        Giá gốc:
-                                    </span>
-                                    <span className="text-red-600">
-                                        ₫
-                                        {priceDetail.originalPrice.toLocaleString(
-                                            'vi-VN',
-                                        )}
-                                    </span>
-                                </div>
-                                {priceDetail.discounts.map(
-                                    (discount, index) => (
-                                        <div key={index}>
-                                            <div className="flex justify-between mt-1">
-                                                <span className="text-gray-700">
-                                                    {
-                                                        discount.description.split(
-                                                            '.',
-                                                        )[0]
-                                                    }
-                                                    :
-                                                </span>
-                                                <span className="text-red-600">
-                                                    -₫
-                                                    {discount.value.toLocaleString(
-                                                        'vi-VN',
-                                                    )}
-                                                </span>
-                                            </div>
-                                            {discount.description.includes(
-                                                '.',
-                                            ) && (
-                                                    <div className="text-gray-500 text-xs mt-1">
-                                                        {discount.description
-                                                            .split('.')[1]
-                                                            .trim()}
-                                                    </div>
-                                                )}
-                                            <hr className="border-t border-gray-200 my-2" />
-                                        </div>
-                                    ),
-                                )}
-                                <div className="flex justify-between mt-3">
-                                    <span className="text-gray-900 font-bold">
-                                        Giá tạm tính:
-                                    </span>
-                                    <span className="text-red-600 font-bold">
-                                        ₫
-                                        {priceDetail.finalPrice.toLocaleString(
-                                            'vi-VN',
-                                        )}
-                                    </span>
-                                </div>
-                                <p className="text-xs text-gray-500 mt-1 italic">
-                                    *Vui lòng kiểm tra Voucher đã dùng hoặc nhận
-                                    toast để đổi giá ưu đãi
-                                </p>
-                            </div>
-                        </div>
-                    )} */}
+
                 </div>
 
                 <div className="flex flex-col gap-4 mb-4 text-sm text-gray-500">
@@ -390,56 +320,14 @@ const ProductInfo = ({
                         <span className="w-32 font-semibold">
                             Voucher của shop
                         </span>
-                        <div className="flex-1 flex flex-wrap gap-2">
-                            {/* {shopVouchers?.map((voucher, index) => (
-                                    <span
-                                        key={index}
-                                        className="bg-red-200 text-red-700 font-medium px-2 py-1 rounded shadow-md"
-                                    >
-                                        {voucher.description}
-                                    </span>
-                                ))} */}
-                        </div>
                     </div>
 
-                    {/* {promotionCombo && (
-                            <div className="flex items-start mt-4">
-                                <span className="w-32 font-semibold">
-                                    Combo Khuyến Mãi
-                                </span>
-                                <div className="flex-1">
-                                    <span className="text-red-700 font-medium px-2 py-1 rounded shadow-md border border-red-500">
-                                        {promotionCombo.description}
-                                    </span>
-                                </div>
-                            </div>
-                        )} */}
 
-                    {/* <div className="flex items-start mt-4">
-                            <span className="w-32 font-semibold">Vận chuyển</span>
-                            <div className="flex-1 flex flex-col gap-1 break-words">
-                                <span className="text-black">
-                                    {shipInformation?.time ||
-                                        'Thông tin vận chuyển chưa có'}
-                                </span>
-                                <span className="text-black">
-                                    {shipInformation?.fee
-                                        ? `Phí ship: ${shipInformation.fee}`
-                                        : ''}
-                                </span>
-                                {shipInformation?.policy && (
-                                    <span className="text-gray-500">
-                                        {shipInformation.policy}
-                                    </span>
-                                )}
-                            </div>
-                        </div> */}
                     <div className="flex items-center relative">
                         <span className="w-32 font-semibold">
                             An tâm mua sắm cùng Sope
                         </span>
                         <span className="flex-1 break-words text-black">
-                            {/* {policy.sopePolicy} */}
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-6 w-6 text-blue-500 ml-2 cursor-pointer"
@@ -463,14 +351,6 @@ const ProductInfo = ({
                                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                                     Chính sách mua sắm
                                 </h3>
-                                {/* {policy.procurementPolicy.map((item, idx) => (
-                                        <p
-                                            key={idx}
-                                            className={`text-gray-600 ${idx > 0 ? 'mt-2' : ''}`}
-                                        >
-                                            {item}
-                                        </p>
-                                    ))} */}
                             </div>
                         )}
                     </div>
@@ -492,12 +372,12 @@ const ProductInfo = ({
                                                         );
                                                     if (
                                                         selectedAttributes?.[
-                                                            attr.name
+                                                        attr.name
                                                         ]
                                                     ) {
                                                         return (
                                                             selectedAttributes[
-                                                                attr.name
+                                                            attr.name
                                                             ] === attr.value
                                                         );
                                                     }
@@ -514,8 +394,8 @@ const ProductInfo = ({
                                     const variantImage =
                                         index === 0
                                             ? matchingVariants?.find(
-                                                  (v) => v.imageVariant,
-                                              )?.imageVariant
+                                                (v) => v.imageVariant,
+                                            )?.imageVariant
                                             : null;
 
                                     return (
@@ -532,13 +412,12 @@ const ProductInfo = ({
                                             className={`
                                                     cursor-pointer relative flex items-center gap-2 px-3 py-2 rounded border text-sm font-medium
                                                     transition-colors
-                                                    ${
-                                                        selectedAttributes?.[
-                                                            name
-                                                        ] === value
-                                                            ? 'border-red-500 text-red-500 bg-red-50'
-                                                            : 'border-gray-300 bg-white hover:bg-gray-100'
-                                                    }
+                                                    ${selectedAttributes?.[
+                                                    name
+                                                ] === value
+                                                    ? 'border-red-500 text-red-500 bg-red-50'
+                                                    : 'border-gray-300 bg-white hover:bg-gray-100'
+                                                }
                                                     ${isOutOfStock ? 'opacity-50 cursor-not-allowed' : ''}
                                                 `}
                                         >
@@ -554,10 +433,10 @@ const ProductInfo = ({
                                             {/* dấu tick ở góc khi đang chọn */}
                                             {selectedAttributes?.[name] ===
                                                 value && (
-                                                <span className="absolute top-0 right-0 text-red-500 text-xs font-bold">
-                                                    ✓
-                                                </span>
-                                            )}
+                                                    <span className="absolute top-0 right-0 text-red-500 text-xs font-bold">
+                                                        ✓
+                                                    </span>
+                                                )}
                                         </button>
                                     );
                                 })}

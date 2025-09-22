@@ -17,7 +17,7 @@ export interface Discount {
     scope: DiscountScope;
     maxCoins: number;
     status: DiscountStatus;
-    shopId?: string;
+    // shopId?: string;
 }
 
 export interface DiscountFormData {

@@ -30,6 +30,8 @@ const AllProductsByShop = () => {
 
     const products = data?.content ?? [];
 
+    console.log('products', products);
+
     const { data: categories = [] } = useGetCategoriesQuery();
 
     const tabs = [

@@ -27,15 +27,7 @@ export default function ShopVoucherPage() {
 
     const [createDiscount] = useCreateDiscountMutation();
 
-    const {
-        data: response,
-        isLoading,
-        isError,
-    } = useGetShopDiscountQuery({
-        shopId: '190e754a-20d1-42e9-81ce-fa1bc282caa9',
-        page: currentPage,
-        size: 20,
-    });
+    const { data: response, isLoading, isError } = useGetShopDiscountQuery({ page: currentPage, size: 20 });
 
     const data = response?.data;
     let discounts = data?.content ?? [];
@@ -85,7 +77,6 @@ export default function ShopVoucherPage() {
 
         finalDiscount = {
             ...baseRow,
-            shopId: '190e754a-20d1-42e9-81ce-fa1bc282caa9',
             discountType: data.discountType!,
             maxDiscountValue: data.maxDiscountValue ?? null,
         } as Discount;
