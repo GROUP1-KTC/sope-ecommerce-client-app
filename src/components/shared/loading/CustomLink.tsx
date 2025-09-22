@@ -5,7 +5,6 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import type { SxProps, Theme } from '@mui/material';
 import { Box } from '@mui/material';
-
 import Loading from './Loading';
 
 interface CustomLinkProps extends LinkProps {
