@@ -13,7 +13,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { OrderGroupShop } from '~/types/orders/order';
+import type { OrderGroupShop } from '~/types/orders/order';
 
 ChartJS.register(
     LineElement,
@@ -47,9 +47,7 @@ const calculateRevenue = (order: any) => {
         order.items?.reduce((sum: number, item: any) => {
             return (
                 sum +
-                item.price *
-                item.quantity *
-                (item.commissionFeePercent / 100)
+                item.price * item.quantity * (item.commissionFeePercent / 100)
             );
         }, 0) ?? 0;
 
@@ -61,8 +59,12 @@ export default function SalesAnalytics({ orders }: SalesAnalyticsProps) {
     const totalOrders = orders.length;
 
     // chỉ lấy trạng thái hợp lệ
-    const completedOrders = orders.filter((o) => o.order.status === 'CONFIRMED'); // DELIVERED
-    const cancelledOrders = orders.filter((o) => o.order.status === 'CANCELLED');
+    const completedOrders = orders.filter(
+        (o) => o.order.status === 'CONFIRMED',
+    ); // DELIVERED
+    const cancelledOrders = orders.filter(
+        (o) => o.order.status === 'CANCELLED',
+    );
 
     // doanh thu shop = subTotal (không tính shippingCharges)
     const calcRevenue = (list: OrderGroupShop[]) =>
@@ -70,7 +72,7 @@ export default function SalesAnalytics({ orders }: SalesAnalyticsProps) {
 
     const totalSales = calcRevenue(completedOrders);
 
-    console.log('check totalSales', totalSales)
+    console.log('check totalSales', totalSales);
 
     const cancelledSales = calcRevenue(cancelledOrders);
 
@@ -85,10 +87,22 @@ export default function SalesAnalytics({ orders }: SalesAnalyticsProps) {
             : '0';
 
     const metrics = [
-        { label: 'Doanh số', value: `₫${totalSales.toLocaleString()}`, change: '0,00%' },
+        {
+            label: 'Doanh số',
+            value: `₫${totalSales.toLocaleString()}`,
+            change: '0,00%',
+        },
         { label: 'Đơn hàng', value: `${totalOrders}`, change: '0,00%' },
-        { label: 'Đơn đã hủy', value: `${cancelledOrders.length}`, change: '0,00%' },
-        { label: 'Tỷ lệ chuyển đổi đơn hàng', value: conversionRate, change: '0,00%' },
+        {
+            label: 'Đơn đã hủy',
+            value: `${cancelledOrders.length}`,
+            change: '0,00%',
+        },
+        {
+            label: 'Tỷ lệ chuyển đổi đơn hàng',
+            value: conversionRate,
+            change: '0,00%',
+        },
         {
             label: 'Doanh số trên mỗi đơn hàng',
             value: `₫${avgSalesPerOrder}`,
@@ -103,8 +117,18 @@ export default function SalesAnalytics({ orders }: SalesAnalyticsProps) {
 
     // ====== CHUẨN BỊ DỮ LIỆU CHART ======
     const monthLabels = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December',
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
     ];
 
     const groupByMonth = (
@@ -131,7 +155,9 @@ export default function SalesAnalytics({ orders }: SalesAnalyticsProps) {
         // Tỷ lệ chuyển đổi
         'Tỷ lệ chuyển đổi đơn hàng': monthLabels.map((_, m) => {
             const total = orders.filter(
-                (o) => o.order.createdAt && new Date(o.order.createdAt).getMonth() === m,
+                (o) =>
+                    o.order.createdAt &&
+                    new Date(o.order.createdAt).getMonth() === m,
             ).length;
             const done = orders.filter(
                 (o) =>
@@ -166,12 +192,21 @@ export default function SalesAnalytics({ orders }: SalesAnalyticsProps) {
     };
 
     const colors = [
-        '#ec4899', '#3b82f6', '#10b981', '#f59e0b',
-        '#6366f1', '#ef4444', '#14b8a6', '#8b5cf6',
+        '#ec4899',
+        '#3b82f6',
+        '#10b981',
+        '#f59e0b',
+        '#6366f1',
+        '#ef4444',
+        '#14b8a6',
+        '#8b5cf6',
     ];
 
     // ====== STATE CHỌN CHỈ SỐ ======
-    const [selectedMetrics, setSelectedMetrics] = useState<string[]>(['Doanh số', 'Đơn hàng']);
+    const [selectedMetrics, setSelectedMetrics] = useState<string[]>([
+        'Doanh số',
+        'Đơn hàng',
+    ]);
     const [metricAtStart, setMetricAtStart] = useState(true);
     const [metricAtEnd, setMetricAtEnd] = useState(false);
     const metricRef = useRef<HTMLDivElement>(null);
@@ -187,7 +222,9 @@ export default function SalesAnalytics({ orders }: SalesAnalyticsProps) {
 
     const handleToggleMetric = (label: string) => {
         setSelectedMetrics((prev) =>
-            prev.includes(label) ? prev.filter((m) => m !== label) : [...prev, label],
+            prev.includes(label)
+                ? prev.filter((m) => m !== label)
+                : [...prev, label],
         );
     };
 
@@ -281,14 +318,19 @@ export default function SalesAnalytics({ orders }: SalesAnalyticsProps) {
                         <button
                             key={m.label + index}
                             onClick={() => handleToggleMetric(m.label)}
-                            className={`w-48 min-w-[12rem] text-left border rounded-xl p-4 transition-transform duration-150 ease-in-out cursor-pointer hover:shadow-md active:scale-[0.98] ${selectedMetrics.includes(m.label)
-                                ? 'bg-pink-100 border-pink-400'
-                                : 'bg-white border-gray-200 hover:bg-gray-50'
-                                }`}
+                            className={`w-48 min-w-[12rem] text-left border rounded-xl p-4 transition-transform duration-150 ease-in-out cursor-pointer hover:shadow-md active:scale-[0.98] ${
+                                selectedMetrics.includes(m.label)
+                                    ? 'bg-pink-100 border-pink-400'
+                                    : 'bg-white border-gray-200 hover:bg-gray-50'
+                            }`}
                         >
                             <p className="text-sm text-gray-500">{m.label}</p>
-                            <p className="text-xl font-bold text-gray-800 mt-1">{m.value}</p>
-                            <p className="text-xs text-gray-400 mt-1">— {m.change}</p>
+                            <p className="text-xl font-bold text-gray-800 mt-1">
+                                {m.value}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-1">
+                                — {m.change}
+                            </p>
                         </button>
                     ))}
                 </div>

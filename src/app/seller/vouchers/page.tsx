@@ -27,7 +27,11 @@ export default function ShopVoucherPage() {
 
     const [createDiscount] = useCreateDiscountMutation();
 
-    const { data: response, isLoading, isError } = useGetShopDiscountQuery({ page: currentPage, size: 20 });
+    const {
+        data: response,
+        isLoading,
+        isError,
+    } = useGetShopDiscountQuery({ page: currentPage, size: 20 });
 
     const data = response?.data;
     let discounts = data?.content ?? [];
@@ -126,18 +130,19 @@ export default function ShopVoucherPage() {
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab as typeof activeTab)}
-                        className={`px-3 py-1 rounded-lg text-sm cursor-pointer ${activeTab === tab
-                            ? 'bg-red-500 text-white'
-                            : ' hover:text-white hover:bg-red-600'
-                            }`}
+                        className={`px-3 py-1 rounded-lg text-sm cursor-pointer ${
+                            activeTab === tab
+                                ? 'bg-red-500 text-white'
+                                : ' hover:text-white hover:bg-red-600'
+                        }`}
                     >
                         {tab === 'all'
                             ? 'Tất cả'
                             : tab === 'active'
-                                ? 'Đang hoạt động'
-                                : tab === 'inactive'
-                                    ? 'Chưa kích hoạt'
-                                    : 'Hết hạn'}
+                              ? 'Đang hoạt động'
+                              : tab === 'inactive'
+                                ? 'Chưa kích hoạt'
+                                : 'Hết hạn'}
                     </button>
                 ))}
             </div>
@@ -185,18 +190,19 @@ export default function ShopVoucherPage() {
                                     –{' '}
                                     {d.endDate
                                         ? new Date(
-                                            d.endDate,
-                                        ).toLocaleDateString('vi-VN')
+                                              d.endDate,
+                                          ).toLocaleDateString('vi-VN')
                                         : 'Không giới hạn'}
                                 </td>
                                 <td className="p-3 text-center">
                                     <span
-                                        className={`px-2 py-1 rounded text-xs font-medium ${d.status === 'ACTIVE'
-                                            ? 'bg-green-100 text-green-700'
-                                            : d.status === 'INACTIVE'
-                                                ? 'bg-yellow-100 text-yellow-700'
-                                                : 'bg-gray-100 text-gray-500'
-                                            }`}
+                                        className={`px-2 py-1 rounded text-xs font-medium ${
+                                            d.status === 'ACTIVE'
+                                                ? 'bg-green-100 text-green-700'
+                                                : d.status === 'INACTIVE'
+                                                  ? 'bg-yellow-100 text-yellow-700'
+                                                  : 'bg-gray-100 text-gray-500'
+                                        }`}
                                     >
                                         {d.status}
                                     </span>

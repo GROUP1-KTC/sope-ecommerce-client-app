@@ -15,7 +15,10 @@ import Image from 'next/image';
 import UserMenu from './Home/UserMenu';
 import HeaderCartIconWithBadge from './HeaderCartIconWithBadge';
 import { skipToken } from '@reduxjs/toolkit/query';
-import { useSearchSuggestQuery, useLogProductClickMutation } from '~/features/products/elasticApi';
+import {
+    useSearchSuggestQuery,
+    useLogProductClickMutation,
+} from '~/features/products/elasticApi';
 import { useRouter } from 'next/navigation';
 import { loadAuthUser } from '~/utils/authCookie';
 import CustomLink from '../shared/loading/CustomLink';
@@ -35,61 +38,61 @@ const Header = () => {
     const { data: products = [] } = useSearchSuggestQuery(
         searchTerm
             ? {
-                _source: ['product_id', 'slug', 'name', 'default_image'],
-                query: {
-                    function_score: {
-                        query: {
-                            bool: {
-                                should: [
-                                    {
-                                        match_phrase: {
-                                            name: {
-                                                query: searchTerm,
-                                                boost: 5,
-                                            },
-                                        },
-                                    },
-                                    {
-                                        match_phrase_prefix: {
-                                            name: {
-                                                query: searchTerm,
-                                                boost: 4,
-                                            },
-                                        },
-                                    },
-                                    {
-                                        match: {
-                                            name: {
-                                                query: searchTerm,
-                                                fuzziness: 'AUTO',
-                                                boost: 2,
-                                            },
-                                        },
-                                    },
-                                    {
-                                        match: {
-                                            slug: {
-                                                query: searchTerm,
-                                                boost: 1,
-                                            },
-                                        },
-                                    },
-                                ],
-                            },
-                        },
-                        boost_mode: 'sum',
-                    },
-                },
-                size: 20,
-                sort: [{ _score: 'desc' }],
-            }
+                  _source: ['product_id', 'slug', 'name', 'default_image'],
+                  query: {
+                      function_score: {
+                          query: {
+                              bool: {
+                                  should: [
+                                      {
+                                          match_phrase: {
+                                              name: {
+                                                  query: searchTerm,
+                                                  boost: 5,
+                                              },
+                                          },
+                                      },
+                                      {
+                                          match_phrase_prefix: {
+                                              name: {
+                                                  query: searchTerm,
+                                                  boost: 4,
+                                              },
+                                          },
+                                      },
+                                      {
+                                          match: {
+                                              name: {
+                                                  query: searchTerm,
+                                                  fuzziness: 'AUTO',
+                                                  boost: 2,
+                                              },
+                                          },
+                                      },
+                                      {
+                                          match: {
+                                              slug: {
+                                                  query: searchTerm,
+                                                  boost: 1,
+                                              },
+                                          },
+                                      },
+                                  ],
+                              },
+                          },
+                          boost_mode: 'sum',
+                      },
+                  },
+                  size: 20,
+                  sort: [{ _score: 'desc' }],
+              }
             : skipToken,
     );
 
     const [logClick] = useLogProductClickMutation();
 
     const handleClickProduct = (productId: string, keyword: string) => {
-        console.log('check productId', productId)
+        console.log('check productId', productId);
         logClick({
             product_id: productId,
             keyword,
@@ -138,15 +141,24 @@ const Header = () => {
                     <SellerLink />
 
                     <span>|</span>
-                    <CustomLink href="#" className="hover:text-yellow-200 transition">
+                    <CustomLink
+                        href="#"
+                        className="hover:text-yellow-200 transition"
+                    >
                         Tải ứng dụng
                     </CustomLink>
                     <span>|</span>
                     <span>Kết nối</span>
-                    <CustomLink href="#" className="hover:text-yellow-200 transition">
+                    <CustomLink
+                        href="#"
+                        className="hover:text-yellow-200 transition"
+                    >
                         <FacebookIcon style={{ fontSize: 20 }} />
                     </CustomLink>
-                    <CustomLink href="#" className="hover:text-yellow-200 transition">
+                    <CustomLink
+                        href="#"
+                        className="hover:text-yellow-200 transition"
+                    >
                         <InstagramIcon style={{ fontSize: 20 }} />
                     </CustomLink>
                 </div>
@@ -183,7 +195,10 @@ const Header = () => {
                         style={{ fontSize: 40 }}
                         className="text-white"
                     />
-                    <CustomLink href="/" className="hover:text-yellow-200 transition">
+                    <CustomLink
+                        href="/"
+                        className="hover:text-yellow-200 transition"
+                    >
                         <Image
                             src="/assets/logo/logo.svg"
                             alt="Sope Logo"
@@ -218,7 +233,12 @@ const Header = () => {
                                             key={p.product_id || index}
                                             href={`/product-detail/${p.slug}`}
                                             className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer"
-                                            onClick={() => handleClickProduct(p.product_id, searchTerm)}
+                                            onClick={() =>
+                                                handleClickProduct(
+                                                    p.product_id,
+                                                    searchTerm,
+                                                )
+                                            }
                                         >
                                             <Image
                                                 src={p.default_image}
@@ -272,8 +292,9 @@ const Header = () => {
             )}
 
             <div
-                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'
-                    } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
+                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${
+                    menuOpen ? 'translate-x-0' : 'translate-x-full'
+                } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
             >
                 <div className="flex justify-end">
                     <button

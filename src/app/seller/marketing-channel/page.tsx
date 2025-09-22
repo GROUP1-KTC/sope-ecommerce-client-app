@@ -108,12 +108,13 @@ const MarketingChannel = () => {
                                         {tool.title}
                                     </span>
                                     <span
-                                        className={`text-xs px-2 py-0.5 rounded ${tool.label.color === 'blue'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : tool.label.color === 'red'
-                                                ? 'bg-red-100 text-red-600'
-                                                : 'bg-green-100 text-green-700'
-                                            }`}
+                                        className={`text-xs px-2 py-0.5 rounded ${
+                                            tool.label.color === 'blue'
+                                                ? 'bg-blue-100 text-blue-700'
+                                                : tool.label.color === 'red'
+                                                  ? 'bg-red-100 text-red-600'
+                                                  : 'bg-green-100 text-green-700'
+                                        }`}
                                     >
                                         {tool.label.text}
                                     </span>
@@ -231,7 +232,7 @@ const MarketingChannel = () => {
                     ))}
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 

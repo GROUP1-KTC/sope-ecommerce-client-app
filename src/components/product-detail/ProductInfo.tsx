@@ -220,10 +220,11 @@ const ProductInfo = ({
                                 height={80}
                                 src={img}
                                 alt={`${product.name} - View ${index + 1}`}
-                                className={`w-20 h-20 object-cover rounded border-2 ${selectedImage === img
+                                className={`w-20 h-20 object-cover rounded border-2 ${
+                                    selectedImage === img
                                         ? 'border-red-500'
                                         : 'border-gray-300 hover:border-gray-500'
-                                    }`}
+                                }`}
                             />
                         </button>
                     ))}
@@ -285,8 +286,8 @@ const ProductInfo = ({
                 </div>
                 <div
                     className="relative flex items-center gap-4 mb-4 bg-red-50 px-6 py-3 rounded"
-                // onMouseEnter={() => setShowVoucherModal(true)}
-                // onMouseLeave={() => setShowVoucherModal(false)}
+                    // onMouseEnter={() => setShowVoucherModal(true)}
+                    // onMouseLeave={() => setShowVoucherModal(false)}
                 >
                     <span className="text-red-500 font-medium text-3xl">
                         ₫{price.toLocaleString('vi-VN')}
@@ -312,7 +313,6 @@ const ProductInfo = ({
                             />
                         </svg>
                     </span>
-
                 </div>
 
                 <div className="flex flex-col gap-4 mb-4 text-sm text-gray-500">
@@ -321,7 +321,6 @@ const ProductInfo = ({
                             Voucher của shop
                         </span>
                     </div>
-
 
                     <div className="flex items-center relative">
                         <span className="w-32 font-semibold">
@@ -372,12 +371,12 @@ const ProductInfo = ({
                                                         );
                                                     if (
                                                         selectedAttributes?.[
-                                                        attr.name
+                                                            attr.name
                                                         ]
                                                     ) {
                                                         return (
                                                             selectedAttributes[
-                                                            attr.name
+                                                                attr.name
                                                             ] === attr.value
                                                         );
                                                     }
@@ -394,8 +393,8 @@ const ProductInfo = ({
                                     const variantImage =
                                         index === 0
                                             ? matchingVariants?.find(
-                                                (v) => v.imageVariant,
-                                            )?.imageVariant
+                                                  (v) => v.imageVariant,
+                                              )?.imageVariant
                                             : null;
 
                                     return (
@@ -412,12 +411,13 @@ const ProductInfo = ({
                                             className={`
                                                     cursor-pointer relative flex items-center gap-2 px-3 py-2 rounded border text-sm font-medium
                                                     transition-colors
-                                                    ${selectedAttributes?.[
-                                                    name
-                                                ] === value
-                                                    ? 'border-red-500 text-red-500 bg-red-50'
-                                                    : 'border-gray-300 bg-white hover:bg-gray-100'
-                                                }
+                                                    ${
+                                                        selectedAttributes?.[
+                                                            name
+                                                        ] === value
+                                                            ? 'border-red-500 text-red-500 bg-red-50'
+                                                            : 'border-gray-300 bg-white hover:bg-gray-100'
+                                                    }
                                                     ${isOutOfStock ? 'opacity-50 cursor-not-allowed' : ''}
                                                 `}
                                         >
@@ -433,10 +433,10 @@ const ProductInfo = ({
                                             {/* dấu tick ở góc khi đang chọn */}
                                             {selectedAttributes?.[name] ===
                                                 value && (
-                                                    <span className="absolute top-0 right-0 text-red-500 text-xs font-bold">
-                                                        ✓
-                                                    </span>
-                                                )}
+                                                <span className="absolute top-0 right-0 text-red-500 text-xs font-bold">
+                                                    ✓
+                                                </span>
+                                            )}
                                         </button>
                                     );
                                 })}

@@ -149,8 +149,9 @@ export function ProductLiveCard({
 
                 <button
                     onClick={() => onPinAction(product.id)}
-                    className={`flex items-center gap-1 px-2 py-1 rounded text-white cursor-pointer hover:bg-blue-600 transition ${isPinned ? 'bg-gray-500' : 'bg-blue-400'
-                        }`}
+                    className={`flex items-center gap-1 px-2 py-1 rounded text-white cursor-pointer hover:bg-blue-600 transition ${
+                        isPinned ? 'bg-gray-500' : 'bg-blue-400'
+                    }`}
                 >
                     <PushPinIcon fontSize="small" />{' '}
                     {isPinned ? 'Unpin' : 'Pin Live'}

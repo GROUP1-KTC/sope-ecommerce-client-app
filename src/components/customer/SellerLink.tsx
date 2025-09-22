@@ -13,7 +13,10 @@ const SellerLink = () => {
     }, []);
 
     return (
-        <CustomLink href={isSeller ? '/seller' : '/create-shop'} className="hover:text-yellow-200 transition">
+        <CustomLink
+            href={isSeller ? '/seller' : '/create-shop'}
+            className="hover:text-yellow-200 transition"
+        >
             {isSeller ? 'Trang Bán Hàng' : 'Trở thành Người bán Sope'}
         </CustomLink>
     );

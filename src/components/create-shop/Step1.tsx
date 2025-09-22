@@ -73,7 +73,10 @@ export default function Step1({
                         <input
                             value={phone}
                             onChange={(e) => {
-                                const numericValue = e.target.value.replace(/\D/g, '');
+                                const numericValue = e.target.value.replace(
+                                    /\D/g,
+                                    '',
+                                );
                                 setPhone(numericValue);
                             }}
                             className="w-full border border-gray-300 rounded p-2"

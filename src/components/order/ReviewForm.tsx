@@ -70,7 +70,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             if (res) {
                 useAlertStore.getState().showAlert({
                     severity: 'success',
-                    message: 'Đánh giá thành công 🎉'
+                    message: 'Đánh giá thành công 🎉',
                 });
             }
             onClose();
@@ -78,7 +78,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             console.error('❌ Lỗi FE khi gọi createReview:', err);
             useAlertStore.getState().showAlert({
                 severity: 'error',
-                message: 'FE gọi review lỗi, check console.'
+                message: 'FE gọi review lỗi, check console.',
             });
         }
     };

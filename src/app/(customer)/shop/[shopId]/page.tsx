@@ -12,8 +12,11 @@ import { setSelectedConversationId } from '~/features/chat/chatSlice';
 import ChatDialog from '~/components/shared/chat/ChatDialog';
 import { useCreateConversationWithShopMutation } from '~/features/chat/conversation/ConversationApi';
 import { useGetApprovedProductsByShopQuery } from '~/features/products/productApi';
-import { EmptyMessage, ErrorMessage, LoadingMessage } from '~/components/shared/loading/FeedBack';
-
+import {
+    EmptyMessage,
+    ErrorMessage,
+    LoadingMessage,
+} from '~/components/shared/loading/FeedBack';
 
 const ShopPage: React.FC = () => {
     const { shopId } = useParams();
@@ -36,7 +39,8 @@ const ShopPage: React.FC = () => {
         useCreateConversationWithShopMutation();
     const [openChat, setOpenChat] = React.useState(false);
 
-    if (isLoading) return <LoadingMessage message="Đang tải thông tin shop..." />;
+    if (isLoading)
+        return <LoadingMessage message="Đang tải thông tin shop..." />;
     if (error) return <ErrorMessage message="Shop này không tồn tại." />;
     if (!shop) return <EmptyMessage message="Không tìm thấy shop." />;
 

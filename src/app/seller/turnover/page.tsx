@@ -8,7 +8,6 @@ import { calculatePayoutSummary } from '~/utils/payout';
 import type { OrderGroupShop, PayoutSummaryResult } from '~/types/orders/order';
 
 export default function PayoutsPage() {
-
     const { data: allOrder, isLoading, isError } = useGetRevenueByShopQuery();
 
     let summary: PayoutSummaryResult | null = null;

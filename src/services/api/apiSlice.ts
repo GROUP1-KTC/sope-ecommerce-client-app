@@ -9,7 +9,7 @@ import { clearCredentials, setCredentials } from '~/features/auth/authSlice';
 import { loadAuthUser, saveAuthUser } from '~/utils/authCookie';
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL_V3,
+    baseUrl: process.env.NEXT_PUBLIC_API_URL,
     credentials: 'include',
     prepareHeaders: (headers) => {
         const storedUser = loadAuthUser();
@@ -39,7 +39,6 @@ const baseQueryWithReauth: BaseQueryFn<
             extraOptions,
         );
 
-
         if (refreshResult.data) {
             const { accessToken, id, username, roles } = refreshResult.data as {
                 accessToken: string;
@@ -51,13 +50,12 @@ const baseQueryWithReauth: BaseQueryFn<
             const newUser = { id, username, roles, accessToken };
 
             api.dispatch(setCredentials(newUser));
-            saveAuthUser(newUser); 
+            saveAuthUser(newUser);
 
             result = await baseQuery(args, api, extraOptions);
 
             console.log('Re-authenticated successfully');
         }
-
     }
 
     return result;

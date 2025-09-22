@@ -199,10 +199,10 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
 
                 {(order.status === 'CANCELLED' ||
                     order.status === 'RETURNED') && (
-                        <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
-                            Mua lại
-                        </button>
-                    )}
+                    <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
+                        Mua lại
+                    </button>
+                )}
             </div>
 
             {/* Status history toggle */}

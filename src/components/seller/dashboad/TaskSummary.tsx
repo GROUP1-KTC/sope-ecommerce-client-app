@@ -1,7 +1,7 @@
 'use client';
 
-import { OrderGroupShop } from "~/types/orders/order";
-import { ProductResponse } from "~/types/products";
+import type { OrderGroupShop } from '~/types/orders/order';
+import type { ProductResponse } from '~/types/products';
 
 interface TaskSummaryProps {
     orders: OrderGroupShop[];
@@ -9,10 +9,18 @@ interface TaskSummaryProps {
 }
 
 export default function TaskSummary({ orders, products }: TaskSummaryProps) {
-    const pendingCount = orders.filter((o) => o.order.status === 'PENDING').length;
-    const confirmedCount = orders.filter((o) => o.order.status === 'CONFIRMED').length;
-    const deliveredCount = orders.filter((o) => o.order.status === 'DELIVERED').length;
-    const rejectedProducts = products.filter((p) => p.status === 'REJECTED').length;
+    const pendingCount = orders.filter(
+        (o) => o.order.status === 'PENDING',
+    ).length;
+    const confirmedCount = orders.filter(
+        (o) => o.order.status === 'CONFIRMED',
+    ).length;
+    const deliveredCount = orders.filter(
+        (o) => o.order.status === 'DELIVERED',
+    ).length;
+    const rejectedProducts = products.filter(
+        (p) => p.status === 'REJECTED',
+    ).length;
 
     const tasks = [
         { label: 'Chờ xử lý', count: pendingCount },
@@ -33,8 +41,12 @@ export default function TaskSummary({ orders, products }: TaskSummaryProps) {
                         key={task.label}
                         className="flex flex-col items-center justify-center border border-gray-200 rounded-xl py-6 hover:shadow-lg transition duration-300"
                     >
-                        <p className="text-2xl font-bold text-red-600">{task.count}</p>
-                        <p className="text-sm text-gray-500 mt-2">{task.label}</p>
+                        <p className="text-2xl font-bold text-red-600">
+                            {task.count}
+                        </p>
+                        <p className="text-sm text-gray-500 mt-2">
+                            {task.label}
+                        </p>
                     </div>
                 ))}
             </div>

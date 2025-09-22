@@ -154,11 +154,12 @@ export default function MerchantSidebar() {
                                                     <li key={subIndex}>
                                                         <a
                                                             href={sub.href}
-                                                            className={`block py-1 px-2 text-sm rounded-md ${activePath ===
-                                                                    sub.href
+                                                            className={`block py-1 px-2 text-sm rounded-md ${
+                                                                activePath ===
+                                                                sub.href
                                                                     ? 'text-red-500 bg-orange-100'
                                                                     : 'text-gray-600 hover:text-red-500 hover:bg-gray-50'
-                                                                }`}
+                                                            }`}
                                                         >
                                                             {sub.label}
                                                         </a>
@@ -171,10 +172,11 @@ export default function MerchantSidebar() {
                             ) : (
                                 <a
                                     href={item.href}
-                                    className={`w-full flex items-center py-2 px-3 rounded-md ${activePath === item.href
+                                    className={`w-full flex items-center py-2 px-3 rounded-md ${
+                                        activePath === item.href
                                             ? 'text-red-500 bg-orange-100'
                                             : 'text-gray-700 hover:text-red-500 hover:bg-gray-100'
-                                        }`}
+                                    }`}
                                 >
                                     {item.icon}
                                     <span>{item.label}</span>
