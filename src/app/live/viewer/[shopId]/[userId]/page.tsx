@@ -114,7 +114,8 @@ export default function ViewerPage() {
             mounted = false;
             room?.disconnect();
         };
-    }, [shopId, userId, room]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shopId, userId]);
 
     useEffect(() => {
         if (!room) return;
