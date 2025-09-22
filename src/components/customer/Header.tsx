@@ -20,9 +20,9 @@ import {
     useLogProductClickMutation,
 } from '~/features/products/elasticApi';
 import { useRouter } from 'next/navigation';
-import { loadAuthUser } from '~/utils/authCookie';
 import CustomLink from '../shared/loading/CustomLink';
 import SellerLink from './SellerLink';
+import Link from 'next/link';
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -30,10 +30,6 @@ const Header = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isFocused, setIsFocused] = useState(false);
     const router = useRouter();
-
-    const roles = loadAuthUser()?.roles || [];
-
-    const isSeller = roles.includes('SELLER');
 
     const { data: products = [] } = useSearchSuggestQuery(
         searchTerm
@@ -195,10 +191,7 @@ const Header = () => {
                         style={{ fontSize: 40 }}
                         className="text-white"
                     />
-                    <CustomLink
-                        href="/"
-                        className="hover:text-yellow-200 transition"
-                    >
+                    <Link href="/" className="hover:text-yellow-200 transition">
                         <Image
                             src="/assets/logo/logo.svg"
                             alt="Sope Logo"
@@ -206,7 +199,7 @@ const Header = () => {
                             height={94}
                             className="h-12 sm:h-16 w-auto"
                         />
-                    </CustomLink>
+                    </Link>
                 </div>
                 {/* Search bar */}
 
@@ -230,12 +223,12 @@ const Header = () => {
                                 {products.length > 0 ? (
                                     products.map((p, index) => (
                                         <CustomLink
-                                            key={p.product_id || index}
+                                            key={p.productId || index}
                                             href={`/product-detail/${p.slug}`}
                                             className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer"
                                             onClick={() =>
                                                 handleClickProduct(
-                                                    p.product_id,
+                                                    p.productId,
                                                     searchTerm,
                                                 )
                                             }
@@ -306,7 +299,7 @@ const Header = () => {
                     </button>
                 </div>
 
-                <CustomLink
+                <Link
                     href="#"
                     className="hover:bg-white/10 rounded px-2 py-1 transition flex items-center gap-2"
                 >
@@ -318,7 +311,7 @@ const Header = () => {
                         className="h-6 w-auto"
                     />
                     Trang chủ Sope
-                </CustomLink>
+                </Link>
                 <SellerLink />
                 <CustomLink
                     href="#"

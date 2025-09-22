@@ -1,7 +1,5 @@
 'use client';
 import React from 'react';
-import CustomLink from './CustomLink';
-import HomeIcon from '@mui/icons-material/Home';
 import { SearchX } from 'lucide-react';
 
 export const LoadingMessage = ({ message }: { message?: string }) => (

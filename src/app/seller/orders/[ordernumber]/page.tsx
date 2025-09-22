@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { Receipt, Wallet } from 'lucide-react';
 import { statusColors } from '~/components/order/OrderItem';
+import Image from 'next/image';
 
 const shippingProviders: Record<string, string> = {
     'MTJfMTdfMTU1OQ==': 'GIAO HÀNG TIẾT KIỆM (tiết kiệm)',
@@ -173,10 +174,12 @@ export default function OrderDetail() {
                                         </td>
                                         <td className="px-3 py-2">
                                             <div className="flex items-start gap-3">
-                                                <img
+                                                <Image
                                                     src={item.imageUrl}
                                                     alt={item.productName}
                                                     className="w-12 h-12 object-cover rounded"
+                                                    width={40}
+                                                    height={40}
                                                 />
                                                 <div>
                                                     <div className="font-medium">

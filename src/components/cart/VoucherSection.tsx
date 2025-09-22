@@ -3,7 +3,7 @@ import { Box, Typography, Button, Chip } from '@mui/material';
 import DiscountIcon from '@mui/icons-material/Discount';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import VoucherModal from '../checkout/VoucherModal';
-import type { Discount, DiscountScope } from '~/types/discount/discount';
+import type { Discount } from '~/types/discount/discount';
 
 interface Props {
     vouchers: Discount[];

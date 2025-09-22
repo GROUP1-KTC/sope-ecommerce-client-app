@@ -9,7 +9,7 @@ import {
     useSearchProductsQuery,
 } from '~/features/products/elasticApi';
 import { skipToken } from '@reduxjs/toolkit/query';
-import { ProductSummary } from '~/types/products';
+import type { ProductSummary } from '~/types/products';
 
 interface MostSearchProps {
     title?: string;

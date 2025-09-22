@@ -30,7 +30,6 @@ const VideoTrimModal = ({
         }
     }, []);
 
-    // Tự động dừng khi hết đoạn được chọn
     useEffect(() => {
         const interval = setInterval(() => {
             const video = videoRef.current;
@@ -40,15 +39,6 @@ const VideoTrimModal = ({
         }, 200);
         return () => clearInterval(interval);
     }, [range]);
-
-    const handleSliderChange = (values: number | number[]) => {
-        const [start, end] = values as [number, number];
-        if (end - start >= 10 && end - start <= 60) {
-            setRange([start, end]);
-            const video = videoRef.current;
-            if (video) video.currentTime = start;
-        }
-    };
 
     const handlePlay = () => {
         const video = videoRef.current;

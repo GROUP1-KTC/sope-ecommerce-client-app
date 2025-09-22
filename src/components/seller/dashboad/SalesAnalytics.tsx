@@ -13,7 +13,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { OrderGroupShop } from '~/types/orders/order';
+import type { OrderGroupShop } from '~/types/orders/order';
 
 ChartJS.register(
     LineElement,
@@ -146,13 +146,11 @@ export default function SalesAnalytics({ orders }: SalesAnalyticsProps) {
     };
 
     const chartDataMap: Record<string, number[]> = {
-        // Doanh số
         'Doanh số': groupByMonth(
             (o) => o.order.status === 'DELIVERED',
             (o) => o.order.subTotal || 0,
         ),
 
-        // Tỷ lệ chuyển đổi
         'Tỷ lệ chuyển đổi đơn hàng': monthLabels.map((_, m) => {
             const total = orders.filter(
                 (o) =>
@@ -168,7 +166,6 @@ export default function SalesAnalytics({ orders }: SalesAnalyticsProps) {
             return total > 0 ? (done / total) * 100 : 0;
         }),
 
-        // Doanh số trên mỗi đơn hàng
         'Doanh số trên mỗi đơn hàng': monthLabels.map((_, m) => {
             const monthlyOrders = orders.filter(
                 (o) =>

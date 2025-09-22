@@ -5,7 +5,7 @@ import {
     type FetchArgs,
     type FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
-import { clearCredentials, setCredentials } from '~/features/auth/authSlice';
+import { setCredentials } from '~/features/auth/authSlice';
 import { loadAuthUser, saveAuthUser } from '~/utils/authCookie';
 
 const baseQuery = fetchBaseQuery({

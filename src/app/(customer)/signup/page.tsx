@@ -37,7 +37,7 @@ const Signup = () => {
     const [register] = useRegisterMutation();
 
     // Login
-    const [login, { isLoading }] = useLoginMutation();
+    const [login] = useLoginMutation();
     const dispatch = useAppDispatch();
     const router = useRouter();
 

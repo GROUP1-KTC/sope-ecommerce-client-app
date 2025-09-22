@@ -1,9 +1,10 @@
-
 services:
-  server:
-    image: pkucpkam/frontend-app:latest  
-    environment:
-      NODE_ENV: production
-    ports:
-      - "3000:3000"
-    restart: unless-stopped
+    server:
+        image: pkucpkam/frontend-app:latest
+        env_file:
+            - .env
+        environment:
+            NODE_ENV: production
+        ports:
+            - '3000:3000'
+        restart: unless-stopped

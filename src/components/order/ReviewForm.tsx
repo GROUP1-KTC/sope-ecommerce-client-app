@@ -3,6 +3,7 @@ import { useCreateReviewMutation } from '~/features/reviews/reviewApi';
 import { Camera, Video } from 'lucide-react';
 import { X } from 'lucide-react';
 import { useAlertStore } from '~/store/zustand/alertStore';
+import Image from 'next/image';
 
 interface ReviewFormProps {
     itemInfo: any;
@@ -93,9 +94,10 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                     ✕
                 </button>
 
-                {/* Thông tin sản phẩm */}
                 <div className="flex items-center mb-4">
-                    <img
+                    <Image
+                        width={64}
+                        height={64}
                         src={itemInfo.imageUrl}
                         alt={itemInfo.productName}
                         className="w-16 h-16 rounded object-cover mr-3"
@@ -225,7 +227,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                                     key={idx}
                                     className="relative w-22 h-22 border rounded overflow-hidden"
                                 >
-                                    <img
+                                    <Image
+                                        width={64}
+                                        height={64}
                                         src={URL.createObjectURL(file)}
                                         alt={`preview-${idx}`}
                                         className="w-full h-full object-cover"

@@ -34,7 +34,7 @@ const LiveStreamSection: React.FC<LiveStreamSectionProps> = () => {
             try {
                 // 1. Gọi API lấy danh sách livestream đang active
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/livestream/active`,
+                    `${process.env.NEXT_PUBLIC_API_URL}livestream/active`,
                 );
                 if (res.ok) {
                     const json = await res.json();
@@ -119,7 +119,7 @@ const LiveStreamSection: React.FC<LiveStreamSectionProps> = () => {
             subscription?.unsubscribe();
             disconnectSocket();
         };
-    }, []);
+    }, [userId]);
 
     const containerRef = useRef<HTMLDivElement>(null);
     const [atStart, setAtStart] = useState(true);

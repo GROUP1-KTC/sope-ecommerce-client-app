@@ -1,14 +1,6 @@
 import React from 'react';
 
-interface FormNavigationButtonsProps {
-    // Nếu sau này bạn muốn các nút có hành động hoặc nhãn tùy chỉnh, bạn có thể thêm props ở đây
-    // Ví dụ: onBackClick?: () => void;
-    //          onSaveClick?: () => void;
-    //          onNextClick?: () => void;
-    //          backButtonLabel?: string;
-    //          saveButtonLabel?: string;
-    //          nextButtonLabel?: string;
-}
+interface FormNavigationButtonsProps {}
 
 const FormNavigationButtons: React.FC<FormNavigationButtonsProps> = () => {
     return (

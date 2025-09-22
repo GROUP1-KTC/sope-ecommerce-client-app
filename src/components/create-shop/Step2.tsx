@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 // components/CreateShopMultiStep/Step2.tsx
 interface Step2Props {
     description: string;
@@ -10,7 +12,6 @@ interface Step2Props {
 export default function Step2({
     description,
     setDescription,
-    logoFile,
     setLogoFile,
     logoPreview,
 }: Step2Props) {
@@ -58,7 +59,9 @@ export default function Step2({
 
                     {/* Preview */}
                     {logoPreview ? (
-                        <img
+                        <Image
+                            width={112}
+                            height={112}
                             src={logoPreview}
                             alt="logo"
                             className="w-28 h-28 object-cover rounded mt-3 border"

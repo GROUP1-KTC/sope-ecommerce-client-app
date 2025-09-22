@@ -4,9 +4,13 @@ import type { Review } from '../../types/products';
 
 interface ProductReviewsProps {
     reviews: Review[];
+    overallReview?: string;
 }
 
-const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
+const ProductReviews: React.FC<ProductReviewsProps> = ({
+    reviews,
+    overallReview,
+}) => {
     const [selectedFilter, setSelectedFilter] = useState<'all' | number>('all');
 
     console.log('check reviews', reviews);
@@ -28,7 +32,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
             : reviews.filter((r) => r.rating === selectedFilter);
 
     return (
-        <div className="border border-gray-200 mx-auto p-6 bg-white rounded-lg mt-4">
+        <div className="border border-gray-200 mx-auto w-[95%] p-6 bg-white rounded-lg mt-4">
             <h2 className="uppercase text-xl font-semibold text-gray-900 mb-4">
                 Đánh Giá Sản Phẩm
             </h2>
@@ -108,13 +112,18 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
                     <div className="text-gray-600">
                         Dựa trên {reviews.length} đánh giá
                     </div>
+                    <div className="text-gray-600">
+                        {overallReview
+                            ? overallReview
+                            : 'Chưa có nhận xét chung về sản phẩm này.'}
+                    </div>
                 </div>
 
                 {/* Bộ lọc sao */}
                 <div className="flex space-x-2 p-6">
                     <button
                         onClick={() => setSelectedFilter('all')}
-                        className={`relative px-3 py-1 text-sm rounded-md 
+                        className={`relative px-3 py-1 text-sm cursor-pointer rounded-md 
                         ${
                             selectedFilter === 'all'
                                 ? 'border border-red-500 text-red-500'
@@ -123,7 +132,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
                     >
                         Tất cả ({reviews.length})
                         {selectedFilter === 'all' && (
-                            <span className="absolute bottom-0 right-0 w-4 h-4 bg-red-500 text-white flex items-center justify-center text-xs rounded-tl">
+                            <span className="absolute bottom-0 right-0 w-4 h-4 bg-red-500 text-white flex items-center justify-center text-xs rounded-md">
                                 ✓
                             </span>
                         )}
@@ -133,7 +142,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
                         <button
                             key={star}
                             onClick={() => setSelectedFilter(star)}
-                            className={`relative px-3 py-1 text-sm rounded-md 
+                            className={`relative px-3 py-1 text-sm cursor-pointer rounded-md 
                             ${
                                 selectedFilter === star
                                     ? 'border border-red-500 text-red-500'
@@ -142,7 +151,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
                         >
                             {star} sao ({starCounts[5 - star]})
                             {selectedFilter === star && (
-                                <span className="absolute bottom-0 right-0 w-4 h-4 bg-red-500 text-white flex items-center justify-center text-xs rounded-tl">
+                                <span className="absolute bottom-0 right-0 w-4 h-4 bg-red-500 text-white flex items-center justify-center text-xs rounded-md">
                                     ✓
                                 </span>
                             )}
@@ -151,7 +160,6 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
                 </div>
             </div>
 
-            {/* Danh sách review */}
             <div className="space-y-6 px-4">
                 {filteredReviews.map((review) => (
                     <Comment
@@ -177,11 +185,11 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
                         )}
                         mediaList={review.mediaList ?? []}
                         attributes={review.productVariant?.attributes ?? []}
+                        sentiment={review.sentiment}
                     />
                 ))}
             </div>
 
-            {/* Phân trang */}
             <div className="flex justify-center items-center mt-6 space-x-6">
                 <button className="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-100">
                     Trước

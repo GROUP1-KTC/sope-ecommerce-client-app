@@ -81,14 +81,25 @@ export default function ShopVoucherPage() {
             endDate: data.endDate ?? null,
         };
 
-        let finalDiscount: Discount;
-
-        finalDiscount = {
+        // Voucher example
+        const finalDiscount: Discount = {
             ...baseRow,
+            id: crypto.randomUUID(),
+            code: data.code!,
+            description: data.description ?? '',
+            value: data.value!,
+            minOrderValue: data.minOrderValue ?? 0,
+            maxUsage: data.maxUsage ?? 0,
+            currentUsage: 0,
+            startDate: data.startDate!,
+            endDate: data.endDate ?? null,
+            scope: data.scope!,
+            maxCoins: data.maxCoins ?? 0,
+            status: 'ACTIVE',
             shopId: '190e754a-20d1-42e9-81ce-fa1bc282caa9',
             discountType: data.discountType!,
-            maxDiscountValue: data.maxDiscountValue ?? null,
-        } as Discount;
+            maxDiscountValue: data.maxDiscountValue ?? 0,
+        };
 
         if (selectedDiscount) {
         } else {
@@ -97,11 +108,7 @@ export default function ShopVoucherPage() {
 
                 return response as Discount;
             } catch (error) {
-                console.error('Failed to create discount:', error);
-                const errorMessage =
-                    error instanceof Error
-                        ? error.message
-                        : 'Failed to create discount';
+                throw error;
             }
         }
     };

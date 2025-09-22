@@ -55,6 +55,7 @@ export interface ProductResponse extends BaseProduct {
     updatedAt?: string;
     shop: Shop;
     variants: ProductVariant[];
+    overallReview: string;
 }
 
 export interface ProductVariantByCategory {

@@ -204,16 +204,7 @@ const NotificationCard = ({
 };
 
 export default function VoucherPage() {
-    const [openSection, setOpenSection] = useState<string | null>(
-        'notifications',
-    );
-    const [activeTab, setActiveTab] = useState('promotions');
-
-    const toggleSection = (section: string) => {
-        setOpenSection((prev: string | null) =>
-            prev === section ? null : section,
-        );
-    };
+    const [activeTab] = useState('promotions');
 
     const promotions: Promotion[] = [
         {

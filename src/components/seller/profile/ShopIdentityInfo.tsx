@@ -11,11 +11,8 @@ export default function ShopIdentityInfo() {
                     Thông tin định danh
                 </h2>
                 <div className="flex gap-2">
-                    <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-100">
+                    <button className="px-4 py-2 border border-red-600 text-sm text-white bg-red-600 rounded hover:bg-red-700 cursor-pointer">
                         Chỉnh sửa thông tin
-                    </button>
-                    <button className="px-4 py-2 border border-red-600 text-white bg-red-600 rounded hover:bg-red-700">
-                        Lịch sử chỉnh sửa
                     </button>
                 </div>
             </div>

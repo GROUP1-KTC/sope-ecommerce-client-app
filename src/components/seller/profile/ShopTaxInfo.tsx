@@ -4,9 +4,16 @@ import SensitiveValue from '../common/SensitiveValue';
 export default function ShopTaxInfo() {
     return (
         <Card className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-800">
-                Thông tin Thuế
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-gray-800">
+                    Thông tin thuế
+                </h2>
+                <div className="flex gap-2">
+                    <button className="px-4 py-2 border border-red-600 text-sm text-white bg-red-600 rounded hover:bg-red-700 cursor-pointer">
+                        Chỉnh sửa thông tin
+                    </button>
+                </div>
+            </div>
             <div className="p-4 bg-blue-50 text-sm text-red-800 border border-blue-200 rounded">
                 Người bán chỉ được cập nhật thông tin một lần trong tháng và
                 phải đảm bảo thông tin chính xác để tránh các vấn đề liên quan
@@ -45,12 +52,6 @@ export default function ShopTaxInfo() {
                         <SensitiveValue value="1234567890" />
                     </div>
                 </div>
-            </div>
-
-            <div className="flex justify-end">
-                <button className="px-4 py-2 border border-red-600 text-white bg-re-600 rounded hover:bg-red-700">
-                    Chỉnh sửa
-                </button>
             </div>
         </Card>
     );

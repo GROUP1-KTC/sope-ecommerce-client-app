@@ -4,8 +4,6 @@ import React, { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { useGetActiveAdsQuery } from '~/features/service-program/serviceprogramApi';
-import { AdsProgramDTO } from '~/types/service-programs/serviceprogram';
 
 const banners = [
     {

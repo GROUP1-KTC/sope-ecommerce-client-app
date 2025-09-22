@@ -7,14 +7,14 @@ export const reviewApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getReviewByProduct: builder.query<Review[], string>({
             query: (productId) => ({
-                url: `v1/review/${productId}`,
+                url: `/review/${productId}`,
                 credentials: 'omit',
             }),
             providesTags: ['Review'],
         }),
         createReview: builder.mutation<Review, FormData>({
             query: (data) => ({
-                url: `v1/review`,
+                url: `/review`,
                 method: 'POST',
                 body: data,
                 credentials: 'omit',
