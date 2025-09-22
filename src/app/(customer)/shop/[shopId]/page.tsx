@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
-import { ChevronRight } from 'lucide-react';
 import SmsIcon from '@mui/icons-material/Sms';
 import ProductList from '~/components/product-list/ProductList';
 import { useGetShopByIdQuery } from '~/features/shop/shopApi';
@@ -17,6 +16,7 @@ import {
     ErrorMessage,
     LoadingMessage,
 } from '~/components/shared/loading/FeedBack';
+import ProductListLine from '~/components/product-detail/ProductList';
 
 const ShopPage: React.FC = () => {
     const { shopId } = useParams();
@@ -68,7 +68,6 @@ const ShopPage: React.FC = () => {
 
     return (
         <div className="max-w-[80%] w-full mx-auto p-4 space-y-6">
-            {/* Shop Header */}
             <div className="flex items-center bg-white p-6 rounded-xl border border-gray-100 shadow-sm gap-6">
                 <div className="w-32 h-32 overflow-hidden rounded-full border border-gray-200 flex-shrink-0">
                     <Image
@@ -117,47 +116,10 @@ const ShopPage: React.FC = () => {
                 </div>
             </div>
 
-            {/* Suggested Products */}
-            <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-                <div className="flex justify-between items-center mb-5">
-                    <h2 className="font-semibold text-lg text-gray-800">
-                        Gợi ý cho bạn
-                    </h2>
-                    <a
-                        href="#all-products"
-                        className="text-sm text-red-500 flex items-center gap-1 hover:underline"
-                    >
-                        Xem tất cả <ChevronRight className="w-4 h-4" />
-                    </a>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    {suggestedProducts.map((product: any) => (
-                        <div
-                            key={product.productId}
-                            className="border border-gray-100 rounded-lg p-3 flex flex-col items-center bg-white hover:shadow-md transition"
-                        >
-                            <div className="w-32 h-32 flex items-center justify-center overflow-hidden">
-                                <Image
-                                    src={product.defaultImage}
-                                    alt={product.name}
-                                    width={140}
-                                    height={140}
-                                    className="object-contain rounded"
-                                />
-                            </div>
-                            <div className="text-sm text-center line-clamp-2 text-gray-700 mt-2">
-                                {product.name}
-                            </div>
-                            <div className="text-red-500 font-bold text-base mt-1">
-                                {/* ₫{product.defaultPrice.toLocaleString('vi-VN')} */}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                                Đã bán: {product.totalSold}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
+            <ProductListLine
+                title="Gợi ý cho bạn"
+                products={suggestedProducts}
+            />
 
             {/* Shop Description */}
             <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
@@ -169,7 +131,6 @@ const ShopPage: React.FC = () => {
                 </p>
             </div>
 
-            {/* All Products */}
             <div
                 id="all-products"
                 className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm"
@@ -185,7 +146,6 @@ const ShopPage: React.FC = () => {
                 />
             </div>
 
-            {/* Chat Dialog */}
             <ChatDialog open={openChat} onClose={() => setOpenChat(false)} />
         </div>
     );

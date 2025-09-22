@@ -6,8 +6,8 @@ The project is initialized with [Next.js](https://nextjs.org/) using the `app/` 
 
 ## ⚙️ Environment Requirements
 
--   Node.js >= 18
--   pnpm >= 10.8.0
+- Node.js >= 18
+- pnpm >= 10.8.0
 
 > This project **requires** the use of `pnpm`. If you attempt to use `npm` or `yarn`, the installation process will be blocked by the `check-pm.js` script.
 
@@ -56,8 +56,8 @@ http://localhost:3000
 
 ## 🛠 During Development
 
--   You can edit content in `app/page.tsx`. Changes will automatically update (hot reload).
--   To check syntax/linting:
+- You can edit content in `app/page.tsx`. Changes will automatically update (hot reload).
+- To check syntax/linting:
 
 ```bash
 pnpm lint
@@ -115,12 +115,12 @@ pnpm update --latest     # Update all dependencies
 
 ## 📚 Technologies Used
 
--   [Next.js](https://nextjs.org) – React framework
--   [React 19](https://react.dev)
--   [TypeScript](https://www.typescriptlang.org/)
--   [Tailwind CSS](https://tailwindcss.com/)
--   [PostCSS](https://postcss.org/)
--   [pnpm](https://pnpm.io)
+- [Next.js](https://nextjs.org) – React framework
+- [React 19](https://react.dev)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [PostCSS](https://postcss.org/)
+- [pnpm](https://pnpm.io)
 
 ---
 
@@ -132,10 +132,10 @@ You **must not use** `npm install` or `yarn install`. Attempting to do so will b
 
 ## 🔗 Reference Documentation
 
--   [https://pnpm.io](https://pnpm.io)
--   [https://nextjs.org/docs](https://nextjs.org/docs)
--   [https://tailwindcss.com/docs](https://tailwindcss.com/docs)
--   [https://nodejs.org/en/download](https://nodejs.org/en/download)
+- [https://pnpm.io](https://pnpm.io)
+- [https://nextjs.org/docs](https://nextjs.org/docs)
+- [https://tailwindcss.com/docs](https://tailwindcss.com/docs)
+- [https://nodejs.org/en/download](https://nodejs.org/en/download)
 
 ---
 

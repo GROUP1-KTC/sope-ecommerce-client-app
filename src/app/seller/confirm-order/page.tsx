@@ -2,10 +2,7 @@
 
 import { useState } from 'react';
 import OrderList from '~/components/seller/order/OrderList';
-import {
-    useGetOrdersByShopQuery,
-    useGetPendingOrdersByShopQuery,
-} from '~/features/orders/orderApiSlide';
+import { useGetPendingOrdersByShopQuery } from '~/features/orders/orderApiSlide';
 
 export default function ConfirmOrder() {
     const [page, setPage] = useState(0);

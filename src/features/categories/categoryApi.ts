@@ -9,7 +9,7 @@ export const categoryApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getCategories: builder.query<Category[], void>({
             query: () => ({
-                url: 'categories',
+                url: '/categories',
                 credentials: 'omit',
             }),
             providesTags: ['Category'],
@@ -19,7 +19,7 @@ export const categoryApi = apiSlice.injectEndpoints({
             { slug: string; page?: number; size?: number }
         >({
             query: ({ slug, page = 0, size = 12 }) => ({
-                url: `products/by-category/slug/${slug}?page=${page}&size=${size}`,
+                url: `/products/by-category/slug/${slug}?page=${page}&size=${size}`,
                 method: 'GET',
                 credentials: 'omit',
             }),
@@ -29,7 +29,7 @@ export const categoryApi = apiSlice.injectEndpoints({
         }),
         getBreadcrumbCategory: builder.query<Category[], string>({
             query: (id) => ({
-                url: `categories/${id}/breadcrumb`,
+                url: `/categories/${id}/breadcrumb`,
                 credentials: 'omit',
             }),
             providesTags: (result, error, id) => [{ type: 'Category', id }],

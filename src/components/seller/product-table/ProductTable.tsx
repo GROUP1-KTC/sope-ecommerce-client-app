@@ -555,7 +555,7 @@ export default function ProductTable({ products, viewMode }: Props) {
                                                             variant.productVariantId && (
                                                             <FlashSale
                                                                 open={true}
-                                                                onClose={() =>
+                                                                onCloseAction={() =>
                                                                     setOpenFlashSaleId(
                                                                         null,
                                                                     )

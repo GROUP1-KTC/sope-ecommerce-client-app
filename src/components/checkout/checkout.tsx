@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useMemo, use } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
 import { clearCheckoutItems } from '~/features/orders/checkoutSlice';
@@ -36,11 +36,9 @@ export default function Checkout() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const tempAddress = useAppSelector((state) => state.tempAddress);
-    const { data: userAddresses, isLoading: isAddressesLoading } =
-        useGetUserAddressesQuery(undefined);
+    const { data: userAddresses } = useGetUserAddressesQuery(undefined);
 
-    const { data: getDiscountsPlatform, isLoading: isLoadingDiscounts } =
-        useGetPlatformDiscountQuery();
+    const { data: getDiscountsPlatform } = useGetPlatformDiscountQuery();
 
     const [shippingRatesByShop, setShippingRatesByShop] = useState<
         Record<string, ShippingRate[]>
@@ -99,7 +97,7 @@ export default function Checkout() {
         if (shopOrders.length === 0) {
             router.push('/cart');
         }
-    }, []);
+    }, [router, shopOrders.length]);
 
     useEffect(() => {
         if (errorMessage) {
@@ -179,12 +177,7 @@ export default function Checkout() {
                 });
             }
         }
-    }, [
-        isLoggedIn,
-        tempAddress?.province?.name,
-        tempAddress?.district?.name,
-        tempAddress?.ward?.name,
-    ]);
+    }, [isLoggedIn, tempAddress, setSelectedAddress]);
 
     // Calculate totals
     const total = useMemo(

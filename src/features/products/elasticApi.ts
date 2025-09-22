@@ -5,6 +5,8 @@ import type {
     ElasticSearchResponse,
 } from '~/types/products';
 
+console.log('ElasticSearch Base URL:', process.env.NEXT_PUBLIC_ELASTIC_SEARCH);
+
 export const elasticApi = createApi({
     reducerPath: 'elasticApi',
     baseQuery: fetchBaseQuery({

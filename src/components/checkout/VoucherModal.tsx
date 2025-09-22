@@ -64,7 +64,7 @@ const VoucherModal: React.FC<VoucherModalProps> = ({
                 setError('Mã không hợp lệ hoặc không tồn tại.');
                 setManualVoucher(null);
             }
-        } catch (e) {
+        } catch (_e) {
             setError('Có lỗi khi kiểm tra mã.');
         } finally {
             setLoading(false);

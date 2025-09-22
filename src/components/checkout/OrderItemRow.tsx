@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React from 'react';
 
 type CartItem = {
@@ -19,7 +20,9 @@ export default function OrderItemRow({ item }: OrderItemRowProps) {
         <tr className="hover:bg-gray-50">
             <td className="py-3 mb-2 px-1 sm:px-2">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-                    <img
+                    <Image
+                        width={80}
+                        height={80}
                         src={item.image || '/placeholder.png'}
                         alt={item.name}
                         className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg shadow-sm"

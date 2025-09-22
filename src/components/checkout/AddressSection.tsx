@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import HozAddressList from './HozAddressList';
 import type { Address } from '~/types/address';
-import { add } from 'lodash';
 
 type AddressSectionProps = {
     selectedAddress: Address | null;

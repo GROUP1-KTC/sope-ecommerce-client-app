@@ -39,7 +39,7 @@ const AllProductsByShop = () => {
             key: 'all',
             label: 'Tất cả',
             count: data?.totalElements ?? 0,
-            filter: (p: ProductResponse) => true,
+            // filter: (p: ProductResponse) => true,
         },
         {
             key: 'active',

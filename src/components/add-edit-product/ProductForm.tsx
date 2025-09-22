@@ -251,7 +251,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                     ...prev,
                     imagesList: [...prev.imagesList, mediaItem],
                 }));
-            } catch (err) {
+            } catch (_err) {
                 useAlertStore.getState().showAlert({
                     severity: 'warning',
                     message: `Không thể kiểm tra ảnh ${f.name}`,
@@ -294,7 +294,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 preview: URL.createObjectURL(file),
             };
             setProductData((prev) => ({ ...prev, defaultImage: mediaItem }));
-        } catch (err) {
+        } catch (_err) {
             useAlertStore.getState().showAlert({
                 severity: 'warning',
                 message: 'Không thể kiểm tra ảnh. Vui lòng thử lại.',

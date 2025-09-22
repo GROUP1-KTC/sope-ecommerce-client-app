@@ -29,11 +29,7 @@ type AddressFormModalProps = {
     }) => void;
 };
 
-const AddressFormModal = ({
-    isOpen,
-    onClose,
-    onSubmit,
-}: AddressFormModalProps) => {
+const AddressFormModal = ({ isOpen, onClose }: AddressFormModalProps) => {
     const [addressData, setAddressData] = useState<AddressData>({
         name: '',
         phone: '',

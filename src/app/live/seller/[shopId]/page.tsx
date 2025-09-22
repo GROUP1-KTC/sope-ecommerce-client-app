@@ -3,11 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import type { Room } from '~/utils/livekit';
-import {
-    RemoteTrack,
-    RemoteTrackPublication,
-    joinLiveKitRoom,
-} from '~/utils/livekit';
+import { joinLiveKitRoom } from '~/utils/livekit';
 import { RoomEvent } from 'livekit-client';
 import LeftPanel from '~/components/livestream/seller/LeftPannel';
 import CenterPanel from '~/components/livestream/seller/CenterPannel';
@@ -69,9 +65,11 @@ export default function SellerPage() {
     useEffect(() => {
         startPreview();
 
+        const videoEl = videoRef.current;
+
         return () => {
-            if (videoRef.current?.srcObject) {
-                (videoRef.current.srcObject as MediaStream)
+            if (videoEl?.srcObject) {
+                (videoEl.srcObject as MediaStream)
                     .getTracks()
                     .forEach((t) => t.stop());
             }
@@ -95,7 +93,7 @@ export default function SellerPage() {
     }) => {
         try {
             const token = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/livekit/token?room=${shopId}&identity=seller&isPublisher=true`,
+                `${process.env.NEXT_PUBLIC_API_URL}livekit/token?room=${shopId}&identity=seller&isPublisher=true`,
             ).then((r) => r.text());
 
             const r = await joinLiveKitRoom(
@@ -119,7 +117,7 @@ export default function SellerPage() {
                 await r.localParticipant.publishTrack(t);
             }
 
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/livestream/start`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL}livestream/start`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -149,7 +147,7 @@ export default function SellerPage() {
                 if (videoRef.current) videoRef.current.srcObject = stream;
             });
 
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/livestream/end`, {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}livestream/end`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ shopId }),

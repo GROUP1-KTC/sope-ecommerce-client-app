@@ -56,7 +56,7 @@ const eslintConfig = [
             'react-hooks/rules-of-hooks': 'error',
             'react-hooks/exhaustive-deps': 'warn',
             '@typescript-eslint/explicit-module-boundary-types': 'off',
-            '@typescript-eslint/no-explicit-any': 'warn',
+            '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/consistent-type-imports': 'error',
             'react/no-unescaped-entities': 'off',
             '@typescript-eslint/no-empty-object-type': 'off',

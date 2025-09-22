@@ -40,6 +40,7 @@ export default function CustomLink({
 
     useEffect(() => {
         if (loading) setLoading(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pathname]);
 
     return (

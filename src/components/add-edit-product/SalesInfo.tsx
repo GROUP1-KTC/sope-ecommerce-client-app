@@ -1,8 +1,9 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import VariantGroupInput from './VariantGroupInput';
 import type { Attribute, Dimension, ProductVariant } from '~/types/products';
 import type { ProductFormDataWithMedia } from './RightSideBar';
 import { handleNumberKeyDown } from '~/utils/keyboard';
+import Image from 'next/image';
 interface SalesInfoProps {
     onVariantsChange: (variants: ProductVariant[]) => void;
     productData: ProductFormDataWithMedia;
@@ -40,14 +41,14 @@ const SalesInfo = ({ onVariantsChange, productData, mode }: SalesInfoProps) => {
             .filter((a) => a.value !== '');
     };
 
-    const normalizeVariants = (
-        variants: ProductVariant[],
-        orderNames: string[],
-    ) =>
-        variants.map((v) => ({
-            ...v,
-            attributes: normalizeAttributes(v.attributes ?? [], orderNames),
-        }));
+    const normalizeVariants = useCallback(
+        (variants: ProductVariant[], orderNames: string[]) =>
+            variants.map((v) => ({
+                ...v,
+                attributes: normalizeAttributes(v.attributes ?? [], orderNames),
+            })),
+        [],
+    );
 
     const stableKey = (attrs: Attribute[] = []) =>
         attrs.map((a) => `${a.name}:${a.value}`).join('|');
@@ -57,26 +58,34 @@ const SalesInfo = ({ onVariantsChange, productData, mode }: SalesInfoProps) => {
 
     const hydratingRef = useRef(false);
 
-    const sameByKey = (a: ProductVariant[], b: ProductVariant[]) => {
-        if (a.length !== b.length) return false;
-        const mapA = new Map(a.map((v) => [stableKey(v.attributes ?? []), v]));
-        return b.every((v) => {
-            const u = mapA.get(stableKey(v.attributes ?? []));
-            if (!u) return false;
-            const da = u.dimension ?? { length: 0, width: 0, height: 0 };
-            const db = v.dimension ?? { length: 0, width: 0, height: 0 };
-            return (
-                u.price === v.price &&
-                u.stock === v.stock &&
-                u.weight === v.weight &&
-                da.length === db.length &&
-                da.width === db.width &&
-                da.height === db.height
+    const sameByKey = useCallback(
+        (a: ProductVariant[], b: ProductVariant[]) => {
+            if (a.length !== b.length) return false;
+            const mapA = new Map(
+                a.map((v) => [stableKey(v.attributes ?? []), v]),
             );
-        });
-    };
+            return b.every((v) => {
+                const u = mapA.get(stableKey(v.attributes ?? []));
+                if (!u) return false;
+                const da = u.dimension ?? { length: 0, width: 0, height: 0 };
+                const db = v.dimension ?? { length: 0, width: 0, height: 0 };
+                return (
+                    u.price === v.price &&
+                    u.stock === v.stock &&
+                    u.weight === v.weight &&
+                    da.length === db.length &&
+                    da.width === db.width &&
+                    da.height === db.height
+                );
+            });
+        },
+        [],
+    );
 
-    const incomingVariants = productData?.variants ?? [];
+    const incomingVariants = useMemo(
+        () => productData?.variants ?? [],
+        [productData?.variants],
+    );
 
     function extractOptions(vars: ProductVariant[], name: string): string[] {
         const seen = new Set<string>();
@@ -167,7 +176,13 @@ const SalesInfo = ({ onVariantsChange, productData, mode }: SalesInfoProps) => {
                 hydratingRef.current = false;
             }, 0);
         }
-    }, [mode, incomingVariants]);
+    }, [
+        mode,
+        incomingVariants,
+        variantCombinations,
+        normalizeVariants,
+        sameByKey,
+    ]);
 
     useEffect(() => {
         if (hydratingRef.current) return;
@@ -681,18 +696,32 @@ const SalesInfo = ({ onVariantsChange, productData, mode }: SalesInfoProps) => {
                                                                     {combo.imageVariant ? (
                                                                         typeof combo.imageVariant ===
                                                                         'string' ? (
-                                                                            <img
+                                                                            <Image
                                                                                 src={
                                                                                     combo.imageVariant
                                                                                 }
                                                                                 className="object-cover w-full h-full rounded"
+                                                                                alt="Image Variant"
+                                                                                width={
+                                                                                    60
+                                                                                }
+                                                                                height={
+                                                                                    60
+                                                                                }
                                                                             />
                                                                         ) : (
-                                                                            <img
+                                                                            <Image
                                                                                 src={URL.createObjectURL(
                                                                                     combo.imageVariant,
                                                                                 )}
                                                                                 className="object-cover w-full h-full rounded"
+                                                                                alt="Image Variant"
+                                                                                width={
+                                                                                    60
+                                                                                }
+                                                                                height={
+                                                                                    60
+                                                                                }
                                                                             />
                                                                         )
                                                                     ) : (

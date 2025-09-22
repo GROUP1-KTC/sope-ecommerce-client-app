@@ -8,13 +8,13 @@ import { useAlertStore } from '~/store/zustand/alertStore';
 
 interface FlashSaleProps {
     open: boolean;
-    onClose: () => void;
+    onCloseAction: () => void;
     productVariantId: string;
 }
 
 export default function FlashSale({
     open,
-    onClose,
+    onCloseAction,
     productVariantId,
 }: FlashSaleProps) {
     const [saleDate, setSaleDate] = useState('');
@@ -37,6 +37,7 @@ export default function FlashSale({
                 severity: 'error',
                 message: 'Phần trăm giảm giá phải > 0 và < 100',
             });
+            return;
         }
 
         const payload = {
@@ -50,7 +51,7 @@ export default function FlashSale({
         try {
             await createFlashSale(payload).unwrap();
             console.log('✅ FlashSale created:', payload);
-            onClose();
+            onCloseAction();
         } catch (err) {
             console.error('❌ Tạo FlashSale thất bại:', err);
             useAlertStore.getState().showAlert({
@@ -61,7 +62,7 @@ export default function FlashSale({
     };
 
     return (
-        <Dialog open={open} onClose={onClose} className="relative z-50">
+        <Dialog open={open} onClose={onCloseAction} className="relative z-50">
             <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
 
             <motion.div
@@ -145,7 +146,7 @@ export default function FlashSale({
 
                     <div className="flex justify-end gap-2 pt-4">
                         <button
-                            onClick={onClose}
+                            onClick={onCloseAction}
                             className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-sm"
                             disabled={isLoading}
                         >

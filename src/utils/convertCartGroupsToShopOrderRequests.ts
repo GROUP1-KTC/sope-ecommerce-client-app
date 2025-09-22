@@ -4,7 +4,7 @@ import type { ShopOrderRequest } from '~/types/orders/order';
 export function convertCartGroupsToShopOrderRequests(
     cartGroups: CartGroup[],
     extra?: Record<
-        string, // shopId
+        string,
         {
             note?: string;
             discountCodes?: string[];

@@ -1,7 +1,7 @@
 import ChatInputBar from './ChatInputBar';
-import { Avatar, Box, IconButton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import MessageTypeFile from './MessageTypeFile';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { StompSubscription } from '@stomp/stompjs';
 import { connectSocket } from '~/services/socket/socket.service';
 import { useAppDispatch, useAppSelector } from '~/hooks/useTypes';
@@ -9,6 +9,7 @@ import { OnNewMessage } from '~/services/socket/events/message';
 import { useGetConversationByIdQuery } from '~/features/chat/conversation/ConversationApi';
 import type { Message } from '~/types/chat';
 import { loadAuthUser } from '~/utils/authCookie';
+import FormattedMessage from './FormattedMessage';
 
 interface ChatMessagesProps {
     conversationId: string | null;
@@ -19,14 +20,7 @@ interface ChatMessagesProps {
     isMobile: boolean;
 }
 
-const ChatMessages = ({
-    conversationId,
-    name,
-    avatar,
-    handleBack,
-    onClose,
-    isMobile,
-}: ChatMessagesProps) => {
+const ChatMessages = ({ conversationId }: ChatMessagesProps) => {
     const dispatch = useAppDispatch();
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +35,7 @@ const ChatMessages = ({
         }
     }, []);
 
-    const { data: oldMessages = [], isLoading } = useGetConversationByIdQuery(
+    const { data: oldMessages = [] } = useGetConversationByIdQuery(
         conversationId!,
         {
             skip: !conversationId,
@@ -54,7 +48,9 @@ const ChatMessages = ({
             : [],
     );
 
-    const messages: Message[] = [...oldMessages, ...newMessages];
+    const messages: Message[] = useMemo(() => {
+        return [...oldMessages, ...newMessages];
+    }, [oldMessages, newMessages]);
 
     const scrollToBottom = () =>
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -142,7 +138,7 @@ const ChatMessages = ({
                                 {msg.fileUrl ? (
                                     <MessageTypeFile {...msg} />
                                 ) : (
-                                    <Typography>{msg.content}</Typography>
+                                    <FormattedMessage content={msg.content} />
                                 )}
                                 <Typography
                                     variant="caption"

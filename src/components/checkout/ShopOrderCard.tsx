@@ -6,6 +6,7 @@ import { ShippingSection } from './ShippingSelector';
 import type { CartGroup } from '~/app/(customer)/cart/page';
 import type { ShippingRate } from '~/types/shipping/shipping';
 import type { Discount } from '~/types/discount/discount';
+import Image from 'next/image';
 
 interface ShopOrderCardProps {
     group: CartGroup;
@@ -46,8 +47,10 @@ const ShopOrderCard: React.FC<ShopOrderCardProps> = ({
         <div className="mb-8 border rounded-lg shadow-md overflow-hidden">
             {/* Header */}
             <div className="flex items-center gap-2 bg-gray-100 px-4 py-2 border-b">
-                <img
-                    src={group.shop.avatarUrl}
+                <Image
+                    width={32}
+                    height={32}
+                    src={group.shop.avatarUrl ?? '/default-avatar.png'}
                     alt={group.shop.name}
                     className="w-8 h-8 rounded-full object-cover"
                 />

@@ -17,20 +17,17 @@ const ChatFloatButton = () => {
 
     const handleFabClick = () => {
         setOpenChat(true);
-        setShowHint(false); // tắt hint khi mở chat
+        setShowHint(false);
     };
 
-    // Lặp lại bubble lâu lâu hiện
     useEffect(() => {
         if (!isFabHidden) {
-            // hiện lần đầu sau 2s
             const timer = setTimeout(() => setShowHint(true), 2000);
 
-            // rồi setInterval cho nó lặp
             const interval = setInterval(() => {
                 setShowHint(true);
-                setTimeout(() => setShowHint(false), 4000); // hiện 4s rồi ẩn
-            }, 10000); // cứ mỗi 10s lại hiện lại
+                setTimeout(() => setShowHint(false), 4000);
+            }, 10000);
 
             return () => {
                 clearTimeout(timer);

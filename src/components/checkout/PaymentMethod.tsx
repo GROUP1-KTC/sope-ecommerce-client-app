@@ -1,5 +1,5 @@
 'use client';
-import type { on } from 'events';
+import Image from 'next/image';
 import React, { useState } from 'react';
 import type { PaymentMethod, PaymentProvider } from '~/types/orders/order';
 
@@ -104,17 +104,20 @@ export default function PaymentMethodSection({
                                     }`}
                                     onClick={() => {
                                         setSelectedWallet(wallet.name);
-                                        onChangeProvider &&
+                                        if (onChangeProvider) {
                                             onChangeProvider(
                                                 wallet.name.toUpperCase() as PaymentProvider,
                                             );
+                                        }
                                     }}
                                 >
                                     <div className="flex items-center">
-                                        <img
+                                        <Image
                                             src={wallet.logo}
                                             alt={wallet.name}
                                             className="w-10 h-10 mr-3"
+                                            width={40}
+                                            height={40}
                                         />
                                         <span className="font-medium">
                                             {wallet.name}
@@ -144,10 +147,12 @@ export default function PaymentMethodSection({
                                     }
                                 >
                                     <div className="flex items-center">
-                                        <img
+                                        <Image
                                             src={card.logo}
                                             alt={card.name}
                                             className="w-10 h-10 mr-3"
+                                            width={40}
+                                            height={40}
                                         />
                                         <span className="font-medium">
                                             {card.name}
