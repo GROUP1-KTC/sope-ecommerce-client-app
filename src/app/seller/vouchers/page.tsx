@@ -31,11 +31,7 @@ export default function ShopVoucherPage() {
         data: response,
         isLoading,
         isError,
-    } = useGetShopDiscountQuery({
-        shopId: '190e754a-20d1-42e9-81ce-fa1bc282caa9',
-        page: currentPage,
-        size: 20,
-    });
+    } = useGetShopDiscountQuery({ page: currentPage, size: 20 });
 
     const data = response?.data;
     let discounts = data?.content ?? [];
@@ -96,7 +92,7 @@ export default function ShopVoucherPage() {
             scope: data.scope!,
             maxCoins: data.maxCoins ?? 0,
             status: 'ACTIVE',
-            shopId: '190e754a-20d1-42e9-81ce-fa1bc282caa9',
+            // shopId: '190e754a-20d1-42e9-81ce-fa1bc282caa9',
             discountType: data.discountType!,
             maxDiscountValue: data.maxDiscountValue ?? 0,
         };

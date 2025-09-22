@@ -83,7 +83,6 @@ const SearchPage = () => {
     );
 
     const total = products.length;
-
     const totalPages = Math.ceil(total / size);
 
     const mappedProducts = products.map((p: any) => ({
@@ -92,8 +91,8 @@ const SearchPage = () => {
         defaultImage: p.default_image,
         name: p.name,
         minPrice: p.min_price,
+        brand: p.category_name,
         totalStock: p.total_stock ?? 0,
-        brand: p.category_name, // hoặc gán brand thật nếu API khác có
         totalSold: p.total_sold,
         createdAt: p.unix_ts_in_secs
             ? new Date(p.unix_ts_in_secs * 1000).toISOString()

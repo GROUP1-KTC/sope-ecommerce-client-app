@@ -32,21 +32,17 @@ export const orderApi = apiSlice.injectEndpoints({
 
         getPendingOrdersByShop: builder.query<
             ApiResponse<PageResponse<OrderGroupShop>>,
-            { shopId: string; page?: number; size?: number }
+            { page?: number; size?: number }
         >({
-            query: ({ shopId, page = 0, size = 20 }) => ({
-                url: `orders/shop/${shopId}/pending?page=${page}&size=${size}`,
+            query: ({ page = 0, size = 20 }) => ({
+                url: `orders/shop/pending?page=${page}&size=${size}`,
                 credentials: 'omit',
             }),
             providesTags: ['Order'],
         }),
-
-        getRevenueByShop: builder.query<
-            ApiResponse<OrderGroupShop[]>,
-            { shopId: string }
-        >({
-            query: ({ shopId }) => ({
-                url: `orders/revenue/${shopId}`,
+        getRevenueByShop: builder.query<ApiResponse<OrderGroupShop[]>, void>({
+            query: () => ({
+                url: `orders/revenue`,
                 credentials: 'omit',
             }),
             providesTags: ['Order'],

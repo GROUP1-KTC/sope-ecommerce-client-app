@@ -20,10 +20,10 @@ export const discountApi = apiSlice.injectEndpoints({
 
         getShopDiscount: builder.query<
             ApiResponse<PageResponse<Discount>>,
-            { shopId: string; page?: number; size?: number }
+            { page?: number; size?: number }
         >({
-            query: ({ shopId, page = 0, size = 20 }) => ({
-                url: `discounts/shop/${shopId}?page=${page}&size=${size}`,
+            query: ({ page = 0, size = 20 }) => ({
+                url: `discounts/shop?page=${page}&size=${size}`,
             }),
             providesTags: ['Discount'],
         }),
