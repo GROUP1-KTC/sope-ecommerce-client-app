@@ -86,7 +86,7 @@ export interface ElasticSearchProductDetail {
 }
 
 export interface ElasticSearchProduct {
-    productId: string;
+    product_id: string;
     slug: string;
     name: string;
     default_image: string;
