@@ -97,6 +97,7 @@ export default function Checkout() {
         if (shopOrders.length === 0) {
             router.push('/cart');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
