@@ -34,59 +34,58 @@ const Header = () => {
     const { data: products = [] } = useSearchSuggestQuery(
         searchTerm
             ? {
-                _source: ['product_id', 'slug', 'name', 'default_image'],
-                query: {
-                    function_score: {
-                        query: {
-                            bool: {
-                                should: [
-                                    {
-                                        match_phrase: {
-                                            name: {
-                                                query: searchTerm,
-                                                boost: 5,
-                                            },
-                                        },
-                                    },
-                                    {
-                                        match_phrase_prefix: {
-                                            name: {
-                                                query: searchTerm,
-                                                boost: 4,
-                                            },
-                                        },
-                                    },
-                                    {
-                                        match: {
-                                            name: {
-                                                query: searchTerm,
-                                                fuzziness: 'AUTO',
-                                                boost: 2,
-                                            },
-                                        },
-                                    },
-                                    {
-                                        match: {
-                                            slug: {
-                                                query: searchTerm,
-                                                boost: 1,
-                                            },
-                                        },
-                                    },
-                                ],
-                            },
-                        },
-                        boost_mode: 'sum',
-                    },
-                },
-                size: 20,
-                sort: [{ _score: 'desc' }],
-            }
+                  _source: ['product_id', 'slug', 'name', 'default_image'],
+                  query: {
+                      function_score: {
+                          query: {
+                              bool: {
+                                  should: [
+                                      {
+                                          match_phrase: {
+                                              name: {
+                                                  query: searchTerm,
+                                                  boost: 5,
+                                              },
+                                          },
+                                      },
+                                      {
+                                          match_phrase_prefix: {
+                                              name: {
+                                                  query: searchTerm,
+                                                  boost: 4,
+                                              },
+                                          },
+                                      },
+                                      {
+                                          match: {
+                                              name: {
+                                                  query: searchTerm,
+                                                  fuzziness: 'AUTO',
+                                                  boost: 2,
+                                              },
+                                          },
+                                      },
+                                      {
+                                          match: {
+                                              slug: {
+                                                  query: searchTerm,
+                                                  boost: 1,
+                                              },
+                                          },
+                                      },
+                                  ],
+                              },
+                          },
+                          boost_mode: 'sum',
+                      },
+                  },
+                  size: 20,
+                  sort: [{ _score: 'desc' }],
+              }
             : skipToken,
     );
 
     console.log('check products', products);
-
 
     const [logClick] = useLogProductClickMutation();
 
@@ -288,8 +287,9 @@ const Header = () => {
             )}
 
             <div
-                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'
-                    } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
+                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${
+                    menuOpen ? 'translate-x-0' : 'translate-x-full'
+                } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
             >
                 <div className="flex justify-end">
                     <button
