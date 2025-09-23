@@ -97,7 +97,7 @@ export default function Checkout() {
         if (shopOrders.length === 0) {
             router.push('/cart');
         }
-    }, [router, shopOrders.length]);
+    }, []);
 
     useEffect(() => {
         if (errorMessage) {
