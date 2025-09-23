@@ -47,7 +47,8 @@ const TempAddressSection = () => {
 
         setDistricts([]);
         setWards([]);
-    }, [addressData.province, addressData, dispatch]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [addressData.province?.code, dispatch]);
 
     useEffect(() => {
         if (!addressData.district) return;
@@ -67,7 +68,8 @@ const TempAddressSection = () => {
         );
 
         setWards([]);
-    }, [addressData.district, addressData, dispatch]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [addressData.district?.code, dispatch]);
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,

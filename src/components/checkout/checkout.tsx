@@ -77,7 +77,7 @@ export default function Checkout() {
                 discountCodes?: string[];
                 shopVoucher?: string;
                 shippingCharge?: number;
-                shippingRateId: string;
+                shippingRateId?: string;
             }
         >
     >({});

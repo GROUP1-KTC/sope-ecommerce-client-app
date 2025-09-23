@@ -9,7 +9,7 @@ export function convertCartGroupsToShopOrderRequests(
             note?: string;
             discountCodes?: string[];
             shippingCharge?: number;
-            shippingRateId: string;
+            shippingRateId?: string;
         }
     >,
 ): ShopOrderRequest[] {
