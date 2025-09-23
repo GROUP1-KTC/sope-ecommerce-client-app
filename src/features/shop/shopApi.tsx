@@ -6,7 +6,7 @@ export const shopApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         createShop: builder.mutation<any, FormData>({
             query: (formData) => ({
-                url: '/shops',
+                url: '/shops/create',
                 method: 'POST',
                 body: formData,
             }),
