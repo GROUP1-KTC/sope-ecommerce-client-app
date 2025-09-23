@@ -39,8 +39,8 @@ const ProductListLine = ({
 
     return (
         <div className="w-[95%] mx-auto flex justify-center py-4">
-            <div className="bg-white rounded-xl shadow px-6 max-w-6xl w-full relative overflow-visible">
-                <div className="flex items-center mb-1 justify-between pb-2">
+            <div className="bg-white rounded-xl shadow px-6 w-full relative overflow-visible">
+                <div className="flex items-center mb-1 justify-between pb-2 mt-2">
                     <h2 className="uppercase text-xl font-semibold text-gray-800">
                         {title}
                     </h2>

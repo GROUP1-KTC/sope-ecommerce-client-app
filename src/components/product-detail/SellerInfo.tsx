@@ -35,9 +35,6 @@ const SellerInfo = ({ sellerInfo, onChatClick }: SellerInfoProps) => {
                     <h2 className="text-2xl font-bold text-gray-800">
                         {sellerInfo.name}
                     </h2>
-                    <p className="text-sm text-gray-600">
-                        {sellerInfo.description}
-                    </p>
                     <div className="flex gap-3 mt-2">
                         <button
                             onClick={onChatClick}
