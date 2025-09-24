@@ -54,7 +54,7 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({}) => {
     }
 
     return (
-        <div className="w-full flex justify-center bg-gray-50 py-4">
+        <div className="w-full flex justify-center bg-gray-50 px-6 py-4">
             <div className="bg-white rounded-xl shadow p-6 max-w-6xl w-full relative">
                 <div className="flex items-center mb-1 justify-between pb-2">
                     <h2 className="text-xl font-bold flex items-center text-red-500">

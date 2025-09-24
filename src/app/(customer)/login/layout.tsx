@@ -8,7 +8,7 @@ export default function LoginLayout({
 }) {
     return (
         <>
-            <Header title="Sign In" />
+            <Header title="Đăng Nhập" />
             <main>{children}</main>
             <Footer />
         </>

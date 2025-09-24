@@ -8,7 +8,7 @@ export default function UserLayout({
 }) {
     return (
         <>
-            <Header title="Sign up" />
+            <Header title="Đăng ký" />
             <main>{children}</main>
             <Footer />
         </>

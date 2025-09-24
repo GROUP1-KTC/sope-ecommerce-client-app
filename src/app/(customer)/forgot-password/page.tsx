@@ -226,7 +226,7 @@ const RecoverPassword = () => {
                                                     type="text"
                                                     required
                                                     className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                    placeholder="Enter email"
+                                                    placeholder="Nhập email"
                                                     value={input.email}
                                                     onChange={
                                                         changeEventHandler

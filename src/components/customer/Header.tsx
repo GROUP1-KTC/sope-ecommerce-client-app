@@ -222,7 +222,7 @@ const Header = () => {
 
                         {isFocused && inputValue && searchTerm && (
                             <div className="absolute top-full left-0 w-full bg-white shadow-lg rounded-md mt-1 z-50 max-h-80 overflow-y-auto">
-                                {products.length > 0 ? (
+                                {products.length > 0 &&
                                     products.map((p, index) => (
                                         <CustomLink
                                             key={p.product_id || index}
@@ -246,12 +246,7 @@ const Header = () => {
                                                 {p.name}
                                             </span>
                                         </CustomLink>
-                                    ))
-                                ) : (
-                                    <div className="p-2 text-sm text-gray-500">
-                                        Không có sản phẩm tương tự
-                                    </div>
-                                )}
+                                    ))}
                             </div>
                         )}
                     </div>

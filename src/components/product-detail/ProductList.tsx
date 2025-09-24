@@ -39,7 +39,7 @@ const ProductListLine = ({
 
     return (
         <div className="w-[95%] mx-auto flex justify-center py-4">
-            <div className="bg-white rounded-xl shadow px-6 w-full relative overflow-visible">
+            <div className="bg-white rounded-xl shadow px-6 w-full relative ">
                 <div className="flex items-center mb-1 justify-between pb-2 mt-2">
                     <h2 className="uppercase text-xl font-semibold text-gray-800">
                         {title}
@@ -47,38 +47,41 @@ const ProductListLine = ({
                 </div>
                 <hr className="mb-4 border-gray-300" />
 
-                <div className="relative group overflow-visible">
+                <div className="relative group">
+                    {/* nút left */}
                     <button
                         className={`absolute -left-11 top-1/2 -translate-y-1/2 z-10 
-                                   bg-white rounded-full shadow p-2 transition-all duration-200
-                                   group-hover:scale-110 group-hover:bg-orange-100
-                                   ${atStart ? 'opacity-0 pointer-events-none' : 'opacity-50 group-hover:opacity-100 cursor-pointer'}`}
+                   bg-white rounded-full shadow p-2 transition-all duration-200
+                   group-hover:scale-110 group-hover:bg-orange-100
+                   ${atStart ? 'opacity-0 pointer-events-none' : 'opacity-50 group-hover:opacity-100 cursor-pointer'}`}
                         onClick={() => scroll('left')}
                     >
                         <ChevronLeft className="w-5 h-5 text-orange-500" />
                     </button>
 
+                    {/* list products */}
                     <div
                         ref={scrollRef}
                         className="flex gap-4 overflow-x-auto scroll-smooth 
-                                   [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
-                        style={{ overflow: 'visible', paddingBottom: '1rem' }}
+                   [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] 
+                   max-w-full"
                     >
                         {products.map((product) => (
                             <div
                                 key={product.productId}
-                                className="flex-shrink-0 w-[200px]"
+                                className="flex-shrink-0 max-w-[200px] w-full"
                             >
                                 <ProductCard product={product} />
                             </div>
                         ))}
                     </div>
 
+                    {/* nút right */}
                     <button
                         className={`absolute -right-11 top-1/2 -translate-y-1/2 z-10 
-                                   bg-white rounded-full shadow p-2 transition-all duration-200
-                                   group-hover:scale-110 group-hover:bg-orange-100
-                                   ${atEnd ? 'opacity-0 pointer-events-none' : 'opacity-50 group-hover:opacity-100 cursor-pointer'}`}
+                   bg-white rounded-full shadow p-2 transition-all duration-200
+                   group-hover:scale-110 group-hover:bg-orange-100
+                   ${atEnd ? 'opacity-0 pointer-events-none' : 'opacity-50 group-hover:opacity-100 cursor-pointer'}`}
                         onClick={() => scroll('right')}
                     >
                         <ChevronRight className="w-5 h-5 text-orange-500" />

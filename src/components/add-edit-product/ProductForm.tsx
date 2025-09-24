@@ -283,10 +283,31 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
         try {
             const result = await verifyImage(file);
+
             if (!result.valid) {
+                const bannedMap: Record<string, string> = {
+                    ammo: 'đạn dược',
+                    firearm: 'súng',
+                    grenade: 'lựu đạn',
+                    knife: 'dao',
+                    pistol: 'súng ngắn',
+                    rocket: 'tên lửa',
+                    cigarette: 'thuốc lá',
+                };
+
+                const reason = (result.reason || '').toLowerCase();
+
+                const foundKeyword = Object.keys(bannedMap).find((keyword) =>
+                    reason.includes(keyword),
+                );
+
+                const message = foundKeyword
+                    ? `Ảnh sản phẩm chứa "${bannedMap[foundKeyword]}" – thuộc danh mục không được phép kinh doanh trên hệ thống.`
+                    : `Ảnh không hợp lệ: ${result.reason || 'Không rõ lý do'}`;
+
                 useAlertStore.getState().showAlert({
                     severity: 'warning',
-                    message: `Ảnh không hợp lệ: ${result.reason}`,
+                    message,
                 });
             }
             const mediaItem: MediaItem = {

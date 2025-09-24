@@ -282,7 +282,6 @@ const ProductInfo = ({
                         {totalSold}
                     </span>
                     <span className="ml-1 text-gray-500">Đã bán</span>
-                    <span className="ml-auto">Tố cáo</span>
                 </div>
                 <div
                     className="relative flex items-center gap-4 mb-4 bg-red-50 px-6 py-3 rounded"
@@ -447,7 +446,7 @@ const ProductInfo = ({
                         <span className="w-32 font-semibold">Số lượng</span>
                         <div className="flex items-center gap-3 flex-1">
                             <button
-                                className={`w-10 h-10 flex items-center justify-center border border-gray-300 rounded-l-md text-lg font-semibold
+                                className={`w-10 h-10 flex cursor-pointer items-center justify-center border border-gray-300 rounded-l-md text-lg font-semibold
                                     ${!isQuantityEnabled ? 'bg-gray-200 cursor-not-allowed opacity-50' : 'bg-gray-100 hover:bg-gray-200 transition-colors'}`}
                                 type="button"
                                 disabled={!isQuantityEnabled}
@@ -469,12 +468,12 @@ const ProductInfo = ({
                                     if (val > 0 && val <= (stock ?? 9999))
                                         setQuantity(val);
                                 }}
-                                className={`w-16 h-10 text-center border border-gray-300 rounded-none outline-none 
+                                className={`w-16 h-10 appearance-none text-center border border-gray-300 rounded-none outline-none 
                                     ${!isQuantityEnabled ? 'bg-gray-100 cursor-not-allowed opacity-50' : 'focus:ring-2 focus:ring-blue-500'}`}
                             />
 
                             <button
-                                className={`w-10 h-10 flex items-center justify-center border border-gray-300 rounded-r-md text-lg font-semibold
+                                className={`w-10 h-10 flex cursor-pointer items-center justify-center border border-gray-300 rounded-r-md text-lg font-semibold
                                     ${!isQuantityEnabled ? 'bg-gray-200 cursor-not-allowed opacity-50' : 'bg-gray-100 hover:bg-gray-200 transition-colors'}`}
                                 type="button"
                                 disabled={!isQuantityEnabled}

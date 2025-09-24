@@ -118,8 +118,8 @@ const ProductBySlug = () => {
     if (!product) return <EmptyMessage message="Không tìm thấy sản phẩm." />;
 
     return (
-        <div className="w-4/5 mx-auto ">
-            <div className="text-base text-gray-600 mb-4 mt-4">
+        <div className="max-w-7xl w-full mx-auto px-6 sm:px-4 lg:px-8">
+            <div className="text-sm sm:text-base text-gray-600 mb-4 mt-4">
                 <nav className="flex items-center flex-wrap gap-1">
                     <CustomLink
                         href="/"

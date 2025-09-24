@@ -66,7 +66,7 @@ const MostSearch: React.FC<MostSearchProps> = ({ title }) => {
     }, []);
 
     return (
-        <div className="w-full flex justify-center bg-gray-50 py-4">
+        <div className="w-full flex justify-center bg-gray-50 py-4 px-6">
             <div className="bg-white rounded-xl shadow p-6 max-w-6xl w-full relative">
                 <div className="flex items-center justify-between mb-4 pb-2 ">
                     <h2 className="text-xl font-bold text-gray-800">{title}</h2>

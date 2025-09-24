@@ -10,34 +10,34 @@ const Footer = () => {
             <div className="max-w-7xl mx-auto px-2 sm:px-4 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-8 border-b-2 border-red-800">
                 {/* Customer Service */}
                 <div>
-                    <h3 className="font-bold mb-2 ">CUSTOMER SERVICE</h3>
+                    <h3 className="font-bold mb-2 ">DỊCH VỤ KHÁCH HÀNG</h3>
                     <ul className="space-y-1">
-                        <li>Help Centre</li>
-                        <li>Shopee Blog</li>
-                        <li>Shopee Mall</li>
-                        <li>How To Buy</li>
-                        <li>How To Sell</li>
-                        <li>Payment</li>
-                        <li>Shopee Coins</li>
-                        <li>Shipping</li>
-                        <li>Return & Refund</li>
-                        <li>Contact Us</li>
-                        <li>Warranty Policy</li>
+                        <li>Trung tâm trợ giúp</li>
+                        <li>Blog của Shopify</li>
+                        <li>Trung tâm mua sắm Shopify</li>
+                        <li>Cách mua</li>
+                        <li>Cách bán</li>
+                        <li>Thanh toán</li>
+                        <li>Shopee Coin</li>
+                        <li>Vận chuyển</li>
+                        <li>Trả lại và hoàn tiền</li>
+                        <li>Liên hệ với chúng tôi</li>
+                        <li>Chính sách bảo hành</li>
                     </ul>
                 </div>
                 {/* About Shopee */}
                 <div>
-                    <h3 className="font-bold mb-2">ABOUT SHOPEE</h3>
+                    <h3 className="font-bold mb-2"> GIỚI THIỆU VỀ SHOPEE</h3>
                     <ul className="space-y-1">
-                        <li>About Us</li>
-                        <li>Shopee Careers</li>
-                        <li>Shopee Policies</li>
-                        <li>Privacy Policy</li>
-                        <li>Shopee Mall</li>
-                        <li>Seller Centre</li>
-                        <li>Flash Deals</li>
-                        <li>Shopee Ambassador Programme</li>
-                        <li>Media Contact</li>
+                        <li>Giới thiệu về chúng tôi</li>
+                        <li>Việc làm trên Shopify</li>
+                        <li>Chính sách của Shopee</li>
+                        <li>Chính sách quyền riêng tư</li>
+                        <li>Trung tâm mua sắm Shopify</li>
+                        <li>Trung tâm người bán</li>
+                        <li>Ưu đãi chớp nhoáng</li>
+                        <li>Chương trình đại sứ Shopify</li>
+                        <li>Liên hệ truyền thông</li>
                     </ul>
                 </div>
                 <div>
@@ -322,7 +322,7 @@ const Footer = () => {
                 </div>
                 {/* Follow Us */}
                 <div>
-                    <h3 className="font-bold mb-2">FOLLOW US</h3>
+                    <h3 className="font-bold mb-2">THEO DÕI CHÚNG TÔI</h3>
                     <ul className="space-y-1">
                         <li className="mb-2">
                             <CustomLink
@@ -364,7 +364,7 @@ const Footer = () => {
                 </div>
                 {/* Shopee App Download */}
                 <div>
-                    <h3 className="font-bold mb-2">SHOPEE APP DOWNLOAD</h3>
+                    <h3 className="font-bold mb-2">TẢI ỨNG DỤNG SOPE NGAY</h3>
                     <div className="flex flex-row gap-4 items-center">
                         <CustomLink
                             href="https://shopee.vn/web"
@@ -429,21 +429,6 @@ const Footer = () => {
             </div>
             {/* Copyright & Info */}
             <div className="border-t border-[#f5f5f5] py-6 text-center text-xs text-[#888]">
-                <div className="mb-2">
-                    © 2025 Shopee. All Rights Reserved .
-                </div>
-                <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mt-2">
-                    <CustomLink href="/privacy-policy">
-                        <span>PRIVACY POLICY</span>
-                    </CustomLink>
-                    <span className="hidden sm:inline">|</span>
-                    <span>TERM OF SERVICE</span>
-                    <span className="hidden sm:inline">|</span>
-                    <span>SHIPPING POLICY</span>
-                    <span className="hidden sm:inline">|</span>
-                    <span>VIOLATION</span>
-                </div>
-
                 <div className="my-3">
                     <Image
                         width={40}
@@ -454,8 +439,19 @@ const Footer = () => {
                     />
                 </div>
 
-                <div>345 HUTECH Vietnam</div>
-                <div>© 2025 - Copyright belongs to KTC group 1 </div>
+                <div>Ho Chi Minh city, Vietnam</div>
+                <div> &copy; 2025 - Copyright belongs to KTC group 1 </div>
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mt-2">
+                    <CustomLink href="/privacy-policy">
+                        <span>CHÍNH SÁCH BẢO MẬT</span>
+                    </CustomLink>
+                    <span className="hidden sm:inline">|</span>
+                    <span>THỎA THUẬN DỊCH VỤ</span>
+                    <span className="hidden sm:inline">|</span>
+                    <span>CHÍNH SÁCH VẬN CHUYỂN</span>
+                    <span className="hidden sm:inline">|</span>
+                    <span>VI PHẠM</span>
+                </div>
             </div>
         </footer>
     );

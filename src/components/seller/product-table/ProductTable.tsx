@@ -92,28 +92,6 @@ export default function ProductTable({ products, viewMode }: Props) {
         }
     };
 
-    // const sortedProducts = [...products].sort((a, b) => {
-    //     const getValue = (
-    //         p: ProductResponse,
-    //         key: 'price' | 'stock' | 'sold',
-    //     ) => {
-    //         if (key === 'price')
-    //             return Math.min(...p.variants.map((v) => v.price));
-    //         if (key === 'stock')
-    //             return p.variants.reduce((s, v) => s + (v.stock ?? 0), 0);
-    //         if (key === 'sold')
-    //             return p.variants.reduce((s, v) => s + (v.sold ?? 0), 0);
-    //         return 0;
-    //     };
-
-    //     if (!sortBy) return 0;
-
-    //     const valA = getValue(a, sortBy);
-    //     const valB = getValue(b, sortBy);
-
-    //     return sortOrder === 'asc' ? valA - valB : valB - valA;
-    // });
-
     // --- GRID VIEW ---
     if (viewMode === 'grid') {
         return (

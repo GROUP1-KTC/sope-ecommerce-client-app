@@ -27,7 +27,7 @@ const SuggestSection: React.FC<SuggestSectionProps> = ({
     const hasMore = visibleCount < products.length;
 
     return (
-        <div className="w-full flex justify-center bg-gray-50 py-6">
+        <div className="w-full flex justify-center bg-gray-50 p-6">
             <div className="bg-white rounded-xl shadow p-6 max-w-6xl w-full">
                 <div className="flex items-center justify-between mb-4 pb-2 border-b">
                     <h2 className="text-xl font-bold text-gray-800">{title}</h2>

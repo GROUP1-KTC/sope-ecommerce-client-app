@@ -27,7 +27,7 @@ export default function SellerHeaderHome() {
                         className="h-12 sm:h-16 w-auto"
                     />
                 </CustomLink>
-                Seller Channel
+                Kênh người bán
             </div>
 
             <div className="flex items-center gap-2 ">

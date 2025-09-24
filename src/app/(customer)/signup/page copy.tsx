@@ -146,7 +146,7 @@ const Signup = () => {
                         <div className="max-w-[600px] w-full">
                             <div className="p-6 sm:p-8 rounded-2xl bg-white border border-gray-200 shadow-sm">
                                 <h1 className="text-slate-900 text-center text-3xl font-semibold">
-                                    Sign Up
+                                    Đăng ký
                                 </h1>
                                 {step === 1 && (
                                     <form
@@ -163,7 +163,7 @@ const Signup = () => {
                                                     type="text"
                                                     required
                                                     className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                    placeholder="Enter your email"
+                                                    placeholder="Nhập email"
                                                     value={input.email}
                                                     onChange={
                                                         changeEventHandler
@@ -229,17 +229,17 @@ const Signup = () => {
                                                         height={20}
                                                         className="mr-2"
                                                     />
-                                                    Sign up with Google
+                                                    Đăng ký with Google
                                                 </button>
                                             </div>
                                         </div>
                                         <span className="text-slate-900 text-sm !mt-6 text-center">
-                                            Already have an account?{' '}
+                                            Đã có tài khoản?{' '}
                                             <CustomLink
                                                 href="/login"
                                                 className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
                                             >
-                                                Sign in here
+                                                Đăng Nhập tại đây
                                             </CustomLink>
                                         </span>
                                     </form>
@@ -412,7 +412,7 @@ const Signup = () => {
                                                 type="submit"
                                                 className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer"
                                             >
-                                                Sign Up
+                                                Đăng ký
                                             </button>
                                         </div>
                                         <span className="text-slate-900 text-sm !mt-6 text-center">

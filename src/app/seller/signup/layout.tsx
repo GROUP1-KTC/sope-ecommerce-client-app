@@ -8,7 +8,7 @@ export default function SignupLayout({
     return (
         <html lang="en">
             <body>
-                <Header title="Sign up" />
+                <Header title="Đăng ký" />
                 <main>{children}</main>
             </body>
         </html>

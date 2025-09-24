@@ -5,7 +5,6 @@ import Cookies from 'js-cookie';
 import { Box, Container, Typography, Paper } from '@mui/material';
 import CartTable from '~/components/cart/CartTable';
 import CartSummary from '~/components/cart/CartSummary';
-import ProductSuggestions from '~/components/cart/ProductSuggestions';
 import {
     useDeleteItemsMutation,
     useDeleteItemMutation,
@@ -56,8 +55,6 @@ export interface Product {
     image: string;
     price: number;
 }
-
-const products: Product[] = [];
 
 const Cart: React.FC = () => {
     const router = useRouter();
@@ -340,7 +337,14 @@ const Cart: React.FC = () => {
             return;
         }
 
-        dispatch(setCheckoutItems(cartGroups));
+        const selectedGroups = cartGroups
+            .map((group) => ({
+                ...group,
+                items: group.items.filter((item) => selected.includes(item.id)),
+            }))
+            .filter((group) => group.items.length > 0);
+
+        dispatch(setCheckoutItems(selectedGroups));
         dispatch(setIsFormCart(true));
         router.push('/checkout');
     };
@@ -407,7 +411,6 @@ const Cart: React.FC = () => {
                         </>
                     )}
                 </Paper>
-                <ProductSuggestions products={products} />
             </Container>
         </Box>
     );

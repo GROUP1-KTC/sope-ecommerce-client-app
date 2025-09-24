@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import GridViewIcon from '@mui/icons-material/GridView';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
@@ -9,6 +10,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 export default function QuickMenu() {
     const [open, setOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
+    const router = useRouter();
 
     useEffect(() => {
         const handler = (e: MouseEvent) => {
@@ -25,32 +27,31 @@ export default function QuickMenu() {
 
     const items = [
         {
-            label: 'All',
-            icon: (
-                <EventNoteIcon
-                    className="text-orange-500"
-                    href="/seller/all-order"
-                />
-            ),
+            label: 'Tất Cả Đơn Hàng',
+            icon: <EventNoteIcon className="text-orange-500" />,
+            href: '/seller/all-order',
         },
         {
-            label: 'All Products',
-            icon: <Inventory2Icon className="text-purple-500" href="#" />,
+            label: 'Tất Cả Sản Phẩm',
+            icon: <Inventory2Icon className="text-purple-500" />,
+            href: '/seller/all-products',
         },
         {
-            label: 'Marketing Channel',
+            label: 'Kênh Marketing',
             icon: <LocalOfferIcon className="text-cyan-500" />,
+            href: '/seller/marketing',
         },
         {
-            label: 'Shopee Account Balance',
-            icon: (
-                <AccountBalanceWalletIcon
-                    className="text-blue-500"
-                    href="/seller/account-balance"
-                />
-            ),
+            label: 'Số Dư Tài Khoản Shopee',
+            icon: <AccountBalanceWalletIcon className="text-blue-500" />,
+            href: '/seller/account-balance',
         },
     ];
+
+    const handleClick = (href: string) => {
+        router.push(href);
+        setOpen(false); // đóng menu sau khi nhấn
+    };
 
     return (
         <div className="relative" ref={menuRef}>
@@ -67,6 +68,7 @@ export default function QuickMenu() {
                         {items.map((item, idx) => (
                             <button
                                 key={idx}
+                                onClick={() => handleClick(item.href)}
                                 className="flex flex-col items-center text-sm text-gray-700 hover:text-red-500 cursor-pointer transition"
                             >
                                 <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 mb-1">

@@ -110,7 +110,7 @@ const TempAddressSection = () => {
             <h2 className="text-lg font-semibold mb-4">Thông tin nhận hàng</h2>
 
             <div className="space-y-4">
-                {/* Họ tên */}
+                {/* Full Name */}
                 <div className="flex items-center">
                     <label className="w-1/4 text-sm font-bold">Họ tên</label>
                     <input

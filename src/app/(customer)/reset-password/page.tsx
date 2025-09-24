@@ -114,7 +114,7 @@ const ResetPassword = () => {
                                                 }
                                                 required
                                                 className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                placeholder="Enter password"
+                                                placeholder="Nhập mật khẩu"
                                                 value={input.password}
                                                 onChange={changeEventHandler}
                                                 onBlur={handleBlur}

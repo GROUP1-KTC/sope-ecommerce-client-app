@@ -143,7 +143,7 @@ const Signup = () => {
                         <div className="max-w-[600px] w-full">
                             <div className="p-6 sm:p-8 rounded-2xl bg-white border border-gray-200 shadow-sm">
                                 <h1 className="text-slate-900 text-center text-3xl font-semibold">
-                                    Sign Up
+                                    Đăng ký
                                 </h1>
                                 {step === 1 && (
                                     <form
@@ -160,7 +160,7 @@ const Signup = () => {
                                                     type="text"
                                                     required
                                                     className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                    placeholder="Enter your email"
+                                                    placeholder="Nhập email"
                                                     value={input.email}
                                                     onChange={
                                                         changeEventHandler

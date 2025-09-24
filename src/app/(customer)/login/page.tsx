@@ -114,7 +114,7 @@ const Login = () => {
                         <div className="max-w-[600px] w-full">
                             <div className="px-6 py-4 sm:px-8 sm:py-4 rounded-2xl bg-white border border-gray-200 shadow-sm">
                                 <h1 className="text-slate-900 text-center text-3xl font-semibold">
-                                    Sign In
+                                    Đăng Nhập
                                 </h1>
                                 <form
                                     onSubmit={loginHandler}
@@ -130,7 +130,7 @@ const Login = () => {
                                                 type="text"
                                                 required
                                                 className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                placeholder="Enter email"
+                                                placeholder="Nhập email"
                                                 value={input.email}
                                                 onChange={changeEventHandler}
                                                 onBlur={handleBlur}
@@ -174,7 +174,7 @@ const Login = () => {
                                                 }
                                                 required
                                                 className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                                                placeholder="Enter password"
+                                                placeholder="Nhập mật khẩu"
                                                 value={input.password}
                                                 onChange={changeEventHandler}
                                                 onBlur={handleBlur}
@@ -212,26 +212,12 @@ const Login = () => {
                                         </p>
                                     )}
                                     <div className="flex flex-wrap items-center justify-between gap-2">
-                                        <div className="flex items-center">
-                                            <input
-                                                id="remember-me"
-                                                name="remember-me"
-                                                type="checkbox"
-                                                className="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-slate-300 rounded"
-                                            />
-                                            <label
-                                                htmlFor="remember-me"
-                                                className="ml-3 block text-sm text-slate-900 cursor-pointer"
-                                            >
-                                                Remember me
-                                            </label>
-                                        </div>
                                         <div className="text-sm">
                                             <CustomLink
                                                 href="/forgot-password"
                                                 className="text-blue-600 hover:underline font-semibold"
                                             >
-                                                Forgot password?
+                                                Quên mật khẩu?
                                             </CustomLink>
                                         </div>
                                     </div>
@@ -263,7 +249,7 @@ const Login = () => {
                                                     ></path>
                                                 </svg>
                                             ) : (
-                                                'Sign In'
+                                                'Đăng Nhập'
                                             )}
                                         </button>
                                     </div>
@@ -295,12 +281,12 @@ const Login = () => {
                                         </div>
                                     </div>
                                     <span className="text-slate-900 text-sm !mt-6 text-center">
-                                        Don't have an account yet ?{' '}
+                                        Bạn chưa có tài khoản?{' '}
                                         <CustomLink
                                             href="/signup"
                                             className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
                                         >
-                                            Sign up here
+                                            Đăng ký tại đây
                                         </CustomLink>
                                     </span>
                                 </form>

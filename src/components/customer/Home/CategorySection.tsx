@@ -9,13 +9,9 @@ import CustomLink from '~/components/shared/loading/CustomLink';
 
 interface CategorySectionProps {
     categories: Category[];
-    itemsPerRow?: number;
 }
 
-const CategorySection: React.FC<CategorySectionProps> = ({
-    categories,
-    itemsPerRow = 10,
-}) => {
+const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [atStart, setAtStart] = useState(true);
     const [atEnd, setAtEnd] = useState(false);
@@ -23,8 +19,8 @@ const CategorySection: React.FC<CategorySectionProps> = ({
     const topCategories = categories.filter((cat) => cat.level === 1);
 
     const rows = [
-        topCategories.slice(0, itemsPerRow),
-        topCategories.slice(itemsPerRow, itemsPerRow * 2),
+        topCategories.slice(0, categories.length),
+        topCategories.slice(categories.length, 0),
     ];
 
     const handleScroll = (dir: 'left' | 'right') => {
@@ -50,7 +46,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
     }, []);
 
     return (
-        <div className="w-full flex justify-center bg-gray-50 py-4">
+        <div className="w-full flex justify-center bg-gray-50 p-6">
             <div className="bg-white rounded-xl shadow p-6 max-w-6xl w-full relative">
                 <h2 className="text-xl font-bold mb-1 pb-2">DANH MỤC</h2>
                 <hr className="mb-4 border-gray-300" />

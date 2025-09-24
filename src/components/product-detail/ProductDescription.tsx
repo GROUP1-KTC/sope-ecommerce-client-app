@@ -53,11 +53,15 @@ const ProductDescription = ({
                         <div className="bg-gray-50 p-4 rounded-lg mb-4 uppercase text-xl font-semibold text-gray-700">
                             <h4>Mô tả sản phẩm</h4>
                         </div>
-                        <div className="mt-4 pl-4">
-                            <p className="text-gray-600 mt-2">
-                                {productDetail.description}
-                            </p>
-                        </div>
+
+                        <div
+                            className="text-sm text-gray-600 prose max-w-none ml-2"
+                            dangerouslySetInnerHTML={{
+                                __html:
+                                    productDetail.description ||
+                                    'Chưa có mô tả sản phẩm.',
+                            }}
+                        />
                     </>
                 )}
             </div>

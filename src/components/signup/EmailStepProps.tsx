@@ -28,7 +28,7 @@ const EmailStep = ({
                         type="text"
                         required
                         className="w-full text-slate-900 text-sm border border-slate-300 px-4 py-3 pr-8 rounded-md outline-blue-600"
-                        placeholder="Enter your email"
+                        placeholder="Nhập email"
                         value={input.email}
                         onChange={changeEventHandler}
                         onBlur={handleBlur}
@@ -87,17 +87,17 @@ const EmailStep = ({
                             height={20}
                             className="mr-2"
                         />
-                        Sign up with Google
+                        Đăng ký with Google
                     </button>
                 </div>
             </div>
             <span className="text-slate-900 text-sm !mt-6 text-center">
-                Already have an account?{' '}
+                Đã có tài khoản?{' '}
                 <CustomLink
                     href="/login"
                     className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
                 >
-                    Sign in here
+                    Đăng Nhập tại đây
                 </CustomLink>
             </span>
         </form>

@@ -148,7 +148,7 @@ const LiveStreamSection: React.FC<LiveStreamSectionProps> = () => {
     }, []);
 
     return streams.length === 0 ? null : (
-        <div className="w-full flex justify-center bg-gray-50 py-6">
+        <div className="w-full flex justify-center bg-gray-50 p-6">
             <div className="bg-white rounded-xl shadow p-6 max-w-6xl w-full relative">
                 <h2 className="text-xl font-bold mb-4">LIVE STREAMS</h2>
                 <div className="relative group">

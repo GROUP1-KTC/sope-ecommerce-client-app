@@ -198,7 +198,7 @@ const PasswordStep = ({
                     type="submit"
                     className="w-full py-2 px-4 text-[15px] font-medium tracking-wide rounded-md text-white bg-[#E44358] hover:bg-[#d0001a] focus:outline-none cursor-pointer"
                 >
-                    Sign Up
+                    Đăng ký
                 </button>
             </div>
         </form>
