@@ -53,12 +53,12 @@ export default function LeftPanel({
 
     return (
         <div className="w-1/4 flex flex-col border-r border-gray-300 p-2 gap-3">
-            <h3 className="font-bold mb-1">Live Preview</h3>
+            <h3 className="font-bold mb-1">Xem trước</h3>
             <div className="relative bg-black rounded flex items-center justify-center h-64 text-white text-xl">
                 {children}
                 {!children && (
                     <span className="text-white text-xl">
-                        {liveActive ? 'Đang Live' : 'Live Ended'}
+                        {liveActive ? 'Đang Live' : 'Chưa Live'}
                     </span>
                 )}
             </div>
@@ -66,9 +66,9 @@ export default function LeftPanel({
             <hr className="border-gray-300" />
 
             <div className="flex flex-col gap-2 p-2 pt-0 bg-white rounded shadow">
-                <h3 className="font-bold text-sm">Live Info</h3>
+                <h3 className="font-bold text-sm">Thông tin phiên live</h3>
                 <label className="flex flex-col text-sm">
-                    Title
+                    Tiêu đề
                     <input
                         ref={titleRef}
                         type="text"
@@ -79,7 +79,7 @@ export default function LeftPanel({
                                 ? 'border-red-500 focus:ring-red-400 focus:border-red-400'
                                 : 'border-gray-300 focus:ring-blue-400 focus:border-blue-400'
                         }`}
-                        placeholder="Enter live title"
+                        placeholder="Nhập tiêu đề phiên live"
                     />
                     {error?.field === 'title' && (
                         <span className="text-red-500 text-xs mt-1">
@@ -90,12 +90,12 @@ export default function LeftPanel({
 
                 {/* Description */}
                 <label className="flex flex-col text-sm">
-                    Description
+                    Mô tả
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         className="border h-16 border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
-                        placeholder="Enter live description"
+                        placeholder="Nhập mô tả phiên live"
                         rows={3}
                     />
                 </label>
@@ -113,7 +113,7 @@ export default function LeftPanel({
                                 ? 'border-red-500 focus:ring-red-400 focus:border-red-400'
                                 : 'border-gray-300 focus:ring-blue-400 focus:border-blue-400'
                         }`}
-                        placeholder="Enter thumbnail URL"
+                        placeholder="Nhập URL thumbnail"
                     />
                     {error?.field === 'thumbnail' && (
                         <span className="text-red-500 text-xs mt-1">
@@ -130,7 +130,7 @@ export default function LeftPanel({
                             : 'bg-green-600 hover:bg-green-700'
                     } transition`}
                 >
-                    {liveActive ? 'End Live' : 'Start Live'}
+                    {liveActive ? 'Kết thúc phiên live' : 'Bắt đầu phiên live'}
                 </button>
             </div>
         </div>

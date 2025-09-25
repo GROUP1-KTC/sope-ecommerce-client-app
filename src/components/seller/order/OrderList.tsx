@@ -36,7 +36,7 @@ export default function OrderList({
     }, [allOrder]);
 
     if (isLoading) return <div>Loading...</div>;
-    if (isError || !allOrder) return <div>Error loading orders</div>;
+    if (isError || !allOrder) return <div>Shop chưa có đơn hàng nào</div>;
 
     const handleConfirm = (orderId: string) => {
         setOrders((prev) => prev.filter((o) => o.order.orderId !== orderId));

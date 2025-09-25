@@ -73,7 +73,7 @@ export default function AllOrder() {
 
     return (
         <div className="p-4 sm:p-6 bg-white rounded shadow">
-            <div className="text-lg font-semibold mb-4">All order</div>
+            <div className="text-lg font-semibold mb-4">Tất cả đơn hàng</div>
             <OrderTabs
                 activeTab={activeTab}
                 counts={counts}

@@ -13,7 +13,7 @@ interface CartModalProps {
 
 const CartModal = ({ products, onClose }: CartModalProps) => {
     return (
-        <div className="absolute bottom-0 left-20 w-100 h-[70vh] bg-white shadow-lg rounded-lg border border-gray-200 z-50">
+        <div className="absolute bottom-16 left-12 w-100 h-[50vh] md:h-[70vh] bg-white shadow-lg rounded-lg border border-gray-200 z-50">
             <div className="flex justify-between items-center p-3 border-b border-gray-300">
                 <h3 className="font-bold text-lg">Giỏ hàng</h3>
                 <button

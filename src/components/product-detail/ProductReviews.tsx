@@ -172,18 +172,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
                         rating={review.rating}
                         content={review.content}
                         videoReviewUrl={review.videoReviewUrl}
-                        date={new Date(review.createdAt).toLocaleString(
-                            'vi-VN',
-                            {
-                                day: '2-digit',
-                                month: '2-digit',
-                                year: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                second: '2-digit',
-                                hour12: false,
-                            },
-                        )}
+                        date={review.createdAt}
                         mediaList={review.mediaList ?? []}
                         attributes={review.productVariant?.attributes ?? []}
                         sentiment={review.sentiment}

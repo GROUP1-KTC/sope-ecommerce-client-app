@@ -188,21 +188,22 @@ const Header = () => {
             {/* Main bar - always show */}
             <div className="flex items-center px-4 sm:px-8 md:px-20 lg:px-40 py-2 gap-4 justify-between">
                 {/* Logo & Menu */}
-                <div className="flex items-center gap-2">
-                    <StorefrontIcon
-                        style={{ fontSize: 40 }}
-                        className="text-white"
-                    />
-                    <Link href="/" className="hover:text-yellow-200 transition">
+
+                <Link href="/" className="hover:text-yellow-200 transition">
+                    <div className="flex items-center gap-2">
+                        <StorefrontIcon
+                            style={{ fontSize: 40 }}
+                            className="text-white"
+                        />
                         <Image
                             src="/assets/logo/logo.svg"
                             alt="Sope Logo"
                             width={220}
                             height={94}
-                            className="h-12 sm:h-16 w-auto"
+                            className="hidden md:block h-12 sm:h-16 w-auto"
                         />
-                    </Link>
-                </div>
+                    </div>
+                </Link>
                 {/* Search bar */}
 
                 <div className="flex-1 mx-2 flex items-center relative">
@@ -215,7 +216,7 @@ const Header = () => {
                             onBlur={() =>
                                 setTimeout(() => setIsFocused(false), 200)
                             }
-                            className="w-full px-4 py-2 text-gray-800 bg-white rounded-l-md focus:outline-none focus:ring-2 focus:ring-red-300"
+                            className="w-full px-4 py-2 text-gray-800 bg-white rounded-md md:rounded-l-md md:rounded-r-none focus:outline-none focus:ring-2 focus:ring-red-300"
                             placeholder="Tìm kiếm trong Sope"
                             type="text"
                         />
@@ -253,7 +254,7 @@ const Header = () => {
 
                     <button
                         onClick={handleSearch}
-                        className="bg-white px-4 py-2 rounded-r-md hover:bg-gray-100 transition-colors"
+                        className="hidden md:block bg-white px-4 py-2 rounded-r-md hover:bg-gray-100 transition-colors"
                     >
                         <SearchIcon className="text-[#d0001a]" />
                     </button>

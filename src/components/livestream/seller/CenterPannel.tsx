@@ -28,7 +28,7 @@ export default function CenterPanel({ products }: CenterPanelProps) {
 
     return (
         <div className="w-1/2 flex flex-col p-2 overflow-y-auto border-r border-gray-300">
-            <h3 className="font-bold mb-2">Products Live</h3>
+            <h3 className="font-bold mb-2">Sản phẩm trong phiên live</h3>
             <div className="relative mb-3">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                     <svg
@@ -48,7 +48,7 @@ export default function CenterPanel({ products }: CenterPanelProps) {
                 </span>
                 <input
                     type="text"
-                    placeholder="Search product..."
+                    placeholder="Tìm sản phẩm..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     className="w-full pl-10 pr-3 py-2 border rounded-lg text-sm shadow-sm 
@@ -87,7 +87,9 @@ export default function CenterPanel({ products }: CenterPanelProps) {
                         />
                     ))
                 ) : (
-                    <p className="text-gray-500 text-sm">No products found</p>
+                    <p className="text-gray-500 text-sm">
+                        Không có sản phẩm nào
+                    </p>
                 )}
             </div>
         </div>

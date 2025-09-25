@@ -2,14 +2,22 @@
 
 import React, { useState } from 'react';
 import SendIcon from '@mui/icons-material/Send';
+import CloseIcon from '@mui/icons-material/Close';
 import type { Comment } from '~/types/comment';
 
 interface ChatBoxProps {
     comments: Comment[];
     onSendMessage: (message: string) => void;
+    isMobile?: boolean;
+    onClose?: () => void;
 }
 
-const ChatBox = ({ comments, onSendMessage }: ChatBoxProps) => {
+const ChatBox = ({
+    comments,
+    onSendMessage,
+    isMobile,
+    onClose,
+}: ChatBoxProps) => {
     const [input, setInput] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -21,11 +29,28 @@ const ChatBox = ({ comments, onSendMessage }: ChatBoxProps) => {
     };
 
     return (
-        <div className="w-80 bg-gray-50 border-l border-gray-300 p-4 pb-2 flex flex-col">
-            <h2 className="font-bold mb-2">Live Chat</h2>
+        <div
+            className={`${
+                isMobile
+                    ? 'h-full flex flex-col p-4' // Mobile: chiếm hết chiều cao container cha (ViewerPage set max-h)
+                    : 'w-80 h-[calc(100vh-4rem)] flex flex-col bg-gray-50 border-l border-gray-300 p-4 pb-2'
+            }`}
+        >
+            {/* Header */}
+            <div className="flex justify-between items-center mb-2 shrink-0">
+                <h2 className="font-bold">Khung Chat</h2>
+                {isMobile && onClose && (
+                    <button
+                        onClick={onClose}
+                        className="text-red-500 cursor-pointer hover:scale-110 transition"
+                    >
+                        <CloseIcon />
+                    </button>
+                )}
+            </div>
 
-            {/* Chat messages */}
-            <div className="flex-1 overflow-y-auto max-h-[500px] pr-2 border rounded-lg bg-white p-3 space-y-2">
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto pr-2 border rounded-lg bg-white p-3 space-y-2">
                 {comments.map((c) => (
                     <div
                         key={c.id}
@@ -40,7 +65,7 @@ const ChatBox = ({ comments, onSendMessage }: ChatBoxProps) => {
             </div>
 
             {/* Input */}
-            <form onSubmit={handleSubmit} className="flex gap-2 mt-2">
+            <form onSubmit={handleSubmit} className="flex gap-2 mt-2 shrink-0">
                 <input
                     type="text"
                     placeholder="Nhập comment..."

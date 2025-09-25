@@ -2,28 +2,24 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
-import type {
-    Room,
-    RemoteTrack,
-    RemoteTrackPublication,
-} from '~/utils/livekit';
+import type { Room, RemoteTrackPublication } from '~/utils/livekit';
 import { joinLiveKitRoom } from '~/utils/livekit';
 import { RoomEvent, type Participant } from 'livekit-client';
 import ChatBox from '~/components/livestream/ChatBox';
 import CartModal from '~/components/livestream/CartModal';
 import type { Comment } from '~/types/comment';
-import { ShoppingBagIcon } from 'lucide-react';
+import { ShoppingBagIcon, MessageCircleIcon } from 'lucide-react';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useAlertStore } from '~/store/zustand/alertStore';
 import { useGetApprovedProductsByShopQuery } from '~/features/products/productApi';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function ViewerPage() {
     const { shopId, userId } = useParams<{ shopId: string; userId: string }>();
     const videoRef = useRef<HTMLVideoElement>(null);
     const audioRef = useRef<HTMLAudioElement>(null);
     const [room, setRoom] = useState<Room | null>(null);
-    const [showCart, setShowCart] = useState(false);
 
     const { data } = useGetApprovedProductsByShopQuery({
         shopId,
@@ -34,9 +30,12 @@ export default function ViewerPage() {
     const products = data?.content ?? [];
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
     const [chat, setChat] = useState<Comment[]>([]);
+    const [activeModal, setActiveModal] = useState<'chat' | 'cart' | null>(
+        null,
+    );
 
+    // show alert when error
     useEffect(() => {
         if (errorMessage) {
             useAlertStore.getState().showAlert({
@@ -90,19 +89,10 @@ export default function ViewerPage() {
                 setRoom(r);
 
                 r.remoteParticipants.forEach((p) => attachTracks(p));
-
                 r.on(RoomEvent.ParticipantConnected, attachTracks);
-
-                r.on(
-                    RoomEvent.TrackSubscribed,
-                    (
-                        track: RemoteTrack,
-                        pub: RemoteTrackPublication,
-                        participant: Participant,
-                    ) => {
-                        attachTracks(participant);
-                    },
-                );
+                r.on(RoomEvent.TrackSubscribed, (_, __, participant) => {
+                    attachTracks(participant);
+                });
             } catch (err) {
                 console.error(err);
                 setErrorMessage('Failed to connect livestream');
@@ -141,9 +131,7 @@ export default function ViewerPage() {
         try {
             await room.localParticipant.publishData(
                 new TextEncoder().encode(msg),
-                {
-                    reliable: true,
-                },
+                { reliable: true },
             );
 
             const newMsg: Comment = {
@@ -160,7 +148,8 @@ export default function ViewerPage() {
 
     return (
         <div className="w-full bg-gray-100 flex flex-col">
-            <div className="flex-1 flex ">
+            <div className="flex-1 flex md:flex-row flex-col">
+                {/* Livestream video */}
                 <div className="relative w-full h-screen bg-black overflow-hidden">
                     <video
                         ref={videoRef}
@@ -169,18 +158,23 @@ export default function ViewerPage() {
                         playsInline
                         className="w-full h-full object-cover"
                     />
-
                     <audio ref={audioRef} autoPlay playsInline />
 
+                    {/* Top bar */}
                     <div
                         className="absolute top-0 w-full px-2 py-2 flex items-center justify-between text-white"
                         style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}
                     >
-                        <button className="p-1 hover:bg-gray-700 rounded-md transition cursor-pointer ml-2">
-                            <ArrowBackIosNewIcon className="!w-8 !h-8" />
-                        </button>
+                        <Link href={'/'}>
+                            <button className="p-1 cursor-pointer hover:bg-gray-700 rounded-md transition ml-2">
+                                <ArrowBackIosNewIcon className="!w-8 !h-8" />
+                            </button>
+                        </Link>
 
-                        <div className="flex items-center gap-2">
+                        <Link
+                            href={`/shop/${shopId}`}
+                            className="flex items-center gap-2"
+                        >
                             <Image
                                 width={40}
                                 height={40}
@@ -194,24 +188,51 @@ export default function ViewerPage() {
                                 </div>
                                 <div className="text-sm">PhucPham</div>
                             </div>
-                        </div>
+                        </Link>
                     </div>
 
-                    <button
-                        onClick={() => setShowCart(true)}
-                        className="absolute bottom-4 left-6 bg-red-600 text-white p-3 rounded-lg shadow-lg hover:bg-red-700"
-                    >
-                        <ShoppingBagIcon className="!w-6 !h-6" />
-                    </button>
+                    {/* Mobile action buttons */}
+                    <div className="absolute bottom-16 left-6 flex flex-col gap-3">
+                        <button
+                            onClick={() => setActiveModal('cart')}
+                            className="bg-red-600 text-white cursor-pointer p-3 rounded-lg shadow-lg hover:bg-red-700"
+                        >
+                            <ShoppingBagIcon className="!w-6 !h-6" />
+                        </button>
+                        <button
+                            onClick={() => setActiveModal('chat')}
+                            className="bg-blue-600 text-white cursor-pointer md:hidden p-3 rounded-lg shadow-lg hover:bg-blue-700"
+                        >
+                            <MessageCircleIcon className="!w-6 !h-6" />
+                        </button>
+                    </div>
                 </div>
-                <ChatBox comments={chat} onSendMessage={sendMessage} />
+
+                {/* Desktop sidebar chat */}
+                <div className="hidden md:block">
+                    <ChatBox comments={chat} onSendMessage={sendMessage} />
+                </div>
             </div>
 
-            {showCart && (
-                <CartModal
-                    products={products}
-                    onClose={() => setShowCart(false)}
-                />
+            {/* Mobile bottom sheets */}
+
+            {activeModal === 'cart' && (
+                <div className=" bottom-0 inset-x-0 h-[45%] bg-white shadow-lg rounded-t-2xl z-50 animate-slide-up">
+                    <CartModal
+                        products={products}
+                        onClose={() => setActiveModal(null)}
+                    />
+                </div>
+            )}
+            {activeModal === 'chat' && (
+                <div className="fixed md:hidden bottom-0 inset-x-0 h-[45%] bg-white shadow-lg rounded-t-2xl z-50 animate-slide-up">
+                    <ChatBox
+                        comments={chat}
+                        onSendMessage={sendMessage}
+                        isMobile
+                        onClose={() => setActiveModal(null)}
+                    />
+                </div>
             )}
         </div>
     );
