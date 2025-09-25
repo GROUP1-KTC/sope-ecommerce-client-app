@@ -33,6 +33,15 @@ export const userApi = apiSlice.injectEndpoints({
             },
             invalidatesTags: ['User'],
         }),
+        updateFaceAuth: builder.mutation<any, { id: string; idObject: string }>({
+            query: ({ id, idObject }) => ({
+                url: `/users/${id}/face-auth`,
+                method: 'POST',
+                body: { idObject }, 
+            }),
+            invalidatesTags: ['User'],
+        }),
+
     }),
 });
 
@@ -40,4 +49,5 @@ export const {
     useGetProfileQuery,
     useUpdateProfileMutation,
     useUploadAvatarMutation,
+    useUpdateFaceAuthMutation,
 } = userApi;
