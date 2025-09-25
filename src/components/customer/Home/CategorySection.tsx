@@ -48,7 +48,16 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
     return (
         <div className="w-full flex justify-center bg-gray-50 p-6">
             <div className="bg-white rounded-xl shadow p-6 max-w-6xl w-full relative">
-                <h2 className="text-xl font-bold mb-1 pb-2">DANH MỤC</h2>
+                <div className="flex justify-between items-center">
+                    <h2 className="text-xl font-bold">DANH MỤC</h2>
+                    <CustomLink
+                        href="/all_categories"
+                        className="text-sm text-red-500 font-semibold hover:underline hover:text-red-600"
+                    >
+                        Xem tất cả
+                    </CustomLink>
+                </div>
+
                 <hr className="mb-4 border-gray-300" />
                 <div className="relative group">
                     {!atStart && (
@@ -87,7 +96,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
                                                         '/placeholder.png'
                                                     }
                                                     alt={cat.name}
-                                                    className="w-18 h-18 object-contain"
+                                                    className="w-18 h-18 object-cover rounded-full"
                                                 />
                                             </div>
                                             <span className="text-xs text-center text-gray-700 font-medium leading-tight">

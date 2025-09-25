@@ -53,6 +53,10 @@ const FlashSaleSection: React.FC<FlashSaleSectionProps> = ({}) => {
         );
     }
 
+    if (flashSales.length === 0) {
+        return null;
+    }
+
     return (
         <div className="w-full flex justify-center bg-gray-50 px-6 py-4">
             <div className="bg-white rounded-xl shadow p-6 max-w-6xl w-full relative">

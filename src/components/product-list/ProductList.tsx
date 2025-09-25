@@ -123,11 +123,20 @@ const ProductList: React.FC<ProductListProps> = ({
             </div>
 
             {/* Grid sản phẩm */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {sortedProducts.map((product) => (
-                    <ProductCard key={product.productId} product={product} />
-                ))}
-            </div>
+            {sortedProducts.length > 0 ? (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    {sortedProducts.map((product) => (
+                        <ProductCard
+                            key={product.productId}
+                            product={product}
+                        />
+                    ))}
+                </div>
+            ) : (
+                <div className="col-span-full text-center py-10 text-gray-500 text-lg">
+                    Chưa có sản phẩm nào
+                </div>
+            )}
         </div>
     );
 };
