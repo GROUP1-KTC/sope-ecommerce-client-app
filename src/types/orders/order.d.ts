@@ -90,6 +90,7 @@ export interface OrderItemProduct {
     quantity: number;
     price: number;
     imageUrl: string;
+    slug?: string;
     productName: string;
     attributes?: Attribute[];
     commissionFeePercent: number;

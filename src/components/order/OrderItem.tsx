@@ -23,6 +23,7 @@ import {
 import ReviewForm from './ReviewForm';
 import { loadAuthUser } from '~/utils/authCookie';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface Props {
     orderGroup: OrderGroupShop;
@@ -59,10 +60,6 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
 
     const [showReview, setShowReview] = useState(false);
 
-    // const handleOpenReview = () => {
-    //     setShowReview(true);
-    // };
-
     const [selectedItem, setSelectedItem] = useState<any | null>(null);
 
     const [userId, setId] = useState<string | null>(null);
@@ -96,10 +93,14 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
             {/* Shop header */}
             <div className="mb-4 flex items-center space-x-6">
                 <StorefrontOutlinedIcon className="text-gray-600" />
-                <p className="text-black font-semibold">
+                <Link
+                    href={`/shop/${shop?.id}`}
+                    className="text-black font-semibold pointer-cursor"
+                >
                     {shop?.name ?? 'Không rõ shop'}
-                </p>
-                <button className="bg-red-500 text-white text-xs px-3 py-1 rounded hover:bg-red-600 transition flex items-center ml-auto">
+                </Link>
+
+                <button className="bg-red-500 cursor-pointer text-white text-xs px-3 py-1 rounded hover:bg-red-600 transition flex items-center ml-auto">
                     <ChatOutlinedIcon className="mr-1" fontSize="small" />
                     Chat
                 </button>
@@ -114,7 +115,8 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
 
             {/* Order items */}
             {order.items.map((item) => (
-                <div
+                <Link
+                    href={`/product-detail/${item.slug}`}
                     key={item.productVariantId}
                     className="flex items-center justify-between mb-4"
                 >
@@ -141,7 +143,7 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                     <p className="text-gray-800 font-medium">
                         {item.price * item.quantity} đ
                     </p>
-                </div>
+                </Link>
             ))}
 
             <hr className="my-4 border-t border-gray-300" />
@@ -165,7 +167,7 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                             onClick={() =>
                                 router.push(order.paymentPayUrl || '')
                             }
-                            className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
+                            className="bg-red-500 cursor-pointer text-white px-6 py-2 rounded hover:bg-red-600"
                         >
                             Vui lòng thanh toán
                         </button>
@@ -174,7 +176,7 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                 {order.status === 'PENDING' && (
                     <button
                         onClick={() => setOpenCancelDialog(true)}
-                        className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
+                        className="bg-red-500 cursor-pointer text-white px-6 py-2 rounded hover:bg-red-600"
                     >
                         Hủy đơn hàng
                     </button>
@@ -182,24 +184,24 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
 
                 {order.status === 'SHIPPING' && (
                     <>
-                        <button className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">
+                        <button className="bg-green-500 cursor-pointer text-white px-6 py-2 rounded hover:bg-green-600">
                             Đã nhận được hàng
                         </button>
-                        <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300">
+                        <button className="bg-gray-200 cursor-pointer text-gray-800 px-6 py-2 rounded hover:bg-gray-300">
                             Yêu cầu trả hàng / hoàn tiền
                         </button>
                     </>
                 )}
 
                 {order.status === 'CONFIRMED' && (
-                    <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300">
+                    <button className="bg-gray-200 cursor-pointer text-gray-800 px-6 py-2 rounded hover:bg-gray-300">
                         Viết đánh giá
                     </button>
                 )}
 
                 {(order.status === 'CANCELLED' ||
                     order.status === 'RETURNED') && (
-                    <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
+                    <button className="bg-red-500 cursor-pointer text-white px-6 py-2 rounded hover:bg-red-600">
                         Mua lại
                     </button>
                 )}
@@ -210,7 +212,7 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                 <div className="flex justify-between items-center">
                     <button
                         onClick={() => setShowHistory(!showHistory)}
-                        className="flex items-center text-blue-600 hover:underline"
+                        className="flex items-center text-blue-600 hover:underline cursor-pointer"
                     >
                         <HistoryOutlinedIcon
                             fontSize="small"
@@ -229,7 +231,7 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                                         setSelectedItem(item);
                                         setShowReview(true);
                                     }}
-                                    className="px-8 py-2 cursor-pointer bg-orange-500 text-white rounded hover:bg-orange-600"
+                                    className="px-8 py-2 cursor-pointer bg-red-500 text-white rounded hover:bg-red-600"
                                 >
                                     Đánh giá
                                 </button>
