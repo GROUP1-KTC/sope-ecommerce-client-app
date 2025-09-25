@@ -211,6 +211,30 @@ const ProductForm: React.FC<ProductFormProps> = ({
         e.target.value = '';
     };
 
+    const getImageErrorMessage = (fileName: string, reason?: string) => {
+        const bannedMap: Record<string, string> = {
+            ammo: 'đạn dược',
+            firearm: 'súng',
+            grenade: 'lựu đạn',
+            knife: 'dao',
+            pistol: 'súng ngắn',
+            rocket: 'tên lửa',
+            cigarette: 'thuốc lá',
+        };
+
+        const reasonLower = (reason || '').toLowerCase();
+
+        const foundKeyword = Object.keys(bannedMap).find((keyword) =>
+            reasonLower.includes(keyword),
+        );
+
+        if (foundKeyword) {
+            return `Ảnh "${fileName}" chứa "${bannedMap[foundKeyword]}" – thuộc danh mục cấm trên hệ thống.`;
+        }
+
+        return `Ảnh "${fileName}" không hợp lệ: ${reason || 'Không rõ lý do'}`;
+    };
+
     const handleProductImageChange = async (
         e: React.ChangeEvent<HTMLInputElement>,
     ) => {
@@ -238,7 +262,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 if (!result.valid) {
                     useAlertStore.getState().showAlert({
                         severity: 'warning',
-                        message: `Ảnh ${f.name} không hợp lệ: ${result.reason}`,
+                        message: getImageErrorMessage(f.name, result.reason),
                     });
                     continue;
                 }
@@ -285,30 +309,12 @@ const ProductForm: React.FC<ProductFormProps> = ({
             const result = await verifyImage(file);
 
             if (!result.valid) {
-                const bannedMap: Record<string, string> = {
-                    ammo: 'đạn dược',
-                    firearm: 'súng',
-                    grenade: 'lựu đạn',
-                    knife: 'dao',
-                    pistol: 'súng ngắn',
-                    rocket: 'tên lửa',
-                    cigarette: 'thuốc lá',
-                };
-
-                const reason = (result.reason || '').toLowerCase();
-
-                const foundKeyword = Object.keys(bannedMap).find((keyword) =>
-                    reason.includes(keyword),
-                );
-
-                const message = foundKeyword
-                    ? `Ảnh sản phẩm chứa "${bannedMap[foundKeyword]}" – thuộc danh mục không được phép kinh doanh trên hệ thống.`
-                    : `Ảnh không hợp lệ: ${result.reason || 'Không rõ lý do'}`;
-
                 useAlertStore.getState().showAlert({
                     severity: 'warning',
-                    message,
+                    message: getImageErrorMessage(file.name, result.reason),
                 });
+
+                return;
             }
             const mediaItem: MediaItem = {
                 file,
