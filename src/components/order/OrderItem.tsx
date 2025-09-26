@@ -24,6 +24,7 @@ import ReviewForm from './ReviewForm';
 import { loadAuthUser } from '~/utils/authCookie';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useGetReviewsByUserIdQuery } from '~/features/reviews/reviewApi';
 
 interface Props {
     orderGroup: OrderGroupShop;
@@ -71,6 +72,12 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
         }
     }, []);
 
+    const { data: reviews } = useGetReviewsByUserIdQuery(userId!, {
+        skip: !userId,
+    });
+
+    console.log('User reviews:', reviews);
+
     const handleCloseReview = () => {
         setShowReview(false);
     };
@@ -114,37 +121,66 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
             <hr className="my-4 border-t border-gray-300" />
 
             {/* Order items */}
-            {order.items.map((item) => (
-                <Link
+            {order.items.map((item) => {
+                const alreadyReviewed = reviews?.some(
+                    (review) =>
+                        review.productVariant.productVariantId === item.productVariantId
+                );
+
+                return (
+                     <Link
                     href={`/product-detail/${item.slug}`}
                     key={item.productVariantId}
                     className="flex items-center justify-between mb-4"
                 >
-                    <div className="flex items-center space-x-4">
-                        <Image
-                            width={96}
-                            height={96}
-                            src={item.imageUrl || '/placeholder.png'}
-                            alt={order.orderNumber}
-                            className="w-24 h-24 object-cover rounded-md"
-                        />
-                        <div>
-                            <p className="text-black font-semibold">
-                                Sản phẩm: {item.productName}
-                            </p>
-                            <p className="text-gray-600">
-                                Số lượng: {item.quantity}
-                            </p>
-                            <p className="text-gray-600">
-                                Giá: {item.price.toLocaleString()} đ
-                            </p>
+                        <div className="flex items-center space-x-4">
+                            <Image
+                                width={96}
+                                height={96}
+                                src={item.imageUrl || '/placeholder.png'}
+                                alt={order.orderNumber}
+                                className="w-24 h-24 object-cover rounded-md"
+                            />
+                            <div>
+                                <p className="text-black font-semibold">
+                                    Sản phẩm: {item.productName}
+                                </p>
+                                <p className="text-gray-600">Số lượng: {item.quantity}</p>
+                                <p className="text-gray-600">
+                                    Giá: {item.price.toLocaleString()} đ
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <p className="text-gray-800 font-medium">
-                        {item.price * item.quantity} đ
-                    </p>
-                </Link>
-            ))}
+
+                        <div className="flex items-center space-x-4">
+                            <p className="text-gray-800 font-medium">
+                                {(item.price * item.quantity).toLocaleString()} đ
+                            </p>
+
+                            {order.status === 'DELIVERED' && (
+                                alreadyReviewed ? (
+                                    <button
+                                        disabled
+                                        className="px-4 py-2 bg-gray-400 text-white rounded cursor-not-allowed"
+                                    >
+                                        Đã đánh giá
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() => {
+                                            setSelectedItem(item);
+                                            setShowReview(true);
+                                        }}
+                                        className="px-4 py-2 cursor-pointer bg-orange-500 text-white rounded hover:bg-orange-600"
+                                    >
+                                        Đánh giá
+                                    </button>
+                                )
+                            )}
+                        </div>
+                    </Link>
+                );
+            })}
 
             <hr className="my-4 border-t border-gray-300" />
 
@@ -201,10 +237,10 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
 
                 {(order.status === 'CANCELLED' ||
                     order.status === 'RETURNED') && (
-                    <button className="bg-red-500 cursor-pointer text-white px-6 py-2 rounded hover:bg-red-600">
-                        Mua lại
-                    </button>
-                )}
+                        <button className="bg-red-500 cursor-pointer text-white px-6 py-2 rounded hover:bg-red-600">
+                            Mua lại
+                        </button>
+                    )}
             </div>
 
             {/* Status history toggle */}
