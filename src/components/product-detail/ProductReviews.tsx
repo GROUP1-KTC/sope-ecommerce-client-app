@@ -16,7 +16,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
     const averageRating =
         reviews.length > 0
             ? reviews.reduce((sum, review) => sum + review.rating, 0) /
-            reviews.length
+              reviews.length
             : 0;
 
     const starCounts = [5, 4, 3, 2, 1].map(
@@ -124,10 +124,11 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
                     <button
                         onClick={() => setSelectedFilter('all')}
                         className={`relative px-3 py-1 text-sm cursor-pointer rounded-md 
-                        ${selectedFilter === 'all'
+                        ${
+                            selectedFilter === 'all'
                                 ? 'border border-red-500 text-red-500'
                                 : 'bg-gray-200 hover:bg-gray-300'
-                            }`}
+                        }`}
                     >
                         Tất cả ({reviews.length})
                         {selectedFilter === 'all' && (
@@ -142,10 +143,11 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({
                             key={star}
                             onClick={() => setSelectedFilter(star)}
                             className={`relative px-3 py-1 text-sm cursor-pointer rounded-md 
-                            ${selectedFilter === star
+                            ${
+                                selectedFilter === star
                                     ? 'border border-red-500 text-red-500'
                                     : 'bg-gray-200 hover:bg-gray-300'
-                                }`}
+                            }`}
                         >
                             {star} sao ({starCounts[5 - star]})
                             {selectedFilter === star && (

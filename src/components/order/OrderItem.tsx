@@ -124,15 +124,16 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
             {order.items.map((item) => {
                 const alreadyReviewed = reviews?.some(
                     (review) =>
-                        review.productVariant.productVariantId === item.productVariantId
+                        review.productVariant.productVariantId ===
+                        item.productVariantId,
                 );
 
                 return (
-                     <Link
-                    href={`/product-detail/${item.slug}`}
-                    key={item.productVariantId}
-                    className="flex items-center justify-between mb-4"
-                >
+                    <Link
+                        href={`/product-detail/${item.slug}`}
+                        key={item.productVariantId}
+                        className="flex items-center justify-between mb-4"
+                    >
                         <div className="flex items-center space-x-4">
                             <Image
                                 width={96}
@@ -145,7 +146,9 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                                 <p className="text-black font-semibold">
                                     Sản phẩm: {item.productName}
                                 </p>
-                                <p className="text-gray-600">Số lượng: {item.quantity}</p>
+                                <p className="text-gray-600">
+                                    Số lượng: {item.quantity}
+                                </p>
                                 <p className="text-gray-600">
                                     Giá: {item.price.toLocaleString()} đ
                                 </p>
@@ -154,11 +157,12 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
 
                         <div className="flex items-center space-x-4">
                             <p className="text-gray-800 font-medium">
-                                {(item.price * item.quantity).toLocaleString()} đ
+                                {(item.price * item.quantity).toLocaleString()}{' '}
+                                đ
                             </p>
 
-                            {order.status === 'DELIVERED' && (
-                                alreadyReviewed ? (
+                            {order.status === 'DELIVERED' &&
+                                (alreadyReviewed ? (
                                     <button
                                         disabled
                                         className="px-4 py-2 bg-gray-400 text-white rounded cursor-not-allowed"
@@ -175,8 +179,7 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                                     >
                                         Đánh giá
                                     </button>
-                                )
-                            )}
+                                ))}
                         </div>
                     </Link>
                 );
@@ -237,10 +240,10 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
 
                 {(order.status === 'CANCELLED' ||
                     order.status === 'RETURNED') && (
-                        <button className="bg-red-500 cursor-pointer text-white px-6 py-2 rounded hover:bg-red-600">
-                            Mua lại
-                        </button>
-                    )}
+                    <button className="bg-red-500 cursor-pointer text-white px-6 py-2 rounded hover:bg-red-600">
+                        Mua lại
+                    </button>
+                )}
             </div>
 
             {/* Status history toggle */}
