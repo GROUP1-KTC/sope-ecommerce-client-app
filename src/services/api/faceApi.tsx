@@ -27,23 +27,13 @@ export const faceApi = createApi({
             }),
             invalidatesTags: ['FaceAuth'],
         }),
-        updateFaceAuth: builder.mutation<
-            { success: boolean },
-            { id: string; idObject: string }
-        >({
-            query: (body) => ({
-                url: '/user/update-face-auth',
-                method: 'POST',
-                body,
-            }),
-            invalidatesTags: ['FaceAuth'],
-        }),
+
         verifyFace: builder.mutation<
             { match_found: boolean; face_auth_token?: string },
             FormData
         >({
             query: (formData) => ({
-                url: '/verify',
+                url: '/face/verify',
                 method: 'POST',
                 body: formData,
             }),
@@ -54,6 +44,5 @@ export const faceApi = createApi({
 export const {
     useCaptureFrameMutation,
     useSaveFaceMutation,
-    useUpdateFaceAuthMutation,
     useVerifyFaceMutation,
 } = faceApi;
