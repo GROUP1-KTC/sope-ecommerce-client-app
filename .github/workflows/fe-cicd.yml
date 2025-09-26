@@ -41,7 +41,7 @@ jobs:
                     --build-arg NEXT_PUBLIC_SOCKET_BASE_URL=${{ secrets.NEXT_PUBLIC_SOCKET_BASE_URL }} \
                     --build-arg NEXT_PUBLIC_LIVEKIT_WS_URL=${{ secrets.NEXT_PUBLIC_LIVEKIT_WS_URL }} \
                     --build-arg NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} \
-                    --build-arg NEXT_PUBLIC_VERIFY_IMAGE_URL=${{ secrets.NEXT_PUBLIC_VERIFY_IMAGE_URL }} \
+                    --build-arg NEXT_PUBLIC_AI_SERVICE_URL=${{ secrets.NEXT_PUBLIC_AI_SERVICE_URL }} \
                     --build-arg NEXT_PUBLIC_ELASTIC_SEARCH=${{ secrets.NEXT_PUBLIC_ELASTIC_SEARCH }} \
                     -t ${{ secrets.DOCKER_USERNAME }}/frontend-app:latest .
 
@@ -80,7 +80,7 @@ jobs:
                       NEXT_PUBLIC_SOCKET_BASE_URL=${{ secrets.NEXT_PUBLIC_SOCKET_BASE_URL }}
                       NEXT_PUBLIC_LIVEKIT_WS_URL=${{ secrets.NEXT_PUBLIC_LIVEKIT_WS_URL }}
                       NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
-                      NEXT_PUBLIC_VERIFY_IMAGE_URL=${{ secrets.NEXT_PUBLIC_VERIFY_IMAGE_URL }}
+                      NEXT_PUBLIC_AI_SERVICE_URL=${{ secrets.NEXT_PUBLIC_AI_SERVICE_URL }}
                       NEXT_PUBLIC_ELASTIC_SEARCH=${{ secrets.NEXT_PUBLIC_ELASTIC_SEARCH }}
                       EOF
                       chmod 600 ~/frontend-app/.env

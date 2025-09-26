@@ -4,11 +4,11 @@ export async function verifyImage(
     const formData = new FormData();
     formData.append('file', file);
 
-    const verifyImageUrl = process.env.NEXT_PUBLIC_VERIFY_IMAGE_URL;
+    const verifyImageUrl = process.env.NEXT_PUBLIC_AI_SERVICE_URL;
     if (!verifyImageUrl) {
-        throw new Error('NEXT_PUBLIC_VERIFY_IMAGE_URL is not defined');
+        throw new Error('NEXT_PUBLIC_AI_SERVICE_URL is not defined');
     }
-    const res = await fetch(verifyImageUrl, {
+    const res = await fetch(`${verifyImageUrl}/detect/verify`, {
         method: 'POST',
         body: formData,
     });

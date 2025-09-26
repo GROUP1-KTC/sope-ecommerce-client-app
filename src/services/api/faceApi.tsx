@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const faceApi = createApi({
     reducerPath: 'faceApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: process.env.NEXT_PUBLIC_FACE_AUTH_URL,
+        baseUrl: process.env.NEXT_PUBLIC_AI_SERVICE_URL,
     }),
     tagTypes: ['FaceAuth'],
     endpoints: (builder) => ({
