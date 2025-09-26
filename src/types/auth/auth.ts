@@ -13,6 +13,9 @@ export interface LoginResponse {
     username: string;
     roles: string[];
     accessToken: string;
+    twoFaRequired: boolean;
+    tempToken: string;
+    faceAuthId: string;
 }
 
 export interface EmailRequest {

@@ -85,6 +85,14 @@ export const authApi = apiSlice.injectEndpoints({
                 body,
             }),
         }),
+
+        confirmFace: builder.mutation<ServerResponse<LoginResponse>, string>({
+            query: (faceAuthToken) => ({
+                url: '/auth/confirm-face',
+                method: 'POST',
+                body: { faceAuthToken },
+            }),
+        }),
     }),
     overrideExisting: false,
 });
@@ -98,4 +106,5 @@ export const {
     useChangePasswordMutation,
     useSendForgotPasswordOtpMutation,
     useResetPasswordMutation,
+    useConfirmFaceMutation,
 } = authApi;

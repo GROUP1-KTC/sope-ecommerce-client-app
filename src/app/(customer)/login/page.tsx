@@ -12,6 +12,7 @@ import type { LoginResponse } from '~/types/auth/auth';
 import { setCredentials } from '~/features/auth/authSlice';
 import type { ServerResponse } from '~/types/serverReponse';
 import CustomLink from '~/components/shared/loading/CustomLink';
+import FaceLoginModal from '~/components/face-scan/FaceLoginModal';
 
 const Login = () => {
     const [input, setInput] = useState<LoginInput>({
@@ -20,6 +21,8 @@ const Login = () => {
     });
 
     const [showPassword, setShowPassword] = useState(false);
+
+    const [faceAuthId, setFaceAuthId] = useState<string>('');
 
     const [errors, setErrors] = useState<LoginErrors>({
         email: '',
@@ -31,6 +34,8 @@ const Login = () => {
     const [login, { isLoading }] = useLoginMutation();
     const dispatch = useAppDispatch();
     const router = useRouter();
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -75,13 +80,20 @@ const Login = () => {
         try {
             const res: ServerResponse<LoginResponse> =
                 await login(input).unwrap();
+            const data = res.data;
 
-            dispatch(setCredentials(res.data));
-            const roles = res.data.roles;
-            if (roles.includes('ADMIN')) {
-                router.push('/admin');
+            if (data.twoFaRequired) {
+                setIsModalOpen(true);
+                localStorage.setItem('tempToken', data.tempToken);
+                setFaceAuthId(data.faceAuthId);
             } else {
-                router.push('/');
+                dispatch(setCredentials(data));
+                const roles = data.roles;
+                if (roles.includes('ADMIN')) {
+                    router.push('/admin');
+                } else {
+                    router.push('/');
+                }
             }
         } catch (err: any) {
             if (err?.data?.errors && Array.isArray(err.data.errors)) {
@@ -265,13 +277,11 @@ const Login = () => {
                                             <button
                                                 type="button"
                                                 className="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-md cursor-pointer bg-white hover:bg-gray-100 text-slate-900 font-medium shadow-sm transition"
-                                                onClick={() => {
-                                                    // Replace with your Google login logic
-                                                }}
+                                                onClick={() => {}}
                                             >
                                                 <Image
-                                                    src="/assets/logo/google_logo.svg"
-                                                    alt="Google"
+                                                    src="/assets/logo/identity.png"
+                                                    alt="Face Scan"
                                                     width={20}
                                                     height={20}
                                                     className="mr-2"
@@ -295,6 +305,11 @@ const Login = () => {
                     </div>
                 </div>
             </div>
+            <FaceLoginModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                faceAuthId={faceAuthId}
+            />
         </div>
     );
 };

@@ -25,6 +25,15 @@ importers:
             '@headlessui/react':
                 specifier: ^2.2.7
                 version: 2.2.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+            '@mediapipe/camera_utils':
+                specifier: ^0.3.1675466862
+                version: 0.3.1675466862
+            '@mediapipe/drawing_utils':
+                specifier: ^0.3.1675466124
+                version: 0.3.1675466124
+            '@mediapipe/face_mesh':
+                specifier: ^0.4.1633559619
+                version: 0.4.1633559619
             '@mui/icons-material':
                 specifier: ^7.2.0
                 version: 7.2.0(@mui/material@7.2.0(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.8)(react@19.1.0)
@@ -832,6 +841,24 @@ packages:
         resolution:
             {
                 integrity: sha512-hfOnbwPCeZBEvMRdRhU2sr46mjGXavQcrb3BFRfG+Gm0Z7WUSeFdy5WLstXJzEepz17Iwp/lkGwJ4ZgOOYfPuA==,
+            }
+
+    '@mediapipe/camera_utils@0.3.1675466862':
+        resolution:
+            {
+                integrity: sha512-siuXBoUxWo9WL0MeAxIxvxY04bvbtdNl7uCxoJxiAiRtNnCYrurr7Vl5VYQ94P7Sq0gVq6PxIDhWWeZ/pLnSzw==,
+            }
+
+    '@mediapipe/drawing_utils@0.3.1675466124':
+        resolution:
+            {
+                integrity: sha512-/IWIB/iYRMtiUKe3k7yGqvwseWHCOqzVpRDfMgZ6gv9z7EEimg6iZbRluoPbcNKHbYSxN5yOvYTzUYb8KVf22Q==,
+            }
+
+    '@mediapipe/face_mesh@0.4.1633559619':
+        resolution:
+            {
+                integrity: sha512-Vc8cdjxS5+O2gnjWH9KncYpUCVXT0h714KlWAsyqJvJbIgUJBqpppbIx8yWcAzBDxm/5cYSuBI5p5ySIPxzcEg==,
             }
 
     '@mui/core-downloads-tracker@7.2.0':
@@ -5240,6 +5267,12 @@ snapshots:
     '@livekit/protocol@1.39.3':
         dependencies:
             '@bufbuild/protobuf': 1.10.1
+
+    '@mediapipe/camera_utils@0.3.1675466862': {}
+
+    '@mediapipe/drawing_utils@0.3.1675466124': {}
+
+    '@mediapipe/face_mesh@0.4.1633559619': {}
 
     '@mui/core-downloads-tracker@7.2.0': {}
 
