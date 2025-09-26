@@ -89,7 +89,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             <div className="bg-white w-full max-w-2xl rounded-lg shadow-lg p-6 relative">
                 <button
                     onClick={onClose}
-                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+                    className="absolute font-bold top-2 right-2 cursor-pointer text-gray-400 hover:text-gray-600"
                 >
                     ✕
                 </button>
@@ -177,7 +177,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                     {/* Nếu chưa chọn gì thì hiện nút Thêm */}
                     {mediaFiles.length === 0 && !videoFile && (
                         <>
-                            <label className="flex items-center gap-2 px-3 py-2 border border-orange-500 text-orange-500 rounded text-sm font-medium cursor-pointer hover:bg-orange-50">
+                            <label className="flex items-center gap-2 px-3 py-2 border border-red-500 text-red-500 rounded text-sm font-medium cursor-pointer hover:bg-red-50">
                                 <Camera size={18} />
                                 Thêm Hình ảnh
                                 <input
@@ -189,7 +189,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                                 />
                             </label>
 
-                            <label className="flex items-center gap-2 px-3 py-2 border border-orange-500 text-orange-500 rounded text-sm font-medium cursor-pointer hover:bg-orange-50">
+                            <label className="flex items-center gap-2 px-3 py-2 border border-red-500 text-red-500 rounded text-sm font-medium cursor-pointer hover:bg-red-50">
                                 <Video size={18} />
                                 Thêm Video
                                 <input
@@ -286,7 +286,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                     <button
                         onClick={handleSubmit}
                         disabled={isLoading}
-                        className="px-4 py-2 bg-orange-500 cursor-pointer text-white rounded hover:bg-orange-600 disabled:opacity-50"
+                        className="px-4 py-2 bg-red-500 cursor-pointer text-white rounded hover:bg-red-600 disabled:opacity-50"
                     >
                         {isLoading ? 'Đang gửi...' : 'Hoàn Thành'}
                     </button>

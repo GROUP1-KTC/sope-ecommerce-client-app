@@ -119,6 +119,8 @@ const FaceScanModal: React.FC<FaceScanModalProps> = ({
         if (!videoRef.current || !canvasRef.current) return;
 
         let stream: MediaStream;
+        let camera: any;
+
         const { FaceMesh, FACEMESH_TESSELATION } = FaceMeshModule as any;
         const { Camera } = CameraUtils as any;
         const { drawConnectors } = DrawingUtils as any;
@@ -157,7 +159,8 @@ const FaceScanModal: React.FC<FaceScanModalProps> = ({
             .then((s) => {
                 stream = s;
                 if (videoRef.current) videoRef.current.srcObject = stream;
-                const camera = new Camera(videoRef.current, {
+
+                camera = new Camera(videoRef.current, {
                     onFrame: async () => {
                         await faceMesh.send({ image: videoRef.current! });
                     },
@@ -172,9 +175,15 @@ const FaceScanModal: React.FC<FaceScanModalProps> = ({
             });
 
         return () => {
-            if (stream) stream.getTracks().forEach((track) => track.stop());
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            if (videoRef.current) videoRef.current.srcObject = null;
+            if (camera) {
+                camera.stop();
+            }
+            if (stream) {
+                stream.getTracks().forEach((track) => track.stop());
+            }
+            if (videoRef.current) {
+                videoRef.current.srcObject = null;
+            }
             setIsCapturing(false);
             setTotalCountdown(null);
         };

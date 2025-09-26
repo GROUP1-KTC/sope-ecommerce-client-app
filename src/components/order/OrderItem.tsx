@@ -129,12 +129,14 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                 );
 
                 return (
-                    <Link
-                        href={`/product-detail/${item.slug}`}
+                    <div
                         key={item.productVariantId}
                         className="flex items-center justify-between mb-4"
                     >
-                        <div className="flex items-center space-x-4">
+                        <Link
+                            href={`/product-detail/${item.slug}`}
+                            className="flex items-center space-x-4"
+                        >
                             <Image
                                 width={96}
                                 height={96}
@@ -153,14 +155,13 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                                     Giá: {item.price.toLocaleString()} đ
                                 </p>
                             </div>
-                        </div>
+                        </Link>
 
                         <div className="flex items-center space-x-4">
                             <p className="text-gray-800 font-medium">
                                 {(item.price * item.quantity).toLocaleString()}{' '}
                                 đ
                             </p>
-
                             {order.status === 'DELIVERED' &&
                                 (alreadyReviewed ? (
                                     <button
@@ -175,13 +176,13 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                                             setSelectedItem(item);
                                             setShowReview(true);
                                         }}
-                                        className="px-4 py-2 cursor-pointer bg-orange-500 text-white rounded hover:bg-orange-600"
+                                        className="px-4 py-2 cursor-pointer bg-red-500 text-white rounded hover:bg-red-600"
                                     >
                                         Đánh giá
                                     </button>
                                 ))}
                         </div>
-                    </Link>
+                    </div>
                 );
             })}
 
@@ -261,22 +262,6 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                             ? 'Ẩn lịch sử trạng thái'
                             : 'Xem lịch sử trạng thái'}
                     </button>
-
-                    {order.items.map((item: any) => (
-                        <div key={item.productVariantId}>
-                            {order.status === 'DELIVERED' && (
-                                <button
-                                    onClick={() => {
-                                        setSelectedItem(item);
-                                        setShowReview(true);
-                                    }}
-                                    className="px-8 py-2 cursor-pointer bg-red-500 text-white rounded hover:bg-red-600"
-                                >
-                                    Đánh giá
-                                </button>
-                            )}
-                        </div>
-                    ))}
 
                     {showReview && userId && selectedItem && (
                         <ReviewForm
