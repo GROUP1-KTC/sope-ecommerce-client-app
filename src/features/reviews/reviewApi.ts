@@ -12,6 +12,13 @@ export const reviewApi = apiSlice.injectEndpoints({
             }),
             providesTags: ['Review'],
         }),
+        getReviewsByUserId: builder.query<Review[], string>({
+            query: (userId) => ({
+                url: `/review/user/${userId}`,
+                credentials: 'omit',
+            }),
+            providesTags: ['Review'],
+        }),
         createReview: builder.mutation<Review, FormData>({
             query: (data) => ({
                 url: `/review`,
@@ -32,5 +39,8 @@ export const reviewApi = apiSlice.injectEndpoints({
     }),
 });
 
-export const { useGetReviewByProductQuery, useCreateReviewMutation } =
-    reviewApi;
+export const {
+    useGetReviewByProductQuery,
+    useCreateReviewMutation,
+    useGetReviewsByUserIdQuery,
+} = reviewApi;
