@@ -11,11 +11,13 @@ import checkoutReducer from '~/features/orders/checkoutSlice';
 
 import tempAddressReducer from '~/features/address/tempAddressSlice';
 import { elasticApi } from '~/features/products/elasticApi';
+import { faceApi } from '~/services/api/faceApi';
 
 export const appStore = configureStore({
     reducer: {
         [apiSlice.reducerPath]: apiSlice.reducer,
         [elasticApi.reducerPath]: elasticApi.reducer,
+        [faceApi.reducerPath]: faceApi.reducer,
         chat: chatReducer,
         auth: authReducer,
         user: userReducer,
@@ -28,7 +30,11 @@ export const appStore = configureStore({
             serializableCheck: {
                 ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
             },
-        }).concat([apiSlice.middleware, elasticApi.middleware]),
+        }).concat([
+            apiSlice.middleware,
+            elasticApi.middleware,
+            faceApi.middleware,
+        ]),
     devTools: process.env.NODE_ENV !== 'production',
 });
 

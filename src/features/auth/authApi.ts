@@ -86,18 +86,13 @@ export const authApi = apiSlice.injectEndpoints({
             }),
         }),
 
-        confirmFace: builder.mutation<
-            ServerResponse<LoginResponse>,
-            string 
-        >({
-            query: (tempToken) => ({
+        confirmFace: builder.mutation<ServerResponse<LoginResponse>, string>({
+            query: (faceAuthToken) => ({
                 url: '/auth/confirm-face',
                 method: 'POST',
-                body: { tempToken }, 
+                body: { faceAuthToken },
             }),
         }),
-
-
     }),
     overrideExisting: false,
 });

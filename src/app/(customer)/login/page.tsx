@@ -78,12 +78,13 @@ const Login = () => {
         if (Object.values(newErrors).some((err) => err)) return;
 
         try {
-            const res: ServerResponse<LoginResponse> = await login(input).unwrap();
+            const res: ServerResponse<LoginResponse> =
+                await login(input).unwrap();
             const data = res.data;
 
             if (data.twoFaRequired) {
                 setIsModalOpen(true);
-                localStorage.setItem("tempToken", data.tempToken);
+                localStorage.setItem('tempToken', data.tempToken);
                 setFaceAuthId(data.faceAuthId);
             } else {
                 dispatch(setCredentials(data));
@@ -94,7 +95,6 @@ const Login = () => {
                     router.push('/');
                 }
             }
-
         } catch (err: any) {
             if (err?.data?.errors && Array.isArray(err.data.errors)) {
                 setServerError(err.data.errors.join(', '));
@@ -105,7 +105,6 @@ const Login = () => {
             }
         }
     };
-
 
     return (
         <div className="min-h-[80vh] bg-[#d0001a] text-gray-900 flex justify-center">
@@ -292,9 +291,7 @@ const Login = () => {
                                             <button
                                                 type="button"
                                                 className="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-md cursor-pointer bg-white hover:bg-gray-100 text-slate-900 font-medium shadow-sm transition"
-                                                onClick={() => {
-
-                                                }}
+                                                onClick={() => {}}
                                             >
                                                 <Image
                                                     src="/assets/logo/identity.png"
@@ -325,7 +322,7 @@ const Login = () => {
             <FaceLoginModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                faceAuthId ={faceAuthId}
+                faceAuthId={faceAuthId}
             />
         </div>
     );
