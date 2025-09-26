@@ -18,6 +18,11 @@ interface FaceScanModalProps {
     username: string;
 }
 
+declare class ImageCapture {
+    constructor(track: MediaStreamTrack);
+    takePhoto(): Promise<Blob>;
+}
+
 const angles = ['center', 'left', 'right', 'up', 'down'];
 
 const FaceScanModal: React.FC<FaceScanModalProps> = ({
@@ -118,6 +123,9 @@ const FaceScanModal: React.FC<FaceScanModalProps> = ({
 
         if (!videoRef.current || !canvasRef.current) return;
 
+        const videoEl = videoRef.current;
+        const canvasEl = canvasRef.current;
+
         let stream: MediaStream;
         let camera: any;
 
@@ -138,11 +146,10 @@ const FaceScanModal: React.FC<FaceScanModalProps> = ({
         });
 
         faceMesh.onResults((results: any) => {
-            const canvas = canvasRef.current!;
-            const ctx = canvas.getContext('2d')!;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const ctx = canvasEl.getContext('2d')!;
+            ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
 
-            ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
+            ctx.drawImage(results.image, 0, 0, canvasEl.width, canvasEl.height);
 
             if (results.multiFaceLandmarks) {
                 for (const landmarks of results.multiFaceLandmarks) {
@@ -158,11 +165,11 @@ const FaceScanModal: React.FC<FaceScanModalProps> = ({
             .getUserMedia({ video: true })
             .then((s) => {
                 stream = s;
-                if (videoRef.current) videoRef.current.srcObject = stream;
+                videoEl.srcObject = stream;
 
-                camera = new Camera(videoRef.current, {
+                camera = new Camera(videoEl, {
                     onFrame: async () => {
-                        await faceMesh.send({ image: videoRef.current! });
+                        await faceMesh.send({ image: videoEl });
                     },
                     width: 640,
                     height: 480,
@@ -175,15 +182,9 @@ const FaceScanModal: React.FC<FaceScanModalProps> = ({
             });
 
         return () => {
-            if (camera) {
-                camera.stop();
-            }
-            if (stream) {
-                stream.getTracks().forEach((track) => track.stop());
-            }
-            if (videoRef.current) {
-                videoRef.current.srcObject = null;
-            }
+            if (camera) camera.stop();
+            if (stream) stream.getTracks().forEach((track) => track.stop());
+            if (videoEl) videoEl.srcObject = null;
             setIsCapturing(false);
             setTotalCountdown(null);
         };
