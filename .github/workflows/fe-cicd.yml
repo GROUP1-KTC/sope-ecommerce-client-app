@@ -32,7 +32,7 @@ jobs:
               run: pnpm install
 
             - name: Build frontend
-              run: pnpm run build  -- --debug
+              run: pnpm run build --debug
 
             # 4. Build Docker image
             - name: Build Docker image
