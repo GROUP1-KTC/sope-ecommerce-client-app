@@ -128,10 +128,11 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                 );
 
                 return (
-                    <div
-                        key={item.productVariantId}
-                        className="flex items-center justify-between mb-4"
-                    >
+                     <Link
+                    href={`/product-detail/${item.slug}`}
+                    key={item.productVariantId}
+                    className="flex items-center justify-between mb-4"
+                >
                         <div className="flex items-center space-x-4">
                             <Image
                                 width={96}
@@ -177,7 +178,7 @@ const OrderItem: React.FC<Props> = ({ orderGroup, refetchOrders }) => {
                                 )
                             )}
                         </div>
-                    </div>
+                    </Link>
                 );
             })}
 
