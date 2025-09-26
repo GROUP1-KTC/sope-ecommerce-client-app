@@ -36,10 +36,10 @@ const FaceScanModal: React.FC<FaceScanModalProps> = ({
     const [totalCountdown, setTotalCountdown] = useState<number | null>(null);
 
     const [updateFaceAuth] = useUpdateFaceAuthMutation();
+
     const [captureFrameMutation] = useCaptureFrameMutation();
     const [saveFaceMutation] = useSaveFaceMutation();
 
-    // Chụp ảnh gốc từ video
     const captureFrame = () => {
         if (!videoRef.current) return null;
 
@@ -57,7 +57,6 @@ const FaceScanModal: React.FC<FaceScanModalProps> = ({
         });
     };
 
-    // Bắt đầu auto capture
     const startAutoCapture = async () => {
         setIsCapturing(true);
         setTotalCountdown(10);
@@ -74,7 +73,14 @@ const FaceScanModal: React.FC<FaceScanModalProps> = ({
 
         for (let i = 0; i < angles.length; i++) {
             await new Promise<void>((resolve) => {
-                setTimeout(resolve, 1000);
+                let counter = 1;
+                const interval = setInterval(() => {
+                    counter -= 1;
+                    if (counter === 0) {
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, 1000);
             });
 
             const frame = await captureFrame();
@@ -143,6 +149,8 @@ const FaceScanModal: React.FC<FaceScanModalProps> = ({
             const ctx = canvasEl.getContext('2d')!;
             ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
 
+            ctx.drawImage(results.image, 0, 0, canvasEl.width, canvasEl.height);
+
             if (results.multiFaceLandmarks) {
                 for (const landmarks of results.multiFaceLandmarks) {
                     drawConnectors(ctx, landmarks, FACEMESH_TESSELATION, {
@@ -199,21 +207,21 @@ const FaceScanModal: React.FC<FaceScanModalProps> = ({
                 </h2>
 
                 <div className="flex flex-col items-center justify-center">
-                    <div className="relative w-full h-80 rounded-xl overflow-hidden">
-                        {/* Video gốc */}
-                        <video
-                            ref={videoRef}
-                            autoPlay
-                            playsInline
-                            className="absolute inset-0 w-full h-full object-cover"
-                        />
-                        {/* Overlay landmarks */}
-                        <canvas
-                            ref={canvasRef}
-                            width={640}
-                            height={480}
-                            className="absolute inset-0 w-full h-full"
-                        />
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="bg-white rounded-xl overflow-hidden p-2 w-full">
+                            <canvas
+                                ref={canvasRef}
+                                width={640}
+                                height={480}
+                                className="w-full h-80 object-contain rounded-xl"
+                            />
+                            <video
+                                ref={videoRef}
+                                className="hidden"
+                                autoPlay
+                                playsInline
+                            />
+                        </div>
                     </div>
 
                     {isCapturing && totalCountdown !== null && (
