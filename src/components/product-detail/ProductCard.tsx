@@ -33,7 +33,7 @@ const ProductCard = ({ product }: { product: ProductSummary }) => {
                         ₫{(product.minPrice ?? 0).toLocaleString('vi-VN')}
                     </p>
                     <div className="flex items-center gap-1 text-xs text-gray-600">
-                        <span>⭐ {product.averageRating ?? 0}</span>
+                        <span>⭐ {(product.averageRating ?? 0).toFixed(1)}</span>
                         <span>|</span>
                         <span>
                             {(product.totalSold ?? 0).toLocaleString('vi-VN')}{' '}

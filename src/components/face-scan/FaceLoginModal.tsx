@@ -146,7 +146,7 @@ const FaceLoginModal = ({
                 </button>
 
                 <h2 className="text-2xl font-semibold mb-4 text-center">
-                    Face Verification
+                    Xác thực khuôn mặt
                 </h2>
 
                 <div className="flex flex-col items-center justify-center">
@@ -163,7 +163,7 @@ const FaceLoginModal = ({
                         {match ? (
                             <span className="text-green-600 font-semibold">
                                 {' '}
-                                Face Matched! Logging in...
+                                Khuôn mặt đã được xác thực! Đang đăng nhập...
                             </span>
                         ) : noFaceDetected ? (
                             <span className="text-red-600 font-semibold">
@@ -171,9 +171,9 @@ const FaceLoginModal = ({
                                 Không tìm thấy khuôn mặt. Vui lòng thử lại.
                             </span>
                         ) : (
-                            'Align your face in front of the camera...'
+                            'Vui lòng để khuôn mặt ở chính giữa khung hình'
                         )}
-                    </p>
+                    </p>    
                 </div>
             </div>
         </div>
