@@ -173,7 +173,7 @@ const FaceLoginModal = ({
                         ) : (
                             'Vui lòng để khuôn mặt ở chính giữa khung hình'
                         )}
-                    </p>    
+                    </p>
                 </div>
             </div>
         </div>

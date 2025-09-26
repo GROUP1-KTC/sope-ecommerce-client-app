@@ -6,7 +6,7 @@ import { Badge, Fab, Paper, Box, Fade } from '@mui/material';
 import { colors } from '~/constants/color.constant';
 import MessageIcon from '@mui/icons-material/Message';
 import { usePathname } from 'next/navigation';
-import { loadAuthUser } from '~/utils/authCookie'; 
+import { loadAuthUser } from '~/utils/authCookie';
 
 const ChatFloatButton = () => {
     const [openChat, setOpenChat] = useState(false);
@@ -24,7 +24,7 @@ const ChatFloatButton = () => {
 
     useEffect(() => {
         const storedUser = loadAuthUser();
-        setIsLoggedIn(!!storedUser); 
+        setIsLoggedIn(!!storedUser);
     }, []);
 
     useEffect(() => {
@@ -125,7 +125,10 @@ const ChatFloatButton = () => {
             </Box>
 
             {openChat && (
-                <ChatDialog open={openChat} onClose={() => setOpenChat(false)} />
+                <ChatDialog
+                    open={openChat}
+                    onClose={() => setOpenChat(false)}
+                />
             )}
         </>
     );

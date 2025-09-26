@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
     Typography,
     Box,
@@ -7,7 +7,7 @@ import {
     ListItem,
     Card,
     CardContent,
-} from "@mui/material";
+} from '@mui/material';
 
 interface Product {
     name: string;
@@ -22,12 +22,12 @@ interface ChatResponse {
 }
 
 interface FormattedMessageProps {
-    content: string; 
+    content: string;
 }
 
 const FormattedMessage: React.FC<FormattedMessageProps> = ({ content }) => {
     const parsed = tryParseJson(content);
-    console.log("parsed:", parsed);
+    console.log('parsed:', parsed);
 
     if (parsed) {
         return (
@@ -39,30 +39,52 @@ const FormattedMessage: React.FC<FormattedMessageProps> = ({ content }) => {
                 {parsed.products && parsed.products.length > 0 && (
                     <List sx={{ pl: 0 }}>
                         {parsed.products.map((p, idx) => (
-                            <ListItem key={idx} sx={{ display: "block", mb: 1, p: 0 }}>
+                            <ListItem
+                                key={idx}
+                                sx={{ display: 'block', mb: 1, p: 0 }}
+                            >
                                 <Card
                                     variant="outlined"
                                     sx={{
                                         borderRadius: 2,
                                         boxShadow: 1,
-                                        "&:hover": { boxShadow: 3 },
+                                        '&:hover': { boxShadow: 3 },
                                     }}
                                 >
                                     <CardContent>
-                                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                            }}
+                                        >
                                             <Box sx={{ flex: 1, pr: 2 }}>
-                                                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                                                <Typography
+                                                    variant="subtitle1"
+                                                    fontWeight="bold"
+                                                    gutterBottom
+                                                >
                                                     {p.name}
                                                 </Typography>
 
                                                 {p.minPrice !== undefined && (
-                                                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                                                        💰 Giá tốt nhất: {p.minPrice.toLocaleString()} VND
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="text.secondary"
+                                                        gutterBottom
+                                                    >
+                                                        💰 Giá tốt nhất:{' '}
+                                                        {p.minPrice.toLocaleString()}{' '}
+                                                        VND
                                                     </Typography>
                                                 )}
 
-                                                <Typography variant="body2" color="primary">
-                                                    🔗{" "}
+                                                <Typography
+                                                    variant="body2"
+                                                    color="primary"
+                                                >
+                                                    🔗{' '}
                                                     <Link
                                                         href={p.link}
                                                         target="_blank"
@@ -70,7 +92,8 @@ const FormattedMessage: React.FC<FormattedMessageProps> = ({ content }) => {
                                                         color="primary"
                                                         underline="hover"
                                                     >
-                                                        Bấm vào đây để xem chi tiết
+                                                        Bấm vào đây để xem chi
+                                                        tiết
                                                     </Link>
                                                 </Typography>
                                             </Box>
@@ -84,7 +107,7 @@ const FormattedMessage: React.FC<FormattedMessageProps> = ({ content }) => {
                                                         width: 80,
                                                         height: 80,
                                                         borderRadius: 2,
-                                                        objectFit: "cover",
+                                                        objectFit: 'cover',
                                                     }}
                                                 />
                                             )}
@@ -99,11 +122,15 @@ const FormattedMessage: React.FC<FormattedMessageProps> = ({ content }) => {
         );
     }
 
-    const lines = content.split("\n").filter((line) => line.trim() !== "");
+    const lines = content.split('\n').filter((line) => line.trim() !== '');
     return (
         <Box>
             {lines.map((line, idx) => (
-                <Typography key={idx} variant="body1" sx={{ mb: 1, lineHeight: 1.6 }}>
+                <Typography
+                    key={idx}
+                    variant="body1"
+                    sx={{ mb: 1, lineHeight: 1.6 }}
+                >
                     {formatInline(line, idx)}
                 </Typography>
             ))}
@@ -125,15 +152,18 @@ function formatInline(text: string, parentIdx: number) {
 
     return parts.map((part, idx) => {
         // Bold
-        if (part.startsWith("**") && part.endsWith("**")) {
+        if (part.startsWith('**') && part.endsWith('**')) {
             return (
-                <span key={`${parentIdx}-${idx}`} style={{ fontWeight: "bold" }}>
+                <span
+                    key={`${parentIdx}-${idx}`}
+                    style={{ fontWeight: 'bold' }}
+                >
                     {part.slice(2, -2)}
                 </span>
             );
         }
 
-        if (part.startsWith("[") && part.includes("](")) {
+        if (part.startsWith('[') && part.includes('](')) {
             const match = part.match(/\[(.*?)\]\((.*?)\)/);
             if (!match) return part;
             const [, text, url] = match;
@@ -158,9 +188,9 @@ function formatInline(text: string, parentIdx: number) {
 
 function cleanJsonString(str: string) {
     return str
-        .replace(/```json\s*/gi, "")
-        .replace(/```\s*/g, "")
-        .replace(/\r?\n/g, " ")
+        .replace(/```json\s*/gi, '')
+        .replace(/```\s*/g, '')
+        .replace(/\r?\n/g, ' ')
         .trim();
 }
 
