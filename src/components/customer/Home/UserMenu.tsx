@@ -67,20 +67,20 @@ const UserMenu = () => {
                             href="/account/profile"
                             className="px-4 py-2 hover:bg-gray-100 hover:text-red-500 rounded-t"
                         >
-                            Profile
+                            Hồ Sơ
                         </CustomLink>
 
                         <CustomLink
                             href="/account/orders"
                             className="px-4 py-2 hover:bg-gray-100 hover:text-red-500"
                         >
-                            Orders
+                            Đơn Hàng
                         </CustomLink>
                         <button
                             onClick={handleLogout}
                             className="text-left px-4 py-2 hover:bg-gray-100 hover:text-red-500 rounded-b cursor-pointer"
                         >
-                            Logout
+                            Đăng Xuất
                         </button>
                     </div>
                 </div>

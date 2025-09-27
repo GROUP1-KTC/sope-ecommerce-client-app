@@ -87,7 +87,6 @@ const ProductInfo = ({
         };
 
         if (isLoggedIn) {
-            // Handle logged-in user
             try {
                 const request: AddToCartRequest = {
                     productVariantId: item.productVariantId,
@@ -107,11 +106,9 @@ const ProductInfo = ({
                 });
             }
         } else {
-            // Handle non-logged-in user
             const stored = localStorage.getItem('cart');
             const currentCart: CartGroup[] = stored ? JSON.parse(stored) : [];
 
-            // Find or create shop in cart
             let shopIndex = currentCart.findIndex(
                 (s) => s.shop.id === product.shop?.id,
             );
@@ -134,7 +131,6 @@ const ProductInfo = ({
                 shopIndex = currentCart.length - 1;
             }
 
-            // Add or update item in shop
             const existingItemIndex = currentCart[shopIndex].items.findIndex(
                 (i) => i.productVariantId === newItem.productVariantId,
             );

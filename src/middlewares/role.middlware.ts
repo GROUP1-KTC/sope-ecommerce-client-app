@@ -11,6 +11,7 @@ export function roleMiddleware(req: NextRequest) {
         try {
             const user = JSON.parse(authCookie);
             roles = Array.isArray(user.roles) ? user.roles : [];
+            console.log('User roles from cookie:', roles);
         } catch (_err) {
             roles = [];
         }
@@ -20,6 +21,15 @@ export function roleMiddleware(req: NextRequest) {
 
     const isAdminRoute = pathname.startsWith('/admin');
     const isSellerRoute = pathname.startsWith('/seller');
+    const isShipperRoute = pathname.startsWith('/shipper');
+
+    if (roles.includes('ADMIN') && !isAdminRoute) {
+        return NextResponse.redirect(new URL('/admin', req.url));
+    }
+
+    if (roles.includes('SHIPPER') && !isShipperRoute) {
+        return NextResponse.redirect(new URL('/shipper', req.url));
+    }
 
     if (isAdminRoute && !roles.includes('ADMIN')) {
         return NextResponse.redirect(new URL('/error?code=403', req.url));
@@ -29,9 +39,13 @@ export function roleMiddleware(req: NextRequest) {
         return NextResponse.redirect(new URL('/error?code=403', req.url));
     }
 
+    if (isShipperRoute && !roles.includes('SHIPPER')) {
+        return NextResponse.redirect(new URL('/error?code=403', req.url));
+    }
+
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/admin/:path*', '/seller/:path*'],
+    matcher: ['/admin/:path*', '/seller/:path*', '/shipper/:path*'],
 };
