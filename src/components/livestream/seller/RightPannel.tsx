@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import type { Comment } from '~/types/comment';
-import LiveStats from './LiveStat';
 import SellerChatBox from './SellerChatBox';
 
 type RightPanelProps = {
@@ -18,17 +17,6 @@ export default function RightPanel({ comments }: RightPanelProps) {
                     onBlock={(username: string) =>
                         console.log('Block user', username)
                     }
-                />
-            </div>
-
-            <div className="border-t border-gray-300 my-2"></div>
-
-            <div className="flex-1 overflow-y-auto">
-                <LiveStats
-                    orders={10}
-                    revenue={100000}
-                    viewers={200}
-                    liveTime={'00:45:12'}
                 />
             </div>
         </div>

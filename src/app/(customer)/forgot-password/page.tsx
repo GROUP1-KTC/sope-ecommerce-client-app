@@ -126,7 +126,7 @@ const RecoverPassword = () => {
                         className="h-24 sm:h-48 w-auto"
                     />
                     <p className="text-white text-xl font-semibold mt-4">
-                        Leading e-commerce platform in District 7, HCM City
+                        Mua sắm thông minh và an toàn
                     </p>
                 </div>
                 <div className="bg-gray-50 flex-1">
