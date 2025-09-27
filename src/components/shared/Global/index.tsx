@@ -27,6 +27,7 @@ const GlobalComponent = () => {
         '/shipper',
         '/admin',
         '/create-shop',
+        '/live',
     ];
 
     const shouldRender = allowedPrefixes.some((prefix) =>

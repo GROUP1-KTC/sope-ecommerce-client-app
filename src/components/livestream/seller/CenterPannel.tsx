@@ -11,7 +11,6 @@ export default function CenterPanel({ products }: CenterPanelProps) {
     const [query, setQuery] = useState('');
     const [pinnedId, setPinnedId] = useState<string | null>(null);
 
-    // filter sản phẩm theo tên (trừ sản phẩm đang ghim)
     const filteredProducts = useMemo(() => {
         return products.filter(
             (p) =>
@@ -51,7 +50,7 @@ export default function CenterPanel({ products }: CenterPanelProps) {
                     placeholder="Tìm sản phẩm..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    className="w-full pl-10 pr-3 py-2 border rounded-lg text-sm shadow-sm 
+                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm shadow-sm 
                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
             </div>
