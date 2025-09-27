@@ -11,12 +11,12 @@ const banners = [
         content: (
             <div className="h-full flex flex-col justify-center pl-10 pr-4 py-6 relative z-20">
                 <span className="text-4xl font-bold text-white">
-                    Naver Shopping Live
+                    Sope Shopping Live
                     <br />
-                    Best Awards
+                    Xuất sắc nhất
                 </span>
                 <span className="text-lg text-white mt-2">
-                    Live maximum benefits + additional accrual!
+                    Tận hưởng lợi ích tối đa !
                 </span>
             </div>
         ),
@@ -27,10 +27,10 @@ const banners = [
         content: (
             <div className="h-full flex flex-col justify-center pl-10 pr-4 py-6 relative z-20">
                 <span className="text-4xl font-bold text-white">
-                    LG Electronics Summer Peak
+                    LG Electronics
                 </span>
                 <span className="text-lg text-white">
-                    Hot home appliances that will change this summer, IT sale
+                    Thiết bị gia dụng hot sẽ thay đổi trong mùa hè này, IT sale
                 </span>
             </div>
         ),
@@ -41,32 +41,32 @@ const banners = [
         content: (
             <div className="h-full flex flex-col justify-center pl-10 pr-4 py-6 relative z-20">
                 <span className="text-4xl font-bold text-white">
-                    My dog and cat too
+                    Thú cưng cũng cần mua sắm!
                     <br />
-                    Membership benefits!
+                    Lợi ích thành viên
                 </span>
                 <span className="text-lg text-white mt-2">
-                    50% off popular pet brands
+                    Giảm 50% cho các thương hiệu thú cưng phổ biến
                 </span>
             </div>
         ),
-        img: 'https://shop-phinf.pstatic.net/20250703_142/1751509026934BSOch_PNG/EB84A4ED948CEC8AA4%2BED9988%2BECB59CEC8381EB8BA8_ED858DEC8.png?type=a2304_jpg',
+        img: 'https://academyanimal.com/uploads/SiteAssets/411/images/news/yorkie-with-shopping-cart.png',
     },
     {
         bg: 'bg-black',
         content: (
             <div className="h-full flex flex-col justify-center pl-10 pr-4 py-6 relative z-20">
                 <span className="text-4xl font-bold text-white">
-                    Nenet once today
+                    Sope một lần hôm nay
                     <br />
-                    Would you like to do it?
+                    Bạn muốn mua gì?
                 </span>
                 <span className="text-lg text-white mt-2">
-                    Membership starts at 4,900 won per month
+                    Tận hưởng ưu đãi đặc biệt lên đến 50%!
                 </span>
             </div>
         ),
-        img: 'https://shop-phinf.pstatic.net/20250703_239/17515023748273J7Gd_PNG/ED8EABEB9DBCEC9DB4ECA795EC9C84ED81AC%2BECB59CEC8381EB8B.png?type=a2304_jpg',
+        img: 'https://file.hstatic.net/200000472237/article/trang-web-ban-hang_1274e2e917854b8e8ec5874a7e355ede_grande.png',
     },
 ];
 

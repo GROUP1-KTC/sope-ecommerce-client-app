@@ -19,19 +19,19 @@ const FaceLoginModal = ({
     faceAuthId,
 }: FaceLoginModalProps) => {
     const [match, setMatch] = useState(false);
+    const [noFaceDetected, setNoFaceDetected] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const [confirmFace] = useConfirmFaceMutation();
+    const [verifyFace] = useVerifyFaceMutation();
     const dispatch = useDispatch();
     const router = useRouter();
-    const [noFaceDetected, setNoFaceDetected] = useState(false);
-    const [verifyFace] = useVerifyFaceMutation();
+    const [retryCount, setRetryCount] = useState(0);
 
-    useEffect(() => {
-        if (!isOpen) return;
-
+    const startCamera = () => {
         setNoFaceDetected(false);
+        setMatch(false);
 
         navigator.mediaDevices
             .getUserMedia({ video: true })
@@ -40,33 +40,29 @@ const FaceLoginModal = ({
             })
             .catch((err) => console.error('Không mở được camera:', err));
 
-        intervalRef.current = setInterval(() => {
-            captureAndSend();
-        }, 1000);
+        intervalRef.current = setInterval(() => captureAndSend(), 1000);
 
-        const timeout = setTimeout(() => {
+        setTimeout(() => {
             if (!match) {
                 setNoFaceDetected(true);
-                if (intervalRef.current) clearInterval(intervalRef.current);
-
-                if (videoRef.current && videoRef.current.srcObject) {
-                    (videoRef.current.srcObject as MediaStream)
-                        .getTracks()
-                        .forEach((track) => track.stop());
-                }
+                stopCamera();
             }
         }, 10000);
+    };
 
-        return () => {
-            if (videoRef.current && videoRef.current.srcObject) {
-                // eslint-disable-next-line react-hooks/exhaustive-deps
-                (videoRef.current.srcObject as MediaStream)
-                    .getTracks()
-                    .forEach((track) => track.stop());
-            }
-            if (intervalRef.current) clearInterval(intervalRef.current);
-            clearTimeout(timeout);
-        };
+    const stopCamera = () => {
+        if (intervalRef.current) clearInterval(intervalRef.current);
+        if (videoRef.current && videoRef.current.srcObject) {
+            (videoRef.current.srcObject as MediaStream)
+                .getTracks()
+                .forEach((track) => track.stop());
+        }
+    };
+
+    useEffect(() => {
+        if (isOpen) startCamera();
+
+        return () => stopCamera();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen]);
 
@@ -91,45 +87,33 @@ const FaceLoginModal = ({
         formData.append('faceAuthId', faceAuthId);
         formData.append('file', blob, 'frame.jpg');
 
-        for (const pair of formData.entries()) {
-            console.log(pair[0], pair[1]);
-        }
-
         try {
             const data = await verifyFace(formData).unwrap();
             if (data.match_found) {
                 setMatch(true);
-                if (intervalRef.current) clearInterval(intervalRef.current);
-
-                if (videoRef.current && videoRef.current.srcObject) {
-                    (videoRef.current.srcObject as MediaStream)
-                        .getTracks()
-                        .forEach((track) => track.stop());
-                }
-
+                stopCamera();
                 onClose();
 
                 const faceAuthToken = data.face_auth_token;
                 if (faceAuthToken) {
-                    try {
-                        const response =
-                            await confirmFace(faceAuthToken).unwrap();
-                        const loginData = response.data;
+                    const response = await confirmFace(faceAuthToken).unwrap();
+                    const loginData = response.data;
+                    dispatch(setCredentials(loginData));
 
-                        dispatch(setCredentials(loginData));
-
-                        if (loginData.roles.includes('ADMIN')) {
-                            router.push('/admin');
-                        } else {
-                            router.push('/');
-                        }
-                    } catch (err) {
-                        console.error('Confirm face failed:', err);
-                    }
+                    if (loginData.roles.includes('ADMIN'))
+                        router.push('/admin');
+                    else router.push('/');
                 }
             }
         } catch (err) {
             console.error('Error gửi ảnh:', err);
+        }
+    };
+
+    const handleRetry = () => {
+        if (retryCount < 3) {
+            setRetryCount((prev) => prev + 1);
+            startCamera();
         }
     };
 
@@ -155,25 +139,38 @@ const FaceLoginModal = ({
                             ref={videoRef}
                             autoPlay
                             playsInline
-                            className=" object-contain rounded-xl"
+                            className="object-contain rounded-xl"
                         />
                         <canvas ref={canvasRef} className="hidden" />
                     </div>
-                    <p className="mt-4 text-lg text-gray-700 text-center">
+
+                    <div className="mt-4 text-lg text-gray-700 text-center">
                         {match ? (
                             <span className="text-green-600 font-semibold">
-                                {' '}
                                 Khuôn mặt đã được xác thực! Đang đăng nhập...
                             </span>
-                        ) : noFaceDetected ? (
-                            <span className="text-red-600 font-semibold">
-                                {' '}
-                                Không tìm thấy khuôn mặt. Vui lòng thử lại.
+                        ) : noFaceDetected && retryCount < 3 ? (
+                            <div className="flex flex-col items-center">
+                                <span className="text-red-600 font-semibold text-center">
+                                    Không tìm thấy khuôn mặt. Vui lòng thử lại.
+                                </span>
+                                <button
+                                    onClick={handleRetry}
+                                    className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition cursor-pointer"
+                                >
+                                    Thử lại
+                                </button>
+                            </div>
+                        ) : noFaceDetected && retryCount >= 3 ? (
+                            <span className="text-red-600 font-semibold text-center">
+                                Ánh sáng môi trường không phù hợp hoặc khuôn mặt
+                                không rõ. Vui lòng thử lại sau hoặc dùng phương
+                                thức khác.
                             </span>
                         ) : (
                             'Vui lòng để khuôn mặt ở chính giữa khung hình'
                         )}
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>
