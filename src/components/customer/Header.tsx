@@ -9,6 +9,7 @@ import GetAppIcon from '@mui/icons-material/GetApp';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import HelpIcon from '@mui/icons-material/Help';
 import LanguageIcon from '@mui/icons-material/Language';
+import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -31,57 +32,72 @@ const Header = () => {
     const [isFocused, setIsFocused] = useState(false);
     const router = useRouter();
 
+    const handleImageSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const imageUrl = URL.createObjectURL(file);
+
+        const formData = new FormData();
+        formData.append("image", file);
+
+        sessionStorage.setItem("imageSearchFile", imageUrl);
+
+        router.push("/search/image");
+    };
+
+
     const { data: products = [] } = useSearchSuggestQuery(
         searchTerm
             ? {
-                  _source: ['product_id', 'slug', 'name', 'default_image'],
-                  query: {
-                      function_score: {
-                          query: {
-                              bool: {
-                                  should: [
-                                      {
-                                          match_phrase: {
-                                              name: {
-                                                  query: searchTerm,
-                                                  boost: 5,
-                                              },
-                                          },
-                                      },
-                                      {
-                                          match_phrase_prefix: {
-                                              name: {
-                                                  query: searchTerm,
-                                                  boost: 4,
-                                              },
-                                          },
-                                      },
-                                      {
-                                          match: {
-                                              name: {
-                                                  query: searchTerm,
-                                                  fuzziness: 'AUTO',
-                                                  boost: 2,
-                                              },
-                                          },
-                                      },
-                                      {
-                                          match: {
-                                              slug: {
-                                                  query: searchTerm,
-                                                  boost: 1,
-                                              },
-                                          },
-                                      },
-                                  ],
-                              },
-                          },
-                          boost_mode: 'sum',
-                      },
-                  },
-                  size: 20,
-                  sort: [{ _score: 'desc' }],
-              }
+                _source: ['product_id', 'slug', 'name', 'default_image'],
+                query: {
+                    function_score: {
+                        query: {
+                            bool: {
+                                should: [
+                                    {
+                                        match_phrase: {
+                                            name: {
+                                                query: searchTerm,
+                                                boost: 5,
+                                            },
+                                        },
+                                    },
+                                    {
+                                        match_phrase_prefix: {
+                                            name: {
+                                                query: searchTerm,
+                                                boost: 4,
+                                            },
+                                        },
+                                    },
+                                    {
+                                        match: {
+                                            name: {
+                                                query: searchTerm,
+                                                fuzziness: 'AUTO',
+                                                boost: 2,
+                                            },
+                                        },
+                                    },
+                                    {
+                                        match: {
+                                            slug: {
+                                                query: searchTerm,
+                                                boost: 1,
+                                            },
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                        boost_mode: 'sum',
+                    },
+                },
+                size: 20,
+                sort: [{ _score: 'desc' }],
+            }
             : skipToken,
     );
 
@@ -221,6 +237,22 @@ const Header = () => {
                             type="text"
                         />
 
+                        <button
+                            type="button"
+                            onClick={() => document.getElementById('imageSearchInput')?.click()}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-500 cursor-pointer"
+                        >
+                            <ImageSearchIcon className="w-5 h-5" />
+                        </button>
+
+                        <input
+                            id="imageSearchInput"
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={handleImageSearch}
+                        />
+
                         {isFocused && inputValue && searchTerm && (
                             <div className="absolute top-full left-0 w-full bg-white shadow-lg rounded-md mt-1 z-50 max-h-80 overflow-y-auto">
                                 {products.length > 0 &&
@@ -283,9 +315,8 @@ const Header = () => {
             )}
 
             <div
-                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${
-                    menuOpen ? 'translate-x-0' : 'translate-x-full'
-                } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
+                className={`fixed top-0 right-0 h-full w-3/4 max-w-[300px] bg-[#d0001a] text-white z-50 transform transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'
+                    } sm:hidden flex flex-col p-5 gap-3 rounded-l-xl shadow-lg`}
             >
                 <div className="flex justify-end">
                     <button
