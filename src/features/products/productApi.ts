@@ -108,7 +108,14 @@ export const productApi = apiSlice.injectEndpoints({
             }),
             providesTags: ['Product'],
         }),
-    }),
+        searchProductsByImage: builder.mutation<ProductSummary[], FormData>({
+            query: (formData) => ({
+                url: `products/search-by-image?limit=10`,
+                method: 'POST',
+                body: formData,
+            }),
+        }),
+    }), 
 });
 
 export const {
@@ -121,4 +128,5 @@ export const {
     useGetSimilarProductsQuery,
     useGetInitProductsForGuestQuery,
     useGetApprovedProductsByShopQuery,
+    useSearchProductsByImageMutation,
 } = productApi;
