@@ -12,7 +12,7 @@ import type { LoginResponse } from '~/types/auth/auth';
 import { setCredentials } from '~/features/auth/authSlice';
 import type { ServerResponse } from '~/types/serverReponse';
 import CustomLink from '~/components/shared/loading/CustomLink';
-import FaceLoginModal from '~/components/face-scan/FaceLoginModal';
+import FaceScanModal from '~/components/face/FaceScanModal';
 
 const Login = () => {
     const [input, setInput] = useState<LoginInput>({
@@ -22,7 +22,7 @@ const Login = () => {
 
     const [showPassword, setShowPassword] = useState(false);
 
-    const [faceAuthId, setFaceAuthId] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
 
     const [errors, setErrors] = useState<LoginErrors>({
         email: '',
@@ -85,7 +85,7 @@ const Login = () => {
             if (data.twoFaRequired) {
                 setIsModalOpen(true);
                 localStorage.setItem('tempToken', data.tempToken);
-                setFaceAuthId(data.faceAuthId);
+                setUsername(data.username);
             } else {
                 dispatch(setCredentials(data));
                 const roles = data.roles;
@@ -305,10 +305,11 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-            <FaceLoginModal
+            <FaceScanModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                faceAuthId={faceAuthId}
+                username={username}
+                mode="verify"
             />
         </div>
     );

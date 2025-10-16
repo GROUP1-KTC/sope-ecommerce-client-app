@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import FaceIcon from '@mui/icons-material/Face';
 import { useAlertStore } from '~/store/zustand/alertStore';
-import FaceScanModal from '~/components/face-scan/FaceModalScan';
+import FaceScanModal from '~/components/face/FaceScanModal';
 import { loadAuthUser } from '~/utils/authCookie';
 import {
     useDisableFaceAuthMutation,
@@ -85,6 +85,7 @@ const PrivacySettingsPage = () => {
 
             <FaceScanModal
                 isOpen={isModalOpen}
+                mode="register"
                 onClose={() => setIsModalOpen(false)}
                 username={username}
             />
